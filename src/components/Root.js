@@ -5,9 +5,9 @@ import {
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
-import { Route, Routes, useNavigate } from "react-router-dom";
-
 import { useSelector } from "react-redux";
+import { Route, Routes } from "react-router-dom";
+
 import { SERVER_ERROR } from "../constants/globalConstants.js";
 import useNotify from "../hooks/useNotify";
 import { ProtectedRoute } from "../routes/ProtectedRoute.js";
@@ -20,9 +20,8 @@ import { UserNotification } from "./shared";
 import { CustomLoader } from "./shared/CustomLoader";
 import NotFound from "./shared/NotFound.js";
 
-function Root() {
+const Root = () => {
   const { notifyError } = useNotify();
-  const navigate = useNavigate();
   const snackBar = useSelector((state) => state?.snackBar);
   const isLoading = useSelector((state) => state?.isLoading);
 
@@ -63,9 +62,7 @@ function Root() {
           <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
 
           <Route path={ROUTE_PATHS.LAYOUT} element={<ProtectedRoute />}>
-            {
-            
-            routeMapping(SUPER_ADMIN_ROUTES)}
+            {routeMapping(SUPER_ADMIN_ROUTES)}
           </Route>
 
           <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />
@@ -75,6 +72,6 @@ function Root() {
       </ThemeProvider>
     </QueryClientProvider>
   );
-}
+};
 
 export default Root;
