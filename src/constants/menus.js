@@ -35,7 +35,7 @@ export const SIDE_MENU = [
       },
       {
         name: "State Master",
-        navigateTo: ROUTE_PATHS.STATE_MASTER_LIST,
+        navigateTo: ROUTE_PATHS.STATE_MASTER_TALUK,
       },
     ],
   },
