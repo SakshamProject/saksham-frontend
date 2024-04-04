@@ -23,8 +23,9 @@ export const ROUTE_PATHS = {
   STATE_MASTER_TALUK: "/typeMasters/stateMaster/taluk/form",
   STATE_MASTER_MUNICIPALITY: "/typeMasters/stateMaster/municipality/form",
   STATE_MASTER_CORPORATION: "/typeMasters/stateMaster/corporation/form",
-  STATE_MASTER_PANCHAYATUNION: "/typeMasters/stateMaster/panchayatUnion/form",
-  STATE_MASTER_TOWNPANCHAYAT: "/typeMasters/stateMaster/townPanchayat/form",
-  STATE_MASTER_MLACONSTITUENCY: "/typeMasters/stateMaster/mlaConstituency/form",
-  STATE_MASTER_MPCONSTITUENCY: "/typeMasters/stateMaster/mpConstituency/form",
+  STATE_MASTER_PANCHAYAT_UNION: "/typeMasters/stateMaster/panchayatUnion/form",
+  STATE_MASTER_TOWN_PANCHAYAT: "/typeMasters/stateMaster/townPanchayat/form",
+  STATE_MASTER_MLA_CONSTITUENCY:
+    "/typeMasters/stateMaster/mlaConstituency/form",
+  STATE_MASTER_MP_CONSTITUENCY: "/typeMasters/stateMaster/mpConstituency/form",
 };

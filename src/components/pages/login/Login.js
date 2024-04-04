@@ -1,8 +1,6 @@
 import { Grid } from "@mui/material";
-import { useMutation } from "@tanstack/react-query";
-import { useFormik } from "formik";
-import { postApiService } from "../../../api/api";
-import { API_PATHS } from "../../../api/apiPaths";
+import { useNavigate } from "react-router-dom";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   StyledButtonContainer,
   SubmitButton,
@@ -12,19 +10,15 @@ import {
   LoginHeading,
   LoginWrapper,
 } from "../../../styles/login";
+import { setCookie } from "../../../utils/cookie";
 
 const Login = () => {
-  const { mutate: onSubmit } = useMutation({
-    mutationKey: ["login"],
-    mutationFn: () => postApiService(API_PATHS.LOGIN, values),
-    onSuccess: () => {},
-  });
+  const navigate = useNavigate();
 
-  const formik = useFormik({
-    onSubmit,
-  });
-
-  const { values, handleSubmit } = formik;
+  const handleSubmit = () => {
+    setCookie("token", "testing token");
+    navigate(ROUTE_PATHS.DASHBOARD);
+  };
 
   return (
     <LoginWrapper container>
@@ -37,9 +31,8 @@ const Login = () => {
           <Grid item xs={12}>
             <StyledButtonContainer sx={{ justifyContent: "center" }}>
               <SubmitButton
-                color="primary"
                 onClick={handleSubmit}
-                sx={{ padding: "6px 24px !important" }}
+                sx={{ background: "#0000ff", color: "#ffffff" }}
               >
                 Submit
               </SubmitButton>
