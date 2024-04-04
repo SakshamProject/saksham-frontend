@@ -1,8 +1,7 @@
-import { Box, Typography, styled } from "@mui/material";
+import { Typography, styled } from "@mui/material";
 
-import { RightMenu } from ".";
-import defaultProfile from "../../assets/defaultProfile.png";
-import { AppBarLayout, AppLogo, AppProfile, CommonAvatar } from "../../styles";
+import companyLogo from "../../assets/logo.png";
+import { AppBarLayout, AppLogo } from "../../styles";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
   fontFamily: "Roboto, Helvetica, Arial, sans-serif",
@@ -29,20 +28,20 @@ export const AppBar = () => {
   return (
     <AppBarLayout>
       <AppLogo>
-        <StyledLogo src={defaultProfile} alt="company logo" />
+        <StyledLogo src={companyLogo} alt="company logo" />
         <StyledTitle>Saksham</StyledTitle>
       </AppLogo>
 
-      <AppProfile>
+      {/* <AppProfile>
         <Box>
           <CustomTypography fontSize={18} fontWeight={500}></CustomTypography>
           <CustomTypography fontSize={14}></CustomTypography>
         </Box>
 
         <CommonAvatar />
-      </AppProfile>
+      </AppProfile> */}
 
-      <RightMenu />
+      {/* <RightMenu /> */}
     </AppBarLayout>
   );
 };

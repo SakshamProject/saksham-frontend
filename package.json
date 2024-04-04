@@ -28,7 +28,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build": "GENERATE_SOURCEMAP=false react-scripts build",
-    "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build"
+    "winBuild": "set \"GENERATE_SOURCEMAP=false\" && react-scripts build",
+    "winStart": "set \"PORT=4000\" && react-scripts start"
   },
   "eslintConfig": {
     "extends": [
