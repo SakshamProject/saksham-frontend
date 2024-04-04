@@ -1,12 +1,14 @@
 import queryString from "query-string";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { sortedValues } from "../utils/common";
+
 import { createQueryParams } from "../utils/queryParams";
+import { sortedValues } from "../utils/tableSchemas";
 
 const useTableCustomHooks = (path) => {
   const location = useLocation();
   const navigate = useNavigate();
+
   const pageParams = queryString.parse(location?.search);
   const pageSize = parseInt(pageParams?.pageSize) || 10;
   const currentPage = parseInt(pageParams?.currentPage) || 1;
@@ -14,7 +16,7 @@ const useTableCustomHooks = (path) => {
   const searchParam = useMemo(() => new URLSearchParams(search), [search]);
   const searchData = searchParam?.get("search");
 
-  const getParams = useMemo(() => {
+  const { filterData, sortData } = useMemo(() => {
     const filterData = searchParam?.get("filter")
       ? JSON.parse(searchParam?.get("filter"))
       : [];
@@ -24,8 +26,6 @@ const useTableCustomHooks = (path) => {
 
     return { filterData, sortData };
   }, [searchParam]);
-
-  const { filterData, sortData } = getParams;
 
   const onPageNumberChange = (page) => {
     const newParams = createQueryParams({
@@ -48,14 +48,8 @@ const useTableCustomHooks = (path) => {
   const handleTableData = (searchFields, columnData, defaultSortedValues) => {
     const offset = pageSize * (currentPage - 1);
     const listParams = {
-      pagination: {
-        limit: pageSize,
-        offset,
-      },
-      search: {
-        fields: searchFields,
-        value: searchData ? searchData : "",
-      },
+      pagination: { limit: pageSize, offset },
+      search: { fields: searchFields, value: searchData ? searchData : "" },
       sorting:
         sortData.length === 0
           ? defaultSortedValues || [{ column: "createdAt", order: "desc" }]

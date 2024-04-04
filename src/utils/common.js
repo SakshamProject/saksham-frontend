@@ -1,54 +1,18 @@
-export const sortedValues = (column, value) => {
-  const getObj = column?.find((item) => item?.accessor === value?.[0]?.id);
-
-  let output = [];
-  output.push({
-    column: getObj?.accessor || "",
-    order: value?.[0]?.desc ? "desc" : "asc",
-  });
-
-  return output;
-};
-
-export const createFilter = (field, value) => ({
-  type: "eq",
-  field,
-  value,
-});
-
 export const getSeedIdByName = (seeds = [], name = "") => {
   return seeds?.find((seed) => seed?.name === name)?.id || "";
-};
-
-export const getSeedIdByCode = (seeds = [], code = "") => {
-  return seeds?.find((seed) => seed?.code === code)?.id || "";
 };
 
 export const getSeedNameById = (seeds = [], id = "") => {
   return seeds?.find((seed) => seed?.id === id)?.name || "";
 };
 
-export const getSeedCodeById = (seeds = [], id = "") => {
-  return seeds?.find((seed) => seed?.id === id)?.code || "";
-};
-
-export const getTrimmedValues = (data) => {
-  return Object.keys(data).reduce((resultObj, key) => {
-    return {
-      ...resultObj,
-      [key]: typeof data[key] === "string" ? data?.[key].trim() : data?.[key],
-    };
-  }, {});
-};
-
-export const getNeededValues = (values, initialValues) => {
-  return Object.keys(initialValues).reduce((formatted, key) => {
+export const getNeededValues = (values, initialValues) =>
+  Object.keys(initialValues).reduce((formatted, key) => {
     return {
       ...formatted,
       [key]: values[key] ? values[key] : initialValues[key],
     };
   }, {});
-};
 
 export const getValidValues = (values, withArray, include = []) => {
   const entries = [...Object.keys(values), ...include] || [];
@@ -60,9 +24,10 @@ export const getValidValues = (values, withArray, include = []) => {
         ...((values[key]?.length || withArray) && { [key]: values[key] }),
       };
     }
+
     if (typeof values[key] === "boolean" || !!values[key]) {
       if (typeof values[key] === "string") {
-        return { ...validated, [key]: values[key].replace(/\s+/g, " ").trim() };
+        return { ...validated, [key]: values[key].trim().replace(/\s+/g, " ") };
       }
       return { ...validated, [key]: values[key] };
     }
@@ -79,22 +44,9 @@ export const getDateTime = (timeValue = "") => {
   currentDate.setHours(hours);
   currentDate.setMinutes(minutes);
   currentDate.setSeconds(seconds);
+
   if (!timeVal) return "";
   return currentDate;
-};
-
-export const getFilter = (name, value, isViewMode) => {
-  return !isViewMode
-    ? {
-        filters: [
-          {
-            type: "eq",
-            field: name,
-            value,
-          },
-        ],
-      }
-    : {};
 };
 
 export const convertToDateObject = (dateString) => {
@@ -122,6 +74,8 @@ export const formatDate = ({ date, format, time, localDate }) => {
 
   switch (format) {
     case "YYYY-MM-DD":
+      return `${year}-${month}-${day}`;
+    case "DD-MM-YYYY":
       return `${year}-${month}-${day}`;
     case "HH:MM:SS":
       return `${hours}:${minutes}:${seconds}`;

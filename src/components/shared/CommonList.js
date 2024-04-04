@@ -1,8 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
 import { CustomReactTable, ListTopBar, WithCondition } from ".";
-import { postApiServices } from "../../api/api";
+import { postApiService } from "../../api/api";
 import { API_PATHS } from "../../api/apiPaths";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../routes/routePaths";
@@ -41,7 +40,7 @@ export const CommonList = ({
     queryKey: ["commonList" + API_PATHS?.[apiPath], listParams],
     queryFn: () => {
       const path = customApiPath || API_PATHS?.[apiPath];
-      return postApiServices(path, listParams);
+      return postApiService(path, listParams);
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
   });

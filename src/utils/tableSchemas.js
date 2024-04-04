@@ -14,9 +14,20 @@ export const getTableSchemas = (columns = []) => {
       });
       filterInitialValues[column?.accessor] = "";
     });
-
-    return { searchFields, filterFields, filterInitialValues };
   }
 
   return { searchFields, filterFields, filterInitialValues };
+};
+
+export const sortedValues = (column, value) => {
+  const getObj = column?.find((item) => item?.accessor === value?.[0]?.id);
+
+  let output = [];
+
+  output.push({
+    column: getObj?.accessor || "",
+    order: value?.[0]?.desc ? "desc" : "asc",
+  });
+
+  return output;
 };

@@ -6,12 +6,12 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { SERVER_ERROR } from "../constants/globalConstants.js";
 import useNotify from "../hooks/useNotify";
 import { theme } from "../styles/theme";
-import { UserNotification } from "./shared";
+import { AppBar, UserNotification } from "./shared";
 import { CustomLoader } from "./shared/CustomLoader";
 
 const Root = () => {

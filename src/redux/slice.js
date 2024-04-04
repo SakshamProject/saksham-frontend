@@ -28,16 +28,14 @@ const { reducer, actions } = createSlice({
     setSeed: (state, action) => {
       state.seeds = { ...state.seeds, ...action.payload };
     },
+
+    removeState: (state) => {
+      state = {};
+    },
   },
 });
 
 export default reducer;
 
-export const {
-  notifyUser,
-  setIsLoading,
-  setUserInfo,
-  setSeed,
-  setPortal,
-  setIsAdmin,
-} = actions;
+export const { notifyUser, setIsLoading, setUserInfo, setSeed, removeState } =
+  actions;

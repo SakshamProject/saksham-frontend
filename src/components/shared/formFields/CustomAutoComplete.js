@@ -54,9 +54,7 @@ export const CustomAutoComplete = ({
             helperText={customHelperText || (touched && error ? error : "")}
             fullWidth
             onKeyDown={(e) => {
-              if (e.charCode === 13) {
-                e.preventDefault();
-              }
+              if (e.charCode === 13) e.preventDefault();
             }}
           />
         );

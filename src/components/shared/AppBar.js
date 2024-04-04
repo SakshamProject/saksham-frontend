@@ -1,6 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
 
 import { RightMenu } from ".";
+import defaultProfile from "../../assets/defaultProfile.png";
 import { AppBarLayout, AppLogo, AppProfile, CommonAvatar } from "../../styles";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
@@ -28,12 +29,12 @@ export const AppBar = () => {
   return (
     <AppBarLayout>
       <AppLogo>
-        <StyledLogo />
+        <StyledLogo src={defaultProfile} alt="company logo" />
         <StyledTitle>Saksham</StyledTitle>
       </AppLogo>
 
       <AppProfile>
-        <Box className="appProfileDetails">
+        <Box>
           <CustomTypography fontSize={18} fontWeight={500}></CustomTypography>
           <CustomTypography fontSize={14}></CustomTypography>
         </Box>

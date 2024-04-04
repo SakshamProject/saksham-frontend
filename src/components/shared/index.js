@@ -2,6 +2,7 @@ export * from "./AppBar";
 export * from "./AuditLog";
 export * from "./BackNavigator";
 export * from "./CommonList";
+export * from "./CustomCell";
 export * from "./CustomLoader";
 export * from "./CustomReactTable";
 export * from "./CustomSearchField";

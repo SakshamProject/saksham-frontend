@@ -17,7 +17,7 @@ export const CustomDatePicker = ({
   disabled,
   touched,
   errors,
-  setTouced,
+  setTouched,
   views,
 }) => {
   return (
@@ -39,9 +39,8 @@ export const CustomDatePicker = ({
         sx={{ width: "100%" }}
         slotProps={{
           textField: {
-            onBlur: (e) => {
-              !touched?.lastDonatedDate && setTouced(name, e.type === "blur");
-            },
+            onBlur: (e) =>
+              !touched?.lastDonatedDate && setTouched(name, e.type === "blur"),
             error: !!touched && !!errors,
             helperText: !!touched && errors,
           },
