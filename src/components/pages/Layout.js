@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 
+import { SIDE_MENU } from "../../constants/menus";
 import {
   AppContainerLayout,
   AppMainContainer,
@@ -15,7 +16,7 @@ export const Layout = () => {
       <AppBar />
 
       <AppMainContainer>
-        <SideBarNavigation menuList={[]} />
+        <SideBarNavigation menuList={SIDE_MENU} />
 
         <Suspense fallback={<CustomLoader />}>
           <AppMainLayout>
