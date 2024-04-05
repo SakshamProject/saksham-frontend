@@ -1,5 +1,6 @@
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   StyledButtonContainer,
@@ -30,12 +31,7 @@ const Login = () => {
 
           <Grid item xs={12}>
             <StyledButtonContainer sx={{ justifyContent: "center" }}>
-              <SubmitButton
-                onClick={handleSubmit}
-                sx={{ background: "#0000ff", color: "#ffffff" }}
-              >
-                Submit
-              </SubmitButton>
+              <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
             </StyledButtonContainer>
           </Grid>
         </Grid>

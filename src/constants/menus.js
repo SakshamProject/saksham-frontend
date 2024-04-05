@@ -40,3 +40,14 @@ export const SIDE_MENU = [
     ],
   },
 ];
+
+export const RIGHT_SIDE_MENU = () => [
+  {
+    label: "My Profile",
+    routePath: ROUTE_PATHS.PROFILE,
+  },
+  {
+    label: "Logout",
+    routePath: ROUTE_PATHS.LOGIN,
+  },
+];

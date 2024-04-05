@@ -4,5 +4,6 @@ export * from "./filterStyle";
 export * from "./layouts";
 export * from "./listing";
 export * from "./login";
+export * from "./notFound";
 export * from "./tableDataOption";
 export * from "./theme";
