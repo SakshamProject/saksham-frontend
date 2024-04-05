@@ -1,12 +1,11 @@
-import pageNotFound from "../../assets/pageNotFound.png";
+import { FourNotFour, NotFoundContainer, NotFoundMessage } from "../../styles";
 
 const NotFound = () => {
   return (
-    <img
-      src={pageNotFound}
-      style={{ width: "100%", height: "99vh" }}
-      alt="page not found"
-    />
+    <NotFoundContainer>
+      <FourNotFour>404</FourNotFour>
+      <NotFoundMessage>Oops! Something is wrong...</NotFoundMessage>
+    </NotFoundContainer>
   );
 };
 

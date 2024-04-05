@@ -6,8 +6,6 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTE_PATHS.DASHBOARD,
     element: routeElements.Dashboard,
   },
-
-  //state master
   {
     path: ROUTE_PATHS.STATE_MASTER,
     element: routeElements.StateMasterForm,

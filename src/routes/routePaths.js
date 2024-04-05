@@ -4,6 +4,8 @@ export const ROUTE_PATHS = {
 
   LOGIN: "/login",
 
+  PROFILE: "/profile",
+
   DASHBOARD: "/dashboard",
 
   SEVA_KENDRA_MASTER_LIST: "/sevaKendraSetup/master/list",

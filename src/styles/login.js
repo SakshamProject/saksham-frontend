@@ -1,4 +1,4 @@
-import { Box, Grid, styled } from "@mui/material";
+import { Box, Grid, Typography, styled } from "@mui/material";
 
 export const LoginWrapper = styled(Grid)({
   height: "100vh",
@@ -29,19 +29,17 @@ export const ForgetPassword = styled("span")(({ theme }) => ({
   textDecoration: "underline",
 }));
 
-export const LoginContainer = styled(Box)({
+export const LoginContainer = styled(Box)(({ theme }) => ({
   width: "35%",
   height: "auto",
-  border: "1px solid black",
   padding: "3% 4%",
   borderRadius: 8,
   minWidth: "400px",
-});
+  border: `1px solid ${theme.palette.border.primary}`,
+}));
 
-export const LoginHeading = styled("div")({
+export const LoginHeading = styled(Typography)(({ theme }) => ({
   width: "100%",
-  fontFamily: "Roboto",
-  color: "#707070",
   fontSize: "32px",
   fontWeight: "500",
   textTransform: "uppercase",
@@ -50,4 +48,5 @@ export const LoginHeading = styled("div")({
   alignItems: "center",
   gap: "27%",
   justifyContent: "center",
-});
+  color: theme.palette.text.grey,
+}));

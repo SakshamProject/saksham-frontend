@@ -1,30 +1,62 @@
 import { Typography, styled } from "@mui/material";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
+import defaultAvatar from "../../assets/avatar.png";
 import companyLogo from "../../assets/logo.png";
-import { AppBarLayout, AppLogo } from "../../styles";
+import { removeState } from "../../redux/slice";
+import { ROUTE_PATHS } from "../../routes/routePaths";
+import {
+  AppBarLayout,
+  AppLogo,
+  AppProfile,
+  AppProfileDetails,
+  CommonAvatar,
+} from "../../styles";
+import { removeAllCookie } from "../../utils/cookie";
+import { RightMenu } from "./RightMenu";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
-  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-  color: theme?.palette?.textColor?.main,
+  color: theme.palette.primary.contrastText,
 }));
 
-const StyledLogo = styled("img")(({ theme }) => {
-  return {
-    height: "50px",
-    width: "50px",
-  };
+const StyledLogo = styled("img")({
+  height: "45px",
+  width: "45px",
 });
 
-const StyledTitle = styled("div")(({ theme }) => {
-  return {
-    fontFamily: "Roboto",
-    fontSize: "24px",
-    color: theme?.palette?.textColor?.main,
-    fontWeight: "600",
-  };
-});
+const StyledTitle = styled("div")(({ theme }) => ({
+  fontSize: "24px",
+  color: theme.palette.primary.contrastText,
+  fontWeight: "600",
+}));
 
 export const AppBar = () => {
+  const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
+  const {
+    name = "",
+    profileImageUrl = "",
+    firstName = "",
+    lastName = "",
+  } = useSelector((state) => state?.userInfo);
+  const role = useSelector((state) => state?.role);
+
+  const handleClick = (event) => setAnchorEl(event.currentTarget);
+
+  const handleClose = () => setAnchorEl(null);
+
+  const redirect = (routePath) => {
+    if (routePath === ROUTE_PATHS.LOGIN) {
+      removeAllCookie();
+      dispatch(removeState());
+    }
+    navigate(routePath);
+    handleClose();
+  };
+
   return (
     <AppBarLayout>
       <AppLogo>
@@ -32,16 +64,32 @@ export const AppBar = () => {
         <StyledTitle>Saksham</StyledTitle>
       </AppLogo>
 
-      {/* <AppProfile>
-        <Box>
-          <CustomTypography fontSize={18} fontWeight={500}></CustomTypography>
-          <CustomTypography fontSize={14}></CustomTypography>
-        </Box>
+      <AppProfile onClick={handleClick}>
+        <AppProfileDetails>
+          <CustomTypography fontSize={18} fontWeight={500}>
+            {name || !!firstName
+              ? `${firstName} ${lastName || ""}`
+              : "Anonymous"}
+          </CustomTypography>
 
-        <CommonAvatar />
-      </AppProfile> */}
+          <CustomTypography fontSize={14}>
+            {role?.role || "Unknown"}
+          </CustomTypography>
+        </AppProfileDetails>
 
-      {/* <RightMenu /> */}
+        <CommonAvatar
+          src={profileImageUrl || defaultAvatar}
+          onError={(e) => (e.target.src = defaultAvatar)}
+          alt="profile avatar"
+        />
+      </AppProfile>
+
+      <RightMenu
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        open={Boolean(anchorEl)}
+        redirect={redirect}
+      />
     </AppBarLayout>
   );
 };

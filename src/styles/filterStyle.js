@@ -1,6 +1,6 @@
 import { Box, IconButton, Modal, styled } from "@mui/material";
 
-export const FilterModalLayout = styled(Modal)(({ theme }) => ({
+export const FilterModalLayout = styled(Modal)(() => ({
   position: "absolute",
   top: 0,
   left: "25%",
@@ -10,24 +10,28 @@ export const FilterModalLayout = styled(Modal)(({ theme }) => ({
   backgroundColor: "transparent",
   display: "block",
   "&::-webkit-scrollbar": {
-    width: 0,
-    height: 0,
+    width: "0",
+    height: "0",
+  },
+  "&::-moz-scrollbar": {
+    width: "0",
+    height: "0",
   },
 }));
 
-export const FilterContainerStyle = styled(Box)({
+export const FilterContainerStyle = styled(Box)(({ theme }) => ({
   position: "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: "60%",
   maxWidth: "800px",
-  backgroundColor: "white",
+  backgroundColor: theme.palette.background.white,
   boxShadow: 24,
   outline: 0,
-});
+}));
 
-export const FilterFormStyle = styled(Box)({
+export const FilterFormStyle = styled(Box)(({ theme }) => ({
   maxHeight: 450,
   overflow: "scroll",
   overflowX: "hidden",
@@ -37,49 +41,46 @@ export const FilterFormStyle = styled(Box)({
     width: "5px",
     height: "5px",
   },
-  "::-webkit-scrollbar-thumb": {
-    backgroundColor: "#6E6E6E60",
+  "&::-webkit-scrollbar-thumb": {
+    backgroundColor: theme.palette.background.grey,
     borderRadius: 5,
   },
-  "::-webkit-scrollbar-thumb:hover": {
-    background: "#555",
+  "&::-webkit-scrollbar-thumb:hover": {
+    backgroundColor: theme.palette.background.lightGrey,
   },
-});
+  "&::-moz-scrollbar": {
+    width: "5px",
+    height: "5px",
+  },
+  "&::-moz-scrollbar-thumb": {
+    backgroundColor: theme.palette.background.grey,
+    borderRadius: 5,
+  },
+  "&::-moz-scrollbar-thumb:hover": {
+    backgroundColor: theme.palette.background.lightGrey,
+  },
+}));
 
 export const FilterTitle = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   padding: "14px 20px",
-  background: `${theme?.palette.primary.main}`,
-  color: theme?.palette?.textColor?.main,
+  background: theme.palette.primary.main,
+  color: theme.palette.primary.contrastText,
 }));
 
 export const FilterIconButton = styled(IconButton)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  backgroundColor: theme?.palette.primary.main,
   padding: "7px  8px",
   fontSize: 14,
   borderRadius: 4,
-  color: theme?.palette?.textColor?.main,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: theme?.palette?.textColor?.main,
-  },
-}));
-
-export const NewButton = styled(IconButton)(({ theme }) => ({
-  color: theme?.palette?.textColor?.main,
-  background: "#59B961 0% 0% no-repeat padding-box",
   backgroundColor: theme.palette.primary.main,
-  boxShadow: "0px 2px 4px #00000033",
-  borderRadius: "4px",
-  marginLeft: 14,
-  padding: "7px  8px",
+  color: theme.palette.primary.contrastText,
   "&:hover": {
-    color: theme?.palette?.textColor?.main,
     backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
   },
 }));
 

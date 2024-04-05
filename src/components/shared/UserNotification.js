@@ -12,10 +12,12 @@ const Alert = React.forwardRef((props, ref) => {
 export const UserNotification = () => {
   const dispatch = useDispatch();
   const toastMessageState = useSelector((state) => state.snackBar);
+
   const handleClose = (_, reason) => {
     if (reason === "clickaway") return;
     dispatch(notifyUser(null));
   };
+
   return (
     <Stack spacing={2} sx={{ width: "100%" }}>
       <Snackbar
