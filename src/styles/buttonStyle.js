@@ -1,5 +1,5 @@
 import { Delete, Edit } from "@mui/icons-material";
-import { Box, Button, styled } from "@mui/material";
+import { Box, Button, IconButton, styled } from "@mui/material";
 
 export const StyledButtonContainer = styled(Box)((props) => ({
   width: "100%",
@@ -18,7 +18,7 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   color: theme.palette.primary.main,
   border: `1px solid ${theme.palette.primary.main}`,
   "&:hover": {
-    background: theme.palette.text.white,
+    background: theme.palette.background.white,
   },
 }));
 
@@ -40,6 +40,19 @@ export const AddButton = styled(Button)(({ theme }) => ({
   color: theme.palette.success.contrastText,
   "&:hover": {
     backgroundColor: theme.palette.success.main,
+  },
+}));
+
+export const NewButton = styled(IconButton)(({ theme }) => ({
+  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette.primary.main,
+  boxShadow: "0px 2px 4px #00000033",
+  borderRadius: "4px",
+  marginLeft: 14,
+  padding: "7px  8px",
+  "&:hover": {
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 

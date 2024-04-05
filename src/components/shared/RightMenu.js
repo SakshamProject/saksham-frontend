@@ -5,7 +5,7 @@ import { RIGHT_SIDE_MENU } from "../../constants/menus";
 
 const PopoverComponent = styled(MuiPopper)({
   "& .MuiPaper-root": {
-    minWidth: "150px",
+    minWidth: "200px",
     width: "auto",
   },
 });
@@ -14,7 +14,7 @@ const Titles = styled(Typography)(({ theme }) => ({
   padding: "14px !important",
   cursor: "pointer !important",
   font: "normal normal normal 16px/19px sans-serif !important",
-  color: `${theme.palette.popoverColor.main} !important`,
+  color: `${theme.palette.text.black} !important`,
 }));
 
 export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
@@ -26,8 +26,8 @@ export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      {RIGHT_SIDE_MENU().map(({ label, routePath }, index) => (
-        <Titles key={index} onClick={() => redirect(routePath)}>
+      {RIGHT_SIDE_MENU().map(({ label, routePath }, key) => (
+        <Titles key={key} onClick={() => redirect(routePath)}>
           {label}
         </Titles>
       ))}
