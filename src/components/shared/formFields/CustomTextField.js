@@ -69,10 +69,10 @@ export const CustomTextField = ({
         customHelperText || options
           ? touched && errors
             ? errors
-            : ""
+            : " "
           : touched && errors
           ? errors
-          : ""
+          : " "
       }
       InputProps={{
         endAdornment: endAdornment,

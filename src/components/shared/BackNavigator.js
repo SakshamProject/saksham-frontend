@@ -62,7 +62,9 @@ export const BackNavigator = ({
         <CustomHeader>{customTitle}</CustomHeader>
       ) : (
         <CustomHeader>
-          {disableModes ? title : `${mode} ${title}`?.toUpperCase()}
+          {disableModes
+            ? `${title}`?.toUpperCase()
+            : `${mode} ${title}`?.toUpperCase()}
         </CustomHeader>
       )}
     </Container>
