@@ -1,5 +1,6 @@
 import TextField from "@mui/material/TextField";
 import React from "react";
+import { theme } from "../../../styles";
 
 export const CustomTextField = ({
   type,
@@ -80,6 +81,7 @@ export const CustomTextField = ({
         onKeyDown: (e) => onkeydown && onkeydown(e),
         readOnly: Boolean(isViewMode),
         disabled: disabled,
+        style: { color: theme.palette.text.secondary },
       }}
       onInput={(e) => {
         e.target.value &&

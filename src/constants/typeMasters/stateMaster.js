@@ -115,3 +115,14 @@ export const fields = {
     accessor: "id",
   },
 };
+
+export const columns = (name) => [
+  {
+    Header: name,
+    accessor: "name",
+    width: 300,
+    sticky: "left",
+  },
+  // {
+  // },
+];

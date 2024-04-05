@@ -11,11 +11,13 @@ import {
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import { useFormik } from "formik";
 import { getValidValues } from "../../../../utils/common";
-import { StyledFormContainer } from "../../../../styles";
-import { Grid } from "@mui/material";
+import { StyledFormContainer, theme } from "../../../../styles";
+import { Box, Grid } from "@mui/material";
 import {
+  CommonList,
   CustomTextField,
   DividerLine,
+  FormActions,
   SingleAutoComplete,
 } from "../../../shared";
 
@@ -44,6 +46,7 @@ const StateType = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
+    console.log(payload);
     // onSubmit(payload);
   };
 
@@ -71,58 +74,80 @@ const StateType = () => {
   useEffect(handleReset, [pathname]);
 
   return (
-    <StyledFormContainer width="100%">
-      <Grid container rowSpacing={2} columnSpacing={3}>
-        <Grid item xs={6}>
-          <SingleAutoComplete
-            label={fields?.stateId?.label}
-            name={fields?.stateId?.name}
-            value={values?.stateId}
-            onChange={(_, value) => {
-              setFieldValue(fields?.stateId?.name, value);
+    <Grid direction={"column"}>
+      <StyledFormContainer width="100%">
+        <Grid container rowSpacing={2} columnSpacing={3}>
+          <Grid item xs={6}>
+            <SingleAutoComplete
+              label={fields?.stateId?.label}
+              name={fields?.stateId?.name}
+              value={values?.stateId}
+              onChange={(_, value) => {
+                setFieldValue(fields?.stateId?.name, value);
+              }}
+              onBlur={handleBlur}
+              errors={errors?.stateId}
+              touched={touched?.stateId}
+              // inputValues={stateList?.data || []}
+              accessor={fields?.stateId?.accessor}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <SingleAutoComplete
+              label={fields?.districtId?.label}
+              name={fields?.districtId?.name}
+              value={values?.districtId}
+              onChange={(_, value) => {
+                setFieldValue(fields?.districtId?.name, value);
+              }}
+              onBlur={handleBlur}
+              errors={errors?.districtId}
+              touched={touched?.districtId}
+              // inputValues={districtList?.data || []}
+              accessor={fields?.districtId?.accessor}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <DividerLine />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomTextField
+              label={currentForm?.label}
+              name={currentForm?.name}
+              fieldType={"alphabets"}
+              value={values?.[currentForm?.name]}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={errors?.[currentForm?.name]}
+              touched={touched?.[currentForm?.name]}
+            />
+          </Grid>
+
+          <FormActions
+            handleSubmit={handleSubmit}
+            handleOnReset={handleReset}
+            // isUpdate={state?.editMode}
+            // disableSubmit={isViewMode}
+            submitLabel="Add"
+            disableCancel
+            submitButtonStyle={{
+              backgroundColor: theme?.palette?.success?.main,
             }}
-            onBlur={handleBlur}
-            errors={errors?.stateId}
-            touched={touched?.stateId}
-            // inputValues={stateList?.data || []}
-            accessor={fields?.stateId?.accessor}
           />
         </Grid>
+      </StyledFormContainer>
 
-        <Grid item xs={6}>
-          <SingleAutoComplete
-            label={fields?.districtId?.label}
-            name={fields?.districtId?.name}
-            value={values?.districtId}
-            onChange={(_, value) => {
-              setFieldValue(fields?.districtId?.name, value);
-            }}
-            onBlur={handleBlur}
-            errors={errors?.districtId}
-            touched={touched?.districtId}
-            // inputValues={districtList?.data || []}
-            accessor={fields?.districtId?.accessor}
-          />
-        </Grid>
-
-        <Grid item xs={12}>
-          <DividerLine />
-        </Grid>
-
-        <Grid item xs={12}>
-          <CustomTextField
-            label={currentForm?.label}
-            name={currentForm?.name}
-            fieldType={"alphabets"}
-            value={values?.[currentForm?.name]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            errors={errors?.[currentForm?.name]}
-            touched={touched?.[currentForm?.name]}
-          />
-        </Grid>
-      </Grid>
-    </StyledFormContainer>
+      <Box width={1}>
+        <CommonList
+          disableFilter
+          disableLayout
+          // columns={columns}
+        />
+      </Box>
+    </Grid>
   );
 };
 

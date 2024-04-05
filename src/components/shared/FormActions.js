@@ -25,6 +25,7 @@ export const FormActions = ({
   handleSkip,
   skipLabel = SKIP,
   disableSkip,
+  submitButtonStyle,
 }) => {
   return (
     <Grid item xs={12}>
@@ -49,6 +50,7 @@ export const FormActions = ({
               variant="outlined"
               disableElevation
               onClick={handleSubmit}
+              sx={submitButtonStyle}
             >
               {isUpdate ? UPDATE : submitLabel}
             </SubmitButton>

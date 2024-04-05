@@ -16,6 +16,7 @@ export const CommonList = ({
   defaultSortedValues,
   disableTopBar,
   disableLayout,
+  disableFilter,
   customApiPath,
 }) => {
   const { searchFields, filterFields, filterInitialValues } =
@@ -54,6 +55,7 @@ export const CommonList = ({
           listPath={ROUTE_PATHS?.[listPath]}
           filterFields={filterFields}
           filterFieldInitial={filterInitialValues}
+          disableFilter={disableFilter}
         />
       </WithCondition>
 

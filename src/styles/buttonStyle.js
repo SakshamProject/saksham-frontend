@@ -6,7 +6,7 @@ export const StyledButtonContainer = styled(Box)((props) => ({
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "center",
-  marginTop: 24,
+  // marginTop: 24,
   ...props?.style,
 }));
 

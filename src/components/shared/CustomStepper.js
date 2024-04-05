@@ -13,6 +13,8 @@ const StepperContainer = styled(Box)(({ isHorizontal }) => ({
   padding: isHorizontal ? "0 0 40px" : "0 20px",
   width: "100%",
   overflowY: "scroll",
+  borderRadius: "8px",
+
   "::-webkit-scrollbar": {
     display: "none",
   },
@@ -70,11 +72,9 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     },
     ".MuiStepLabel-iconContainer.Mui-active": {
       backgroundColor: theme.palette.primary.main,
-      color: "#fff",
     },
     ".MuiStepLabel-iconContainer.Mui-completed": {
       backgroundColor: theme.palette.primary.main,
-      color: "#fff",
     },
     ".MuiStepLabel-root.MuiStepLabel-horizontal": {
       display: "block !important",
@@ -92,7 +92,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
 const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   "& .MuiStepLabel-label ": {
-    color: theme.palette.primary.main,
+    color: theme.palette.text.grey,
     fontWeight: "700",
     fontSize: "14px",
     width: "max-content",
@@ -100,7 +100,7 @@ const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   },
 
   ".MuiStepLabel-label.Mui-active": {
-    color: "theme.palette.primary.main",
+    color: theme.palette.text.grey,
     fontWeight: "700 ",
     paddingLeft: isHorizontal ? "0" : "10px",
   },
