@@ -12,31 +12,31 @@ export const SUPER_ADMIN_ROUTES = [
     children: [
       {
         path: ROUTE_PATHS.STATE_MASTER_TALUK,
-        element: routeElements.StateMasterForm,
+        element: routeElements.StateType,
       },
       {
         path: ROUTE_PATHS.STATE_MASTER_MUNICIPALITY,
-        element: routeElements.StateMasterForm,
+        element: routeElements.StateType,
       },
       {
         path: ROUTE_PATHS.STATE_MASTER_CORPORATION,
-        element: routeElements.StateMasterForm,
+        element: routeElements.StateType,
       },
       {
-        path: ROUTE_PATHS.STATE_MASTER_PANCHAYATUNION,
-        element: routeElements.StateMasterForm,
+        path: ROUTE_PATHS.STATE_MASTER_PANCHAYAT_UNION,
+        element: routeElements.StateType,
       },
       {
-        path: ROUTE_PATHS.STATE_MASTER_TOWNPANCHAYAT,
-        element: routeElements.StateMasterForm,
+        path: ROUTE_PATHS.STATE_MASTER_TOWN_PANCHAYAT,
+        element: routeElements.StateType,
       },
       {
-        path: ROUTE_PATHS.STATE_MASTER_MLACONSTITUENCY,
-        element: routeElements.StateMasterForm,
+        path: ROUTE_PATHS.STATE_MASTER_MLA_CONSTITUENCY,
+        element: routeElements.StateType,
       },
       {
-        path: ROUTE_PATHS.STATE_MASTER_MPCONSTITUENCY,
-        element: routeElements.StateMasterForm,
+        path: ROUTE_PATHS.STATE_MASTER_MP_CONSTITUENCY,
+        element: routeElements.StateType,
       },
     ],
   },

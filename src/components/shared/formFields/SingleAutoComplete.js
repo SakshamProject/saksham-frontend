@@ -64,7 +64,7 @@ export const SingleAutoComplete = ({
             label={label}
             name={name}
             error={errors && touched}
-            helperText={touched && errors}
+            helperText={(touched && errors) || " "}
             fullWidth
             required={required}
             readOnly={readOnly || isViewMode}
