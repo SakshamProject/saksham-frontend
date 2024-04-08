@@ -2,6 +2,16 @@ import { lazy } from "react";
 
 export const Dashboard = lazy(() => import("../components/pages/Dashboard"));
 
+//sevakendra setup
+
+//-- sevakendra setup -master
+export const SevaKendraMasterList = lazy(() =>
+  import("../components/pages/sevaKendraSetup/sevaKendraMaster/List")
+);
+export const SevaKendraMasterForm = lazy(() =>
+  import("../components/pages/sevaKendraSetup/sevaKendraMaster/Form")
+);
+
 //state master
 export const StateMasterForm = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/Form")

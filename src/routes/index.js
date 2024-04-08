@@ -6,6 +6,18 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTE_PATHS.DASHBOARD,
     element: routeElements.Dashboard,
   },
+
+  //sevakendra setup
+  {
+    path: ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST,
+    element: routeElements.SevaKendraMasterList,
+  },
+  {
+    path: ROUTE_PATHS.SEVA_KENDRA_MASTER_FORM,
+    element: routeElements.SevaKendraMasterForm,
+  },
+
+  //state master
   {
     path: ROUTE_PATHS.STATE_MASTER,
     element: routeElements.StateMasterForm,
