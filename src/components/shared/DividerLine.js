@@ -1,9 +1,11 @@
 import { Divider, createTheme } from "@mui/material";
-import React from "react";
 
 const theme = createTheme();
 
-export const DividerLine = ({ color = theme.palette.primary.main, gap }) => {
+export const DividerLine = ({
+  color = theme.palette?.backgroundColor?.divider,
+  gap,
+}) => {
   return (
     <Divider
       style={{

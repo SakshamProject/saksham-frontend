@@ -11,7 +11,7 @@ export const CustomReactTable = ({
   rawData,
   style,
   columnSize,
-  count = 10,
+  count,
   pageSize,
   currentPage,
   onPageNumberChange,
@@ -63,7 +63,7 @@ export const CustomReactTable = ({
         currentPage={currentPage}
         onChangePageSize={onChangePageSize}
         onPageNumberChange={onPageNumberChange}
-        pageCount={count}
+        pageCount={count || 10}
         disableColumnResize={true}
         disableSort={disableSort}
         manualSort={manualSort || false}
@@ -90,7 +90,7 @@ export const CustomReactTable = ({
           ".tableHead": {
             maxWidth: "100%",
             userSelect: "none",
-            color: theme?.palette?.primary?.main,
+            color: theme?.palette?.textColor?.main,
           },
           ".css1kciki3 .tableHead": {
             backgroundColor: theme.palette?.backgroundColor?.tableHeader,
@@ -134,12 +134,12 @@ export const CustomReactTable = ({
             display: "none !important",
           },
           tableHead: {
-            backgroundColor: "rgb(0, 107, 189)",
+            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
           },
           pagination: {
-            color: theme?.palette?.paginationColor?.main,
+            color: theme?.palette?.textColor?.main,
             font: "normal normal normal 14px/19px sans-serif !important",
-            backgroundColor: `${theme?.palette?.paginationBackground?.main} !important`,
+            backgroundColor: `${theme.palette?.backgroundColor?.tablePagination} !important`,
           },
           ...style,
         }}

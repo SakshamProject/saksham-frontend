@@ -17,4 +17,5 @@ export const API_PATHS = {
   MP_CONSTITUENCY: "/mp-constituencies",
 
   //general types
+  GENERAL_MASTER_SEED: "typemaster/generalmaster/generalmasterseed",
 };

@@ -47,7 +47,6 @@ export const ListTopbar = ({
   filterFieldInitial,
   newButtonLabel,
   onDownload,
-  isFilterParams,
 }) => {
   const navigate = useNavigate();
 
@@ -56,14 +55,12 @@ export const ListTopbar = ({
       <ContainerAlign>
         <Title variant="h6">{label}</Title>
 
-        <WithCondition isValid={!!isFilterParams}>
-          <Typography sx={{ fontSize: "1.1rem" }}>Filtered Result</Typography>
-        </WithCondition>
-
         <IconsContainer>
-          {!disableSearchField && <CustomSearchField />}
+          <WithCondition isValid={!disableSearchField}>
+            <CustomSearchField />
+          </WithCondition>
 
-          {additionalComponent ? additionalComponent : <></>}
+          {!!additionalComponent ? additionalComponent : <></>}
 
           <WithCondition isValid={!disableFilter}>
             <FilterModal
@@ -75,7 +72,7 @@ export const ListTopbar = ({
 
           <WithCondition isValid={!disableNewForm && newFormPath}>
             <NewButton onClick={() => navigate(newFormPath)}>
-              {newButtonLabel ? newButtonLabel : <Add />}
+              {!!newButtonLabel ? newButtonLabel : <Add />}
             </NewButton>
           </WithCondition>
 

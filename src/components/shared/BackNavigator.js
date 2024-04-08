@@ -1,14 +1,13 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, styled } from "@mui/material";
-import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-const Container = styled("div")(({ disableBack }) => ({
+const Container = styled("div")(({ theme, disableBack }) => ({
   display: "flex",
   alignItems: "center",
   minHeight: 75,
   marginBottom: 16,
-  backgroundColor: "inherit",
+  backgroundColor: theme.palette?.backgroundColor?.white,
   marginLeft: disableBack ? 16 : "5%",
   position: "sticky",
 }));
@@ -17,16 +16,15 @@ const CustomHeader = styled("div")(({ theme }) => {
   return {
     fontSize: 22,
     marginLeft: 15,
-    fontFamily: "lato",
     userSelect: "none",
-    color: theme?.palette?.primary?.main,
-    fontWeight: "700",
+    color: theme?.palette?.textColor?.black,
+    fontWeight: "600",
   };
 });
 
 const BackIcon = styled(IconButton)(({ theme }) => ({
-  color: theme?.palette?.primary?.main,
-  fontSize: 22,
+  color: theme?.palette?.textColor?.black,
+  fontSize: 24,
 }));
 
 export const BackNavigator = ({
@@ -44,17 +42,17 @@ export const BackNavigator = ({
   const isViewMode = location?.state?.viewDetails;
   const mode = editId ? (isViewMode ? "VIEW" : "EDIT") : "NEW";
 
+  const onClick = () => {
+    if (handleNavigate) handleNavigate();
+    else navigate(navigateTo);
+  };
+
   return (
     <Container disableBack={disableBack}>
       {disableBack ? (
         <></>
       ) : (
-        <BackIcon
-          onClick={() => {
-            if (handleNavigate) handleNavigate();
-            else navigate(navigateTo);
-          }}
-        >
+        <BackIcon onClick={onClick}>
           <ArrowBackIcon />
         </BackIcon>
       )}

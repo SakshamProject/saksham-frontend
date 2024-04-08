@@ -1,6 +1,5 @@
-import { Delete, Edit } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
-import React from "react";
+import { DeleteIcon, EditIcon } from "../../styles/buttonStyle";
 
 export const EditDelete = ({
   onEdit,
@@ -12,13 +11,13 @@ export const EditDelete = ({
   return (
     <Box style={{ display: "flex" }}>
       {!disableEdit && (
-        <IconButton color="primary" disabled={isViewMode} onClick={onEdit}>
-          <Edit />
+        <IconButton disabled={isViewMode} onClick={onEdit}>
+          <EditIcon />
         </IconButton>
       )}
       {!disableDelete && (
-        <IconButton color="primary" disabled={isViewMode} onClick={onDelete}>
-          <Delete />
+        <IconButton disabled={isViewMode} onClick={onDelete}>
+          <DeleteIcon />
         </IconButton>
       )}
     </Box>
