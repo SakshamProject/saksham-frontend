@@ -1,5 +1,7 @@
+import { IconButton } from "@mui/material";
 import { API_PATHS } from "../../api/apiPaths";
 import { ROUTE_PATHS } from "../../routes/routePaths";
+import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
 
 export const initialValues = (name) => ({
   [name]: "",
@@ -108,22 +110,50 @@ export const fields = {
   stateId: {
     label: "State",
     name: "stateId",
-    accessor: "id",
   },
   districtId: {
     label: "District",
     name: "districtId",
-    accessor: "id",
   },
 };
 
-export const columns = (name) => [
+export const stateMasterColumns = ({
+  currentForm,
+  tableEditId,
+  handleDeleteList,
+  handleEditList,
+}) => [
   {
-    Header: name,
-    accessor: "name",
-    width: 300,
+    Header: currentForm?.validationLabel,
+    accessor: `name`,
+    width: 320,
     sticky: "left",
   },
-  // {
-  // },
+  {
+    Header: "Edit/Delete",
+    minWidth: 150,
+    sticky: "right",
+    Cell: (props) => {
+      return (
+        <OptionsContainerChild>
+          <div>
+            <IconButton
+              onClick={() => handleEditList(props?.row?.index)}
+              disabled={tableEditId !== "" ? true : false}
+            >
+              <EditIcon color="primary"></EditIcon>
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                handleDeleteList(props?.row?.index);
+              }}
+              disabled={tableEditId !== "" ? true : false}
+            >
+              <DeleteIcon color="primary" />
+            </IconButton>
+          </div>
+        </OptionsContainerChild>
+      );
+    },
+  },
 ];

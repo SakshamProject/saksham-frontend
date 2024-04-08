@@ -30,10 +30,10 @@ export const CustomTextField = ({
       return !/[0-9]/.test(e.key) && e.preventDefault();
     }
     if (fieldType === "alphaNumeric") {
-      return !/[0-9A-Za-z-/:_]/.test(e.key) && e.preventDefault();
+      return !/[0-9A-Za-z- /:_]/.test(e.key) && e.preventDefault();
     }
     if (fieldType === "alphabets") {
-      return !/[A-Za-z/]/.test(e.key) && e.preventDefault();
+      return !/[A-Za-z /]/.test(e.key) && e.preventDefault();
     }
     if (fieldType === "email") {
       return / /g.test(e.key) && e.preventDefault();
@@ -81,7 +81,6 @@ export const CustomTextField = ({
         onKeyDown: (e) => onkeydown && onkeydown(e),
         readOnly: Boolean(isViewMode),
         disabled: disabled,
-        style: { color: theme.palette.text.secondary },
       }}
       onInput={(e) => {
         e.target.value &&

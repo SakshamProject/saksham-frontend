@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import useNotify from "../../../../hooks/useNotify";
@@ -7,6 +7,7 @@ import {
   fields,
   formDetails,
   initialValues as initialValue,
+  stateMasterColumns,
 } from "../../../../constants/typeMasters/stateMaster";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import { useFormik } from "formik";
@@ -15,9 +16,11 @@ import { StyledFormContainer, theme } from "../../../../styles";
 import { Box, Grid } from "@mui/material";
 import {
   CommonList,
+  CustomReactTable,
   CustomTextField,
   DividerLine,
   FormActions,
+  ListTopbar,
   SingleAutoComplete,
 } from "../../../shared";
 import { API_PATHS } from "../../../../api/apiPaths";
@@ -26,8 +29,13 @@ import {
   getApiService,
   getByIdApiService,
   postApiService,
+  putApiService,
+  updateApiService,
 } from "../../../../api/api";
-import { ADDED_SUCCESSFULLY } from "../../../../constants/globalConstants";
+import {
+  ADDED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+} from "../../../../constants/globalConstants";
 
 const StateType = () => {
   const [params] = useSearchParams();
@@ -37,6 +45,17 @@ const StateType = () => {
   const currentScreen = useMemo(() => pathname.split("/")[3], [pathname]);
   const currentForm = formDetails?.[currentScreen];
   const allSteps = STEPS.map((item) => item?.value);
+  const [tableEditId, setTableEditId] = useState("");
+
+  const handleDeleteList = (id) => {
+    console.log("del", id);
+  };
+
+  const handleEditList = (id) => {
+    setValues({ ...dataList?.[id] });
+    setFieldValue("stateId", dataList?.[id]?.district?.state?.id);
+    setTableEditId(dataList?.[id]?.id);
+  };
 
   const initialValues = useMemo(
     () => initialValue(currentForm?.name),
@@ -59,9 +78,19 @@ const StateType = () => {
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: [currentForm?.apiPath, currentScreen],
-    mutationFn: (data) => postApiService(currentForm?.apiPath, data),
-    onSuccess: (data) => {
-      notifySuccess(ADDED_SUCCESSFULLY(currentForm?.validationLabel));
+    mutationFn: (data) =>
+      tableEditId
+        ? updateApiService(currentForm?.apiPath, tableEditId, data)
+        : postApiService(currentForm?.apiPath, data),
+    onSuccess: ({ data }) => {
+      notifySuccess(
+        tableEditId
+          ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
+          : ADDED_SUCCESSFULLY(currentForm?.validationLabel)
+      );
+      handleReset();
+      refetch();
+      setTableEditId("");
     },
   });
 
@@ -89,12 +118,24 @@ const StateType = () => {
   const { data: stateList } = useQuery({
     queryKey: [API_PATHS.STATES],
     queryFn: () => getApiService(API_PATHS.STATES),
+    select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
     queryKey: [API_PATHS.DISTRICTS, values?.stateId],
     queryFn: () =>
       values?.stateId && getByIdApiService(API_PATHS.STATES, values?.stateId),
+    select: ({ data }) => data?.data,
+  });
+
+  const {
+    data: dataList,
+    isLoading,
+    refetch,
+  } = useQuery({
+    queryKey: [currentForm?.apiPath, currentScreen],
+    queryFn: () => getApiService(currentForm?.apiPath),
+    select: ({ data }) => data?.data,
   });
 
   useEffect(handleReset, [pathname]);
@@ -114,8 +155,9 @@ const StateType = () => {
               onBlur={handleBlur}
               errors={errors?.stateId}
               touched={touched?.stateId}
-              inputValues={stateList?.data?.data || []}
+              inputValues={stateList || []}
               accessor={fields?.stateId?.accessor}
+              readOnly={tableEditId}
             />
           </Grid>
 
@@ -130,8 +172,9 @@ const StateType = () => {
               onBlur={handleBlur}
               errors={errors?.districtId}
               touched={touched?.districtId}
-              inputValues={districtList?.data?.data?.districts || []}
+              inputValues={districtList?.districts || []}
               accessor={fields?.districtId?.accessor}
+              readOnly={tableEditId}
             />
           </Grid>
           <Grid item xs={12}>
@@ -151,23 +194,47 @@ const StateType = () => {
           </Grid>
           <FormActions
             handleSubmit={handleSubmit}
-            handleOnReset={handleReset}
-            // isUpdate={state?.editMode}
-            // disableSubmit={isViewMode}
+            handleOnReset={() => {
+              handleReset();
+              setTableEditId("");
+            }}
+            resetLabel={"Clear"}
+            isUpdate={tableEditId}
             submitLabel="Add"
-            disableCancel
             submitButtonStyle={{
-              backgroundColor: theme?.palette?.success?.main,
+              backgroundColor: tableEditId
+                ? theme?.palette?.backgroundColor?.blue
+                : theme?.palette?.success?.main,
+              "&:hover": {
+                backgroundColor: tableEditId
+                  ? theme?.palette?.backgroundColor?.blue
+                  : theme?.palette?.success?.main,
+              },
             }}
           />
         </Grid>
       </StyledFormContainer>
 
-      <Box width={1}>
-        <CommonList
+      <Box width={1} sx={{ paddingBottom: "40px" }}>
+        <ListTopbar
           disableFilter
+          disableNewForm
+          style={{ width: "100%", marginLeft: 0 }}
+        />
+        <CustomReactTable
+          columnData={
+            stateMasterColumns({
+              currentForm,
+              tableEditId,
+              handleDeleteList,
+              handleEditList,
+            }) || []
+          }
+          rawData={dataList || []}
+          isLoading={isLoading}
+          disablePagination
+          manualSort
           disableLayout
-          // columns={columns}
         />
       </Box>
     </Grid>

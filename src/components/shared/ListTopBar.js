@@ -48,11 +48,12 @@ export const ListTopbar = ({
   newButtonLabel,
   onDownload,
   isFilterParams,
+  style,
 }) => {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <Container sx={style}>
       <ContainerAlign>
         <Title variant="h6">{label}</Title>
 
