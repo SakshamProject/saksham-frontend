@@ -12,7 +12,7 @@ export const theme = createTheme({
       radioButton: "#3949AB",
       green: "#3AD865",
       white: "#ffffff",
-      black: "#000000",
+      black: "#282828",
       grey: "#6E6E6E",
       lightGrey: "#555555",
     },
@@ -22,7 +22,7 @@ export const theme = createTheme({
 
       blue: "#1473E6",
       white: "#ffffff",
-      black: "#000000",
+      black: "#282828",
     },
 
     textColor: {
@@ -30,7 +30,7 @@ export const theme = createTheme({
 
       blue: "#1473E6",
       white: "#ffffff",
-      black: "#000000",
+      black: "#282828",
       red: "#ff0000",
       orange: "#ff9900",
     },

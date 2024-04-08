@@ -19,3 +19,11 @@ export const StateMasterForm = lazy(() =>
 export const StateType = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/StateType")
 );
+
+//general types
+export const GeneralTypesList = lazy(() =>
+  import("../components/pages/typeMasters/generalTypes/List")
+);
+export const GeneralTypesForm = lazy(() =>
+  import("../components/pages/typeMasters/generalTypes/Form")
+);

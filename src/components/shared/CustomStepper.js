@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Done } from "@mui/icons-material";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
@@ -12,7 +11,7 @@ const StepperContainer = styled(Box)(({ isHorizontal }) => ({
   borderWidth: isHorizontal ? 0 : 1,
   padding: isHorizontal ? "0 0 40px" : "0 20px",
   width: "100%",
-  overflowY: "scroll",
+  overflowY: "auto",
   borderRadius: "8px",
 
   "::-webkit-scrollbar": {
@@ -30,7 +29,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     cursor: "pointer",
     overflowX: "visible",
     paddingBottom: 16,
-    overflowY: "scroll",
+    overflowY: "auto",
     "&::-webkit-scrollbar": {
       display: "none",
     },

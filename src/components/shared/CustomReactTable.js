@@ -77,11 +77,11 @@ export const CustomReactTable = ({
               height: "5px",
             },
             "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "#6E6E6E60",
+              backgroundColor: theme.palette?.backgroundColor?.grey,
               borderRadius: 5,
             },
             "&::-webkit-scrollbar-thumb:hover": {
-              background: "#555",
+              backgroundColor: theme.palette?.backgroundColor?.lightGrey,
             },
           },
           mainContainer: {
@@ -93,13 +93,13 @@ export const CustomReactTable = ({
             color: theme?.palette?.primary?.main,
           },
           ".css1kciki3 .tableHead": {
-            backgroundColor: "rgb(0, 107, 189)",
+            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
           },
           th: {
             font: "normal normal bold 14px/19px sans-serif !important",
             display: "flex !important",
             height: "64px !important",
-            backgroundColor: "#006BBD",
+            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
             color: theme?.palette?.textColor?.main,
           },
           body: {
