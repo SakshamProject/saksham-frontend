@@ -15,20 +15,20 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   marginRight: "20px !important",
   fontWeight: "bold",
   height: "36px",
-  color: theme.palette.primary.main,
-  border: `1px solid ${theme.palette.primary.main}`,
+  color: theme.palette?.textColor?.blue,
+  border: `1px solid ${theme.palette?.borderColor?.blue}`,
   "&:hover": {
-    background: theme.palette.background.white,
+    backgroundColor: theme.palette?.backgroundColor?.white,
   },
 }));
 
 export const SubmitButton = styled(Button)(({ theme }) => ({
   margin: "0 8px",
   height: "36px",
-  background: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette?.backgroundColor?.allButton,
+  color: theme.palette?.textColor?.white,
   "&:hover": {
-    background: theme.palette.primary.main,
+    backgroundColor: theme.palette?.backgroundColor?.allButton,
   },
 }));
 
@@ -36,23 +36,23 @@ export const AddButton = styled(Button)(({ theme }) => ({
   marginLeft: 15,
   height: 38,
   float: "right",
-  backgroundColor: theme.palette.success.main,
-  color: theme.palette.success.contrastText,
+  backgroundColor: theme.palette?.backgroundColor?.green,
+  color: theme.palette?.textColor?.white,
   "&:hover": {
-    backgroundColor: theme.palette.success.main,
+    backgroundColor: theme.palette?.backgroundColor?.green,
   },
 }));
 
 export const NewButton = styled(IconButton)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
-  backgroundColor: theme.palette.primary.main,
   boxShadow: "0px 2px 4px #00000033",
   borderRadius: "4px",
   marginLeft: 14,
   padding: "7px  8px",
+  backgroundColor: theme.palette?.backgroundColor?.allButton,
+  color: theme.palette?.textColor?.white,
   "&:hover": {
-    color: theme.palette.primary.contrastText,
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette?.backgroundColor?.allButton,
+    color: theme.palette?.textColor?.white,
   },
 }));
 
@@ -60,11 +60,11 @@ export const DeleteIcon = styled(Delete)(({ theme }) => ({
   width: 30,
   height: 30,
   cursor: "pointer",
-  color: theme.palette.error.main,
+  color: theme.palette?.textColor?.red,
 }));
 
 export const EditIcon = styled(Edit)(({ theme }) => ({
   width: 30,
   height: 30,
-  color: theme.palette.warning.main,
+  color: theme.palette?.textColor?.orange,
 }));

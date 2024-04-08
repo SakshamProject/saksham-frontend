@@ -29,8 +29,6 @@ const Login = () => {
             <LoginHeading>Login</LoginHeading>
           </Grid>
 
-          
-
           <Grid item xs={12}>
             <StyledButtonContainer sx={{ justifyContent: "center" }}>
               <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>

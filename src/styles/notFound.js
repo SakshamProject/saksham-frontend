@@ -7,18 +7,18 @@ export const NotFoundContainer = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   flexDirection: "column",
-  backgroundColor: theme.palette.primary.main,
+  backgroundColor: theme.palette?.backgroundColor?.grey,
 }));
 
 export const FourNotFour = styled("h1")(({ theme }) => ({
   textAlign: "center",
   fontSize: "14rem",
   marginTop: "-3rem",
-  color: theme.palette.primary.contrastText,
+  color: theme.palette?.textColor?.white,
 }));
 
 export const NotFoundMessage = styled("p")(({ theme }) => ({
   fontSize: "2.5rem",
   textAlign: "center",
-  color: theme.palette.primary.contrastText,
+  color: theme.palette?.textColor?.white,
 }));

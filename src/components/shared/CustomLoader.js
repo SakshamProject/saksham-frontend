@@ -14,10 +14,14 @@ const Container = styled(Box)({
   zIndex: 99,
 });
 
+const CustomSpinner = styled(CircularProgress)(({ theme }) => ({
+  color: theme.palette?.textColor?.main,
+}));
+
 export const CustomLoader = () => {
   return (
     <Container>
-      <CircularProgress />
+      <CustomSpinner />
     </Container>
   );
 };

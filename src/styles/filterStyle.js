@@ -26,7 +26,7 @@ export const FilterContainerStyle = styled(Box)(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: "60%",
   maxWidth: "800px",
-  backgroundColor: theme.palette.background.white,
+  backgroundColor: theme.palette?.backgroundColor?.allButton,
   boxShadow: 24,
   outline: 0,
 }));
@@ -42,22 +42,22 @@ export const FilterFormStyle = styled(Box)(({ theme }) => ({
     height: "5px",
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette.background.grey,
+    backgroundColor: theme.palette?.backgroundColor?.grey,
     borderRadius: 5,
   },
   "&::-webkit-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette.background.lightGrey,
+    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
   },
   "&::-moz-scrollbar": {
     width: "5px",
     height: "5px",
   },
   "&::-moz-scrollbar-thumb": {
-    backgroundColor: theme.palette.background.grey,
+    backgroundColor: theme.palette?.backgroundColor?.grey,
     borderRadius: 5,
   },
   "&::-moz-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette.background.lightGrey,
+    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
   },
 }));
 
@@ -66,8 +66,8 @@ export const FilterTitle = styled(Box)(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   padding: "14px 20px",
-  background: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette?.backgroundColor?.allButton,
+  color: theme.palette?.textColor?.white,
 }));
 
 export const FilterIconButton = styled(IconButton)(({ theme }) => ({
@@ -76,11 +76,11 @@ export const FilterIconButton = styled(IconButton)(({ theme }) => ({
   padding: "7px  8px",
   fontSize: 14,
   borderRadius: 4,
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette?.backgroundColor?.allButton,
+  color: theme.palette?.textColor?.white,
   "&:hover": {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette?.backgroundColor?.allButton,
+    color: theme.palette?.textColor?.white,
   },
 }));
 

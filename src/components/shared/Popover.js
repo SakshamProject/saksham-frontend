@@ -1,5 +1,4 @@
 import { Popover as MuiPopover, Typography } from "@mui/material";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Popover = ({
@@ -14,6 +13,7 @@ export const Popover = ({
   popoverItemStyle = {},
 }) => {
   const navigate = useNavigate();
+
   const handleMenuClick = (menu) => () => {
     menu?.navigateTo && navigate(menu?.navigateTo);
     menuAction && menuAction();
