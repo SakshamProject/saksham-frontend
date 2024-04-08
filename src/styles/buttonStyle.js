@@ -6,7 +6,7 @@ export const StyledButtonContainer = styled(Box)((props) => ({
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "center",
-  // marginTop: 24,
+  marginTop: 24,
   ...props?.style,
 }));
 
@@ -15,6 +15,7 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   marginRight: "20px !important",
   fontWeight: "bold",
   height: "36px",
+  cursor: "pointer",
   color: theme.palette?.textColor?.blue,
   border: `1px solid ${theme.palette?.borderColor?.blue}`,
   "&:hover": {

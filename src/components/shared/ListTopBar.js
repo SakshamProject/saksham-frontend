@@ -1,11 +1,9 @@
-import { Add } from "@mui/icons-material";
+import { Add, Download } from "@mui/icons-material";
 import { Box, Typography, styled } from "@mui/material";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { NewButton } from "../../styles";
-import { CustomSearchField } from "./CustomSearchField";
-import { FilterModal } from "./FilterModal";
+import { CustomSearchField, FilterModal, WithCondition } from "./index";
 
 const Container = styled(Box)({
   height: 80,
@@ -25,10 +23,10 @@ const ContainerAlign = styled(Box)({
 });
 
 const Title = styled(Typography)(({ theme }) => ({
-  color: theme?.palette?.primary?.main,
+  color: theme.palette?.textColor?.black,
   textTransform: "uppercase",
-  fontFamily: "Lato",
-  fontWeight: "700",
+  fontWeight: "600",
+  fontSize: "1.3rem",
 }));
 
 const IconsContainer = styled(Box)({
@@ -37,7 +35,7 @@ const IconsContainer = styled(Box)({
   alignItems: "center",
 });
 
-export const ListTopBar = ({
+export const ListTopbar = ({
   label,
   disableSearchField,
   disableFilter,
@@ -48,6 +46,8 @@ export const ListTopBar = ({
   filterFields,
   filterFieldInitial,
   newButtonLabel,
+  onDownload,
+  isFilterParams,
 }) => {
   const navigate = useNavigate();
 
@@ -55,23 +55,35 @@ export const ListTopBar = ({
     <Container>
       <ContainerAlign>
         <Title variant="h6">{label}</Title>
+
+        <WithCondition isValid={!!isFilterParams}>
+          <Typography sx={{ fontSize: "1.1rem" }}>Filtered Result</Typography>
+        </WithCondition>
+
         <IconsContainer>
           {!disableSearchField && <CustomSearchField />}
+
           {additionalComponent ? additionalComponent : <></>}
-          {!disableFilter && (
+
+          <WithCondition isValid={!disableFilter}>
             <FilterModal
               listPath={listPath}
               filterFields={filterFields}
               filterFieldInitial={filterFieldInitial}
             />
-          )}
-          {!disableNewForm && newFormPath ? (
+          </WithCondition>
+
+          <WithCondition isValid={!disableNewForm && newFormPath}>
             <NewButton onClick={() => navigate(newFormPath)}>
               {newButtonLabel ? newButtonLabel : <Add />}
             </NewButton>
-          ) : (
-            <></>
-          )}
+          </WithCondition>
+
+          <WithCondition isValid={!!onDownload}>
+            <NewButton onClick={onDownload}>
+              <Download />
+            </NewButton>
+          </WithCondition>
         </IconsContainer>
       </ContainerAlign>
     </Container>

@@ -17,6 +17,16 @@ export const SUPER_ADMIN_ROUTES = [
     element: routeElements.SevaKendraMasterForm,
   },
 
+  //general types
+  {
+    path: ROUTE_PATHS.GENERAL_TYPES_LIST,
+    element: routeElements.GeneralTypesList,
+  },
+  {
+    path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+    element: routeElements.GeneralTypesForm,
+  },
+
   //state master
   {
     path: ROUTE_PATHS.STATE_MASTER,

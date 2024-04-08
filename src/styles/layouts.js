@@ -65,7 +65,7 @@ export const AppProfileDetails = styled(Box)({
 
 export const AppMainLayout = styled("div")({
   width: "100%",
-  overflow: "scroll",
+  overflow: "auto",
   height: "calc(100vh - 70px)",
   "&::-webkit-scrollBar": {
     width: 0,
@@ -76,7 +76,7 @@ export const AppMainLayout = styled("div")({
 export const FormContainer = styled(Box)({
   width: "100%",
   maxHeight: "100%",
-  overflow: "scroll",
+  overflow: "auto",
   "&::-webkit-scrollbar": {
     width: 0,
     height: 0,

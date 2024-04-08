@@ -5,7 +5,7 @@ import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
 import queryString from "query-string";
-import React, { useState } from "react";
+import { useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 import { CustomSelectField, CustomTextField } from ".";
@@ -137,21 +137,13 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
               })}
             </FilterFormStyle>
             <FilterButtonModal>
-              <CancelButton
-                sx={{ px: 3 }}
-                onClick={handleClose}
-                style={{ cursor: "pointer" }}
-              >
-                {CANCEL}
-              </CancelButton>
-              <CancelButton
-                sx={{ px: 3 }}
-                onClick={handleClearFilter}
-                style={{ cursor: "pointer" }}
-              >
+              <CancelButton onClick={handleClose}>{CANCEL}</CancelButton>
+
+              <CancelButton onClick={handleClearFilter}>
                 {CLEAR_FILTER}
               </CancelButton>
-              <SubmitButton variant="contained" type="submit" sx={{ px: 3 }}>
+
+              <SubmitButton variant="contained" type="submit">
                 {APPLY}
               </SubmitButton>
             </FilterButtonModal>

@@ -4,7 +4,7 @@ export const FilterModalLayout = styled(Modal)(() => ({
   position: "absolute",
   top: 0,
   left: "25%",
-  overflow: "scroll",
+  overflow: "auto",
   width: "55%",
   height: "100%",
   backgroundColor: "transparent",
@@ -33,7 +33,7 @@ export const FilterContainerStyle = styled(Box)(({ theme }) => ({
 
 export const FilterFormStyle = styled(Box)(({ theme }) => ({
   maxHeight: 450,
-  overflow: "scroll",
+  overflow: "auto",
   overflowX: "hidden",
   margin: 0,
   padding: 0,
