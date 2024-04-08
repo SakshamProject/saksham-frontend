@@ -2,47 +2,37 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
-    primary: {
-      main: "#006bbd",
-    },
-
-    error: {
-      main: "#ff0000",
-    },
-
-    warning: {
-      main: "#ff9900",
-    },
-
-    text: {
-      primary: "#ffffff",
-      secondary: "#000000",
-
+    backgroundColor: {
+      tableHeader: "#D2E1FC",
+      tablePagination: "#F8FCFF",
+      sideMenuButton: "#D6D6D6",
+      allButton: "#1473E6",
+      stepperButton: "#37383C",
+      divider: "#7F7BB4",
+      radioButton: "#3949AB",
+      green: "#3AD865",
       white: "#ffffff",
       black: "#000000",
-      grey: "#707070",
-    },
-
-    background: {
-      primary: "#006bbd",
-      secondary: "#A2BEFB",
-
-      white: "#ffffff",
-      black: "#000000",
-      grey: "#6E6E6E60",
+      grey: "#6E6E6E",
       lightGrey: "#555555",
     },
 
-    border: {
-      primary: "#9e9e9e",
-      secondary: "#707070",
+    borderColor: {
+      main: "#707070",
 
+      blue: "#1473E6",
       white: "#ffffff",
       black: "#000000",
     },
-  },
 
-  typography: {
-    fontFamily: ["Rubik", "sans-serif", "Roboto", "Helvetica Neue"].join(","),
+    textColor: {
+      main: "#707070",
+
+      blue: "#1473E6",
+      white: "#ffffff",
+      black: "#000000",
+      red: "#ff0000",
+      orange: "#ff9900",
+    },
   },
 });

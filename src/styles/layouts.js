@@ -5,7 +5,7 @@ export const AppContainerLayout = styled("div")(({ theme }) => ({
   height: "100vh",
   display: "flex",
   flexDirection: "column",
-  backgroundColor: theme.palette.text.white,
+  backgroundColor: theme.palette?.backgroundColor?.white,
 }));
 
 export const AppMainContainer = styled(Box)(() => ({
@@ -20,11 +20,12 @@ export const AppBarLayout = styled("div")(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   position: "sticky",
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.primary.contrastText,
+  backgroundColor: theme.palette?.backgroundColor?.white,
+  color: theme.palette?.textColor?.black,
+  border: `1px solid ${theme.palette?.borderColor?.black}`,
 }));
 
-export const AppLogo = styled("div")({
+export const AppLogo = styled("div")(({ theme }) => ({
   height: "100%",
   width: "auto",
   display: "flex",
@@ -32,15 +33,17 @@ export const AppLogo = styled("div")({
   alignItems: "center",
   cursor: "pointer",
   gap: "15px",
-  marginLeft: "20px",
-});
+  minWidth: "279px",
+  maxWidth: "350px",
+  borderRight: `1px solid ${theme.palette?.borderColor?.black}`,
+}));
 
 export const CommonAvatar = styled(Avatar)({
   width: 45,
   height: 45,
 });
 
-export const AppProfile = styled("div")({
+export const AppProfile = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -48,7 +51,9 @@ export const AppProfile = styled("div")({
   height: "100%",
   cursor: "pointer",
   marginRight: "15px",
-});
+  paddingLeft: "20px",
+  borderLeft: `1px solid ${theme.palette?.borderColor?.black}`,
+}));
 
 export const AppProfileDetails = styled(Box)({
   marginRight: 20,
@@ -89,11 +94,11 @@ export const FormLayout = styled(Box)(({ theme }) => ({
     height: "5px",
   },
   "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette.background.grey,
+    backgroundColor: theme.palette?.backgroundColor?.grey,
     borderRadius: 5,
   },
   "&::-webkit-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette.background.lightGrey,
+    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
   },
 }));
 
@@ -108,7 +113,7 @@ export const StyledFormContainer = styled(Paper)(({ theme, width }) => {
     boxSizing: "border-box",
     boxShadow: "none",
     minWidth: "500px",
-    backgroundColor: theme.palette.background.white,
+    backgroundColor: theme.palette?.backgroundColor?.white,
   };
 });
 
@@ -134,5 +139,5 @@ export const CustomHeader = styled("div")(({ theme }) => ({
   fontFamily: "lato",
   userSelect: "none",
   fontWeight: "700",
-  color: theme.palette.primary.main,
+  color: theme.palette?.textColor?.blue,
 }));

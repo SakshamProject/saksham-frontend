@@ -39,6 +39,21 @@ export const SIDE_MENU = [
       },
     ],
   },
+  {
+    label: "Divyang Details",
+    navigateTo: ROUTE_PATHS.DIVYANG_DETAILS_LIST,
+    value: "divyangDetails",
+  },
+  {
+    label: "Service Master",
+    navigateTo: ROUTE_PATHS.SERVICE_MASTER_LIST,
+    value: "serviceMaster",
+  },
+  {
+    label: "Service Mapping",
+    navigateTo: ROUTE_PATHS.SERVICE_MAPPING_LIST,
+    value: "serviceMapping",
+  },
 ];
 
 export const RIGHT_SIDE_MENU = () => [

@@ -6,7 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { notifyUser } from "../../redux/slice";
 
 const Alert = React.forwardRef((props, ref) => {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+  return (
+    <MuiAlert
+      elevation={6}
+      ref={ref}
+      variant="filled"
+      {...props}
+      sx={{ width: "100%" }}
+      vertical="top"
+      horizontal="right"
+    />
+  );
 });
 
 export const UserNotification = () => {
@@ -15,6 +25,7 @@ export const UserNotification = () => {
 
   const handleClose = (_, reason) => {
     if (reason === "clickaway") return;
+
     dispatch(notifyUser(null));
   };
 
@@ -25,14 +36,8 @@ export const UserNotification = () => {
         autoHideDuration={2000}
         onClose={handleClose}
       >
-        <Alert
-          onClose={handleClose}
-          severity={toastMessageState.severity}
-          sx={{ width: "100%" }}
-          vertical="top"
-          horizontal="right"
-        >
-          {toastMessageState.message}
+        <Alert onClose={handleClose} severity={toastMessageState?.severity}>
+          {toastMessageState?.message}
         </Alert>
       </Snackbar>
     </Stack>

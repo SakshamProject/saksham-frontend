@@ -14,7 +14,7 @@ const Titles = styled(Typography)(({ theme }) => ({
   padding: "14px !important",
   cursor: "pointer !important",
   font: "normal normal normal 16px/19px sans-serif !important",
-  color: `${theme.palette.text.black} !important`,
+  color: `${theme.palette?.textColor?.main} !important`,
 }));
 
 export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {

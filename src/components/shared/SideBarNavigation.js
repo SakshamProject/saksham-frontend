@@ -1,38 +1,45 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Tab, Tabs, styled } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+import { theme } from "../../styles";
 import { Popover } from "./Popover";
 
-const CustomTabs = styled(Tabs)(({ theme }) => ({
+export const CustomTabs = styled(Tabs)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  border: "1px solid",
-  borderColor: theme?.palette?.borderColor?.main,
+  border: `1px solid ${theme?.palette?.borderColor?.main}`,
   borderTop: "none",
   paddingTop: 10,
   paddingBottom: "auto",
-  width: "clamp(280px, 20vw, 350px)",
+  minWidth: "280px",
+  maxWidth: "350px",
+  "& .MuiTabs-flexContainer": {
+    overflowY: "auto",
+    maxHeight: "100%",
+    "&::-webkit-scrollbar": {
+      width: 0,
+      height: 0,
+    },
+  },
 }));
 
-const CustomTab = styled(Tab)(({ theme }) => ({
+export const CustomTab = styled(Tab)(({ theme }) => ({
   margin: "5px auto",
   padding: "auto",
-  border: "1px solid",
-  borderColor: theme?.palette?.primary?.main,
+  border: `1px solid ${theme?.palette?.borderColor?.main}`,
   width: "88%",
   height: 40,
   fontSize: 15,
   paddingTop: 12,
-  borderRadius: 3,
   textAlign: "left",
   alignItems: "flex-start",
-  fontFamily: "Roboto, Helvetica, Arial, sans-serif",
-  color: theme?.palette?.primary?.main,
+  borderRadius: 3,
+  color: theme?.palette?.textColor?.main,
   "&.Mui-selected": {
     color: theme?.palette?.textColor?.main,
-    backgroundColor: theme?.palette?.primary?.main,
+    backgroundColor: theme?.palette?.backgroundColor?.sideMenuButton,
   },
 }));
 
@@ -46,7 +53,7 @@ const popoverItemStyle = {
   display: "flex",
   alignItems: "center",
   padding: "0.3rem 0.8rem",
-  borderBottom: "1px solid #eeeeee",
+  borderBottom: `1px solid ${theme.palette?.borderColor?.main}`,
   cursor: "pointer",
 };
 
@@ -56,9 +63,11 @@ export const SideBarNavigation = ({ menuList = [] }) => {
   const [value, setValue] = useState(menuList[0]?.value);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const currentPage = pathname.split("/")[2];
+  const currentPage = pathname.split("/")[1];
 
-  const handleClosePopover = () => setAnchorEl(null);
+  const handleClosePopover = () => {
+    setAnchorEl(null);
+  };
 
   const handleMenuClick = (menu) => (event) => {
     menu?.navigateTo && !menu?.options?.length && navigate(menu?.navigateTo);
@@ -77,7 +86,7 @@ export const SideBarNavigation = ({ menuList = [] }) => {
     if (!menuList?.length) return;
     const currentMenu = menuList.find((menu) => menu?.value === currentPage);
     setValue(currentMenu?.value || false);
-  }, [pathname, activeMenu, menuList]);
+  }, [pathname, activeMenu, menuList]); // eslint-disable-line
 
   return (
     <CustomTabs

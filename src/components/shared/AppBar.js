@@ -18,19 +18,13 @@ import { removeAllCookie } from "../../utils/cookie";
 import { RightMenu } from "./RightMenu";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.contrastText,
+  color: theme.palette?.textColor?.black,
 }));
 
 const StyledLogo = styled("img")({
   height: "45px",
   width: "45px",
 });
-
-const StyledTitle = styled("div")(({ theme }) => ({
-  fontSize: "24px",
-  color: theme.palette.primary.contrastText,
-  fontWeight: "600",
-}));
 
 export const AppBar = () => {
   const navigate = useNavigate();
@@ -61,7 +55,6 @@ export const AppBar = () => {
     <AppBarLayout>
       <AppLogo>
         <StyledLogo src={companyLogo} alt="company logo" />
-        <StyledTitle>Saksham</StyledTitle>
       </AppLogo>
 
       <AppProfile onClick={handleClick}>
@@ -72,7 +65,7 @@ export const AppBar = () => {
               : "Anonymous"}
           </CustomTypography>
 
-          <CustomTypography fontSize={14}>
+          <CustomTypography fontSize={13}>
             {role?.role || "Unknown"}
           </CustomTypography>
         </AppProfileDetails>
