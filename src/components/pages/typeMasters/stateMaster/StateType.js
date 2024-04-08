@@ -20,6 +20,14 @@ import {
   FormActions,
   SingleAutoComplete,
 } from "../../../shared";
+import { API_PATHS } from "../../../../api/apiPaths";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+} from "../../../../api/api";
+import { ADDED_SUCCESSFULLY } from "../../../../constants/globalConstants";
 
 const StateType = () => {
   const [params] = useSearchParams();
@@ -46,15 +54,22 @@ const StateType = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
-    console.log(payload);
-    // onSubmit(payload);
+    onSubmit(payload);
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: [currentForm?.apiPath, currentScreen],
+    mutationFn: (data) => postApiService(currentForm?.apiPath, data),
+    onSuccess: (data) => {
+      notifySuccess(ADDED_SUCCESSFULLY(currentForm?.validationLabel));
+    },
+  });
 
   const formik = useFormik({
     initialValues,
     validationSchema,
     onSubmit: handleOnSubmit,
-    // enableReinitialize: true,
+    enableReinitialize: true,
   });
 
   const {
@@ -70,6 +85,17 @@ const StateType = () => {
     setTouched,
     handleReset,
   } = formik;
+
+  const { data: stateList } = useQuery({
+    queryKey: [API_PATHS.STATES],
+    queryFn: () => getApiService(API_PATHS.STATES),
+  });
+
+  const { data: districtList } = useQuery({
+    queryKey: [API_PATHS.DISTRICTS, values?.stateId],
+    queryFn: () =>
+      values?.stateId && getByIdApiService(API_PATHS.STATES, values?.stateId),
+  });
 
   useEffect(handleReset, [pathname]);
 
@@ -88,7 +114,7 @@ const StateType = () => {
               onBlur={handleBlur}
               errors={errors?.stateId}
               touched={touched?.stateId}
-              // inputValues={stateList?.data || []}
+              inputValues={stateList?.data?.data || []}
               accessor={fields?.stateId?.accessor}
             />
           </Grid>
@@ -104,15 +130,13 @@ const StateType = () => {
               onBlur={handleBlur}
               errors={errors?.districtId}
               touched={touched?.districtId}
-              // inputValues={districtList?.data || []}
+              inputValues={districtList?.data?.data?.districts || []}
               accessor={fields?.districtId?.accessor}
             />
           </Grid>
-
           <Grid item xs={12}>
             <DividerLine />
           </Grid>
-
           <Grid item xs={12}>
             <CustomTextField
               label={currentForm?.label}
@@ -125,7 +149,6 @@ const StateType = () => {
               touched={touched?.[currentForm?.name]}
             />
           </Grid>
-
           <FormActions
             handleSubmit={handleSubmit}
             handleOnReset={handleReset}

@@ -15,3 +15,4 @@ export const SKIP = "Skip";
 
 // Api messages
 export const SERVER_ERROR = "Something went wrong. Please try again!";
+export const ADDED_SUCCESSFULLY = (title) => `${title} added successfully !`;
