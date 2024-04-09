@@ -34,7 +34,7 @@ const Form = () => {
   const isViewMode = state?.viewDetails;
   const [tableEditId, setTableEditId] = useState("");
 
-  console.log(editId);
+
   const handleEditList = (id) => {
     // console.log(dataList?.[id]?.id);
     // setValues({ ...dataList?.[id] });

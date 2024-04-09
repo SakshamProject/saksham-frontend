@@ -1,4 +1,5 @@
-import { Divider, createTheme } from "@mui/material";
+import { Divider } from "@mui/material";
+
 import { theme } from "../../styles";
 
 export const DividerLine = ({

@@ -57,6 +57,11 @@ export const NewButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
+export const StyledIconButton = styled(IconButton)(() => ({
+  cursor: "pointer !important",
+  background: "red",
+}));
+
 export const DeleteIcon = styled(Delete)(({ theme }) => ({
   width: 24,
   height: 24,
