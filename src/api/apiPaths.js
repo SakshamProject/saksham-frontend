@@ -1,13 +1,6 @@
 export const API_PATHS = {
-  //states
-  STATES: "typeMaster/generalmaster/states",
-
-  //districts
-  DISTRICTS: "typeMaster/generalmaster/states",
-
   //state master
-  STATE_MASTER: "typemaster/statemaster",
-
+  STATE_MASTER: "/typemaster/statemaster",
   TALUK: "/taluks",
   MUNICIPALITY: "/municipalities",
   COPERATION: "/corporations",
@@ -17,8 +10,11 @@ export const API_PATHS = {
   MP_CONSTITUENCY: "/mp-constituencies",
 
   //general types
-  GENERAL_MASTER_SEED: "typemaster/generalmaster/generalmasterseed",
-
-  //service master
+  GENERAL_MASTER_SEED: "/typemaster/generalmaster/generalmasterseed",
+  EDUCATION_QUALIFICATION: "/typemaster/generalmaster/education-qualification",
+  COMMUNITY_CATEGORY: "/typemaster/generalmaster/communitycategory",
+  DISABILITY_TYPE: "/typemaster/generalmaster/disabilitytype",
   SERVICE_TYPES: "/typemaster/generalmaster/servicetype",
+  STATES: "/typeMaster/generalmaster/states",
+  DISTRICTS: "/typemaster/generalmaster/districts",
 };

@@ -42,7 +42,7 @@ export const CustomDatePicker = ({
             onBlur: (e) =>
               !touched?.lastDonatedDate && setTouched(name, e.type === "blur"),
             error: !!touched && !!errors,
-            helperText: !!touched && errors,
+            helperText: (!!touched && errors) || " ",
           },
         }}
       />

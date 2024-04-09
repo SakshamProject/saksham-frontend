@@ -5,7 +5,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import VideoFileIcon from "@mui/icons-material/VideoFile";
 import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import useNotify from "../../../hooks/useNotify";
 
@@ -200,7 +200,7 @@ export const CustomFileUpload = ({
         )}
       </FileInputHolder>
       <FormHelperText error>
-        {customHelperText || (touched && errors)}
+        {customHelperText || (touched && errors) || " "}
       </FormHelperText>
     </FormControl>
   );

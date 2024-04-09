@@ -1,7 +1,6 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import React from "react";
 
 export const CustomTimePicker = ({
   label,
@@ -17,7 +16,7 @@ export const CustomTimePicker = ({
   onBlur,
   errors,
   customHelperText,
-  setTouced,
+  setTouched,
   views,
 }) => {
   return (
@@ -32,21 +31,21 @@ export const CustomTimePicker = ({
         onBlur={onBlur}
         value={value ? new Date(value) : null}
         fullWidth
-        onChange={onChange}
+        onChange={onChange || (() => {})}
         minTime={minTime ? new Date(minTime) : null}
         maxTime={maxTime ? new Date(maxTime) : null}
         autoFocus={Boolean(value)}
         error={Boolean(customHelperText || (touched && errors))}
-        helperText={customHelperText || (touched && errors ? errors : "")}
+        helperText={customHelperText || (touched && errors) || " "}
         closeOnSelect
         sx={{ width: "100%" }}
         slotProps={{
           textField: {
             onBlur: (e) => {
-              !touched?.lastDonatedDate && setTouced(name, e.type === "blur");
+              !touched?.lastDonatedDate && setTouched(name, e.type === "blur");
             },
             error: !!touched && !!errors,
-            helperText: !!touched && errors,
+            helperText: (!!touched && errors) || " ",
           },
         }}
       />

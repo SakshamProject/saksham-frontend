@@ -66,7 +66,7 @@ export const CustomSelectField = ({
           })}
         </Select>
         <FormHelperText error>
-          {customHelperText || (touched && errors)}
+          {customHelperText || (touched && errors) || " "}
         </FormHelperText>
       </FormControl>
     </Box>

@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 
 import { EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
-import { OptionsContainer } from "../../styles";
+import { OptionsContainer, theme } from "../../styles";
 
 export const generalTypeColumns = [
   {
@@ -43,3 +43,35 @@ export const generalTypeColumns = [
     },
   },
 ];
+
+export const typeMasterTypes = [
+  "Educational Qualification",
+  "Disability Type",
+  "Community Category",
+  "Service Type",
+  "State",
+  "District",
+];
+
+export const initialValues = (key) => ({
+  typeMaster: "Community Category",
+  name: "",
+});
+
+export const fields = {
+  typeMaster: {
+    label: "Type Master",
+    name: "typeMaster",
+    accessor: "name",
+    labelStyle: {
+      color: theme.palette?.textColor?.blue,
+    },
+  },
+
+  name: {
+    label: "Enter Type Name",
+    name: "name",
+  },
+
+  
+};

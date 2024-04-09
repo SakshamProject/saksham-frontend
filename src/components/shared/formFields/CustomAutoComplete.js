@@ -1,6 +1,6 @@
 import { Autocomplete, Chip, TextField } from "@mui/material";
 
-export const CustomAutoComplete = ({
+const CustomAutoComplete = ({
   className,
   label,
   onChange,
@@ -11,6 +11,7 @@ export const CustomAutoComplete = ({
   name,
   error,
   touched,
+  getOptionLabel,
   accessor,
   labelAccessor,
   customHelperText,
@@ -27,7 +28,13 @@ export const CustomAutoComplete = ({
       value={value || null}
       disabled={readOnly}
       options={inputValues || []}
-      getOptionLabel={(option) => option.name}
+      getOptionLabel={(option) =>
+        (getOptionLabel && getOptionLabel(option)) ||
+        option?.[labelAccessor] ||
+        option?.name ||
+        option?.label ||
+        "No data Found"
+      }
       isOptionEqualToValue={(option, value) =>
         option?.[accessor || "id"] === value?.[accessor || "id"]
       }
@@ -51,10 +58,12 @@ export const CustomAutoComplete = ({
             variant="outlined"
             label={label}
             error={Boolean(customHelperText || (touched && error))}
-            helperText={customHelperText || (touched && error ? error : "")}
+            helperText={customHelperText || (touched && error ? error : " ")}
             fullWidth
             onKeyDown={(e) => {
-              if (e.charCode === 13) e.preventDefault();
+              if (e.charCode === 13) {
+                e.preventDefault();
+              }
             }}
           />
         );
@@ -62,3 +71,5 @@ export const CustomAutoComplete = ({
     />
   );
 };
+
+export default CustomAutoComplete;

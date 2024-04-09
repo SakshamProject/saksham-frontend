@@ -6,3 +6,15 @@
   box-sizing: border-box;
   font-family: "Rubik", sans-serif;
 }
+
+.notes {
+  max-width: 300px;
+  padding: 16px;
+  padding-bottom: 0;
+}
+.notes p {
+  font-style: italic;
+}
+.notes ~ div {
+  padding: 0px 16px;
+}

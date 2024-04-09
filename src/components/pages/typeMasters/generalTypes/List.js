@@ -24,7 +24,7 @@ const List = () => {
       />
 
       <CustomReactTable
-        columnData={generalTypeColumns}
+        columnData={generalTypeColumns || []}
         rawData={data || []}
         isLoading={isLoading}
         maxHeight="430px"

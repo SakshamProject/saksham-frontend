@@ -5,7 +5,7 @@ import { useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
 
 const PopoverComponent = styled(MuiPopper)({
-  "& .MuiPaper-root": {
+  ".MuiPaper-root": {
     minWidth: "150px",
   },
 });

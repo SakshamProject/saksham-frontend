@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { RIGHT_SIDE_MENU } from "../../constants/menus";
 
 const PopoverComponent = styled(MuiPopper)({
-  "& .MuiPaper-root": {
+  ".MuiPaper-root": {
     minWidth: "200px",
     width: "auto",
   },
