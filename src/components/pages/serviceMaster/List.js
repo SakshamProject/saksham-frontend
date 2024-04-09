@@ -11,8 +11,8 @@ const List = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [API_PATHS?.SERVICE_TYPES],
-    queryFn: () => getApiService(API_PATHS?.SERVICE_TYPES),
+    queryKey: ["getAllServices"],
+    queryFn: () => getApiService(`${API_PATHS?.SERVICES}?orderBy=serviceName`),
     select: ({ data }) => data,
   });
 
@@ -30,9 +30,7 @@ const List = () => {
         columnData={serviceMasterColumn || []}
         rawData={dataList?.data || []}
         isLoading={isLoading}
-        manualSort
-        disablePagination
-        // count={dataList?.total}
+        count={dataList?.total}
       />
     </>
   );

@@ -1,4 +1,4 @@
-import { EditPopover } from "../../components/shared";
+import { CustomCell, EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer } from "../../styles";
 
@@ -45,9 +45,16 @@ export const serviceMasterColumn = [
       </OptionsContainer>
     ),
   },
-  //   {
-  //     Header: "Organization Name",
-  //     accessor: "organizationName",
-  //     width: 300,
-  //   },
+  {
+    Header: "Service Provided",
+    accessor: "service",
+    width: 420,
+    Cell: (props) => (
+      <CustomCell
+        value={props?.row?.original?.service
+          ?.map((item) => item?.name)
+          ?.join(", ")}
+      />
+    ),
+  },
 ];

@@ -17,4 +17,7 @@ export const API_PATHS = {
   SERVICE_TYPES: "/typemaster/generalmaster/servicetype",
   STATES: "/typeMaster/generalmaster/states",
   DISTRICTS: "/typemaster/generalmaster/districts",
+
+  //service master
+  SERVICES: "services",
 };

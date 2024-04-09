@@ -21,9 +21,18 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import { API_PATHS } from "../../../api/apiPaths";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteApiService, getApiService } from "../../../api/api";
+import {
+  deleteApiService,
+  getApiService,
+  postApiService,
+  updateApiService,
+} from "../../../api/api";
 import { theme } from "../../../styles";
-import { DELETED_SUCCESSFULLY } from "../../../constants/globalConstants";
+import {
+  ADDED_SUCCESSFULLY,
+  DELETED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+} from "../../../constants/globalConstants";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -34,7 +43,6 @@ const Form = () => {
   const isViewMode = state?.viewDetails;
   const [tableEditId, setTableEditId] = useState("");
 
-  console.log(editId);
   const handleEditList = (id) => {
     // console.log(dataList?.[id]?.id);
     // setValues({ ...dataList?.[id] });
@@ -62,6 +70,24 @@ const Form = () => {
     console.log(payload);
     //   onSubmit(payload);
   };
+
+  //   const { mutate: onSubmit } = useMutation({
+  //     mutationKey: ["create and update", currentForm?.apiPath, currentScreen],
+  //     mutationFn: (data) =>
+  //       tableEditId
+  //         ? updateApiService(currentForm?.apiPath, tableEditId, data)
+  //         : postApiService(currentForm?.apiPath, data),
+  //     onSuccess: () => {
+  //       notifySuccess(
+  //         tableEditId
+  //           ? UPDATED_SUCCESSFULLY("Service")
+  //           : ADDED_SUCCESSFULLY("Service")
+  //       );
+  //       handleReset();
+  //       refetch();
+  //       setTableEditId("");
+  //     },
+  //   });
 
   const formik = useFormik({
     initialValues,
