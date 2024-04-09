@@ -18,4 +18,7 @@ export const API_PATHS = {
 
   //general types
   GENERAL_MASTER_SEED: "typemaster/generalmaster/generalmasterseed",
+
+  //service master
+  SERVICE_TYPES: "/typemaster/generalmaster/servicetype",
 };

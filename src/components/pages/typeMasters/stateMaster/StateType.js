@@ -189,9 +189,11 @@ const StateType = () => {
               readOnly={tableEditId}
             />
           </Grid>
+
           <Grid item xs={12}>
             <DividerLine />
           </Grid>
+
           <Grid item xs={12}>
             <CustomTextField
               label={currentForm?.label}
@@ -204,6 +206,7 @@ const StateType = () => {
               touched={touched?.[currentForm?.name]}
             />
           </Grid>
+
           <FormActions
             handleSubmit={handleSubmit}
             handleOnReset={() => {

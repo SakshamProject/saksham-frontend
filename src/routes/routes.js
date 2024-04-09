@@ -27,3 +27,11 @@ export const GeneralTypesList = lazy(() =>
 export const GeneralTypesForm = lazy(() =>
   import("../components/pages/typeMasters/generalTypes/Form")
 );
+
+//service master
+export const ServiceMasterList = lazy(() =>
+  import("../components/pages/serviceMaster/List")
+);
+export const ServiceMasterForm = lazy(() =>
+  import("../components/pages/serviceMaster/Form")
+);

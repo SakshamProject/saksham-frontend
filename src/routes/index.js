@@ -62,4 +62,14 @@ export const SUPER_ADMIN_ROUTES = [
       },
     ],
   },
+
+  //service master
+  {
+    path: ROUTE_PATHS.SERVICE_MASTER_LIST,
+    element: routeElements.ServiceMasterList,
+  },
+  {
+    path: ROUTE_PATHS.SERVICE_MASTER_FORM,
+    element: routeElements.ServiceMasterForm,
+  },
 ];
