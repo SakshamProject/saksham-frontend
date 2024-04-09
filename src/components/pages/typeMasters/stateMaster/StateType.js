@@ -30,7 +30,6 @@ import {
   getApiService,
   getByIdApiService,
   postApiService,
-  putApiService,
   updateApiService,
 } from "../../../../api/api";
 import {
@@ -39,7 +38,6 @@ import {
   UPDATED_SUCCESSFULLY,
 } from "../../../../constants/globalConstants";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
-import { ROUTE_PATHS } from "../../../../routes/routePaths";
 
 const StateType = () => {
   const { notifySuccess } = useNotify();
