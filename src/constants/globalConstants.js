@@ -20,3 +20,6 @@ export const ADDED_SUCCESSFULLY = (title) => `${title} Added successfully !`;
 
 export const UPDATED_SUCCESSFULLY = (title) =>
   `${title} Updated successfully !`;
+
+export const DELETED_SUCCESSFULLY = (title) =>
+  `${title} Deleted successfully !`;

@@ -26,6 +26,7 @@ import {
 import { API_PATHS } from "../../../../api/apiPaths";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
+  deleteApiService,
   getApiService,
   getByIdApiService,
   postApiService,
@@ -34,28 +35,40 @@ import {
 } from "../../../../api/api";
 import {
   ADDED_SUCCESSFULLY,
+  DELETED_SUCCESSFULLY,
   UPDATED_SUCCESSFULLY,
 } from "../../../../constants/globalConstants";
+import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
+import { ROUTE_PATHS } from "../../../../routes/routePaths";
 
 const StateType = () => {
-  const [params] = useSearchParams();
-  const navigate = useNavigate();
   const { notifySuccess } = useNotify();
   const { pathname } = useLocation();
   const currentScreen = useMemo(() => pathname.split("/")[3], [pathname]);
   const currentForm = formDetails?.[currentScreen];
-  const allSteps = STEPS.map((item) => item?.value);
   const [tableEditId, setTableEditId] = useState("");
-
-  const handleDeleteList = (id) => {
-    console.log("del", id);
-  };
+  const { tableReRenderActions } = useTableCustomHooks(currentForm?.routePath);
+  const { searchData } = tableReRenderActions();
 
   const handleEditList = (id) => {
     setValues({ ...dataList?.[id] });
     setFieldValue("stateId", dataList?.[id]?.district?.state?.id);
     setTableEditId(dataList?.[id]?.id);
   };
+
+  const handleDeleteList = (id) => {
+    onDelete(dataList?.[id]?.id);
+  };
+
+  const { mutate: onDelete } = useMutation({
+    mutationKey: [currentForm?.apiPath, currentScreen],
+    mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
+    onSuccess: ({ data }) => {
+      notifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
+      handleReset();
+      refetch();
+    },
+  });
 
   const initialValues = useMemo(
     () => initialValue(currentForm?.name),
@@ -133,9 +146,10 @@ const StateType = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [currentForm?.apiPath, currentScreen],
-    queryFn: () => getApiService(currentForm?.apiPath),
-    select: ({ data }) => data?.data,
+    queryKey: [currentForm?.apiPath, currentScreen, searchData],
+    queryFn: () =>
+      getApiService(`${currentForm?.apiPath}?searchText=${searchData || ""}`),
+    select: ({ data }) => data,
   });
 
   useEffect(handleReset, [pathname]);
@@ -230,11 +244,25 @@ const StateType = () => {
               handleEditList,
             }) || []
           }
-          rawData={dataList || []}
+          rawData={dataList?.data || []}
           isLoading={isLoading}
-          disablePagination
           manualSort
+          disablePagination
           disableLayout
+          count={dataList?.total}
+          style={{
+            tableHead: {
+              ".tr .th:first-child": {
+                boxShadow: "none !important",
+                marginLeft: "-4px",
+              },
+            },
+            tr: {
+              "div:nth-child(3)": {
+                width: "100% !important",
+              },
+            },
+          }}
         />
       </Box>
     </Grid>
