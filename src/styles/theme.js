@@ -8,13 +8,13 @@ export const theme = createTheme({
       sideMenuButton: "#D6D6D6",
       allButton: "#1473E6",
       stepperButton: "#37383C",
-      divider: "#7F7BB4",
       radioButton: "#3949AB",
       green: "#3AD865",
       white: "#ffffff",
       black: "#282828",
       grey: "#6E6E6E60",
       lightGrey: "#555555",
+      divider: "#6561A5",
     },
 
     borderColor: {

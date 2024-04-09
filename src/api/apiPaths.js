@@ -14,7 +14,7 @@ export const API_PATHS = {
   EDUCATION_QUALIFICATION: "/typemaster/generalmaster/education-qualification",
   COMMUNITY_CATEGORY: "/typemaster/generalmaster/communitycategory",
   DISABILITY_TYPE: "/typemaster/generalmaster/disabilitytype",
-  SERVICE_TYPE: "/typemaster/generalmaster/servicetype",
+  SERVICE_TYPES: "/typemaster/generalmaster/servicetype",
   STATES: "/typeMaster/generalmaster/states",
   DISTRICTS: "/typemaster/generalmaster/districts",
 };
