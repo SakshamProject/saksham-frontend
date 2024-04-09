@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import React from "react";
 
 import { FormLayout, StyledFormContainer } from "../../styles";
 import { BackNavigator } from "./BackNavigator";
@@ -30,8 +29,8 @@ export const FormWrapper = ({
         <StyledFormContainer width={formWidth}>
           <Grid
             container
-            rowSpacing={rowSpacing || 3}
-            columnSpacing={columnSpacing || 3}
+            rowSpacing={rowSpacing || 1}
+            columnSpacing={columnSpacing || 1}
           >
             {children}
           </Grid>

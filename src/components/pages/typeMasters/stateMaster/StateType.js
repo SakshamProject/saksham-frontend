@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
-
 import { Box, Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useEffect, useMemo, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import {
   deleteApiService,
   getApiService,
@@ -47,19 +47,19 @@ const StateType = () => {
   const { searchData } = tableReRenderActions();
 
   const handleEditList = (id) => {
-    setValues({ ...dataList?.[id] });
-    setFieldValue("stateId", dataList?.[id]?.district?.state?.id);
-    setTableEditId(dataList?.[id]?.id);
+    setValues({ ...dataList?.data?.[id] });
+    setFieldValue("stateId", dataList?.data?.[id]?.district?.state?.id);
+    setTableEditId(dataList?.data?.[id]?.id);
   };
 
   const handleDeleteList = (id) => {
-    onDelete(dataList?.[id]?.id);
+    onDelete(dataList?.data?.[id]?.id);
   };
 
   const { mutate: onDelete } = useMutation({
-    mutationKey: [currentForm?.apiPath, currentScreen],
+    mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       notifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
       handleReset();
       refetch();
@@ -86,12 +86,12 @@ const StateType = () => {
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: [currentForm?.apiPath, currentScreen],
+    mutationKey: ["create and update", currentForm?.apiPath, currentScreen],
     mutationFn: (data) =>
       tableEditId
         ? updateApiService(currentForm?.apiPath, tableEditId, data)
         : postApiService(currentForm?.apiPath, data),
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       notifySuccess(
         tableEditId
           ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
@@ -123,15 +123,14 @@ const StateType = () => {
   } = formik;
 
   const { data: stateList } = useQuery({
-    queryKey: [API_PATHS.STATES],
+    queryKey: ["get all states"],
     queryFn: () => getApiService(API_PATHS.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
-    queryKey: [API_PATHS.DISTRICTS, values?.stateId],
-    queryFn: () =>
-      values?.stateId && getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryKey: ["get all district by state", values?.stateId],
+    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
     select: ({ data }) => data?.data,
   });
 
@@ -140,18 +139,22 @@ const StateType = () => {
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: [currentForm?.apiPath, currentScreen, searchData],
+    queryKey: ["search", currentForm?.apiPath, currentScreen, searchData],
     queryFn: () =>
-      getApiService(`${currentForm?.apiPath}?searchText=${searchData || ""}`),
+      getApiService(
+        `${currentForm?.apiPath}${
+          !!searchData ? `?searchText=${searchData}` : ""
+        }`
+      ),
     select: ({ data }) => data,
   });
 
   useEffect(handleReset, [pathname]); //eslint-disable-line
 
   return (
-    <Grid direction={"column"}>
+    <Grid direction={"column"} width={"100%"}>
       <StyledFormContainer width="100%">
-        <Grid container rowSpacing={2} columnSpacing={3}>
+        <Grid container columnSpacing={3}>
           <Grid item xs={6}>
             <SingleAutoComplete
               label={fields?.stateId?.label}
@@ -185,42 +188,42 @@ const StateType = () => {
               readOnly={tableEditId}
             />
           </Grid>
-          <Grid item xs={12}>
-            <DividerLine />
-          </Grid>
-          <Grid item xs={12}>
-            <CustomTextField
-              label={currentForm?.label}
-              name={currentForm?.name}
-              fieldType={"alphabets"}
-              value={values?.[currentForm?.name]}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={errors?.[currentForm?.name]}
-              touched={touched?.[currentForm?.name]}
-            />
-          </Grid>
-          <FormActions
-            handleSubmit={handleSubmit}
-            handleOnReset={() => {
-              handleReset();
-              setTableEditId("");
-            }}
-            resetLabel={"Clear"}
-            isUpdate={tableEditId}
-            submitLabel="Add"
-            submitButtonStyle={{
+        </Grid>
+        <Grid item xs={12}>
+          <DividerLine />
+        </Grid>
+        <Grid item xs={12}>
+          <CustomTextField
+            label={currentForm?.label}
+            name={currentForm?.name}
+            fieldType={"alphabets"}
+            value={values?.[currentForm?.name]}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            errors={errors?.[currentForm?.name]}
+            touched={touched?.[currentForm?.name]}
+          />
+        </Grid>
+        <FormActions
+          handleSubmit={handleSubmit}
+          handleOnReset={() => {
+            handleReset();
+            setTableEditId("");
+          }}
+          resetLabel={"Clear"}
+          isUpdate={tableEditId}
+          submitLabel="Add"
+          submitButtonStyle={{
+            backgroundColor: tableEditId
+              ? theme?.palette?.backgroundColor?.blue
+              : theme?.palette?.success?.main,
+            "&:hover": {
               backgroundColor: tableEditId
                 ? theme?.palette?.backgroundColor?.blue
                 : theme?.palette?.success?.main,
-              "&:hover": {
-                backgroundColor: tableEditId
-                  ? theme?.palette?.backgroundColor?.blue
-                  : theme?.palette?.success?.main,
-              },
-            }}
-          />
-        </Grid>
+            },
+          }}
+        />
       </StyledFormContainer>
 
       <Box width={1} sx={{ paddingBottom: "40px" }}>

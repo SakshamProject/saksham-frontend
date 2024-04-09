@@ -9,7 +9,6 @@ import {
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { getValidValues } from "../../../../utils/common";
 import {
   CustomRadioButton,
   CustomReactTable,
@@ -17,7 +16,6 @@ import {
   FormActions,
   FormWrapper,
 } from "../../../shared";
-import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const Form = () => {
   const { data } = useQuery({
@@ -25,11 +23,6 @@ const Form = () => {
     queryFn: () => getApiService(API_PATHS.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
-
-  const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
-    console.log(payload);
-  };
 
   const formik = useFormik({
     initialValues: initialValues(),
@@ -40,8 +33,6 @@ const Form = () => {
     <FormWrapper
       navigateTo={ROUTE_PATHS.GENERAL_TYPES_LIST}
       title="Type Master"
-      rowSpacing={1}
-      columnSpacing={1}
     >
       <Grid item xs={12}>
         <CustomRadioButton
@@ -65,12 +56,35 @@ const Form = () => {
         />
       </Grid>
 
-      <ChipTextField />
+      {/* <Grid item xs={12}>
+        <ChipTextField
+          name={fields?.name?.name}
+          placeholder={fields?.name?.label}
+          chipVariant={"outlined"}
+          value={values?.name}
+          customOnChange={({ value }) => {
+            setFieldValue(fields?.name?.name, value);
+          }}
+        />
+      </Grid> */}
+
+      {/* <Grid item xs={6}>
+        <SingleAutoComplete
+          label={fields?.employeeId}
+          name={"employeeId"}
+          value={values?.employeeId}
+          onChange={setFieldValue}
+          inputValues={employeesList?.data || []}
+          getOptionLabel={(value) =>
+            `${value?.name} - ${value?.empReferenceId}`
+          }
+        />
+      </Grid> */}
 
       <FormActions
         handleSubmit={handleSubmit}
         handleOnReset={handleReset}
-        resetLabel={"Clear"}
+        resetLabel="Clear"
         submitLabel="Add"
       />
 

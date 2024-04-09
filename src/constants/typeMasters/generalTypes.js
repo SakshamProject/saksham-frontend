@@ -56,7 +56,6 @@ export const typeMasterTypes = [
 export const initialValues = (key) => ({
   typeMaster: "Community Category",
   name: "",
-  ...(key && { [key]: [] }),
 });
 
 export const fields = {
@@ -73,4 +72,6 @@ export const fields = {
     label: "Enter Type Name",
     name: "name",
   },
+
+  
 };

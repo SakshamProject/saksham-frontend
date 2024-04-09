@@ -1,8 +1,10 @@
 import { Chip, Stack, TextField } from "@mui/material";
 import { useState } from "react";
 
+import { WithCondition } from "../WithCondition";
+
 export const ChipTextField = ({
-  customOnChange,
+  customOnChange = () => {},
   value,
   variant,
   touched,
@@ -23,18 +25,16 @@ export const ChipTextField = ({
   const [chips, setChips] = useState([]);
 
   const handleDelete = (chipToDelete) => () => {
-    setChips((chips) => chips.filter((chip) => chip !== chipToDelete));
+    setChips((prev) => prev.filter((chip) => chip !== chipToDelete));
   };
 
   const handleInputKeyPress = (e) => {
     if (e.key === "Enter") {
       setChips((prev) => {
-        if (chipAccessor) {
+        if (!!chipAccessor)
           return [...prev, { [chipAccessor]: e.target.value.trim() }];
-        }
         return [...prev, e.target.value.trim()];
       });
-
       customOnChange({ event: e, value: "", chips });
     }
   };
@@ -55,10 +55,11 @@ export const ChipTextField = ({
       autoComplete={autoComplete || false}
       onBlur={onBlur}
       style={style}
+      InputLabelProps={{ shrink: true }}
       sx={{
         ".MuiInputBase-root": {
           display: "flex",
-          flexDirection: "column-reverse",
+          flexDirection: "column",
         },
       }}
       error={Boolean(customHelperText || (touched && errors))}
@@ -67,24 +68,26 @@ export const ChipTextField = ({
         readOnly: Boolean(isViewMode),
         disabled: disabled,
         startAdornment: (
-          <Stack
-            direction="row"
-            sx={{
-              flexWrap: "wrap",
-              gap: 1,
-              width: "100%",
-              paddingBottom: 1,
-            }}
-          >
-            {chips?.map((chip, index) => (
-              <Chip
-                key={index}
-                label={chip?.[chipAccessor] || chip}
-                variant={chipVariant || "outlined"}
-                onDelete={handleDelete(chip)}
-              />
-            ))}
-          </Stack>
+          <WithCondition isValid={!!chips?.length}>
+            <Stack
+              direction="row"
+              sx={{
+                flexWrap: "wrap",
+                gap: 1,
+                width: "100%",
+                paddingTop: 1,
+              }}
+            >
+              {chips?.map((chip, index) => (
+                <Chip
+                  key={index}
+                  label={chip?.[chipAccessor] || chip}
+                  variant={chipVariant || ""}
+                  onDelete={handleDelete(chip)}
+                />
+              ))}
+            </Stack>
+          </WithCondition>
         ),
       }}
     />

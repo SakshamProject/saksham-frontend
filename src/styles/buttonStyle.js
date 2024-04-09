@@ -58,14 +58,14 @@ export const NewButton = styled(IconButton)(({ theme }) => ({
 }));
 
 export const DeleteIcon = styled(Delete)(({ theme }) => ({
-  width: 20,
-  height: 20,
+  width: 24,
+  height: 24,
   cursor: "pointer",
   color: theme.palette?.textColor?.red,
 }));
 
 export const EditIcon = styled(Edit)(({ theme }) => ({
-  width: 20,
-  height: 20,
+  width: 24,
+  height: 24,
   color: theme.palette?.textColor?.orange,
 }));
