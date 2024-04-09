@@ -1,15 +1,16 @@
-import { FormHelperText } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Radio from "@mui/material/Radio";
-import RadioGroup from "@mui/material/RadioGroup";
+import {
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
 import { styled } from "@mui/system";
-import * as React from "react";
 
-const RadioBox = styled("div")(({ rowBreak }) => ({
+const RadioBox = styled("div")(({ rowbreak }) => ({
   display: "flex",
-  alignItems: rowBreak ? "left" : "center",
-  flexDirection: rowBreak && "column",
+  alignItems: rowbreak ? "left" : "center",
+  flexDirection: rowbreak && "column",
 }));
 
 export const CustomRadioButton = ({
@@ -32,7 +33,10 @@ export const CustomRadioButton = ({
 }) => {
   return (
     <FormControl style={style}>
-      <RadioBox rowBreak={rowBreak} style={{ justifyContent: "space-between" }}>
+      <RadioBox
+        rowbreak={rowBreak}
+        style={{ justifyContent: "space-between", gap: 4 }}
+      >
         <span
           style={{
             marginRight: "20px",
@@ -54,13 +58,13 @@ export const CustomRadioButton = ({
           defaultValue={defaultValue}
           row
         >
-          {inputValues?.map((option, i) => {
+          {inputValues?.map((option, key) => {
             return (
               <FormControlLabel
                 value={option[accessor]}
                 control={<Radio />}
                 label={option?.name || option?.label}
-                key={i}
+                key={key}
                 name={name}
                 disabled={disabled}
               />
@@ -69,7 +73,7 @@ export const CustomRadioButton = ({
         </RadioGroup>
       </RadioBox>
       <FormHelperText error>
-        {customHelperText || (touched && errors)}
+        {customHelperText || (touched && errors) || " "}
       </FormHelperText>
     </FormControl>
   );

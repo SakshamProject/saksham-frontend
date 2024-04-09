@@ -1,5 +1,4 @@
 import { TextField } from "@mui/material";
-import React from "react";
 
 export const CustomTextarea = ({
   type,
@@ -18,8 +17,7 @@ export const CustomTextarea = ({
   fullWidth,
   autoComplete,
   onkeydown,
-  error,
-  helperText,
+  customHelperText,
   placeholder,
   endAdornment,
   minRows,
@@ -45,12 +43,8 @@ export const CustomTextarea = ({
       value={value || ""}
       endAdornment={endAdornment}
       sx={style}
-      error={Boolean(error || (touched?.[name] && errors?.[name]))}
-      helperText={
-        error ||
-        helperText ||
-        (touched?.[name] && errors?.[name] ? errors?.[name] : "")
-      }
+      error={Boolean(customHelperText || (touched && errors))}
+      helperText={customHelperText || (touched && errors) ? errors : " "}
       InputProps={{
         onKeyDown: (e) => onkeydown && onkeydown(e),
         readOnly: isViewMode,

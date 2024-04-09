@@ -1,6 +1,5 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import React from "react";
 
 export const SingleAutoComplete = ({
   className,
@@ -22,6 +21,7 @@ export const SingleAutoComplete = ({
   getOptionLabel,
   disabled,
   customOnchange,
+  customHelperText,
 }) => {
   return (
     <Autocomplete
@@ -64,7 +64,7 @@ export const SingleAutoComplete = ({
             label={label}
             name={name}
             error={errors && touched}
-            helperText={(touched && errors) || " "}
+            helperText={customHelperText || (touched && errors) || " "}
             fullWidth
             required={required}
             readOnly={readOnly || isViewMode}

@@ -1,6 +1,4 @@
 import TextField from "@mui/material/TextField";
-import React from "react";
-import { theme } from "../../../styles";
 
 export const CustomTextField = ({
   type,
@@ -20,7 +18,6 @@ export const CustomTextField = ({
   onkeydown,
   placeholder,
   endAdornment,
-  options,
   touched,
   errors,
   customHelperText,
@@ -63,18 +60,8 @@ export const CustomTextField = ({
       onKeyDown={(e) => {
         if (fieldType === "number") return e.keyCode === 56;
       }}
-      error={Boolean(
-        customHelperText || options ? touched && errors : touched && errors
-      )}
-      helperText={
-        customHelperText || options
-          ? touched && errors
-            ? errors
-            : " "
-          : touched && errors
-          ? errors
-          : " "
-      }
+      error={Boolean(customHelperText || (touched && errors))}
+      helperText={customHelperText || (touched && errors) ? errors : " "}
       InputProps={{
         endAdornment: endAdornment,
         onKeyPress: (e) => handleKeyPress(e),

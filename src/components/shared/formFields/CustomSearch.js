@@ -14,7 +14,7 @@ export const CustomSearch = ({
       sx={{
         width: width || "100%",
         fontSize: "18px",
-        "&.css-4bbjdm-MuiInputBase-root-MuiOutlinedInput-root": {
+        ".MuiInputBase-root-MuiOutlinedInput-root": {
           height: height || "40px",
           paddingLeft: "5px",
         },

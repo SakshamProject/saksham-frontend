@@ -15,7 +15,7 @@ export const CustomTabs = styled(Tabs)(({ theme }) => ({
   paddingBottom: "auto",
   minWidth: "280px",
   maxWidth: "350px",
-  "& .MuiTabs-flexContainer": {
+  ".MuiTabs-flexContainer": {
     overflowY: "auto",
     maxHeight: "100%",
     "&::-webkit-scrollbar": {

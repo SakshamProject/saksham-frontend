@@ -1,7 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-import useNotify from "../../../../hooks/useNotify";
+import { Box, Grid } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../../api/api";
+import { API_PATHS } from "../../../../api/apiPaths";
+import {
+  ADDED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+} from "../../../../constants/globalConstants";
 import {
   STEPS,
   fields,
@@ -9,13 +22,11 @@ import {
   initialValues as initialValue,
   stateMasterColumns,
 } from "../../../../constants/typeMasters/stateMaster";
-import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
-import { useFormik } from "formik";
-import { getValidValues } from "../../../../utils/common";
+import useNotify from "../../../../hooks/useNotify";
 import { StyledFormContainer, theme } from "../../../../styles";
-import { Box, Grid } from "@mui/material";
+import { getValidValues } from "../../../../utils/common";
+import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
-  CommonList,
   CustomReactTable,
   CustomTextField,
   DividerLine,
@@ -23,19 +34,6 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../../shared";
-import { API_PATHS } from "../../../../api/apiPaths";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  getApiService,
-  getByIdApiService,
-  postApiService,
-  putApiService,
-  updateApiService,
-} from "../../../../api/api";
-import {
-  ADDED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
 
 const StateType = () => {
   const [params] = useSearchParams();

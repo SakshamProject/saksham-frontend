@@ -37,7 +37,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   boxSizing: "border-box",
   paddingRight: "12px",
   fontSize: "0.875rem",
-  "& .MuiInputBase-input": {
+  ".MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(3)})`,
   },
