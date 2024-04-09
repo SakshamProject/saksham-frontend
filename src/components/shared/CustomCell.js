@@ -10,6 +10,6 @@ const EllipsisDiv = styled("div")({
   wordWrap: "break-word",
 });
 
-export const CustomCell = ({ value, children }) => (
-  <EllipsisDiv>{children || value || "--"}</EllipsisDiv>
-);
+export const CustomCell = ({ value, children }) => {
+  return <EllipsisDiv>{children || value || "--"}</EllipsisDiv>;
+};
