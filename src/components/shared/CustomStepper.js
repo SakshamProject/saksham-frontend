@@ -84,7 +84,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     },
     ".MuiStepLabel-root": {
       paddingInline: "10px",
-      height: "30px",
+      height: "29.1px",
     },
   };
 });

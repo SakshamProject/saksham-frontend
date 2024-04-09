@@ -130,6 +130,7 @@ export const CustomReactTable = ({
               textOverflow: "ellipsis",
             },
           },
+
           loaderContainer: {
             display: "none !important",
           },
