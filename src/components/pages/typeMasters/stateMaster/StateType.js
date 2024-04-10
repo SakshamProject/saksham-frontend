@@ -190,7 +190,7 @@ const StateType = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <DividerLine />
+          <DividerLine gap={"10px 0 20px"} />
         </Grid>
         <Grid item xs={12}>
           <CustomTextField

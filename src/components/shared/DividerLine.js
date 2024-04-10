@@ -12,7 +12,7 @@ export const DividerLine = ({
         background: color,
         borderRadius: 20,
         height: 2,
-        margin: gap ? "30px 0" : "",
+        margin: gap ? gap || "30px 0" : "",
       }}
     />
   );

@@ -1,5 +1,20 @@
 import React, { useState } from "react";
 
+import { Box, Grid } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { getApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import {
+  fields,
+  initialValues,
+} from "../../../constants/serviceMaster/serviceMaster";
+import useNotify from "../../../hooks/useNotify";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { theme } from "../../../styles";
+import { getValidValues } from "../../../utils/common";
+import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
   CustomReactTable,
   CustomTextField,
@@ -8,22 +23,6 @@ import {
   FormWrapper,
   SingleAutoComplete,
 } from "../../shared";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { Box, Grid } from "@mui/material";
-import {
-  fields,
-  initialValues,
-} from "../../../constants/serviceMaster/serviceMaster";
-import useNotify from "../../../hooks/useNotify";
-import { useFormik } from "formik";
-import { getValidValues } from "../../../utils/common";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
-import { API_PATHS } from "../../../api/apiPaths";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteApiService, getApiService } from "../../../api/api";
-import { theme } from "../../../styles";
-import { DELETED_SUCCESSFULLY } from "../../../constants/globalConstants";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -33,7 +32,6 @@ const Form = () => {
   const { notifySuccess } = useNotify();
   const isViewMode = state?.viewDetails;
   const [tableEditId, setTableEditId] = useState("");
-
 
   const handleEditList = (id) => {
     // console.log(dataList?.[id]?.id);
@@ -107,7 +105,7 @@ const Form = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <DividerLine />
+        <DividerLine gap={"10px 0 20px"} />
       </Grid>
 
       <Grid item xs={12}>
