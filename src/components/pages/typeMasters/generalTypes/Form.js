@@ -29,7 +29,7 @@ import {
 } from "../../../../constants/typeMasters/generalTypes";
 import useNotify from "../../../../hooks/useNotify";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
+import { validationSchema } from "../../../../validations/typeMaster/generaltypes";
 import {
   CustomRadioButton,
   CustomReactTable,
