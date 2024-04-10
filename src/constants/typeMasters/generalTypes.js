@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 
 import { API_PATHS } from "../../api/apiPaths";
 import { EditPopover, WithCondition } from "../../components/shared";
@@ -40,7 +39,7 @@ export const generalTypeApiPath = (value) => {
   }
 };
 
-export const getGeneralPayload = (value) => {
+export const getGeneralTypePayload = (value, isviewMode) => {
   const { typeMaster, ...remaining } = value;
 
   switch (typeMaster) {
@@ -48,6 +47,16 @@ export const getGeneralPayload = (value) => {
       return { serviceType: remaining?.name };
     case DISTRICT:
       return { name: remaining?.name, stateId: remaining?.stateId };
+    case DISABILITY_TYPE:
+      return isviewMode
+        ? {
+            disabilityType: remaining?.name,
+            disabilitySubType: remaining?.chips,
+          }
+        : {
+            disabilityType: remaining?.name,
+            disabilitySubType: remaining?.chips,
+          };
 
     default:
       return { name: remaining?.name };
@@ -60,37 +69,28 @@ export const generalTypeColumns = [
     accessor: "name",
     width: 300,
     sticky: "left",
-    Cell: ({ value }) => {
-      const navigate = useNavigate();
-
-      return (
-        <OptionsContainer>
-          {value}
-          <EditPopover
-            inputValues={[
-              {
-                label: "Edit",
-                customNavigation: () => {
-                  navigate(
-                    { pathname: ROUTE_PATHS.GENERAL_TYPES_FORM },
-                    { state: { viewDetails: false, field: value } }
-                  );
-                },
-              },
-              {
-                label: "View Details",
-                customNavigation: () => {
-                  navigate(
-                    { pathname: ROUTE_PATHS.GENERAL_TYPES_FORM },
-                    { state: { viewDetails: true, field: value } }
-                  );
-                },
-              },
-            ]}
-          />
-        </OptionsContainer>
-      );
-    },
+    Cell: ({ value, row }) => (
+      <OptionsContainer>
+        {value}
+        <EditPopover
+          inputValues={[
+            {
+              label: "Edit",
+              id: row?.original?.id,
+              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              stateProps: { field: value },
+            },
+            {
+              label: "View Details",
+              id: row?.original?.id,
+              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              stateProps: { field: value },
+              view: true,
+            },
+          ]}
+        />
+      </OptionsContainer>
+    ),
   },
 ];
 
@@ -114,16 +114,16 @@ export const generalColumns = ({
           <WithCondition isValid={!isViewMode}>
             <Box>
               <StyledIconButton
-                onClick={() => handleEdit(row?.index)}
+                onClick={() => handleEdit(row?.original?.id)}
                 disabled={tableEditId !== "" ? true : false}
               >
-                <EditIcon />
+                <EditIcon disabled={tableEditId !== "" ? true : false} />
               </StyledIconButton>
               <StyledIconButton
-                onClick={() => handleDelete(row?.index)}
+                onClick={() => handleDelete(row?.original?.id)}
                 disabled={tableEditId !== "" ? true : false}
               >
-                <DeleteIcon />
+                <DeleteIcon disabled={tableEditId !== "" ? true : false} />
               </StyledIconButton>
             </Box>
           </WithCondition>
@@ -133,12 +133,13 @@ export const generalColumns = ({
   },
 ];
 
-export const initialValues = () => ({
+export const initialValues = {
   typeMaster: "Community Category",
   name: "",
   chip: "",
   stateId: "",
-});
+  chips: [],
+};
 
 export const fields = {
   typeMaster: {

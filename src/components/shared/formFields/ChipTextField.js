@@ -1,5 +1,5 @@
 import { Chip, Stack, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { WithCondition } from "../WithCondition";
 
@@ -17,12 +17,12 @@ export const ChipTextField = ({
   style,
   isViewMode,
   fullWidth,
-  autoComplete,
   placeholder,
   chipVariant,
-  chipAccessor,
+  chipValue = [],
+  handleKeyPress = () => {},
 }) => {
-  const [chips, setChips] = useState([]);
+  const [chips, setChips] = useState(chipValue);
 
   const handleDelete = (chipToDelete) => () => {
     setChips((prev) => prev.filter((chip) => chip !== chipToDelete));
@@ -31,13 +31,18 @@ export const ChipTextField = ({
   const handleInputKeyPress = (e) => {
     if (e.key === "Enter") {
       setChips((prev) => {
-        if (!!chipAccessor)
-          return [...prev, { [chipAccessor]: e.target.value.trim() }];
-        return [...prev, e.target.value.trim()];
+        const currentChips = [...prev, e.target.value.trim()];
+        customOnChange({ event: e, value: "", chips: currentChips });
+        handleKeyPress({ event: e, value: "", chips: currentChips });
+
+        return currentChips;
       });
-      customOnChange({ event: e, value: "", chips });
     }
   };
+
+  useEffect(() => {
+    if (chipValue?.length === 0) setChips([]);
+  }, [chipValue]);
 
   return (
     <TextField
@@ -52,7 +57,6 @@ export const ChipTextField = ({
       type={"text"}
       name={name}
       fullWidth={fullWidth || true}
-      autoComplete={autoComplete || false}
       onBlur={onBlur}
       style={style}
       InputLabelProps={{ shrink: true }}
@@ -81,7 +85,7 @@ export const ChipTextField = ({
               {chips?.map((chip, index) => (
                 <Chip
                   key={index}
-                  label={chip?.[chipAccessor] || chip}
+                  label={chip || ""}
                   variant={chipVariant || ""}
                   onDelete={handleDelete(chip)}
                 />

@@ -27,24 +27,22 @@ const Root = () => {
 
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
-      onError: (error) => {
-        if (
-          typeof error?.response?.data?.error === "string" ||
-          typeof error?.message === "string"
-        ) {
-          notifyError(error?.response?.data?.error || error?.message);
+      onError: ({ response }) => {
+        if (response?.data?.name === "ZodError") {
+          notifyError(response?.data?.issues[0]?.message);
+        } else if (typeof response?.data?.error?.message === "string") {
+          notifyError(response?.data?.error?.message);
         } else {
           notifyError(SERVER_ERROR);
         }
       },
     }),
     mutationCache: new MutationCache({
-      onError: (error) => {
-        if (
-          typeof error?.response?.data?.error === "string" ||
-          typeof error?.message === "string"
-        ) {
-          notifyError(error?.response?.data?.error || error?.message);
+      onError: ({ response }) => {
+        if (response?.data?.name === "ZodError") {
+          notifyError(response?.data?.issues[0]?.message);
+        } else if (typeof response?.data?.error?.message === "string") {
+          notifyError(response?.data?.error?.message);
         } else {
           notifyError(SERVER_ERROR);
         }

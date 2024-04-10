@@ -1,8 +1,8 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import {
   deleteApiService,
@@ -12,7 +12,11 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { ADDED_SUCCESSFULLY } from "../../../../constants/globalConstants";
+import {
+  ADDED_SUCCESSFULLY,
+  DELETED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+} from "../../../../constants/globalConstants";
 import {
   DISABILITY_TYPE,
   DISTRICT,
@@ -20,13 +24,12 @@ import {
   fields,
   generalColumns,
   generalTypeApiPath,
-  getGeneralPayload,
+  getGeneralTypePayload,
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
 import useNotify from "../../../../hooks/useNotify";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { getValidValues } from "../../../../utils/common";
-import { validationSchema } from "../../../../validations/typeMaster/generaltypes";
+import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
   CustomRadioButton,
   CustomReactTable,
@@ -40,29 +43,34 @@ import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const Form = () => {
   const { notifySuccess } = useNotify();
-  const { state, pathname, search } = useLocation();
+  const { state } = useLocation();
   const isViewMode = state?.viewDetails;
-  const navigate = useNavigate();
-  const [tableId, setTableId] = useState("");
+  const generalType = state?.field;
+  const [tableEditId, setTableEditId] = useState("");
 
   const { mutate: handleOnSubmit } = useMutation({
     mutationKey: ["create and update"],
     mutationFn: (value) => {
-      const payload = getGeneralPayload(getValidValues(value));
+      const payload = getGeneralTypePayload(value, isViewMode);
       const apiPath = generalTypeApiPath(value);
-      return !!tableId
-        ? updateApiService(apiPath, payload)
+      return !!tableEditId
+        ? updateApiService(apiPath, tableEditId, payload)
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
-      notifySuccess(ADDED_SUCCESSFULLY(values?.typeMaster));
+      notifySuccess(
+        !!tableEditId
+          ? UPDATED_SUCCESSFULLY(values?.typeMaster)
+          : ADDED_SUCCESSFULLY(values?.typeMaster)
+      );
       handleReset();
       refetch();
+      setTableEditId("");
     },
   });
 
   const formik = useFormik({
-    initialValues: initialValues(),
+    initialValues,
     validationSchema: validationSchema(),
     onSubmit: handleOnSubmit,
   });
@@ -85,11 +93,7 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const {
-    data: generalTypeList,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: generalTypeList, refetch } = useQuery({
     queryKey: ["get all general types", values?.typeMaster],
     queryFn: () => {
       const apiPath = generalTypeApiPath(values);
@@ -108,37 +112,50 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const { mutate: handleDeleteList } = useMutation({
-    mutationKey: ["deleteQualification"],
-    mutationFn: (id) => deleteApiService(API_PATHS.QUALIFICATION, id),
-    onSuccess: ({ data }) => {
-      notifySuccess(data?.message);
-      // getQualifications();
+  const { mutate: handleDelete } = useMutation({
+    mutationKey: ["delete general type"],
+    mutationFn: (id) => {
+      const apiPath = generalTypeApiPath(values);
+      return deleteApiService(apiPath, id);
+    },
+    onSuccess: () => {
+      notifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
+      handleReset();
+      refetch();
     },
   });
 
-  const { mutate: handleEditList } = useMutation({
-    mutationKey: ["editQualification"],
-    mutationFn: (id) => getByIdApiService(API_PATHS.QUALIFICATION, id),
+  const { mutate: handleEdit } = useMutation({
+    mutationKey: ["edit general type"],
+    mutationFn: (id) => {
+      const apiPath = generalTypeApiPath(values);
+      return getByIdApiService(apiPath, id);
+    },
     onSuccess: ({ data }, id) => {
-      // setValues({
-      //   ...data,
-      //   certificate: data?.certificateUrl || "",
-      //   qualification: data?.qualification || "",
-      //   collegeOrSchool: data?.collegeOrSchool || "",
-      //   yearOfPassing: data?.yearOfPassing?.toString() || "",
-      //   percentageSecured: data?.percentageSecured || "",
-      //   qualificationTypeId: data?.qualificationType?.code,
-      // });
-      // setQualificationId(id);
+      setValues({
+        typeMaster: values?.typeMaster,
+        ...getGeneralTypePayload(data?.data),
+      });
+      setTableEditId(id);
     },
   });
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     const typeMaster = values?.typeMaster;
+    const stateId = values?.stateId;
     resetForm();
+    setTableEditId("");
     setFieldValue("typeMaster", typeMaster);
-  };
+    typeMaster === DISTRICT && setFieldValue("stateId", stateId);
+  }, [resetForm, setFieldValue, values?.stateId, values?.typeMaster]);
+
+  useEffect(() => {
+    handleReset();
+  }, [handleReset, values.typeMaster]);
+
+  useEffect(() => {
+    if (!!generalType) setFieldValue("typeMaster", generalType);
+  }, [generalType, setFieldValue]);
 
   return (
     <FormWrapper
@@ -157,6 +174,7 @@ const Form = () => {
           touched={touched?.typeMaster}
           onBlur={handleBlur}
           onChange={handleChange}
+          isViewMode={isViewMode || !!tableEditId}
           rowBreak
         />
       </Grid>
@@ -171,6 +189,7 @@ const Form = () => {
             touched={touched?.stateId}
             onChange={setFieldValue}
             inputValues={allStates || []}
+            isViewMode={isViewMode}
           />
         </Grid>
       </WithCondition>
@@ -184,6 +203,7 @@ const Form = () => {
           touched={touched?.name}
           onChange={handleChange}
           onBlur={handleBlur}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -198,12 +218,13 @@ const Form = () => {
             placeholder={fields?.chipSetField?.placeHolder}
             chipVariant={fields?.chipSetField?.chipVariant}
             value={values?.chip}
+            chipValue={values?.chips}
             errors={errors?.chip}
             touched={touched?.chip}
             onBlur={handleBlur}
-            customOnChange={({ value }) => {
-              setFieldValue(fields?.name?.name, value);
-            }}
+            customOnChange={({ value }) => setFieldValue("chip", value)}
+            handleKeyPress={({ chips }) => setFieldValue("chips", chips)}
+            isViewMode={isViewMode}
           />
         </Grid>
       </WithCondition>
@@ -212,18 +233,25 @@ const Form = () => {
         handleSubmit={handleSubmit}
         handleOnReset={handleReset}
         resetLabel="Clear"
-        submitLabel="Add"
+        submitLabel={!!tableEditId ? "Update" : "Add"}
+        isViewMode={isViewMode}
       />
 
       <Grid item xs={12}>
         <CustomReactTable
-          columnData={generalColumns({}) || []}
+          columnData={
+            generalColumns({
+              handleDelete,
+              tableEditId,
+              handleEdit,
+              isViewMode,
+            }) || []
+          }
           rawData={
             generalTypeList?.data?.educationQualificationType ||
             generalTypeList?.data ||
             []
           }
-          isLoading={isLoading}
           disablePagination
           disableSort
           disableColumnHiding
