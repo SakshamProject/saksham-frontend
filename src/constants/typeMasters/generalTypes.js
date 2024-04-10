@@ -1,5 +1,3 @@
-import { Box } from "@mui/material";
-
 import { API_PATHS } from "../../api/apiPaths";
 import { EditPopover, WithCondition } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
@@ -11,6 +9,8 @@ import {
   StyledIconButton,
   theme,
 } from "../../styles";
+
+import { Box } from "@mui/material";
 
 // General Types
 export const EDUCATIONAL_QUALIFICATION = "Educational Qualification";
@@ -39,27 +39,53 @@ export const generalTypeApiPath = (value) => {
   }
 };
 
-export const getGeneralTypePayload = (value, isviewMode) => {
+export const getGeneralTypePayload = (value, isPayload = true) => {
   const { typeMaster, ...remaining } = value;
 
   switch (typeMaster) {
     case SERVICE_TYPE:
-      return { serviceType: remaining?.name };
+      return isPayload
+        ? { serviceType: remaining?.name }
+        : { name: remaining?.name, typeMaster };
     case DISTRICT:
-      return { name: remaining?.name, stateId: remaining?.stateId };
+      return {
+        name: remaining?.name,
+        stateId: remaining?.stateId,
+        ...(!isPayload && { typeMaster }),
+      };
     case DISABILITY_TYPE:
-      return isviewMode
+      return isPayload
         ? {
             disabilityType: remaining?.name,
             disabilitySubType: remaining?.chips,
           }
         : {
-            disabilityType: remaining?.name,
-            disabilitySubType: remaining?.chips,
+            name: remaining?.name,
+            chips: remaining?.disability,
+            typeMaster,
+            chip: "",
           };
-
+    case EDUCATIONAL_QUALIFICATION:
+      return isPayload
+        ? {
+            name: remaining?.name,
+            educationQualification: remaining?.chips,
+          }
+        : {
+            name: remaining?.name,
+            chips: remaining?.educationQualification,
+            typeMaster,
+            chip: "",
+          };
     default:
-      return { name: remaining?.name };
+      return isPayload
+        ? {
+            name: remaining?.name,
+          }
+        : {
+            name: remaining?.name,
+            typeMaster,
+          };
   }
 };
 
@@ -152,12 +178,13 @@ export const fields = {
   },
 
   name: {
-    label: "Enter Type Name",
+    label: "Type Name",
     name: "name",
   },
 
   chipSetField: {
-    placeHolder: "Enter Sub Type Name",
+    label: "Sub Type Name",
+    placeHolder: "Add multiple sub type use enter key",
     name: "chip",
     chipVariant: "outlined",
   },

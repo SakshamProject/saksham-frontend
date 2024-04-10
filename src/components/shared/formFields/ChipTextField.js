@@ -1,8 +1,6 @@
 import { Chip, Stack, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 
-import { WithCondition } from "../WithCondition";
-
 export const ChipTextField = ({
   customOnChange = () => {},
   value,
@@ -20,21 +18,31 @@ export const ChipTextField = ({
   placeholder,
   chipVariant,
   chipValue = [],
+  chipAccessor = "",
   handleKeyPress = () => {},
 }) => {
   const [chips, setChips] = useState(chipValue);
 
   const handleDelete = (chipToDelete) => () => {
-    setChips((prev) => prev.filter((chip) => chip !== chipToDelete));
+    setChips((prev) => {
+      const currentChips = prev.filter(
+        (chip) =>
+          chip?.[chipAccessor] !== chipToDelete?.[chipAccessor] ||
+          chip !== chipToDelete
+      );
+      handleKeyPress(currentChips);
+      return currentChips;
+    });
   };
 
   const handleInputKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && value.trim() !== "" && !errors) {
       setChips((prev) => {
-        const currentChips = [...prev, e.target.value.trim()];
-        customOnChange({ event: e, value: "", chips: currentChips });
-        handleKeyPress({ event: e, value: "", chips: currentChips });
-
+        const currentChips = !!chipAccessor
+          ? [...prev, { [chipAccessor]: e.target.value.trim() }]
+          : [...prev, e.target.value.trim()];
+        customOnChange({ event: e, value: "" });
+        handleKeyPress(currentChips);
         return currentChips;
       });
     }
@@ -42,14 +50,13 @@ export const ChipTextField = ({
 
   useEffect(() => {
     if (chipValue?.length === 0) setChips([]);
+    else setChips([...chipValue]);
   }, [chipValue]);
 
   return (
     <TextField
       value={value || ""}
-      onChange={(e) =>
-        customOnChange({ event: e, value: e.target.value, chips })
-      }
+      onChange={(e) => customOnChange({ event: e, value: e.target.value })}
       onKeyPress={handleInputKeyPress}
       label={label}
       placeholder={placeholder}
@@ -59,40 +66,40 @@ export const ChipTextField = ({
       fullWidth={fullWidth || true}
       onBlur={onBlur}
       style={style}
-      InputLabelProps={{ shrink: true }}
       sx={{
         ".MuiInputBase-root": {
           display: "flex",
           flexDirection: "column",
+          input: {
+            paddingLeft: "16px",
+          },
         },
       }}
       error={Boolean(customHelperText || (touched && errors))}
-      helperText={customHelperText || (touched && errors) ? errors : " "}
+      helperText={customHelperText || (touched && errors) || " "}
       InputProps={{
         readOnly: Boolean(isViewMode),
         disabled: disabled,
-        startAdornment: (
-          <WithCondition isValid={!!chips?.length}>
-            <Stack
-              direction="row"
-              sx={{
-                flexWrap: "wrap",
-                gap: 1,
-                width: "100%",
-                paddingTop: 1,
-              }}
-            >
-              {chips?.map((chip, index) => (
-                <Chip
-                  key={index}
-                  label={chip || ""}
-                  variant={chipVariant || ""}
-                  onDelete={handleDelete(chip)}
-                />
-              ))}
-            </Stack>
-          </WithCondition>
-        ),
+        startAdornment: !!chips?.length ? (
+          <Stack
+            direction="row"
+            sx={{
+              flexWrap: "wrap",
+              gap: 1,
+              width: "100%",
+              paddingTop: 1,
+            }}
+          >
+            {chips?.map((chip, index) => (
+              <Chip
+                key={index}
+                label={chip?.[chipAccessor] || chip || ""}
+                variant={chipVariant || ""}
+                onDelete={handleDelete(chip)}
+              />
+            ))}
+          </Stack>
+        ) : null,
       }}
     />
   );
