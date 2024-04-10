@@ -28,8 +28,11 @@ const Root = () => {
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
       onError: (error) => {
-        if (typeof error?.response?.data?.error === "string") {
-          notifyError(error?.response?.data?.error);
+        if (
+          typeof error?.response?.data?.error === "string" ||
+          typeof error?.message === "string"
+        ) {
+          notifyError(error?.response?.data?.error || error?.message);
         } else {
           notifyError(SERVER_ERROR);
         }
@@ -37,8 +40,11 @@ const Root = () => {
     }),
     mutationCache: new MutationCache({
       onError: (error) => {
-        if (typeof error?.response?.data?.error === "string") {
-          notifyError(error?.response?.data?.error);
+        if (
+          typeof error?.response?.data?.error === "string" ||
+          typeof error?.message === "string"
+        ) {
+          notifyError(error?.response?.data?.error || error?.message);
         } else {
           notifyError(SERVER_ERROR);
         }
