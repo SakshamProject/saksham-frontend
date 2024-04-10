@@ -59,18 +59,21 @@ export const NewButton = styled(IconButton)(({ theme }) => ({
 
 export const StyledIconButton = styled(IconButton)(() => ({
   cursor: "pointer !important",
-  background: "red",
 }));
 
-export const DeleteIcon = styled(Delete)(({ theme }) => ({
+export const DeleteIcon = styled(Delete)(({ theme, disabled }) => ({
   width: 24,
   height: 24,
   cursor: "pointer",
-  color: theme.palette?.textColor?.red,
+  color: disabled
+    ? theme?.palette?.borderColor?.lightGrey
+    : theme.palette?.textColor?.red,
 }));
 
-export const EditIcon = styled(Edit)(({ theme }) => ({
+export const EditIcon = styled(Edit)(({ theme, disabled }) => ({
   width: 24,
   height: 24,
-  color: theme.palette?.textColor?.orange,
+  color: disabled
+    ? theme?.palette?.borderColor?.lightGrey
+    : theme.palette?.textColor?.orange,
 }));

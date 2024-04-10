@@ -66,6 +66,12 @@ export const CustomTextField = ({
         endAdornment: endAdornment,
         onKeyPress: (e) => handleKeyPress(e),
         onKeyDown: (e) => onkeydown && onkeydown(e),
+        onInput: (e) => {
+          const currentValue = e.target.value;
+          e.target.value = !!currentValue
+            ? e.target.value.replace(/\s+/g, " ")
+            : "";
+        },
         readOnly: Boolean(isViewMode),
         disabled: disabled,
       }}
