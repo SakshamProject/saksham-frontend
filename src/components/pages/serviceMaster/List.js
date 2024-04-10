@@ -4,15 +4,30 @@ import { CustomReactTable, ListTopbar } from "../../shared";
 import { API_PATHS } from "../../../api/apiPaths";
 import { getApiService } from "../../../api/api";
 import { serviceMasterColumn } from "../../../constants/serviceMaster/serviceMaster";
+import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
 
 const List = () => {
+  const {
+    onPageNumberChange,
+    onChangePageSize,
+    handleTableDatas,
+    tableReRenderActions,
+  } = useTableCustomHooks(ROUTE_PATHS.SERVICE_MASTER_LIST);
+
+  const { pageSize, currentPage, searchData } = tableReRenderActions();
+
   const {
     data: dataList,
     isLoading,
     refetch,
   } = useQuery({
-    queryKey: ["getAllServices"],
-    queryFn: () => getApiService(`${API_PATHS?.SERVICES}?orderBy=serviceName`),
+    queryKey: ["getAllServices", currentPage, searchData],
+    queryFn: () =>
+      getApiService(
+        `${API_PATHS?.SERVICES}?orderBy=serviceName${
+          !!searchData ? `&searchText=${searchData}` : ""
+        }`
+      ),
     select: ({ data }) => data,
   });
 
@@ -20,7 +35,6 @@ const List = () => {
     <>
       <ListTopbar
         label={"Services" || ""}
-        newFormPath={ROUTE_PATHS?.SERVICE_MASTER_FORM}
         listPath={ROUTE_PATHS?.SERVICE_MASTER_LIST}
         // filterFields={filterFields}
         // isFilterParams={!!listParams?.filters?.length}
@@ -30,6 +44,10 @@ const List = () => {
         columnData={serviceMasterColumn || []}
         rawData={dataList?.data || []}
         isLoading={isLoading}
+        onPageNumberChange={onPageNumberChange}
+        onChangePageSize={onChangePageSize}
+        pageSize={pageSize}
+        currentPage={currentPage}
         count={dataList?.total}
       />
     </>
