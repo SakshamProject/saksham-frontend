@@ -72,17 +72,8 @@ export const CustomReactTable = ({
         style={{
           table: {
             maxHeight: maxHeight || "calc(100vh - 280px)",
-            "&::-webkit-scrollbar": {
-              width: "5px",
-              height: "5px",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: theme.palette?.backgroundColor?.grey,
-              borderRadius: 5,
-            },
-            "&::-webkit-scrollbar-thumb:hover": {
-              backgroundColor: theme.palette?.backgroundColor?.lightGrey,
-            },
+            scrollbarWidth: "thin",
+            scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
           },
           mainContainer: {
             maxWidth: "100%",
@@ -130,7 +121,6 @@ export const CustomReactTable = ({
               textOverflow: "ellipsis",
             },
           },
-
           loaderContainer: {
             display: "none !important",
           },

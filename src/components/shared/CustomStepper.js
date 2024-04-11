@@ -30,9 +30,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     overflowX: "visible",
     paddingBottom: 16,
     overflowY: "auto",
-    "&::-webkit-scrollbar": {
-      display: "none",
-    },
+    scrollbarWidth: "none",
     ".MuiStepConnector-root": {
       marginLeft: isHorizontal ? "0" : "14px",
       marginBlock: "-16px",

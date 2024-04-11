@@ -14,6 +14,7 @@ const CustomAutoComplete = ({
   getOptionLabel,
   accessor,
   labelAccessor,
+  autoComplete,
   customHelperText,
   sx,
   limitTags = 6,
@@ -24,6 +25,7 @@ const CustomAutoComplete = ({
       multiple
       className={className}
       onChange={onChange}
+      autoComplete={autoComplete || "off"}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}

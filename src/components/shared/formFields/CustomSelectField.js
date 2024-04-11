@@ -26,6 +26,7 @@ export const CustomSelectField = ({
   customHelperText,
   accessor,
   getOptionLabel,
+  autoComplete,
 }) => {
   return (
     <Box style={style}>
@@ -41,6 +42,7 @@ export const CustomSelectField = ({
           label={label}
           onChange={onChange}
           variant={variant || "outlined"}
+          autoComplete={autoComplete || "off"}
           fullWidth
           onOpen={onOpen}
           name={name}

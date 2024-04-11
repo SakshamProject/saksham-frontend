@@ -43,7 +43,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const CustomSearchField = ({ placeholder }) => {
+export const CustomSearchField = ({ placeholder, autoComplete }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -98,7 +98,7 @@ export const CustomSearchField = ({ placeholder }) => {
   }, [searchData]);
 
   return (
-    <Search>
+    <Search className="searchField">
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
@@ -110,7 +110,7 @@ export const CustomSearchField = ({ placeholder }) => {
         value={value}
         onChange={onChange}
         onKeyPress={onSearchChange}
-        autoComplete="off"
+        autoComplete={autoComplete || "off"}
         endAdornment={
           <InputAdornment position="end">
             {!!value && (

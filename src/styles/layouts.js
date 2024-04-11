@@ -67,20 +67,14 @@ export const AppMainLayout = styled("div")({
   width: "100%",
   overflow: "auto",
   height: "calc(100vh - 70px)",
-  "&::-webkit-scrollBar": {
-    width: 0,
-    height: 0,
-  },
+  scrollbarWidth: "none",
 });
 
 export const FormContainer = styled(Box)({
   width: "100%",
   maxHeight: "100%",
   overflow: "auto",
-  "&::-webkit-scrollbar": {
-    width: 0,
-    height: 0,
-  },
+  scrollbarWidth: "none",
 });
 
 export const FormLayout = styled(Box)(({ theme }) => ({
@@ -89,17 +83,8 @@ export const FormLayout = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   overflow: "auto",
-  "&::-webkit-scrollbar": {
-    width: "5px",
-    height: "5px",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette?.backgroundColor?.grey,
-    borderRadius: 5,
-  },
-  "&::-webkit-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
-  },
+  scrollbarWidth: "thin",
+  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
 }));
 
 export const StyledFormContainer = styled(Paper)(({ theme, width }) => {

@@ -22,12 +22,14 @@ export const SingleAutoComplete = ({
   disabled,
   customOnchange,
   customHelperText,
+  autoComplete,
 }) => {
   return (
     <Autocomplete
       className={className}
       label={label}
       name={name}
+      autoComplete={autoComplete || "off"}
       readOnly={readOnly || isViewMode}
       fullWidth={fullWidth || true}
       options={inputValues || []}

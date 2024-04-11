@@ -4,7 +4,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import dayjs from "dayjs";
 import "dayjs/locale/en-gb";
 
-export function CustomDatePicker({
+export const CustomDatePicker = ({
   label,
   onChange,
   value,
@@ -15,14 +15,14 @@ export function CustomDatePicker({
   className,
   style,
   disabled,
-  onBlur,
   touched,
   errors,
   setTouched,
+  autoComplete,
   views,
-  customHelpertext,
+  customHelperText,
   customOnChange,
-}) {
+}) => {
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
@@ -34,7 +34,7 @@ export function CustomDatePicker({
           maxDate={maxDate ? dayjs(maxDate) : ""}
           views={views || ["year", "month", "day"]}
           style={style}
-          autoComplete="off"
+          autoComplete={autoComplete || "off"}
           readOnly={Boolean(isViewMode)}
           disabled={disabled}
           closeOnSelect
@@ -53,12 +53,12 @@ export function CustomDatePicker({
                 !touched?.lastDonatedDate &&
                   setTouched(name, e.type === "blur");
               },
-              error: !!touched && !!errors,
-              helperText: !!touched ? errors : " ",
+              error: customHelperText || (!!touched && !!errors),
+              helperText: customHelperText || (!!touched && errors) || " ",
             },
           }}
         />
       </LocalizationProvider>
     </>
   );
-}
+};

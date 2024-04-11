@@ -18,11 +18,12 @@ export const CustomTabs = styled(Tabs)(({ theme }) => ({
   ".MuiTabs-flexContainer": {
     overflowY: "auto",
     maxHeight: "100%",
-    "&::-webkit-scrollbar": {
-      width: 0,
-      height: 0,
-    },
+    scrollbarWidth: "thin",
+    scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
   },
+  // ".MuiTabs-indicator": {
+  //   backgroundColor: theme.palette?.backgroundColor?.stepperButton,
+  // },
 }));
 
 export const CustomTab = styled(Tab)(({ theme }) => ({

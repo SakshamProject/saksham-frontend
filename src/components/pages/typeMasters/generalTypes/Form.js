@@ -28,31 +28,36 @@ import {
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
 import useNotify from "../../../../hooks/useNotify";
+import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { validationSchema } from "../../../../validations/typeMaster/generaltypes";
+import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
   CustomRadioButton,
   CustomReactTable,
   CustomTextField,
   FormActions,
   FormWrapper,
+  ListTopbar,
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const Form = () => {
-  const { notifySuccess } = useNotify();
+  const { notifySuccess, notifyError } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const generalType = state?.field;
   const [tableEditId, setTableEditId] = useState("");
+  const { tableReRenderActions } = useTableCustomHooks(
+    ROUTE_PATHS.GENERAL_TYPES_FORM
+  );
+  const { searchData } = tableReRenderActions();
 
-  const { mutate: handleOnSubmit } = useMutation({
+  // create and update api call
+  const { mutate } = useMutation({
     mutationKey: ["create and update"],
-    mutationFn: (value) => {
-      const payload = getGeneralTypePayload(value, isViewMode);
-      const apiPath = generalTypeApiPath(value);
+    mutationFn: ({ apiPath, payload }) => {
       return !!tableEditId
         ? updateApiService(apiPath, tableEditId, payload)
         : postApiService(apiPath, payload);
@@ -69,9 +74,22 @@ const Form = () => {
     },
   });
 
+  const handleOnSubmit = (value) => {
+    if (
+      value?.chips?.length < 1 &&
+      [EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(values?.typeMaster)
+    ) {
+      notifyError("Sub type name minimum one is required");
+      return;
+    }
+    const payload = getGeneralTypePayload(value);
+    const apiPath = generalTypeApiPath(value);
+    mutate({ payload, apiPath });
+  };
+
   const formik = useFormik({
     initialValues,
-    validationSchema: validationSchema(),
+    validationSchema,
     onSubmit: handleOnSubmit,
   });
 
@@ -87,23 +105,26 @@ const Form = () => {
     resetForm,
   } = formik;
 
+  // general type seed api call
   const { data: allGeneralTypes } = useQuery({
     queryKey: ["get all general types"],
     queryFn: () => getApiService(API_PATHS.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
 
+  // table data api call
   const { data: generalTypeList, refetch } = useQuery({
-    queryKey: ["get all general types", values?.typeMaster],
+    queryKey: ["get general types list", values?.typeMaster, searchData],
     queryFn: () => {
       const apiPath = generalTypeApiPath(values);
-      return (
-        !!apiPath && apiPath !== API_PATHS.DISTRICTS && getApiService(apiPath)
+      return getApiService(
+        `${apiPath}${!!searchData ? `?searchText=${searchData}` : ""}`
       );
     },
     select: ({ data }) => data,
   });
 
+  // all states api call
   const { data: allStates } = useQuery({
     queryKey: ["get all states", values?.typeMaster],
     queryFn: () =>
@@ -112,6 +133,7 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
+  // delete api call
   const { mutate: handleDelete } = useMutation({
     mutationKey: ["delete general type"],
     mutationFn: (id) => {
@@ -125,17 +147,20 @@ const Form = () => {
     },
   });
 
+  // edit api call
   const { mutate: handleEdit } = useMutation({
-    mutationKey: ["edit general type"],
+    mutationKey: ["editGeneralType"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath(values);
       return getByIdApiService(apiPath, id);
     },
     onSuccess: ({ data }, id) => {
-      setValues({
-        typeMaster: values?.typeMaster,
-        ...getGeneralTypePayload(data?.data),
-      });
+      setValues(
+        getGeneralTypePayload(
+          { ...data?.data, typeMaster: values?.typeMaster },
+          false
+        )
+      );
       setTableEditId(id);
     },
   });
@@ -145,13 +170,8 @@ const Form = () => {
     const stateId = values?.stateId;
     resetForm();
     setTableEditId("");
-    setFieldValue("typeMaster", typeMaster);
-    typeMaster === DISTRICT && setFieldValue("stateId", stateId);
-  }, [resetForm, setFieldValue, values?.stateId, values?.typeMaster]);
-
-  useEffect(() => {
-    handleReset();
-  }, [handleReset, values.typeMaster]);
+    setValues({ typeMaster, stateId });
+  }, [resetForm, setValues, values?.stateId, values?.typeMaster]);
 
   useEffect(() => {
     if (!!generalType) setFieldValue("typeMaster", generalType);
@@ -173,60 +193,67 @@ const Form = () => {
           errors={errors?.typeMaster}
           touched={touched?.typeMaster}
           onBlur={handleBlur}
-          onChange={handleChange}
-          isViewMode={isViewMode || !!tableEditId}
+          onChange={(e) => {
+            resetForm();
+            setFieldValue("typeMaster", e.target.value);
+          }}
+          isViewMode={isViewMode || !!tableEditId || !!generalType}
           rowBreak
         />
       </Grid>
 
-      <WithCondition isValid={values?.typeMaster === DISTRICT}>
-        <Grid item xs={6}>
-          <SingleAutoComplete
-            label={fields?.stateId?.label}
-            name={fields?.stateId?.name}
-            value={values?.stateId}
-            errors={errors?.stateId}
-            touched={touched?.stateId}
-            onChange={setFieldValue}
-            inputValues={allStates || []}
-            isViewMode={isViewMode}
-          />
-        </Grid>
-      </WithCondition>
+      <WithCondition isValid={!isViewMode}>
+        <WithCondition isValid={values?.typeMaster === DISTRICT}>
+          <Grid item xs={6}>
+            <SingleAutoComplete
+              label={fields?.stateId?.label}
+              name={fields?.stateId?.name}
+              value={values?.stateId}
+              errors={errors?.stateId}
+              touched={touched?.stateId}
+              onChange={setFieldValue}
+              inputValues={allStates || []}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+        </WithCondition>
 
-      <Grid item xs={12}>
-        <CustomTextField
-          label={fields?.name?.label}
-          name={fields?.name?.name}
-          value={values?.name}
-          errors={errors?.name}
-          touched={touched?.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-        />
-      </Grid>
-
-      <WithCondition
-        isValid={[EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(
-          values?.typeMaster
-        )}
-      >
         <Grid item xs={12}>
-          <ChipTextField
-            name={fields?.chipSetField?.name}
-            placeholder={fields?.chipSetField?.placeHolder}
-            chipVariant={fields?.chipSetField?.chipVariant}
-            value={values?.chip}
-            chipValue={values?.chips}
-            errors={errors?.chip}
-            touched={touched?.chip}
+          <CustomTextField
+            label={fields?.name?.label}
+            name={fields?.name?.name}
+            value={values?.name}
+            errors={errors?.name}
+            touched={touched?.name}
+            onChange={handleChange}
             onBlur={handleBlur}
-            customOnChange={({ value }) => setFieldValue("chip", value)}
-            handleKeyPress={({ chips }) => setFieldValue("chips", chips)}
             isViewMode={isViewMode}
           />
         </Grid>
+
+        <WithCondition
+          isValid={[EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(
+            values?.typeMaster
+          )}
+        >
+          <Grid item xs={12}>
+            <ChipTextField
+              name={fields?.chipSetField?.name}
+              label={fields?.chipSetField?.label}
+              placeholder={fields?.chipSetField?.placeHolder}
+              chipVariant={fields?.chipSetField?.chipVariant}
+              value={values?.chip}
+              chipValue={values?.chips}
+              errors={errors?.chip || errors?.chips}
+              touched={touched?.chip || touched?.chips}
+              onBlur={handleBlur}
+              customOnChange={({ value }) => setFieldValue("chip", value)}
+              handleKeyPress={(chips) => setFieldValue("chips", chips)}
+              isViewMode={isViewMode}
+              chipAccessor={!!tableEditId ? "name" : ""}
+            />
+          </Grid>
+        </WithCondition>
       </WithCondition>
 
       <FormActions
@@ -235,6 +262,12 @@ const Form = () => {
         resetLabel="Clear"
         submitLabel={!!tableEditId ? "Update" : "Add"}
         isViewMode={isViewMode}
+      />
+
+      <ListTopbar
+        disableNewForm
+        disableFilter
+        style={{ width: "100%", ".searchField": { margin: 0 } }}
       />
 
       <Grid item xs={12}>

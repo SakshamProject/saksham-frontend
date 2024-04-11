@@ -45,6 +45,7 @@ export const CustomFileUpload = ({
   touched,
   errors,
   customHelperText,
+  autoComplete,
 }) => {
   const [imgUrl, setImgUrl] = useState("");
   const [fileName, setFileName] = useState((value && value[0]?.name) || "");
@@ -148,6 +149,7 @@ export const CustomFileUpload = ({
         name={name}
         key={key}
         type={"file"}
+        autoComplete={autoComplete || "off"}
         onChange={(event) => onImageChange(event)}
         label={label}
         disabled={disabled}
