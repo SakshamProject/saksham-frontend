@@ -29,8 +29,8 @@ export const FormWrapper = ({
         <StyledFormContainer width={formWidth}>
           <Grid
             container
-            rowSpacing={rowSpacing || 1}
-            columnSpacing={columnSpacing || 1}
+            rowSpacing={rowSpacing || 2}
+            columnSpacing={columnSpacing || 3}
           >
             {children}
           </Grid>
