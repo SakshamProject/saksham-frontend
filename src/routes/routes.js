@@ -12,6 +12,16 @@ export const SevaKendraMasterForm = lazy(() =>
   import("../components/pages/sevaKendraSetup/sevaKendraMaster/Form")
 );
 
+//designations
+
+//-- sevakendra users
+export const SevaKendraUsersList = lazy(() =>
+  import("../components/pages/sevaKendraUsers/List")
+);
+export const SevaKendraUsersForm = lazy(() =>
+  import("../components/pages/sevaKendraUsers/Form")
+);
+
 //state master
 export const StateMasterForm = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/Form")

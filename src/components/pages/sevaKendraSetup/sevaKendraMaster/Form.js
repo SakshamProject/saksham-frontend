@@ -10,6 +10,7 @@ import {
   FormActions,
   FormWrapper,
   SingleAutoComplete,
+  WithCondition,
 } from "../../../shared";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { Grid, Typography } from "@mui/material";
@@ -25,9 +26,10 @@ import { validationSchema } from "../../../../validations/sevaKendraSetup/master
 import { theme } from "../../../../styles";
 import styled from "@emotion/styled";
 import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
+import StatusFields from "../../../shared/StatusFields";
 
 const CustomTypography = styled(Typography)({
-  color: theme.palette.textColor.blue,
+  color: theme?.palette?.textColor?.blue,
   textTransform: "uppercase",
   fontSize: "16px",
   fontWeight: "bold",
@@ -51,7 +53,6 @@ const Form = () => {
     initialValues,
     validationSchema,
     onSubmit: handleOnSubmit,
-    enableReinitialize: true,
   });
 
   const {
@@ -155,30 +156,30 @@ const Form = () => {
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.landlineNumber?.label}
-          name={fields?.landlineNumber?.name}
-          value={values?.landlineNumber}
+          label={fields?.landLineNumber?.label}
+          name={fields?.landLineNumber?.name}
+          value={values?.landLineNumber}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.landlineNumber}
-          touched={touched?.landlineNumber}
+          errors={errors?.landLineNumber}
+          touched={touched?.landLineNumber}
           isViewMode={isViewMode}
-          fieldType={fields?.landlineNumber?.type}
+          fieldType={fields?.landLineNumber?.type}
           maxLength={10}
         />
       </Grid>
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.mobileNo?.label}
-          name={fields?.mobileNo?.name}
-          value={values?.mobileNo}
+          label={fields?.mobileNumber?.label}
+          name={fields?.mobileNumber?.name}
+          value={values?.mobileNumber}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.mobileNo}
-          touched={touched?.mobileNo}
+          errors={errors?.mobileNumber}
+          touched={touched?.mobileNumber}
           isViewMode={isViewMode}
-          fieldType={fields?.mobileNo?.type}
+          fieldType={fields?.mobileNumber?.type}
           maxLength={10}
         />
       </Grid>
@@ -204,15 +205,15 @@ const Form = () => {
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.contactPersonName?.label}
-          name={fields?.contactPersonName?.name}
-          value={values?.contactPersonName}
+          label={fields?.contactPersonId?.label}
+          name={fields?.contactPersonId?.name}
+          value={values?.contactPersonId}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.contactPersonName}
-          touched={touched?.contactPersonName}
+          errors={errors?.contactPersonId}
+          touched={touched?.contactPersonId}
           isViewMode={isViewMode}
-          fieldType={fields?.contactPersonName?.type}
+          fieldType={fields?.contactPersonId?.type}
         />
       </Grid>
 
@@ -288,6 +289,23 @@ const Form = () => {
         />
       </Grid>
 
+      {/* <WithCondition isValid={editId}>
+        <StatusFields
+          setFieldTouched={setFieldTouched}
+          handleBlur={handleBlur}
+          handleChange={handleChange}
+          values={values}
+          touched={touched}
+          errors={errors}
+          setFieldValue={setFieldValue}
+          statusSeeds={statusSeeds}
+          isViewMode={isViewMode}
+          rowBreak={false}
+          // statusHistory={clientDetail?.data?.status}
+          disableListLayout
+        />
+      </WithCondition> */}
+
       <FormActions
         handleSubmit={handleSubmit}
         handleOnReset={() => {
@@ -295,6 +313,8 @@ const Form = () => {
         }}
         isUpdate={false}
       />
+
+      {/* {editId ? <AuditLog data={parameterDetails?.data} /> : <></>} */}
     </FormWrapper>
   );
 };

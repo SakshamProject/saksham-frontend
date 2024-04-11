@@ -7,7 +7,7 @@ import { DividerLine } from "./DividerLine";
 import { CustomDatePicker } from "./formFields/CustomDatePicker";
 import { CustomRadioButton } from "./formFields/CustomRadioButton";
 import { CustomTextField } from "./formFields/CustomTextField";
-import WithCondition from "./WithCondition";
+import { WithCondition } from "./WithCondition";
 
 function StatusFields({
   handleChange,
@@ -23,6 +23,7 @@ function StatusFields({
   statusHistory = [],
   disableListLayout,
   hide,
+  gap,
 }) {
   useEffect(() => {
     if (hide) return;
@@ -40,7 +41,7 @@ function StatusFields({
   return (
     <>
       <Grid item xs={12}>
-        <DividerLine />
+        <DividerLine gap={gap || "6px 0 24px"} />
       </Grid>
       <Grid item xs={6}>
         <CustomRadioButton

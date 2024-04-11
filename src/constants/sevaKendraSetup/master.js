@@ -3,10 +3,10 @@ export const initialValues = {
   stateId: "",
   districtId: "",
   address: "",
-  landlineNumber: "",
-  mobileNo: "",
+  landLineNumber: "",
+  mobileNumber: "",
   startDate: "",
-  contactPersonName: "",
+  contactPersonId: "",
   emailId: "",
   phoneNumber1: "",
   phoneNumber2: "",
@@ -35,23 +35,23 @@ export const fields = {
     name: "address",
     type: "alphaNumeric",
   },
-  landlineNumber: {
+  landLineNumber: {
     label: "Landline Number *",
-    name: "landlineNumber",
+    name: "landLineNumber",
     type: "mobile",
   },
-  mobileNo: {
+  mobileNumber: {
     label: "Mobile No *",
-    name: "mobileNo",
+    name: "mobileNumber",
     type: "mobile",
   },
   startDate: {
     label: "Seva Kendra Start Date *",
     name: "startDate",
   },
-  contactPersonName: {
+  contactPersonId: {
     label: "Contact Person Name *",
-    name: "contactPersonName",
+    name: "contactPersonId",
     type: "alphabets",
   },
   emailId: {
