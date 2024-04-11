@@ -1,3 +1,5 @@
+import { OptionsContainer } from "../styles";
+
 // regex
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -13,7 +15,15 @@ export const OKAY = "OKAY";
 export const ADD = "Add";
 export const SKIP = "Skip";
 
-
+export const CODES = {
+  ACTIVE: "active",
+  IN_ACTIVE: "in-active",
+  QUALIFICATION_TEN: "ten",
+  QUALIFICATION_TWELVE: "twelve",
+  PENDING: "pending",
+  REJECTED: "rejected",
+  APPROVED: "approved",
+};
 
 // api messages
 export const SERVER_ERROR = "Something went wrong. Please try again!";
@@ -25,3 +35,30 @@ export const UPDATED_SUCCESSFULLY = (title) =>
 
 export const DELETED_SUCCESSFULLY = (title) =>
   `${title} Deleted successfully !`;
+
+export const statusColumns = [
+  {
+    Header: "Status",
+    width: 200,
+    accessor: "createdAt",
+    Cell: (props) => (
+      <OptionsContainer>
+        {props?.row?.original?.status?.name || ""}
+      </OptionsContainer>
+    ),
+  },
+  {
+    Header: "Date",
+    accessor: "effectiveDate",
+    width: 150,
+    Cell: (props) => (
+      <OptionsContainer>{props?.value || "N/A"}</OptionsContainer>
+    ),
+  },
+  {
+    Header: "Reason",
+    accessor: "deactivationReason",
+    width: 150,
+    Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
+  },
+];

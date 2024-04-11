@@ -26,6 +26,15 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTE_PATHS.DESIGNATIONS_FORM,
     element: routeElements.DesignationsForm,
   },
+  //sevakendra users
+  {
+    path: ROUTE_PATHS.SEVA_KENDRA_USERS_LIST,
+    element: routeElements.SevaKendraUsersList,
+  },
+  {
+    path: ROUTE_PATHS.SEVA_KENDRA_USERS_FORM,
+    element: routeElements.SevaKendraUsersForm,
+  },
 
   //general types
   {
