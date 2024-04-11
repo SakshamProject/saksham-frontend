@@ -47,7 +47,6 @@ export const ListTopbar = ({
   filterFieldInitial,
   newButtonLabel,
   onDownload,
-  isFilterParams,
   style,
 }) => {
   const navigate = useNavigate();
@@ -59,7 +58,7 @@ export const ListTopbar = ({
 
         <IconsContainer>
           <WithCondition isValid={!disableSearchField}>
-            <CustomSearchField />
+            <CustomSearchField  />
           </WithCondition>
 
           {!!additionalComponent ? additionalComponent : <></>}

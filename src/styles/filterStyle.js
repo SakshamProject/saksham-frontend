@@ -9,14 +9,7 @@ export const FilterModalLayout = styled(Modal)(() => ({
   height: "100%",
   backgroundColor: "transparent",
   display: "block",
-  "&::-webkit-scrollbar": {
-    width: "0",
-    height: "0",
-  },
-  "&::-moz-scrollbar": {
-    width: "0",
-    height: "0",
-  },
+  scrollbarWidth: "none",
 }));
 
 export const FilterContainerStyle = styled(Box)(({ theme }) => ({
@@ -37,28 +30,8 @@ export const FilterFormStyle = styled(Box)(({ theme }) => ({
   overflowX: "hidden",
   margin: 0,
   padding: 0,
-  "&::-webkit-scrollbar": {
-    width: "5px",
-    height: "5px",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: theme.palette?.backgroundColor?.grey,
-    borderRadius: 5,
-  },
-  "&::-webkit-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
-  },
-  "&::-moz-scrollbar": {
-    width: "5px",
-    height: "5px",
-  },
-  "&::-moz-scrollbar-thumb": {
-    backgroundColor: theme.palette?.backgroundColor?.grey,
-    borderRadius: 5,
-  },
-  "&::-moz-scrollbar-thumb:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.lightGrey,
-  },
+  scrollbarWidth: "thin",
+  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
 }));
 
 export const FilterTitle = styled(Box)(({ theme }) => ({

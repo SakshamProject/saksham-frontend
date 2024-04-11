@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 
 import { STEPS } from "../../../../constants/typeMasters/stateMaster";
-import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../../shared";
 
 const FormLayout = styled("div")({
@@ -25,28 +24,16 @@ const StepperContainer = styled("div")({
   maxHeight: "100%",
 });
 
-const FormContainer = styled("div")({
+const FormContainer = styled("div")(({ theme }) => ({
   display: "flex",
   maxHeight: "100%",
   overflow: "auto",
   justifyContent: "center",
   alignItems: "start",
   width: "100%",
-  "&::-webkit-scrollbar": {
-    width: "5px",
-    height: "5px",
-  },
-  "&::-webkit-scrollbar-thumb": {
-    backgroundColor: "#6E6E6E60",
-    borderRadius: 5,
-  },
-  "&::-webkit-scrollbar-thumb:hover": {
-    background: "#555",
-  },
-  "&::-webkit-scrollbar-track": {
-    backgroundColor: "#F5F5F5",
-  },
-});
+  scrollbarWidth: "thin",
+  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+}));
 
 const Form = () => {
   const navigate = useNavigate();

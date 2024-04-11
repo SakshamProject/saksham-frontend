@@ -18,6 +18,7 @@ export const CustomDatePicker = ({
   touched,
   errors,
   setTouched,
+  autoComplete,
   views,
 }) => {
   return (
@@ -30,7 +31,7 @@ export const CustomDatePicker = ({
         maxDate={maxDate ? dayjs(maxDate) : ""}
         views={views || ["year", "month", "day"]}
         style={style}
-        autoComplete="off"
+        autoComplete={autoComplete || "off"}
         readOnly={Boolean(isViewMode)}
         disabled={disabled}
         closeOnSelect

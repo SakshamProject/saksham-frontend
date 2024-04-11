@@ -45,8 +45,13 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
   switch (typeMaster) {
     case SERVICE_TYPE:
       return isPayload
-        ? { serviceType: remaining?.name }
-        : { name: remaining?.name, typeMaster };
+        ? {
+            serviceType: remaining?.name,
+          }
+        : {
+            name: remaining?.name,
+            typeMaster,
+          };
     case DISTRICT:
       return {
         name: remaining?.name,

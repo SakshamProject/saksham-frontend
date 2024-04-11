@@ -18,6 +18,7 @@ export const CustomTimePicker = ({
   customHelperText,
   setTouched,
   views,
+  autoComplete,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -30,6 +31,7 @@ export const CustomTimePicker = ({
         disabled={disabled}
         onBlur={onBlur}
         value={value ? new Date(value) : null}
+        autoComplete={autoComplete || "off"}
         fullWidth
         onChange={onChange || (() => {})}
         minTime={minTime ? new Date(minTime) : null}

@@ -1,5 +1,5 @@
 import { Chip, Stack, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import useNotify from "../../../hooks/useNotify";
 
 export const ChipTextField = ({
   customOnChange = () => {},
@@ -14,6 +14,7 @@ export const ChipTextField = ({
   disabled,
   style,
   isViewMode,
+  autoComplete,
   fullWidth,
   placeholder,
   chipVariant,
@@ -21,43 +22,44 @@ export const ChipTextField = ({
   chipAccessor = "",
   handleKeyPress = () => {},
 }) => {
-  const [chips, setChips] = useState(chipValue);
+  const { notifyError } = useNotify();
 
   const handleDelete = (chipToDelete) => () => {
-    setChips((prev) => {
-      const currentChips = prev.filter(
-        (chip) =>
-          chip?.[chipAccessor] !== chipToDelete?.[chipAccessor] ||
-          chip !== chipToDelete
-      );
-      handleKeyPress(currentChips);
-      return currentChips;
-    });
+    const currentChips = chipValue?.filter(
+      (chip) =>
+        (chip?.[chipAccessor] || chip)?.toLowerCase() !==
+        (chipToDelete?.[chipAccessor] || chipToDelete)?.toLowerCase()
+    );
+    handleKeyPress(currentChips);
   };
 
   const handleInputKeyPress = (e) => {
-    if (e.key === "Enter" && value.trim() !== "" && !errors) {
-      setChips((prev) => {
-        const currentChips = !!chipAccessor
-          ? [...prev, { [chipAccessor]: e.target.value.trim() }]
-          : [...prev, e.target.value.trim()];
-        customOnChange({ event: e, value: "" });
-        handleKeyPress(currentChips);
-        return currentChips;
-      });
+    if (e.key === "Enter" && !!e.target.value.trim() && !errors) {
+      const duplicate = chipValue?.some(
+        (item) =>
+          (item?.[chipAccessor] || item)?.toLowerCase() ===
+          e.target.value.trim()?.toLowerCase()
+      );
+
+      if (duplicate) {
+        notifyError("Duplicate value");
+        return;
+      }
+
+      const currentChips = !!chipAccessor
+        ? [...chipValue, { [chipAccessor]: e.target.value.trim() }]
+        : [...chipValue, e.target.value.trim()];
+      customOnChange({ event: e, value: "" });
+      handleKeyPress(currentChips);
     }
   };
-
-  useEffect(() => {
-    if (chipValue?.length === 0) setChips([]);
-    else setChips([...chipValue]);
-  }, [chipValue]);
 
   return (
     <TextField
       value={value || ""}
       onChange={(e) => customOnChange({ event: e, value: e.target.value })}
       onKeyPress={handleInputKeyPress}
+      autoComplete={autoComplete || "off"}
       label={label}
       placeholder={placeholder}
       variant={variant || "outlined"}
@@ -80,7 +82,7 @@ export const ChipTextField = ({
       InputProps={{
         readOnly: Boolean(isViewMode),
         disabled: disabled,
-        startAdornment: !!chips?.length ? (
+        startAdornment: !!chipValue?.length ? (
           <Stack
             direction="row"
             sx={{
@@ -90,10 +92,10 @@ export const ChipTextField = ({
               paddingTop: 1,
             }}
           >
-            {chips?.map((chip, index) => (
+            {chipValue?.map((chip, index) => (
               <Chip
                 key={index}
-                label={chip?.[chipAccessor] || chip || ""}
+                label={chip?.[chipAccessor] || chip?.name || chip || ""}
                 variant={chipVariant || ""}
                 onDelete={handleDelete(chip)}
               />

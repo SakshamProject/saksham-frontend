@@ -62,7 +62,7 @@ export const CustomRadioButton = ({
             return (
               <FormControlLabel
                 value={option[accessor]}
-                control={<Radio />}
+                control={<Radio onChange={(e) => e.target.blur()} />}
                 label={option?.name || option?.label}
                 key={key}
                 name={name}

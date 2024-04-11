@@ -28,14 +28,16 @@ import {
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
 import useNotify from "../../../../hooks/useNotify";
+import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { validationSchema } from "../../../../validations/typeMaster/generaltypes";
+import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
   CustomRadioButton,
   CustomReactTable,
   CustomTextField,
   FormActions,
   FormWrapper,
+  ListTopbar,
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
@@ -47,8 +49,12 @@ const Form = () => {
   const isViewMode = state?.viewDetails;
   const generalType = state?.field;
   const [tableEditId, setTableEditId] = useState("");
+  const { tableReRenderActions } = useTableCustomHooks(
+    ROUTE_PATHS.GENERAL_TYPES_FORM
+  );
+  const { searchData } = tableReRenderActions();
 
-  // create and update api service
+  // create and update api call
   const { mutate } = useMutation({
     mutationKey: ["create and update"],
     mutationFn: ({ apiPath, payload }) => {
@@ -65,7 +71,6 @@ const Form = () => {
       handleReset();
       refetch();
       setTableEditId("");
-      values?.typeMaster === DISTRICT && fetchDistrict();
     },
   });
 
@@ -77,7 +82,6 @@ const Form = () => {
       notifyError("Sub type name minimum one is required");
       return;
     }
-
     const payload = getGeneralTypePayload(value);
     const apiPath = generalTypeApiPath(value);
     mutate({ payload, apiPath });
@@ -101,32 +105,26 @@ const Form = () => {
     resetForm,
   } = formik;
 
-  // general type seed api service
+  // general type seed api call
   const { data: allGeneralTypes } = useQuery({
     queryKey: ["get all general types"],
     queryFn: () => getApiService(API_PATHS.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
 
-  // table data api service
+  // table data api call
   const { data: generalTypeList, refetch } = useQuery({
-    queryKey: ["get general types list", values?.typeMaster],
+    queryKey: ["get general types list", values?.typeMaster, searchData],
     queryFn: () => {
       const apiPath = generalTypeApiPath(values);
-      return apiPath !== API_PATHS.DISTRICTS && getApiService(apiPath);
+      return getApiService(
+        `${apiPath}${!!searchData ? `?searchText=${searchData}` : ""}`
+      );
     },
     select: ({ data }) => data,
   });
 
-  // get all districts
-  const { data: allDistricts, refetch: fetchDistrict } = useQuery({
-    queryKey: ["get all districts", values?.stateId],
-    queryFn: () =>
-      values?.stateId && getByIdApiService(API_PATHS.STATES, values?.stateId),
-    select: ({ data }) => data?.data?.districts,
-  });
-
-  // get all states
+  // all states api call
   const { data: allStates } = useQuery({
     queryKey: ["get all states", values?.typeMaster],
     queryFn: () =>
@@ -135,6 +133,7 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
+  // delete api call
   const { mutate: handleDelete } = useMutation({
     mutationKey: ["delete general type"],
     mutationFn: (id) => {
@@ -145,12 +144,12 @@ const Form = () => {
       notifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
       handleReset();
       refetch();
-      values?.typeMaster === DISTRICT && fetchDistrict();
     },
   });
 
+  // edit api call
   const { mutate: handleEdit } = useMutation({
-    mutationKey: ["edit general type"],
+    mutationKey: ["editGeneralType"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath(values);
       return getByIdApiService(apiPath, id);
@@ -171,9 +170,8 @@ const Form = () => {
     const stateId = values?.stateId;
     resetForm();
     setTableEditId("");
-    setFieldValue("typeMaster", typeMaster);
-    typeMaster === DISTRICT && setFieldValue("stateId", stateId);
-  }, [resetForm, setFieldValue, values?.stateId, values?.typeMaster]);
+    setValues({ typeMaster, stateId });
+  }, [resetForm, setValues, values?.stateId, values?.typeMaster]);
 
   useEffect(() => {
     if (!!generalType) setFieldValue("typeMaster", generalType);
@@ -266,6 +264,12 @@ const Form = () => {
         isViewMode={isViewMode}
       />
 
+      <ListTopbar
+        disableNewForm
+        disableFilter
+        style={{ width: "100%", ".searchField": { margin: 0 } }}
+      />
+
       <Grid item xs={12}>
         <CustomReactTable
           columnData={
@@ -278,7 +282,6 @@ const Form = () => {
           }
           rawData={
             generalTypeList?.data?.educationQualificationType ||
-            allDistricts ||
             generalTypeList?.data ||
             []
           }
