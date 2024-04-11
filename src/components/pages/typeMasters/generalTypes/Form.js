@@ -30,7 +30,7 @@ import {
 import useNotify from "../../../../hooks/useNotify";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { validationSchema } from "../../../../validations/typeMaster/generaltypes";
+import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
   CustomRadioButton,
   CustomReactTable,

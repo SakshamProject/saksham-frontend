@@ -168,7 +168,6 @@ const StateType = () => {
               errors={errors?.stateId}
               touched={touched?.stateId}
               inputValues={stateList || []}
-              accessor={fields?.stateId?.accessor}
               readOnly={tableEditId}
             />
           </Grid>
@@ -185,7 +184,6 @@ const StateType = () => {
               errors={errors?.districtId}
               touched={touched?.districtId}
               inputValues={districtList?.districts || []}
-              accessor={fields?.districtId?.accessor}
               readOnly={tableEditId}
             />
           </Grid>
