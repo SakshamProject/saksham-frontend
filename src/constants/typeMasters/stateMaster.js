@@ -101,11 +101,11 @@ export const formDetails = {
 
 export const fields = {
   stateId: {
-    label: "State",
+    label: "State *",
     name: "stateId",
   },
   districtId: {
-    label: "District",
+    label: "District *",
     name: "districtId",
   },
 };

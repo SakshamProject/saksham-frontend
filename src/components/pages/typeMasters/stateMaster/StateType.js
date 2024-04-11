@@ -123,15 +123,16 @@ const StateType = () => {
   } = formik;
 
   const { data: stateList } = useQuery({
-    queryKey: ["get all states"],
+    queryKey: ["getAllStates"],
     queryFn: () => getApiService(API_PATHS.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
-    queryKey: ["get all district by state", values?.stateId],
+    queryKey: ["getAllDistrictByState", values?.stateId],
     queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
     select: ({ data }) => data?.data,
+    enabled: !!values?.stateId,
   });
 
   const {
@@ -190,7 +191,7 @@ const StateType = () => {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <DividerLine gap={"10px 0 20px"} />
+          <DividerLine gap={"6px 0 24px"} />
         </Grid>
         <Grid item xs={12}>
           <CustomTextField

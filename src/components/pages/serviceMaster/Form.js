@@ -142,7 +142,7 @@ const Form = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <DividerLine gap={"10px 0 20px"} />
+        <DividerLine gap={"6px 0 24px"} />
       </Grid>
 
       <WithCondition isValid={!isViewMode}>

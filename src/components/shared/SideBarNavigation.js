@@ -21,6 +21,9 @@ export const CustomTabs = styled(Tabs)(({ theme }) => ({
     scrollbarWidth: "thin",
     scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
   },
+  // ".MuiTabs-indicator": {
+  //   backgroundColor: theme.palette?.backgroundColor?.stepperButton,
+  // },
 }));
 
 export const CustomTab = styled(Tab)(({ theme }) => ({
