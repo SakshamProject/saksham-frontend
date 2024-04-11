@@ -19,11 +19,11 @@ export const initialValues = {
 
 export const fields = {
   serviceTypeId: {
-    label: "Select service type",
+    label: "Select service type *",
     name: "serviceTypeId",
   },
   serviceName: {
-    label: "Service Name",
+    label: "Service Name *",
     name: "name",
   },
 };
