@@ -1,8 +1,7 @@
-export const labels = {
+export const fields = {
   name: {
     label: "Seva Kendra Name",
     name: "name",
-    // accessor: "id",
   },
   isAttendanceApproved: {
     label: "Attendance Approval",

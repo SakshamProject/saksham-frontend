@@ -1,7 +1,9 @@
 import React from "react";
-import { FormWrapper } from "../../../shared";
+
+import { CustomTextField, FormWrapper } from "../../../shared";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { Grid } from "@mui/material";
+import { fields } from "../../../../constants/sevaKendraSetup/master";
 
 const Form = () => {
   return (
@@ -10,17 +12,18 @@ const Form = () => {
       navigateTo={ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST}
     >
       <Grid item xs={12}>
-        {/* <CustomTextField
-          name={labels?.gracePeriod?.name}
-          value={values?.gracePeriod}
-          onChange={handleRadio}
-          onBlur={handleBlur}
-          errors={errors?.gracePeriod}
-          touched={touched?.gracePeriod}
-          isViewMode={isViewMode}
-          type={labels?.gracePeriod.type}
-          maxLength={labels?.gracePeriod.maxLength}
-        /> */}
+        <CustomTextField
+          label={fields?.name?.label}
+          name={fields?.name?.name}
+          // value={values?.gracePeriod}
+          // onChange={handleRadio}
+          // onBlur={handleBlur}
+          // errors={errors?.gracePeriod}
+          // touched={touched?.gracePeriod}
+          // isViewMode={isViewMode}
+          // type={labels?.gracePeriod.type}
+          // maxLength={labels?.gracePeriod.maxLength}
+        />
       </Grid>
     </FormWrapper>
   );

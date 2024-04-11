@@ -34,7 +34,7 @@ const List = () => {
   return (
     <>
       <ListTopbar
-        label={"Services" || ""}
+        label={"Services"}
         listPath={ROUTE_PATHS?.SERVICE_MASTER_LIST}
         // filterFields={filterFields}
         // isFilterParams={!!listParams?.filters?.length}
