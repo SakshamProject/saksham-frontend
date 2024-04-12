@@ -31,8 +31,8 @@ const FormContainer = styled("div")(({ theme }) => ({
   justifyContent: "center",
   alignItems: "start",
   width: "100%",
-  scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+  scrollbarWidth: "none",
+  // scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
 }));
 
 const Form = () => {

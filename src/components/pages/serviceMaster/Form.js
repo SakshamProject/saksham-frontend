@@ -183,7 +183,7 @@ const Form = () => {
         />
       </WithCondition>
 
-      <Box width={1} sx={{ paddingBlock: "40px" }}>
+      <Grid item xs={12} mt={4} mb={2}>
         <CustomReactTable
           columnData={
             serviceNameColumns({
@@ -196,7 +196,7 @@ const Form = () => {
           rawData={dataList?.data?.data?.service || []}
           manualSort
           disablePagination
-          // disableLayout
+          disableLayout
           style={{
             tableHead: {
               ".tr .th:first-child": {
@@ -210,7 +210,7 @@ const Form = () => {
             },
           }}
         />
-      </Box>
+      </Grid>
     </FormWrapper>
   );
 };
