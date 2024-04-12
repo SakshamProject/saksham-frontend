@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
@@ -24,7 +24,6 @@ import {
 } from "../../../constants/serviceMaster/serviceMaster";
 import useNotify from "../../../hooks/useNotify";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { theme } from "../../../styles";
 import { getValidValues } from "../../../utils/common";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
@@ -170,20 +169,10 @@ const Form = () => {
           resetLabel={"Clear"}
           isUpdate={tableEditId}
           submitLabel="Add"
-          submitButtonStyle={{
-            backgroundColor: tableEditId
-              ? theme?.palette?.backgroundColor?.blue
-              : theme?.palette?.success?.main,
-            "&:hover": {
-              backgroundColor: tableEditId
-                ? theme?.palette?.backgroundColor?.blue
-                : theme?.palette?.success?.main,
-            },
-          }}
         />
       </WithCondition>
 
-      <Box width={1} sx={{ paddingBlock: "40px" }}>
+      <Grid item xs={12} mt={4} mb={2}>
         <CustomReactTable
           columnData={
             serviceNameColumns({
@@ -210,7 +199,7 @@ const Form = () => {
             },
           }}
         />
-      </Box>
+      </Grid>
     </FormWrapper>
   );
 };

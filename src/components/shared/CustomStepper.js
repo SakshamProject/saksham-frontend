@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation } from "react-router-dom";
+
 import { theme } from "../../styles";
 
 const StepperContainer = styled(Box)(({ isHorizontal }) => ({
@@ -33,7 +34,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     overflowY: "auto",
     scrollbarWidth: "none",
     ".MuiStepConnector-root": {
-      marginLeft: isHorizontal ? "0" : "14px",
+      marginLeft: isHorizontal ? "0" : "13px",
       marginBlock: "-16px",
       width: "1%",
     },
@@ -63,7 +64,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
       borderRadius: "60px",
       height: "14px",
       width: "14px",
-      background: "#F4F6FF",
+      background: theme.palette?.borderColor?.white,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",

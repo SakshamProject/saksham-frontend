@@ -231,7 +231,7 @@ const StateType = () => {
         />
       </StyledFormContainer>
 
-      <Box width={1} sx={{ paddingBottom: "40px" }}>
+      <Grid item xs={12} mb={6}>
         <ListTopbar
           disableFilter
           disableNewForm
@@ -270,7 +270,7 @@ const StateType = () => {
             },
           }}
         />
-      </Box>
+      </Grid>
     </Grid>
   );
 };
