@@ -106,17 +106,17 @@ export const generalTypeColumns = [
         <EditPopover
           inputValues={[
             {
-              label: "Edit",
-              id: row?.original?.id,
-              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
-              stateProps: { field: value },
-            },
-            {
               label: "View Details",
               id: row?.original?.id,
               path: ROUTE_PATHS.GENERAL_TYPES_FORM,
               stateProps: { field: value },
               view: true,
+            },
+            {
+              label: "Edit",
+              id: row?.original?.id,
+              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              stateProps: { field: value },
             },
           ]}
         />
@@ -130,42 +130,49 @@ export const generalColumns = ({
   tableEditId,
   handleEdit,
   isViewMode,
-}) => [
-  {
-    Header: "Type Name",
-    accessor: "name",
-    width: 400,
-    sticky: "left",
-  },
-  {
-    Header: " ",
-    Cell: ({ row }) => {
-      return (
-        <OptionsContainerChild>
-          <WithCondition isValid={!isViewMode}>
-            <Box>
-              <StyledIconButton
-                onClick={() => handleEdit(row?.original?.id)}
-                disabled={tableEditId !== "" ? true : false}
-              >
-                <EditIcon disabled={tableEditId !== "" ? true : false} />
-              </StyledIconButton>
-              <StyledIconButton
-                onClick={() => handleDelete(row?.original?.id)}
-                disabled={tableEditId !== "" ? true : false}
-              >
-                <DeleteIcon disabled={tableEditId !== "" ? true : false} />
-              </StyledIconButton>
-            </Box>
-          </WithCondition>
-        </OptionsContainerChild>
-      );
+  type,
+}) =>
+  [
+    {
+      Header: `${type}`,
+      accessor: "name",
+      width: 300,
+      sticky: "left",
     },
-  },
-];
+    type === DISTRICT && {
+      Header: "State",
+      accessor: "state.name",
+      width: 300,
+    },
+    {
+      Header: " ",
+      Cell: ({ row }) => {
+        return (
+          <OptionsContainerChild>
+            <WithCondition isValid={!isViewMode}>
+              <Box>
+                <StyledIconButton
+                  onClick={() => handleEdit(row?.original?.id)}
+                  disabled={tableEditId !== "" ? true : false}
+                >
+                  <EditIcon disabled={tableEditId !== "" ? true : false} />
+                </StyledIconButton>
+                <StyledIconButton
+                  onClick={() => handleDelete(row?.original?.id)}
+                  disabled={tableEditId !== "" ? true : false}
+                >
+                  <DeleteIcon disabled={tableEditId !== "" ? true : false} />
+                </StyledIconButton>
+              </Box>
+            </WithCondition>
+          </OptionsContainerChild>
+        );
+      },
+    },
+  ].filter((item) => item);
 
 export const initialValues = {
-  typeMaster: "Community Category",
+  typeMaster: EDUCATIONAL_QUALIFICATION,
   name: "",
   chip: "",
   stateId: "",
@@ -183,19 +190,19 @@ export const fields = {
   },
 
   name: {
-    label: "Type Name",
+    label: "Type Name *",
     name: "name",
   },
 
   chipSetField: {
-    label: "Sub Type Name",
-    placeHolder: "Add multiple sub type use enter key",
+    label: "Sub Type Name *",
+    placeHolder: "Use enter key to add multiple sub type",
     name: "chip",
     chipVariant: "outlined",
   },
 
   stateId: {
-    label: "Select State",
+    label: "Select State *",
     name: "stateId",
   },
 };

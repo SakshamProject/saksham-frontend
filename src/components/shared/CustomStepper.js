@@ -2,6 +2,8 @@ import styled from "@emotion/styled";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
+import { theme } from "../../styles";
+
 const StepperContainer = styled(Box)(({ isHorizontal }) => ({
   backgroundColor: "white",
   display: isHorizontal ? "block" : "flex",
@@ -32,7 +34,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     overflowY: "auto",
     scrollbarWidth: "none",
     ".MuiStepConnector-root": {
-      marginLeft: isHorizontal ? "0" : "14px",
+      marginLeft: isHorizontal ? "0" : "13px",
       marginBlock: "-16px",
       width: "1%",
     },
@@ -42,13 +44,13 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     },
     ".Mui-active": {
       ".MuiStepConnector-line": {
-        borderColor: theme.palette.primary.main,
+        borderColor: theme.palette?.borderColor?.main,
         borderWidth: "2px",
       },
     },
     ".MuiStepConnector-line": {
       borderWidth: "2px",
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette?.borderColor?.main,
       transform: isHorizontal
         ? "translateX(16px) translateY(3px)"
         : "translateX(3px)",
@@ -57,21 +59,21 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
     ".MuiStepLabel-iconContainer": {
       padding: "0 !important",
-      border: `1px solid ${theme.palette.primary.main}`,
-      color: theme.palette.primary.main,
+      border: `1px solid ${theme.palette?.borderColor?.main}`,
+      color: theme.palette?.textColor?.main,
       borderRadius: "60px",
       height: "14px",
       width: "14px",
-      background: "#F4F6FF",
+      background: theme.palette?.borderColor?.white,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
     },
     ".MuiStepLabel-iconContainer.Mui-active": {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette?.textColor?.main,
     },
     ".MuiStepLabel-iconContainer.Mui-completed": {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette?.backgroundColor?.main,
     },
     ".MuiStepLabel-root.MuiStepLabel-horizontal": {
       display: "block !important",
@@ -133,7 +135,8 @@ export const CustomStepper = ({
             key={step.label}
             sx={{
               background:
-                step?.route === location?.pathname && "rgb(232, 237, 255)",
+                step?.route === location?.pathname &&
+                theme.palette?.backgroundColor?.sideMenuButton,
               borderRadius: step?.route === location?.pathname && "3px",
               zIndex: step?.route === location?.pathname && 999,
               paddingBlock: 1,

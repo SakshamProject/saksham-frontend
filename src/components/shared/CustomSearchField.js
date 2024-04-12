@@ -12,7 +12,7 @@ const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: theme.palette?.backgroundColor?.white,
-  border: `1px solid ${theme.palette?.borderColor?.blue}`,
+  border: `1px solid ${theme.palette?.borderColor?.main}`,
   marginRight: theme.spacing(2),
   marginLeft: 0,
 }));

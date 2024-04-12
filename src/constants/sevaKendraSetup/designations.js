@@ -1,8 +1,8 @@
 export const initialValues = {
-  stateId: "",
-  districtId: "",
-  name: "",
-  designations: "",
+  sevaKendraStateId: "",
+  sevaKendraDistrictId: "",
+  sevaKendraName: "",
+  designationName: "",
   accessMenus: [],
 };
 

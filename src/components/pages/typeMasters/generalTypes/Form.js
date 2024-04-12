@@ -170,7 +170,7 @@ const Form = () => {
     const stateId = values?.stateId;
     resetForm();
     setTableEditId("");
-    setValues({ typeMaster, stateId });
+    setValues({ ...initialValues, typeMaster, stateId });
   }, [resetForm, setValues, values?.stateId, values?.typeMaster]);
 
   useEffect(() => {
@@ -198,6 +198,7 @@ const Form = () => {
             setFieldValue("typeMaster", e.target.value);
           }}
           isViewMode={isViewMode || !!tableEditId || !!generalType}
+          disabled={isViewMode || !!tableEditId || !!generalType}
           rowBreak
         />
       </Grid>
@@ -278,6 +279,7 @@ const Form = () => {
               tableEditId,
               handleEdit,
               isViewMode,
+              type: values?.typeMaster,
             }) || []
           }
           rawData={

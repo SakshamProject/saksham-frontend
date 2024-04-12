@@ -25,7 +25,7 @@ import {
 } from "../../../../constants/typeMasters/stateMaster";
 import useNotify from "../../../../hooks/useNotify";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
-import { StyledFormContainer, theme } from "../../../../styles";
+import { StyledFormContainer } from "../../../../styles";
 import { getValidValues } from "../../../../utils/common";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
@@ -218,16 +218,16 @@ const StateType = () => {
           resetLabel={"Clear"}
           isUpdate={tableEditId}
           submitLabel="Add"
-          submitButtonStyle={{
-            backgroundColor: tableEditId
-              ? theme?.palette?.backgroundColor?.blue
-              : theme?.palette?.success?.main,
-            "&:hover": {
-              backgroundColor: tableEditId
-                ? theme?.palette?.backgroundColor?.blue
-                : theme?.palette?.success?.main,
-            },
-          }}
+          // submitButtonStyle={{
+          //   backgroundColor: tableEditId
+          //     ? theme?.palette?.backgroundColor?.blue
+          //     : theme?.palette?.success?.main,
+          //   "&:hover": {
+          //     backgroundColor: tableEditId
+          //       ? theme?.palette?.backgroundColor?.blue
+          //       : theme?.palette?.success?.main,
+          //   },
+          // }}
         />
       </StyledFormContainer>
 
@@ -235,7 +235,11 @@ const StateType = () => {
         <ListTopbar
           disableFilter
           disableNewForm
-          style={{ width: "100%", marginLeft: 0 }}
+          style={{
+            width: "100%",
+            marginLeft: 0,
+            ".searchField": { margin: 0 },
+          }}
           placeholder={`Search ${currentForm?.validationLabel}`}
         />
         <CustomReactTable

@@ -142,7 +142,7 @@ export const stateMasterColumns = ({
               onClick={() => handleEditList(props?.row?.index)}
               disabled={tableEditId !== "" ? true : false}
             >
-              <EditIcon color="primary" />
+              <EditIcon disabled={tableEditId !== "" ? true : false} />
             </IconButton>
             <IconButton
               onClick={() => {
@@ -150,7 +150,7 @@ export const stateMasterColumns = ({
               }}
               disabled={tableEditId !== "" ? true : false}
             >
-              <DeleteIcon color="primary" />
+              <DeleteIcon disabled={tableEditId !== "" ? true : false} />
             </IconButton>
           </div>
         </OptionsContainerChild>

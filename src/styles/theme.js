@@ -6,7 +6,7 @@ export const theme = createTheme({
       tableHeader: "#D2E1FC",
       tablePagination: "#F8FCFF",
       sideMenuButton: "#D6D6D6",
-      allButton: "#1473E6",
+      allButton: "#707070",
       stepperButton: "#37383C",
       radioButton: "#3949AB",
       green: "#3AD865",

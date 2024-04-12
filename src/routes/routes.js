@@ -1,10 +1,13 @@
 import { lazy } from "react";
 
-export const Dashboard = lazy(() => import("../components/pages/Dashboard"));
+// Dashboard
 
-//sevakendra setup
+export const Dashboard = lazy(() =>
+  import("../components/pages/dashboard/Dashboard")
+);
 
-//-- sevakendra setup -master
+// Seva Kendra Master
+
 export const SevaKendraMasterList = lazy(() =>
   import("../components/pages/sevaKendraSetup/sevaKendraMaster/List")
 );
@@ -12,7 +15,8 @@ export const SevaKendraMasterForm = lazy(() =>
   import("../components/pages/sevaKendraSetup/sevaKendraMaster/Form")
 );
 
-// designations
+// Designations
+
 export const DesignationsList = lazy(() =>
   import("../components/pages/sevaKendraSetup/designations/List")
 );
@@ -20,7 +24,8 @@ export const DesignationsForm = lazy(() =>
   import("../components/pages/sevaKendraSetup/designations/Form")
 );
 
-//-- sevakendra users
+// Seva Kendra Users
+
 export const SevaKendraUsersList = lazy(() =>
   import("../components/pages/sevaKendraUsers/List")
 );
@@ -28,7 +33,7 @@ export const SevaKendraUsersForm = lazy(() =>
   import("../components/pages/sevaKendraUsers/Form")
 );
 
-//state master
+// State Master
 export const StateMasterForm = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/Form")
 );
@@ -36,7 +41,7 @@ export const StateType = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/StateType")
 );
 
-//general types
+// General Types
 export const GeneralTypesList = lazy(() =>
   import("../components/pages/typeMasters/generalTypes/List")
 );
@@ -44,7 +49,7 @@ export const GeneralTypesForm = lazy(() =>
   import("../components/pages/typeMasters/generalTypes/Form")
 );
 
-//service master
+// Service Master
 export const ServiceMasterList = lazy(() =>
   import("../components/pages/serviceMaster/List")
 );

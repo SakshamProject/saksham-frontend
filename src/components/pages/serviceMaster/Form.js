@@ -1,5 +1,31 @@
 import React, { useEffect, useState } from "react";
 
+import { Grid } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  deleteApiService,
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import {
+  ADDED_SUCCESSFULLY,
+  DELETED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+} from "../../../constants/globalConstants";
+import {
+  fields,
+  initialValues,
+  serviceNameColumns,
+} from "../../../constants/serviceMaster/serviceMaster";
+import useNotify from "../../../hooks/useNotify";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { getValidValues } from "../../../utils/common";
+import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
   CustomReactTable,
   CustomTextField,
@@ -9,33 +35,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { Box, Grid } from "@mui/material";
-import {
-  fields,
-  initialValues,
-  serviceNameColumns,
-} from "../../../constants/serviceMaster/serviceMaster";
-import useNotify from "../../../hooks/useNotify";
-import { useFormik } from "formik";
-import { getValidValues } from "../../../utils/common";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
-import { API_PATHS } from "../../../api/apiPaths";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import {
-  deleteApiService,
-  getApiService,
-  getByIdApiService,
-  postApiService,
-  updateApiService,
-} from "../../../api/api";
-import { theme } from "../../../styles";
-import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../constants/globalConstants";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -170,16 +169,6 @@ const Form = () => {
           resetLabel={"Clear"}
           isUpdate={tableEditId}
           submitLabel="Add"
-          submitButtonStyle={{
-            backgroundColor: tableEditId
-              ? theme?.palette?.backgroundColor?.blue
-              : theme?.palette?.success?.main,
-            "&:hover": {
-              backgroundColor: tableEditId
-                ? theme?.palette?.backgroundColor?.blue
-                : theme?.palette?.success?.main,
-            },
-          }}
         />
       </WithCondition>
 

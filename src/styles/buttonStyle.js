@@ -16,8 +16,8 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   fontWeight: "bold",
   height: "36px",
   cursor: "pointer",
-  color: theme.palette?.textColor?.blue,
-  border: `1px solid ${theme.palette?.borderColor?.blue}`,
+  color: theme.palette?.textColor?.main,
+  border: `1px solid ${theme.palette?.borderColor?.main}`,
   "&:hover": {
     backgroundColor: theme.palette?.backgroundColor?.white,
   },
@@ -26,6 +26,7 @@ export const CancelButton = styled(Button)(({ theme }) => ({
 export const SubmitButton = styled(Button)(({ theme }) => ({
   margin: "0 8px",
   height: "36px",
+  borderColor: theme.palette?.borderColor?.main,
   backgroundColor: theme.palette?.backgroundColor?.allButton,
   color: theme.palette?.textColor?.white,
   "&:hover": {

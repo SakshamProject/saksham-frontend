@@ -72,8 +72,9 @@ export const ChipTextField = ({
         ".MuiInputBase-root": {
           display: "flex",
           flexDirection: "column",
+          paddingLeft: "14px",
           input: {
-            paddingLeft: "16px",
+            padding: "16px 14px",
           },
         },
       }}
