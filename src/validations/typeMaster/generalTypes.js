@@ -8,6 +8,7 @@ import {
 
 export const validationSchema = object({
   name: string()
+    .trim()
     .required("Type name is required")
     .min(3, "Type name must contain minimum of 3 characters")
     .max(255, "Name cannot have more than 255 characters"),

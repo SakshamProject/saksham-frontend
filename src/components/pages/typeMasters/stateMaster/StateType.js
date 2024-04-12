@@ -26,7 +26,7 @@ import {
 import useNotify from "../../../../hooks/useNotify";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
-import { getValidValues } from "../../../../utils/common";
+import { findNameById, getValidValues } from "../../../../utils/common";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
   CustomReactTable,
@@ -36,6 +36,7 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../../shared";
+import CustomModal from "../../../shared/CustomModal";
 
 const StateType = () => {
   const { notifySuccess } = useNotify();
@@ -45,6 +46,7 @@ const StateType = () => {
   const [tableEditId, setTableEditId] = useState("");
   const { tableReRenderActions } = useTableCustomHooks(currentForm?.routePath);
   const { searchData } = tableReRenderActions();
+  const [open, setOpen] = useState(false);
 
   const handleEditList = (id) => {
     handleReset();
@@ -54,7 +56,7 @@ const StateType = () => {
   };
 
   const handleDeleteList = (id) => {
-    onDelete(dataList?.data?.[id]?.id);
+    setOpen(dataList?.data?.[id]?.id);
   };
 
   const { mutate: onDelete } = useMutation({
@@ -62,8 +64,8 @@ const StateType = () => {
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: () => {
       notifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
-      handleReset();
       refetch();
+      setOpen(false);
     },
   });
 
@@ -271,6 +273,15 @@ const StateType = () => {
           }}
         />
       </Grid>
+
+      <CustomModal
+        open={open}
+        setOpen={setOpen}
+        content={`Are you sure you want to delete this ${
+          currentForm?.validationLabel
+        } ${findNameById(open, dataList?.data) || ""}?`}
+        handle={() => onDelete(open)}
+      />
     </Grid>
   );
 };

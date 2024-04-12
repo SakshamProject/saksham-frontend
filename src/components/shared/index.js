@@ -3,6 +3,7 @@ export * from "./AuditLog";
 export * from "./BackNavigator";
 export * from "./CommonList";
 export * from "./CustomCell";
+export * from "./CustomModal";
 export * from "./CustomLoader";
 export * from "./CustomReactTable";
 export * from "./CustomSearchField";

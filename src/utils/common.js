@@ -85,3 +85,8 @@ export const formatDate = ({ date, format, time, localDate }) => {
       return `${year}-${month}-${day}`;
   }
 };
+
+export const findNameById = (id, data) =>
+  (data?.find((item) => item?.id === id)?.name || "")
+    ?.toLowerCase()
+    ?.replace(/^\w/, (c) => c?.toUpperCase());

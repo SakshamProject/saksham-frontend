@@ -42,6 +42,8 @@ import {
   WithCondition,
 } from "../../../shared";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
+import CustomModal from "../../../shared/CustomModal";
+import { findNameById } from "../../../../utils/common";
 
 const Form = () => {
   const { notifySuccess, notifyError } = useNotify();
@@ -53,6 +55,7 @@ const Form = () => {
     ROUTE_PATHS.GENERAL_TYPES_FORM
   );
   const { searchData } = tableReRenderActions();
+  const [open, setOpen] = useState(false);
 
   // create and update api call
   const { mutate } = useMutation({
@@ -134,7 +137,7 @@ const Form = () => {
   });
 
   // delete api call
-  const { mutate: handleDelete } = useMutation({
+  const { mutate: onDelete } = useMutation({
     mutationKey: ["delete general type"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath(values);
@@ -142,10 +145,14 @@ const Form = () => {
     },
     onSuccess: () => {
       notifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
-      handleReset();
       refetch();
+      setOpen(false);
     },
   });
+
+  const handleDelete = (id) => {
+    setOpen(id);
+  };
 
   // edit api call
   const { mutate: handleEdit } = useMutation({
@@ -293,6 +300,19 @@ const Form = () => {
           disableLayout
         />
       </Grid>
+
+      <CustomModal
+        open={open}
+        setOpen={setOpen}
+        content={`Are you sure you want to delete this ${values?.typeMaster} ${
+          findNameById(
+            open,
+            generalTypeList?.data?.educationQualificationType ||
+              generalTypeList?.data
+          ) || ""
+        }?`}
+        handle={() => onDelete(open)}
+      />
     </FormWrapper>
   );
 };

@@ -14,6 +14,7 @@ export const CONFIRM = "CONFIRM";
 export const OKAY = "OKAY";
 export const ADD = "Add";
 export const SKIP = "Skip";
+export const DELETE = "Delete";
 
 export const CODES = {
   ACTIVE: "active",

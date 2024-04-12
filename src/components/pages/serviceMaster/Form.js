@@ -24,7 +24,7 @@ import {
 } from "../../../constants/serviceMaster/serviceMaster";
 import useNotify from "../../../hooks/useNotify";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { getValidValues } from "../../../utils/common";
+import { findNameById, getValidValues } from "../../../utils/common";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
   CustomReactTable,
@@ -35,6 +35,7 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import CustomModal from "../../shared/CustomModal";
 
 const Form = () => {
   const navigate = useNavigate();
@@ -44,6 +45,7 @@ const Form = () => {
   const { notifySuccess } = useNotify();
   const isViewMode = state?.viewDetails;
   const [tableEditId, setTableEditId] = useState("");
+  const [open, setOpen] = useState(false);
 
   const handleEditList = (id) => {
     setFieldValue("name", dataList?.data?.data?.service[id]?.name);
@@ -51,7 +53,7 @@ const Form = () => {
   };
 
   const handleDeleteList = (id) => {
-    onDelete(dataList?.data?.data?.service[id]?.id);
+    setOpen(dataList?.data?.data?.service[id]?.id);
   };
 
   const { mutate: onDelete } = useMutation({
@@ -60,6 +62,7 @@ const Form = () => {
     onSuccess: ({ data }) => {
       notifySuccess(DELETED_SUCCESSFULLY("Service"));
       serviceGetById();
+      setOpen(false);
     },
   });
 
@@ -110,7 +113,7 @@ const Form = () => {
 
   const { data: serviceTypeList } = useQuery({
     queryKey: ["getAllServiceTypes"],
-    queryFn: () => getApiService(API_PATHS?.SERVICES),
+    queryFn: () => getApiService(API_PATHS?.SERVICE_TYPES),
     select: ({ data }) => data?.data,
   });
 
@@ -139,11 +142,9 @@ const Form = () => {
           inputValues={serviceTypeList || []}
         />
       </Grid>
-
       <Grid item xs={12}>
         <DividerLine gap={"6px 0 24px"} />
       </Grid>
-
       <WithCondition isValid={!isViewMode}>
         <Grid item xs={12}>
           <CustomTextField
@@ -171,7 +172,6 @@ const Form = () => {
           submitLabel="Add"
         />
       </WithCondition>
-
       <Grid item xs={12} mt={4} mb={2}>
         <CustomReactTable
           columnData={
@@ -200,6 +200,15 @@ const Form = () => {
           }}
         />
       </Grid>
+
+      <CustomModal
+        open={open}
+        setOpen={setOpen}
+        content={`Are you sure you want to delete this Service ${
+          findNameById(open, dataList?.data?.data?.service) || ""
+        }?`}
+        handle={() => onDelete(open)}
+      />
     </FormWrapper>
   );
 };
