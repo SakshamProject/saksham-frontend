@@ -21,8 +21,7 @@ export const CommonList = ({
   disableSearchField,
   dataAccessor,
 }) => {
-  const { searchFields, filterFields, filterInitialValues } =
-    getTableSchemas(columns);
+  const { filterFields, filterInitialValues } = getTableSchemas(columns);
   const {
     onPageNumberChange,
     onChangePageSize,
@@ -30,11 +29,7 @@ export const CommonList = ({
     tableReRenderActions,
   } = useTableCustomHooks(ROUTE_PATHS?.[listPath]);
 
-  const listParams = handleTableData(
-    searchFields,
-    columns,
-    defaultSortedValues
-  );
+  const listParams = handleTableData(columns, defaultSortedValues);
 
   const filters = [];
 
