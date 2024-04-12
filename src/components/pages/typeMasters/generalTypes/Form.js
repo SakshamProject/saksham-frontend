@@ -1,8 +1,8 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 import {
   deleteApiService,
@@ -44,8 +44,20 @@ import {
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 import CustomModal from "../../../shared/CustomModal";
 import { findNameById } from "../../../../utils/common";
+import styled from "@emotion/styled";
+import { theme } from "../../../../styles";
+
+const CustomTypography = styled(Typography)({
+  color: theme?.palette?.textColor?.blue,
+  textTransform: "uppercase",
+  fontSize: "16px",
+  fontWeight: "bold",
+  marginBottom: 16,
+});
 
 const Form = () => {
+  const [name] = useSearchParams();
+  const editId = name.get("editId");
   const { notifySuccess, notifyError } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
@@ -189,26 +201,35 @@ const Form = () => {
       navigateTo={ROUTE_PATHS.GENERAL_TYPES_LIST}
       title="Type Master"
     >
-      <Grid item xs={12}>
-        <CustomRadioButton
-          name={fields?.typeMaster?.name}
-          label={fields?.typeMaster?.label}
-          labelStyle={fields?.typeMaster?.labelStyle}
-          accessor={fields?.typeMaster?.accessor}
-          inputValues={allGeneralTypes || []}
-          value={values?.typeMaster}
-          errors={errors?.typeMaster}
-          touched={touched?.typeMaster}
-          onBlur={handleBlur}
-          onChange={(e) => {
-            resetForm();
-            setFieldValue("typeMaster", e.target.value);
-          }}
-          isViewMode={isViewMode || !!tableEditId || !!generalType}
-          disabled={isViewMode || !!tableEditId || !!generalType}
-          rowBreak
-        />
-      </Grid>
+      <WithCondition
+        isValid={!editId}
+        nullComponent={
+          <Grid item xs={12}>
+            <CustomTypography>{generalType}</CustomTypography>
+          </Grid>
+        }
+      >
+        <Grid item xs={12}>
+          <CustomRadioButton
+            name={fields?.typeMaster?.name}
+            label={fields?.typeMaster?.label}
+            labelStyle={fields?.typeMaster?.labelStyle}
+            accessor={fields?.typeMaster?.accessor}
+            inputValues={allGeneralTypes || []}
+            value={values?.typeMaster}
+            errors={errors?.typeMaster}
+            touched={touched?.typeMaster}
+            onBlur={handleBlur}
+            onChange={(e) => {
+              resetForm();
+              setFieldValue("typeMaster", e.target.value);
+            }}
+            isViewMode={isViewMode || !!tableEditId || !!generalType}
+            disabled={isViewMode || !!tableEditId || !!generalType}
+            rowBreak
+          />
+        </Grid>
+      </WithCondition>
 
       <WithCondition isValid={!isViewMode}>
         <WithCondition isValid={values?.typeMaster === DISTRICT}>
