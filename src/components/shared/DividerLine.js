@@ -11,7 +11,7 @@ export const DividerLine = ({
       style={{
         background: color,
         borderRadius: 20,
-        height: 2,
+        minHeight: 2,
         margin: gap ? gap || "30px 0" : "",
       }}
     />

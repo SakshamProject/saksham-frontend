@@ -48,6 +48,7 @@ export const ListTopbar = ({
   newButtonLabel,
   onDownload,
   style,
+  placeholder,
 }) => {
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ export const ListTopbar = ({
 
         <IconsContainer>
           <WithCondition isValid={!disableSearchField}>
-            <CustomSearchField  />
+            <CustomSearchField placeholder={placeholder} />
           </WithCondition>
 
           {!!additionalComponent ? additionalComponent : <></>}

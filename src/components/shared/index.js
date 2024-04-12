@@ -8,7 +8,6 @@ export * from "./CustomSearchField";
 export * from "./CustomStepper";
 export * from "./DividerLine";
 export * from "./EditPopover";
-export * from "./FileUpload";
 export * from "./FilterModal";
 export * from "./FormActions";
 export * from "./FormWrapper";

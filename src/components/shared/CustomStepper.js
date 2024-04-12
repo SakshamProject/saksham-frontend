@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation } from "react-router-dom";
+import { theme } from "../../styles";
 
 const StepperContainer = styled(Box)(({ isHorizontal }) => ({
   backgroundColor: "white",
@@ -42,13 +43,13 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
     },
     ".Mui-active": {
       ".MuiStepConnector-line": {
-        borderColor: theme.palette.primary.main,
+        borderColor: theme.palette?.borderColor?.main,
         borderWidth: "2px",
       },
     },
     ".MuiStepConnector-line": {
       borderWidth: "2px",
-      borderColor: theme.palette.primary.main,
+      borderColor: theme.palette?.borderColor?.main,
       transform: isHorizontal
         ? "translateX(16px) translateY(3px)"
         : "translateX(3px)",
@@ -57,8 +58,8 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
     ".MuiStepLabel-iconContainer": {
       padding: "0 !important",
-      border: `1px solid ${theme.palette.primary.main}`,
-      color: theme.palette.primary.main,
+      border: `1px solid ${theme.palette?.borderColor?.main}`,
+      color: theme.palette?.textColor?.main,
       borderRadius: "60px",
       height: "14px",
       width: "14px",
@@ -68,10 +69,10 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
       justifyContent: "center",
     },
     ".MuiStepLabel-iconContainer.Mui-active": {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette?.textColor?.main,
     },
     ".MuiStepLabel-iconContainer.Mui-completed": {
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: theme.palette?.backgroundColor?.main,
     },
     ".MuiStepLabel-root.MuiStepLabel-horizontal": {
       display: "block !important",
@@ -133,7 +134,8 @@ export const CustomStepper = ({
             key={step.label}
             sx={{
               background:
-                step?.route === location?.pathname && "rgb(232, 237, 255)",
+                step?.route === location?.pathname &&
+                theme.palette?.backgroundColor?.sideMenuButton,
               borderRadius: step?.route === location?.pathname && "3px",
               zIndex: step?.route === location?.pathname && 999,
               paddingBlock: 1,

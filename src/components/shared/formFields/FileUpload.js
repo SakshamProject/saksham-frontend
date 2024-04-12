@@ -5,12 +5,13 @@ import {
   Cancel,
   UploadFile,
   VideoFile,
+  FileUpload as FileUploadIcon,
 } from "@mui/icons-material";
 import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
 
-import useNotify from "../../hooks/useNotify";
+import useNotify from "../../../hooks/useNotify";
 
 const InputField = styled("input")(() => ({
   display: "none",
@@ -110,7 +111,7 @@ export const FileUpload = ({
         <ImgTag src={imgUrl} alt=""></ImgTag>
       ) : (
         <IconButton style={errorText}>
-          <AddPhotoAlternate />
+          <FileUploadIcon style={{ width: 24, height: 24 }} />
         </IconButton>
       );
     } else if (type === "audio") {
@@ -196,7 +197,6 @@ export const FileUpload = ({
         <div
           className="label"
           style={{
-            font: "normal normal normal 16px/19px Lato",
             width: "80%",
             whiteSpace: "nowrap",
             overflow: "hidden",
@@ -220,7 +220,7 @@ export const FileUpload = ({
       </FileInputHolder>
 
       <FormHelperText error>
-        {customHelperText || (touched && error)}
+        {customHelperText || (touched ? error : " ")}
       </FormHelperText>
     </FormControl>
   );

@@ -91,7 +91,7 @@ const Form = () => {
   return (
     <FormWrapper
       title="Seva Kendra"
-      navigateTo={ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST}
+      navigateTo={ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST}
       columnSpacing={3}
     >
       <Grid item xs={12}>
@@ -120,7 +120,6 @@ const Form = () => {
           errors={errors?.stateId}
           touched={touched?.stateId}
           inputValues={stateList || []}
-          accessor={fields?.stateId?.accessor}
         />
       </Grid>
 
@@ -136,7 +135,6 @@ const Form = () => {
           errors={errors?.districtId}
           touched={touched?.districtId}
           inputValues={districtList?.districts || []}
-          accessor={fields?.districtId?.accessor}
         />
       </Grid>
 

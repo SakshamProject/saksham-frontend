@@ -83,8 +83,8 @@ export const FormLayout = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   overflow: "auto",
-  scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+  scrollbarWidth: "none",
+  //  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
 }));
 
 export const StyledFormContainer = styled(Paper)(({ theme, width }) => {

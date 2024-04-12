@@ -106,17 +106,17 @@ export const generalTypeColumns = [
         <EditPopover
           inputValues={[
             {
-              label: "Edit",
-              id: row?.original?.id,
-              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
-              stateProps: { field: value },
-            },
-            {
               label: "View Details",
               id: row?.original?.id,
               path: ROUTE_PATHS.GENERAL_TYPES_FORM,
               stateProps: { field: value },
               view: true,
+            },
+            {
+              label: "Edit",
+              id: row?.original?.id,
+              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              stateProps: { field: value },
             },
           ]}
         />
@@ -190,19 +190,19 @@ export const fields = {
   },
 
   name: {
-    label: "Type Name",
+    label: "Type Name *",
     name: "name",
   },
 
   chipSetField: {
-    label: "Sub Type Name",
+    label: "Sub Type Name *",
     placeHolder: "Use enter key to add multiple sub type",
     name: "chip",
     chipVariant: "outlined",
   },
 
   stateId: {
-    label: "Select State",
+    label: "Select State *",
     name: "stateId",
   },
 };

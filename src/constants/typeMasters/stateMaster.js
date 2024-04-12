@@ -119,8 +119,18 @@ export const stateMasterColumns = ({
   {
     Header: currentForm?.validationLabel,
     accessor: `name`,
-    width: 400,
+    width: 220,
     sticky: "left",
+  },
+  {
+    Header: "District",
+    accessor: `district.name`,
+    width: 180,
+  },
+  {
+    Header: "State",
+    accessor: `district.state.name`,
+    width: 180,
   },
   {
     Header: "   ",
@@ -132,7 +142,7 @@ export const stateMasterColumns = ({
               onClick={() => handleEditList(props?.row?.index)}
               disabled={tableEditId !== "" ? true : false}
             >
-              <EditIcon color="primary" />
+              <EditIcon disabled={tableEditId !== "" ? true : false} />
             </IconButton>
             <IconButton
               onClick={() => {
@@ -140,7 +150,7 @@ export const stateMasterColumns = ({
               }}
               disabled={tableEditId !== "" ? true : false}
             >
-              <DeleteIcon color="primary" />
+              <DeleteIcon disabled={tableEditId !== "" ? true : false} />
             </IconButton>
           </div>
         </OptionsContainerChild>
