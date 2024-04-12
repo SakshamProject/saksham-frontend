@@ -9,4 +9,5 @@ export * from "./CustomSelectField";
 export * from "./CustomTextArea";
 export * from "./CustomTextField";
 export * from "./CustomTimePicker";
+export * from "./FileUpload";
 export * from "./SingleAutoComplete";
