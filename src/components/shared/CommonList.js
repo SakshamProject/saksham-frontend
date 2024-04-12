@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { postApiService } from "../../api/api";
-import { API_PATHS } from "../../api/apiPaths";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { getTableSchemas } from "../../utils/tableSchemas";
 import { CustomReactTable, ListTopbar, WithCondition } from "./index";
+import { API_PATHS } from "../../api/apiPaths";
 
 export const CommonList = ({
   listPath,
@@ -19,6 +19,7 @@ export const CommonList = ({
   customApiPath,
   disableFilters,
   disableSearchField,
+  dataAccessor,
 }) => {
   const { searchFields, filterFields, filterInitialValues } =
     getTableSchemas(columns);
@@ -58,14 +59,14 @@ export const CommonList = ({
           filterFields={filterFields}
           filterFieldInitial={filterInitialValues}
           isFilterParams={!!listParams?.filters?.length}
-          disableSearchField={!disableSearchField}
-          disableFilter={!disableFilters}
+          disableSearchField={disableSearchField}
+          disableFilter={disableFilters}
         />
       </WithCondition>
 
       <CustomReactTable
         columnData={columns || []}
-        rawData={data?.data?.rows || []}
+        rawData={data?.data?.[dataAccessor] || data?.data || []}
         isLoading={isLoading}
         onPageNumberChange={onPageNumberChange}
         onChangePageSize={onChangePageSize}

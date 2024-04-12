@@ -46,14 +46,17 @@ const useTableCustomHooks = (path) => {
   };
 
   const handleTableData = (searchFields, columnData, defaultSortedValues) => {
-    const offset = pageSize * (currentPage - 1);
+    const start = pageSize * (currentPage - 1) + 1;
     const listParams = {
-      pagination: { limit: pageSize, offset },
-      search: { fields: searchFields, value: searchData ? searchData : "" },
+      pagination: { rows: pageSize, start },
+      search: searchData ? searchData : "",
       sorting:
         sortData.length === 0
-          ? defaultSortedValues || [{ column: "createdAt", order: "desc" }]
-          : sortedValues(columnData, sortData) || [],
+          ? defaultSortedValues || {
+              orderByColumn: "createdAt",
+              sortOrder: "desc",
+            }
+          : {},
       filters: filterData?.length !== 0 ? filterData : [],
     };
     return listParams;

@@ -1,22 +1,19 @@
 export const getTableSchemas = (columns = []) => {
-  let searchFields = [];
   let filterFields = [];
   let filterInitialValues = {};
 
   if (columns?.length) {
     columns?.forEach((column, index) => {
-      searchFields.push(column?.accessor);
       filterFields.push({
         id: index,
         label: column?.Header,
-        queryName: column?.accessor + "Drop",
-        fieldName: column?.accessor,
+        queryName: column?.accessor,
+        fieldName: column?.filterAccessor || column?.accessor,
       });
       filterInitialValues[column?.accessor] = "";
     });
   }
-
-  return { searchFields, filterFields, filterInitialValues };
+  return { filterFields, filterInitialValues };
 };
 
 export const sortedValues = (column, value) => {
@@ -25,8 +22,8 @@ export const sortedValues = (column, value) => {
   let output = [];
 
   output.push({
-    column: getObj?.accessor || "",
-    order: value?.[0]?.desc ? "desc" : "asc",
+    orderByColumn: getObj?.accessor || "",
+    sortOrder: value?.[0]?.desc ? "desc" : "asc",
   });
 
   return output;

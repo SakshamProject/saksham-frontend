@@ -32,6 +32,7 @@ export const serviceMasterColumn = [
   {
     Header: "Service type",
     accessor: "name",
+    filterAccessor: "serviceTypeName",
     width: 300,
     sticky: "left",
     Cell: (props) => (
@@ -58,6 +59,7 @@ export const serviceMasterColumn = [
   {
     Header: "Service Provided",
     accessor: "service",
+    filterAccessor: "serviceName",
     width: 420,
     Cell: (props) => (
       <CustomCell

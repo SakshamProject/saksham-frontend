@@ -20,4 +20,5 @@ export const API_PATHS = {
 
   //service master
   SERVICES: "services",
+  SERVICES_LIST: "services/list",
 };

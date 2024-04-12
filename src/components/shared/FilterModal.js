@@ -23,6 +23,7 @@ import {
   FilterTitle,
   SubmitButton,
 } from "../../styles";
+import { filterStringSeeds } from "../../constants/filterFieldSeeds.js";
 
 export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
   const navigate = useNavigate();
@@ -35,11 +36,14 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
 
   const onSubmit = (data) => {
     let getFilterValues = filterFields.map((item) => ({
-      type: data[item?.queryName],
+      operation: data[item?.queryName],
       field: item?.fieldName,
       value: data?.[item?.fieldName]?.trim(),
     }));
-    let filterArray = getFilterValues.filter((item) => item.type && item.value);
+    let filterArray = getFilterValues.filter(
+      (item) => item.operation && item.value
+    );
+    console.log(filterArray);
     filterArray.length !== 0 &&
       navigate({
         pathName: listPath,
@@ -104,7 +108,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
 
           <form onSubmit={formik.handleSubmit}>
             <FilterFormStyle>
-              {[{ label: "sdfg" }, { label: "sdfghj" }]?.map((item, index) => {
+              {filterFields?.map((item, index) => {
                 return (
                   <Grid
                     container
@@ -123,7 +127,11 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                     <Grid item xs={4}>
                       <CustomSelectField
                         label={"Query"}
-                        inputValues={item?.querySeeds ? item?.querySeeds : []}
+                        inputValues={
+                          item?.querySeeds
+                            ? item?.querySeeds
+                            : filterStringSeeds || []
+                        }
                         name={item?.queryName}
                         onChange={handleChange}
                         value={values?.[item?.queryName] || ""}
