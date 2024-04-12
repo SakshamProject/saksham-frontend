@@ -196,17 +196,16 @@ const Form = () => {
           rawData={dataList?.data?.data?.service || []}
           manualSort
           disablePagination
-          disableLayout
+          // disableLayout
           style={{
             tableHead: {
               ".tr .th:first-child": {
                 boxShadow: "none !important",
-                marginLeft: "-4px",
               },
             },
             tr: {
               "div:nth-child(3)": {
-                width: "100% !important",
+                flex: 1,
               },
             },
           }}

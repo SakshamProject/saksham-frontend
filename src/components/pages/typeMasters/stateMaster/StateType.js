@@ -47,6 +47,7 @@ const StateType = () => {
   const { searchData } = tableReRenderActions();
 
   const handleEditList = (id) => {
+    handleReset();
     setValues({ ...dataList?.data?.[id] });
     setFieldValue("stateId", dataList?.data?.[id]?.district?.state?.id);
     setTableEditId(dataList?.data?.[id]?.id);
@@ -97,7 +98,11 @@ const StateType = () => {
           ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
           : ADDED_SUCCESSFULLY(currentForm?.validationLabel)
       );
-      handleReset();
+      if (tableEditId) handleReset();
+      else {
+        setFieldValue(currentForm?.name, "");
+        setTouched({});
+      }
       refetch();
       setTableEditId("");
     },
@@ -120,6 +125,7 @@ const StateType = () => {
     setFieldValue,
     setValues,
     handleReset,
+    setTouched,
   } = formik;
 
   const { data: stateList } = useQuery({
@@ -230,6 +236,7 @@ const StateType = () => {
           disableFilter
           disableNewForm
           style={{ width: "100%", marginLeft: 0 }}
+          placeholder={`Search ${currentForm?.validationLabel}`}
         />
         <CustomReactTable
           columnData={
@@ -250,12 +257,11 @@ const StateType = () => {
             tableHead: {
               ".tr .th:first-child": {
                 boxShadow: "none !important",
-                marginLeft: "-4px",
               },
             },
             tr: {
-              "div:nth-child(3)": {
-                width: "100% !important",
+              "div:nth-child(5)": {
+                flex: 1,
               },
             },
           }}

@@ -119,8 +119,18 @@ export const stateMasterColumns = ({
   {
     Header: currentForm?.validationLabel,
     accessor: `name`,
-    width: 400,
+    width: 220,
     sticky: "left",
+  },
+  {
+    Header: "District",
+    accessor: `district.name`,
+    width: 180,
+  },
+  {
+    Header: "State",
+    accessor: `district.state.name`,
+    width: 180,
   },
   {
     Header: "   ",
