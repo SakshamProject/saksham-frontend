@@ -83,6 +83,11 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
+        sx={{
+          ".MuiModal-backdrop": {
+            backgroundColor: "rgba(0,0,0,0.5)",
+          },
+        }}
       >
         <FilterContainerStyle>
           <FilterTitle>
@@ -90,7 +95,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
               id="modal-modal-title"
               variant="h6"
               component="h2"
-              sx={{ color: theme?.palette?.textColor?.main }}
+              sx={{ color: theme?.palette?.textColor?.white }}
             >
               Filter
             </Typography>
@@ -99,7 +104,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
 
           <form onSubmit={formik.handleSubmit}>
             <FilterFormStyle>
-              {filterFields?.map((item, index) => {
+              {[{ label: "sdfg" }, { label: "sdfghj" }]?.map((item, index) => {
                 return (
                   <Grid
                     container
@@ -118,7 +123,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                     <Grid item xs={4}>
                       <CustomSelectField
                         label={"Query"}
-                        inputValues={item.querySeeds ? item.querySeeds : []}
+                        inputValues={item?.querySeeds ? item?.querySeeds : []}
                         name={item?.queryName}
                         onChange={handleChange}
                         value={values?.[item?.queryName] || ""}
@@ -127,9 +132,9 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                     <Grid item xs={4}>
                       <CustomTextField
                         label={"Value"}
-                        name={item.fieldName}
+                        name={item?.fieldName}
                         onChange={handleChange}
-                        value={values[item.fieldName] || ""}
+                        value={values?.[item?.fieldName] || ""}
                       />
                     </Grid>
                   </Grid>

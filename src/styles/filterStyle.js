@@ -19,7 +19,7 @@ export const FilterContainerStyle = styled(Box)(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: "60%",
   maxWidth: "800px",
-  backgroundColor: theme.palette?.backgroundColor?.allButton,
+  backgroundColor: theme.palette?.backgroundColor?.white,
   boxShadow: 24,
   outline: 0,
 }));
@@ -57,12 +57,13 @@ export const FilterIconButton = styled(IconButton)(({ theme }) => ({
   },
 }));
 
-export const FilterButtonModal = styled(Box)({
+export const FilterButtonModal = styled(Box)(({ theme }) => ({
   margin: 0,
   marginTop: 20,
   padding: "16px",
-  boxShadow: "-2px 0px 6px #00000029",
+  boxShadow: "0px -2px 6px #00000029",
+  // backgroundColor: theme.palette?.backgroundColor?.allButton,
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",
-});
+}));
