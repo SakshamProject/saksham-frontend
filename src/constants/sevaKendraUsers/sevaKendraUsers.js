@@ -15,6 +15,11 @@ export const initialValues = {
   loginId: "",
   password: "",
   confirmPassword: "",
+  auditLog: {
+    status: "ACTIVE",
+    date: "",
+    description: "",
+  },
 };
 
 export const fields = {

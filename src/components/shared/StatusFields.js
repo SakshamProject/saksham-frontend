@@ -30,10 +30,12 @@ function StatusFields({
 
     if (values?.auditLog?.status === CODES.ACTIVE) {
       setFieldValue("auditLog.description", "");
+      setFieldValue("auditLog.date", "");
     }
     if (values?.auditLog?.status === CODES.DEACTIVE) {
       setFieldValue("auditLog.date", new Date());
     }
+    setFieldTouched("auditLog.description", false);
   }, [values?.auditLog?.status]); // eslint-disable-line
 
   if (hide) return <></>;

@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 
@@ -24,27 +24,35 @@ import {
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import { getApiService, getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { getValidValues } from "../../../utils/common";
+import { formatDate, getValidValues } from "../../../utils/common";
 import { Grid } from "@mui/material";
 import StatusFields from "../../shared/StatusFields";
 import { theme } from "../../../styles";
+import { statusSeeds } from "../../../constants/globalConstants";
 
 const Form = () => {
   const { notifySuccess } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
+    const payload = getValidValues({
+      ...values,
+      auditLog: getValidValues({
+        ...values?.auditLog,
+        date: formatDate({ date: values?.auditLog?.date }),
+      }),
+    });
     // onSubmit(payload);
-    console.log(JSON.stringify(payload));
     console.log(payload);
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: validationSchema(editId),
     onSubmit: handleOnSubmit,
   });
 
@@ -332,7 +340,7 @@ const Form = () => {
         />
       </Grid>
 
-      {/* <WithCondition isValid={editId}>
+      <WithCondition isValid={editId}>
         <StatusFields
           setFieldTouched={setFieldTouched}
           handleBlur={handleBlur}
@@ -347,7 +355,7 @@ const Form = () => {
           // statusHistory={clientDetail?.data?.status}
           disableListLayout
         />
-      </WithCondition>  */}
+      </WithCondition>
 
       <FormActions
         handleSubmit={handleSubmit}

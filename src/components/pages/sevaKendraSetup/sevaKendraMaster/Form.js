@@ -53,7 +53,10 @@ const Form = () => {
       ...values,
       startDate: formatDate({ date: values?.startDate }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
-      auditLog: getValidValues(values?.auditLog),
+      auditLog: getValidValues({
+        ...values?.auditLog,
+        date: formatDate({ date: values?.auditLog?.date }),
+      }),
     });
     // onSubmit(payload);
     console.log(payload);
@@ -61,7 +64,7 @@ const Form = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: validationSchema(editId),
     onSubmit: handleOnSubmit,
   });
 
