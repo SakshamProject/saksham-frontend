@@ -69,6 +69,7 @@ export const formatDate = ({ date, format, time, localDate }) => {
   const hours = d.getHours().toString().padStart(2, "0");
   const minutes = d.getMinutes().toString().padStart(2, "0");
   const seconds = d.getSeconds().toString().padStart(2, "0");
+  // const milliSeconds = d.getMilliseconds().toString().padStart(2, "0");
 
   if (!(date || time || localDate)) return "";
 
@@ -82,7 +83,8 @@ export const formatDate = ({ date, format, time, localDate }) => {
     case "dateTime":
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     default:
-      return `${year}-${month}-${day}`;
+      // return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
+      return d.toISOString();
   }
 };
 

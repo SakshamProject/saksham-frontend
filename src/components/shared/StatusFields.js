@@ -28,61 +28,61 @@ function StatusFields({
   useEffect(() => {
     if (hide) return;
 
-    if (values?.status?.statusId === CODES.ACTIVE) {
-      setFieldValue("status.deactivationReason", "");
+    if (values?.auditLog?.status === CODES.ACTIVE) {
+      setFieldValue("auditLog.description", "");
     }
-    if (values?.status?.statusId === CODES.IN_ACTIVE) {
-      setFieldValue("status.effectiveDate", new Date());
+    if (values?.auditLog?.status === CODES.DEACTIVE) {
+      setFieldValue("auditLog.date", new Date());
     }
-  }, [values?.status?.statusId]); // eslint-disable-line
+  }, [values?.auditLog?.status]); // eslint-disable-line
 
   if (hide) return <></>;
 
   return (
     <>
       <Grid item xs={12}>
-        <DividerLine gap={gap || "6px 0 24px"} />
+        <DividerLine gap={gap || "8px 0 24px"} />
       </Grid>
       <Grid item xs={6}>
         <CustomRadioButton
-          name="status.statusId"
+          name="auditLog.status"
           label={"Status"}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values?.status?.statusId || ""}
-          touched={touched?.status?.statusId}
-          errors={errors?.status?.statusId}
+          value={values?.auditLog?.status || ""}
+          touched={touched?.auditLog?.status}
+          errors={errors?.auditLog?.status}
           isViewMode={isViewMode}
-          accessor="code"
+          accessor="id"
           inputValues={statusSeeds}
           rowBreak={rowBreak}
         />
       </Grid>
-      <WithCondition isValid={values?.status?.statusId === CODES.IN_ACTIVE}>
+      <WithCondition isValid={values?.auditLog?.status === CODES.DEACTIVE}>
         <Grid item xs={12} md={6}>
           <CustomDatePicker
-            name="status.effectiveDate"
+            name="auditLog.date"
             label={"Effective Date *"}
-            value={values?.status?.effectiveDate}
+            value={values?.auditLog?.date}
             onChange={setFieldValue}
             isViewMode={true}
             maxDate={new Date()}
             fullWidth
-            errors={errors?.status?.effectiveDate}
+            errors={errors?.auditLog?.date}
             onBlur={handleBlur}
             setTouched={setFieldTouched}
-            touched={touched?.status?.effectiveDate}
+            touched={touched?.auditLog?.date}
           />
         </Grid>
         <Grid item xs={12}>
           <CustomTextField
-            name="status.deactivationReason"
+            name="auditLog.description"
             label={"Reason for deactivation *"}
             onChange={handleChange}
             onBlur={handleBlur}
-            value={values?.status?.deactivationReason || ""}
-            touched={touched?.status?.deactivationReason}
-            errors={errors?.status?.deactivationReason}
+            value={values?.auditLog?.description || ""}
+            touched={touched?.auditLog?.description}
+            errors={errors?.auditLog?.description}
             isViewMode={isViewMode}
           />
         </Grid>

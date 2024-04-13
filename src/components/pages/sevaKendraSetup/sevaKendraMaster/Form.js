@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -18,7 +18,7 @@ import {
   fields,
   initialValues,
 } from "../../../../constants/sevaKendraSetup/master";
-import { getValidValues } from "../../../../utils/common";
+import { formatDate, getValidValues } from "../../../../utils/common";
 import { getApiService, getByIdApiService } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
 import useNotify from "../../../../hooks/useNotify";
@@ -27,6 +27,7 @@ import { theme } from "../../../../styles";
 import styled from "@emotion/styled";
 import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
 import StatusFields from "../../../shared/StatusFields";
+import { statusSeeds } from "../../../../constants/globalConstants";
 
 const CustomTypography = styled(Typography)({
   color: theme?.palette?.textColor?.blue,
@@ -36,16 +37,25 @@ const CustomTypography = styled(Typography)({
   marginBottom: 16,
 });
 
+const transformServices = (services) =>
+  services.map(({ id }) => ({ serviceId: id }));
+
 const Form = () => {
   const { notifySuccess } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
+    const payload = getValidValues({
+      ...values,
+      startDate: formatDate({ date: values?.startDate }),
+      servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
+      auditLog: getValidValues(values?.auditLog),
+    });
     // onSubmit(payload);
-    console.log(JSON.stringify(payload));
     console.log(payload);
   };
 
@@ -87,6 +97,10 @@ const Form = () => {
     queryFn: () => getApiService(API_PATHS?.SERVICES),
     select: ({ data }) => data?.data,
   });
+
+  useEffect(() => {
+    !editId && setFieldValue(fields?.startDate?.name, new Date());
+  }, []);
 
   return (
     <FormWrapper
@@ -188,7 +202,8 @@ const Form = () => {
           name={fields?.startDate?.name}
           value={values?.startDate}
           onChange={setFieldValue}
-          isViewMode={isViewMode}
+          isViewMode={true}
+          maxDate={new Date()}
           fullWidth
           onBlur={handleBlur}
           setTouched={setFieldTouched}
@@ -203,58 +218,58 @@ const Form = () => {
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.contactPersonId?.label}
-          name={fields?.contactPersonId?.name}
-          value={values?.contactPersonId}
+          label={fields?.contactPerson?.name?.label}
+          name={fields?.contactPerson?.name?.name}
+          value={values?.contactPerson?.name}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.contactPersonId}
-          touched={touched?.contactPersonId}
+          errors={errors?.contactPerson?.name}
+          touched={touched?.contactPerson?.name}
           isViewMode={isViewMode}
-          fieldType={fields?.contactPersonId?.type}
+          fieldType={fields?.contactPerson?.name?.type}
         />
       </Grid>
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.emailId?.label}
-          name={fields?.emailId?.name}
-          value={values?.emailId}
+          label={fields?.contactPerson?.email?.label}
+          name={fields?.contactPerson?.email?.name}
+          value={values?.contactPerson?.email}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.emailId}
-          touched={touched?.emailId}
+          errors={errors?.contactPerson?.email}
+          touched={touched?.contactPerson?.email}
           isViewMode={isViewMode}
-          fieldType={fields?.emailId?.type}
+          fieldType={fields?.contactPerson?.email?.type}
         />
       </Grid>
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.phoneNumber1?.label}
-          name={fields?.phoneNumber1?.name}
-          value={values?.phoneNumber1}
+          label={fields?.contactPerson?.phoneNumber1?.label}
+          name={fields?.contactPerson?.phoneNumber1?.name}
+          value={values?.contactPerson?.phoneNumber1}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.phoneNumber1}
-          touched={touched?.phoneNumber1}
+          errors={errors?.contactPerson?.phoneNumber1}
+          touched={touched?.contactPerson?.phoneNumber1}
           isViewMode={isViewMode}
-          fieldType={fields?.phoneNumber1?.type}
+          fieldType={fields?.contactPerson?.phoneNumber1?.type}
           maxLength={10}
         />
       </Grid>
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.phoneNumber2?.label}
-          name={fields?.phoneNumber2?.name}
-          value={values?.phoneNumber2}
+          label={fields?.contactPerson?.phoneNumber2?.label}
+          name={fields?.contactPerson?.phoneNumber2?.name}
+          value={values?.contactPerson?.phoneNumber2}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.phoneNumber2}
-          touched={touched?.phoneNumber2}
+          errors={errors?.contactPerson?.phoneNumber2}
+          touched={touched?.contactPerson?.phoneNumber2}
           isViewMode={isViewMode}
-          fieldType={fields?.phoneNumber2?.type}
+          fieldType={fields?.contactPerson?.phoneNumber2?.type}
           maxLength={10}
         />
       </Grid>
@@ -271,23 +286,23 @@ const Form = () => {
 
       <Grid item xs={12}>
         <CustomAutoComplete
-          label={fields?.serviceTypes.label}
-          name={fields?.serviceTypes.name}
-          value={values?.serviceTypes}
+          label={fields?.servicesBySevaKendra?.label}
+          name={fields?.servicesBySevaKendra?.name}
+          value={values?.servicesBySevaKendra}
           onChange={(_, value) => {
-            setFieldValue(fields?.serviceTypes.name, [...value]);
+            setFieldValue(fields?.servicesBySevaKendra?.name, [...value]);
           }}
           onBlur={handleBlur}
-          touched={touched?.serviceTypes}
-          error={errors?.serviceTypes}
+          touched={touched?.servicesBySevaKendra}
+          error={errors?.servicesBySevaKendra}
           isViewMode={isViewMode}
           inputValues={serviceTypeList || []}
-          // accessor={fields?.serviceTypes.accessor}
+          // accessor={fields?.servicesBySevaKendra?.accessor}
           // labelAccessor="role"
         />
       </Grid>
 
-      {/* <WithCondition isValid={editId}>
+      <WithCondition isValid={editId}>
         <StatusFields
           setFieldTouched={setFieldTouched}
           handleBlur={handleBlur}
@@ -302,7 +317,7 @@ const Form = () => {
           // statusHistory={clientDetail?.data?.status}
           disableListLayout
         />
-      </WithCondition> */}
+      </WithCondition>
 
       <FormActions
         handleSubmit={handleSubmit}

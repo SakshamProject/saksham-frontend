@@ -6,14 +6,18 @@ export const initialValues = {
   landLineNumber: "",
   mobileNumber: "",
   startDate: "",
-  contactPersonId: "",
-  emailId: "",
-  phoneNumber1: "",
-  phoneNumber2: "",
-  serviceTypes: [],
-  statusId: "",
-  effectiveDate: "",
-  reason: "",
+  contactPerson: {
+    name: "",
+    email: "",
+    phoneNumber1: "",
+    phoneNumber2: "",
+  },
+  servicesBySevaKendra: [],
+  auditLog: {
+    status: "ACTIVE",
+    date: "",
+    description: "",
+  },
 };
 
 export const fields = {
@@ -49,28 +53,30 @@ export const fields = {
     label: "Seva Kendra Start Date *",
     name: "startDate",
   },
-  contactPersonId: {
-    label: "Contact Person Name *",
-    name: "contactPersonId",
-    type: "alphabets",
+  contactPerson: {
+    name: {
+      label: "Contact Person Name *",
+      name: "contactPerson.name",
+      type: "alphabets",
+    },
+    email: {
+      label: "Email Id *",
+      name: "contactPerson.email",
+      type: "email",
+    },
+    phoneNumber1: {
+      label: "Phone No 1 *",
+      name: "contactPerson.phoneNumber1",
+      type: "mobile",
+    },
+    phoneNumber2: {
+      label: "Phone No 2 *",
+      name: "contactPerson.phoneNumber2",
+      type: "mobile",
+    },
   },
-  emailId: {
-    label: "Email Id *",
-    name: "emailId",
-    type: "email",
-  },
-  phoneNumber1: {
-    label: "Phone No 1 *",
-    name: "phoneNumber1",
-    type: "mobile",
-  },
-  phoneNumber2: {
-    label: "Phone No 2 *",
-    name: "phoneNumber2",
-    type: "mobile",
-  },
-  serviceTypes: {
+  servicesBySevaKendra: {
     label: "Service Types *",
-    name: "serviceTypes",
+    name: "servicesBySevaKendra",
   },
 };

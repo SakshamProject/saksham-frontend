@@ -17,8 +17,8 @@ export const SKIP = "Skip";
 export const DELETE = "Delete";
 
 export const CODES = {
-  ACTIVE: "active",
-  IN_ACTIVE: "in-active",
+  ACTIVE: "ACTIVE",
+  DEACTIVE: "DEACTIVE",
   QUALIFICATION_TEN: "ten",
   QUALIFICATION_TWELVE: "twelve",
   PENDING: "pending",
@@ -61,5 +61,16 @@ export const statusColumns = [
     accessor: "deactivationReason",
     width: 150,
     Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
+  },
+];
+
+export const statusSeeds = [
+  {
+    id: "ACTIVE",
+    name: "Active",
+  },
+  {
+    id: "DEACTIVE",
+    name: "Deactive",
   },
 ];
