@@ -1,3 +1,7 @@
+import { EditPopover } from "../../components/shared";
+import { ROUTE_PATHS } from "../../routes/routePaths";
+import { OptionsContainer } from "../../styles";
+
 export const initialValues = {
   name: "",
   stateId: "",
@@ -80,3 +84,57 @@ export const fields = {
     name: "servicesBySevaKendra",
   },
 };
+
+export const sevakendraColumn = [
+  {
+    Header: "Seva Kendra Name",
+    accessor: "name",
+    filterAccessor: "sevaKendraName",
+    width: 300,
+    sticky: "left",
+    Cell: (props) => (
+      <OptionsContainer>
+        {props?.value}
+        <EditPopover
+          inputValues={[
+            {
+              label: "View details",
+              id: props?.row?.original?.id,
+              path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
+              view: true,
+            },
+            {
+              label: "Edit",
+              id: props?.row?.original?.id,
+              path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
+            },
+          ]}
+        />
+      </OptionsContainer>
+    ),
+  },
+  {
+    Header: "State",
+    accessor: "state",
+    // filterAccessor: "state",
+    width: 200,
+  },
+  {
+    Header: "District",
+    accessor: "district",
+    // filterAccessor: "district",
+    width: 200,
+  },
+  {
+    Header: "Contact Name",
+    accessor: "contactPersonName",
+    // filterAccessor: "contactPersonName",
+    width: 200,
+  },
+  {
+    Header: "Contact Number",
+    accessor: "contactPersonNumber",
+    // filterAccessor: "contactPersonNumber",
+    width: 200,
+  },
+];

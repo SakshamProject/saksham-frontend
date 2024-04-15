@@ -1,4 +1,12 @@
 export const API_PATHS = {
+  // Setup master
+  SEVAKENDRA_LIST: "/sevakendras/list",
+
+  // Designation
+  DESIGNATION: "/designation",
+  FEATURES: "/designation/features",
+  DESIGNATION_LIST: "/designation/list",
+
   // State master
   STATE_MASTER: "/typemaster/statemaster",
   TALUK: "/taluks",
@@ -19,11 +27,6 @@ export const API_PATHS = {
   DISTRICTS: "/typemaster/generalmaster/districts",
 
   // Service master
-  SERVICES: "services",
-  SERVICES_LIST: "services/list",
-
-  // Designation
-  DESIGNATION: "/designation",
-  FEATURES: "/designation/features",
-  DESIGNATION_LIST: "/designation/list",
+  SERVICES: "/services",
+  SERVICES_LIST: "/services/list",
 };
