@@ -157,7 +157,10 @@ const StateType = () => {
     select: ({ data }) => data,
   });
 
-  useEffect(handleReset, [pathname]); //eslint-disable-line
+  useEffect(() => {
+    handleReset();
+    setTableEditId("");
+  }, [pathname]); //eslint-disable-line
 
   return (
     <Grid direction={"column"} width={"100%"}>
