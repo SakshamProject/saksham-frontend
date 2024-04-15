@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { postApiService } from "../../api/api";
+import { getApiService, postApiService } from "../../api/api";
 import { API_PATHS } from "../../api/apiPaths";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../routes/routePaths";
@@ -18,7 +18,12 @@ export const CommonList = ({
   disableFilters = false,
   disableSearchField = false,
   disableLayout = false,
+  disablePagination = false,
+  disableColumnHiding = false,
+  isGetApi = false,
+  manualSort = false,
   rawDataAccessor = "",
+  initialSorting,
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -29,7 +34,7 @@ export const CommonList = ({
     tableReRenderActions,
   } = useTableCustomHooks(ROUTE_PATHS?.[listPath]);
 
-  const listParams = handleTableData({});
+  const listParams = handleTableData({ initialSorting });
 
   const { pageSize, currentPage } = tableReRenderActions();
 
@@ -37,7 +42,9 @@ export const CommonList = ({
     queryKey: ["commonList" + API_PATHS?.[apiPath], { ...listParams }],
     queryFn: () => {
       const path = customApiPath || API_PATHS?.[apiPath];
-      return postApiService(path, { ...listParams });
+      return isGetApi
+        ? getApiService(path)
+        : postApiService(path, { ...listParams });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,
@@ -68,6 +75,9 @@ export const CommonList = ({
         currentPage={currentPage}
         count={data?.total}
         disableLayout={disableLayout}
+        disablePagination={disablePagination}
+        disableColumnHiding={disableColumnHiding}
+        manualSort={manualSort}
       />
     </>
   );
