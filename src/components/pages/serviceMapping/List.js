@@ -10,16 +10,16 @@ const List = () => {
     onChangePageSize,
     handleTableDatas,
     tableReRenderActions,
-  } = useTableCustomHooks(ROUTE_PATHS.DIVYANG_DETAILS_LIST);
+  } = useTableCustomHooks(ROUTE_PATHS.SERVICE_MAPPING_LIST);
 
   const { pageSize, currentPage, searchData } = tableReRenderActions();
 
   return (
     <>
       <ListTopbar
-        label={"Divyang Details"}
-        newFormPath={ROUTE_PATHS?.DIVYANG_DETAILS_FORM}
-        listPath={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
+        label={"Service Mapping"}
+        newFormPath={ROUTE_PATHS?.SERVICE_MAPPING_FORM}
+        listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
         // filterFields={filterFields}
         // isFilterParams={!!listParams?.filters?.length}
       />

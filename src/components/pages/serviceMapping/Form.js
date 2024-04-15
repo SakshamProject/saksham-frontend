@@ -6,9 +6,10 @@ import { FormWrapper } from "../../shared";
 const Form = () => {
   return (
     <FormWrapper
-      title="Divyang"
-      navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
+      title="Service Mapping"
+      navigateTo={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
       columnSpacing={3}
+      disableModes
     ></FormWrapper>
   );
 };
