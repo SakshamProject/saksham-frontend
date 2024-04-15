@@ -298,6 +298,7 @@ const Form = () => {
       <ListTopbar
         disableNewForm
         disableFilter
+        placeholder={values?.typeMaster}
         style={{ width: "100%", ".searchField": { margin: 0 } }}
       />
 

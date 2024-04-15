@@ -39,7 +39,7 @@ export const BackNavigator = ({
   const location = useLocation();
   const [params] = useSearchParams();
   const editId = params.get("editId");
-  const isViewMode = location?.state?.viewDetails;
+  const isViewMode = location.state?.viewDetails;
   const mode = editId ? (isViewMode ? "VIEW" : "EDIT") : "NEW";
 
   const onClick = () => {

@@ -34,15 +34,26 @@ export const CustomReactTable = ({
   const theme = useTheme();
 
   const tableSortValues = (value) => {
-    const data = { ...pageParams, sort: JSON.stringify(value) };
+    const sortValue = columnData?.reduce((acc, column) => {
+      if (column?.accessor === value[0]?.id) {
+        acc = {
+          orderByColumn: column?.filterAccessor,
+          sortOrder: value[0]?.desc ? "desc" : "asc",
+        };
+      }
+      return acc;
+    }, {});
+    const data = {
+      ...pageParams,
+      sort: JSON.stringify(sortValue),
+    };
     if (value?.length === 0) delete data?.sort;
-
     return navigate(
       {
         pathName: `${pathName}`,
         search: `?${createSearchParams({ ...data })}`,
       },
-      { state: location?.state || null }
+      { state: location.state || null }
     );
   };
 

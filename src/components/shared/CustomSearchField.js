@@ -57,36 +57,45 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
     const data = { ...pageParams };
     delete data?.search;
     setValue("");
-    navigate({
-      pathName: `${pathName}`,
-      search: `?${createSearchParams({ ...data })}`,
-    });
+    navigate(
+      {
+        pathName: `${pathName}`,
+        search: `?${createSearchParams({ ...data })}`,
+      },
+      { state: location.state || null }
+    );
   };
 
   const onSearchChange = (e) => {
     if (e.charCode === 13) {
-      navigate({
-        pathName: `${pathName}`,
-        search: `?${createSearchParams({
-          ...pageParams,
-          search: e.target.value.trim(),
-          currentPage: 1,
-        })}`,
-      });
+      navigate(
+        {
+          pathName: `${pathName}`,
+          search: `?${createSearchParams({
+            ...pageParams,
+            search: e.target.value.trim(),
+            currentPage: 1,
+          })}`,
+        },
+        { state: location.state || null }
+      );
     }
   };
 
   const onChange = (e) => {
     if (e.target.value.trim() === "") {
-      navigate({
-        pathName: `${pathName}`,
-        search: `?${createSearchParams({
-          ...pageParams,
-          search: e.target.value.trim(),
-        })}`,
-      });
+      navigate(
+        {
+          pathName: `${pathName}`,
+          search: `?${createSearchParams({
+            ...pageParams,
+            search: e.target.value.replace(/\s+/g, " "),
+          })}`,
+        },
+        { state: location.state || null }
+      );
     }
-    setValue(e.target.value.trim());
+    setValue(e.target.value.replace(/\s+/g, " "));
   };
 
   useEffect(() => setValue(""), [pathName]);
