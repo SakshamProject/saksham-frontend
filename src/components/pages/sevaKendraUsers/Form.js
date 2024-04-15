@@ -79,7 +79,7 @@ const Form = () => {
 
   return (
     <FormWrapper
-      title="Seva Kendra"
+      title="Seva Kendra User"
       navigateTo={ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST}
       columnSpacing={3}
     >
