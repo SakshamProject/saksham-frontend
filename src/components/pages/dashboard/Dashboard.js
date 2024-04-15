@@ -1,5 +1,5 @@
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return <div>Dashboard is not Available Now!</div>;
 };
 
 export default Dashboard;
