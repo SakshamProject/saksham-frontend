@@ -1,11 +1,10 @@
 import { Typography, styled } from "@mui/material";
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import defaultAvatar from "../../assets/avatar.png";
 import companyLogo from "../../assets/logo.png";
-import { removeState } from "../../redux/slice";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import {
   AppBarLayout,
@@ -15,6 +14,7 @@ import {
   CommonAvatar,
 } from "../../styles";
 import { removeAllCookie } from "../../utils/cookie";
+import { dispatchRemoveAppState } from "../../utils/dispatch";
 import { RightMenu } from "./RightMenu";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
@@ -29,7 +29,6 @@ const StyledLogo = styled("img")({
 export const AppBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const dispatch = useDispatch();
   const {
     name = "",
     profileImageUrl = "",
@@ -45,7 +44,7 @@ export const AppBar = () => {
   const redirect = (routePath) => {
     if (routePath === ROUTE_PATHS.LOGIN) {
       removeAllCookie();
-      dispatch(removeState());
+      dispatchRemoveAppState();
     }
     navigate(routePath);
     handleClose();

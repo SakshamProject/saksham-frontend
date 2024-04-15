@@ -67,7 +67,7 @@ export const formDetails = {
     routePath: ROUTE_PATHS.STATE_MASTER_CORPORATION,
     label: "Corporation *",
     validationLabel: "Corporation",
-    apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.COPERATION}`,
+    apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.CORPORATION}`,
   },
   panchayatUnion: {
     name: "name",

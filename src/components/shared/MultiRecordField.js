@@ -2,11 +2,11 @@
 import { Grid, styled } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
 import { ADD, UPDATE } from "../../constants/globalConstants";
 import useNotify from "../../hooks/useNotify";
 import { CancelButton } from "../../styles/buttonStyle";
+import { dispatchNotifyError } from "../../utils/dispatch";
 import { CustomReactTable } from "./CustomReactTable";
 import { SingleAutoComplete } from "./formFields";
 import { CustomDatePicker } from "./formFields/CustomDatePicker";
@@ -51,7 +51,6 @@ export const MultiRecordField = ({
   disableLayout,
 }) => {
   const [tableEditId, setTableEditId] = useState("");
-  const dispatch = useDispatch();
   const { notifyError } = useNotify();
   const checkDuplicate = (value) => {
     const duplicate = uniqueFields?.find((unique) =>
@@ -102,7 +101,7 @@ export const MultiRecordField = ({
 
   const handleDeleteList = (id) => {
     if (isAssigned) {
-      dispatch(notifyError("Unable to Delete,Assigned to User"));
+      dispatchNotifyError("Unable to Delete,Assigned to User");
     } else {
       let copyValue = [...parentValue];
       copyValue.splice(id, 1);

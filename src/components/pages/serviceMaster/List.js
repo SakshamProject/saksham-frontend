@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { CommonList, CustomReactTable, ListTopbar } from "../../shared";
+import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { getApiService, postApiService } from "../../../api/api";
 import { serviceMasterColumn } from "../../../constants/serviceMaster/serviceMaster";
 import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { getTableSchemas } from "../../../utils/tableSchemas";
+import { CustomReactTable, ListTopbar } from "../../shared";
 
 const List = () => {
   const { filterFields, filterInitialValues } =
