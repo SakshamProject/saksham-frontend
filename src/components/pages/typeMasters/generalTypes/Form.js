@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 
+import styled from "@emotion/styled";
 import {
   deleteApiService,
   getApiService,
@@ -27,9 +28,14 @@ import {
   getGeneralTypePayload,
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
-import useNotify from "../../../../hooks/useNotify";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
+import { theme } from "../../../../styles";
+import { findNameById } from "../../../../utils/common";
+import {
+  dispatchNotifyError,
+  dispatchNotifySuccess,
+} from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
   CustomRadioButton,
@@ -41,11 +47,8 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
-import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 import CustomModal from "../../../shared/CustomModal";
-import { findNameById } from "../../../../utils/common";
-import styled from "@emotion/styled";
-import { theme } from "../../../../styles";
+import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const CustomTypography = styled(Typography)({
   color: theme?.palette?.textColor?.blue,
@@ -58,7 +61,6 @@ const CustomTypography = styled(Typography)({
 const Form = () => {
   const [name] = useSearchParams();
   const editId = name.get("editId");
-  const { notifySuccess, notifyError } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const generalType = state?.field;
@@ -78,7 +80,7 @@ const Form = () => {
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
-      notifySuccess(
+      dispatchNotifySuccess(
         !!tableEditId
           ? UPDATED_SUCCESSFULLY(values?.typeMaster)
           : ADDED_SUCCESSFULLY(values?.typeMaster)
@@ -94,7 +96,7 @@ const Form = () => {
       value?.chips?.length < 1 &&
       [EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(values?.typeMaster)
     ) {
-      notifyError("Sub type name minimum one is required");
+      dispatchNotifyError("Sub type name minimum one is required");
       return;
     }
     const payload = getGeneralTypePayload(value);
@@ -156,7 +158,7 @@ const Form = () => {
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
-      notifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
+      dispatchNotifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
       refetch();
       setOpen(false);
     },

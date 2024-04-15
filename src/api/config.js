@@ -1,7 +1,6 @@
 import axios from "axios";
 
-import { setIsLoading } from "../redux/slice";
-import store from "../redux/store";
+import { dispatchLoading } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
@@ -12,7 +11,7 @@ export const appApi = axios.create({
 
 appApi.interceptors.request.use(
   (config) => {
-    store.dispatch(setIsLoading(true));
+    dispatchLoading(true);
     return config;
   },
   (error) => {
@@ -22,11 +21,11 @@ appApi.interceptors.request.use(
 
 appApi.interceptors.response.use(
   (response) => {
-    store.dispatch(setIsLoading(false));
+    dispatchLoading(false);
     return response;
   },
   async (error) => {
-    store.dispatch(setIsLoading(false));
+    dispatchLoading(false);
     return Promise.reject(error);
   }
 );

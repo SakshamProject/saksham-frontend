@@ -10,8 +10,8 @@ export const validationSchema = object({
   name: string()
     .trim()
     .required("Type name is required")
-    .min(3, "Type name must contain minimum of 3 characters")
-    .max(255, "Name cannot have more than 255 characters"),
+    .min(3, "Type name must be at least 3 characters long")
+    .max(255, "Type name cannot have more than 255 characters"),
 
   stateId: string().test(
     "isState",
@@ -23,7 +23,7 @@ export const validationSchema = object({
     .test("isChip", (value, context) => {
       if (value?.length < 3) {
         return context.createError({
-          message: "Sub type name must contain minimum of 3 characters",
+          message: "Sub type name must be at least 3 characters long",
         });
       }
       if (
@@ -36,5 +36,5 @@ export const validationSchema = object({
       }
       return true;
     })
-    .max(255, "Name cannot have more than 255 characters"),
+    .max(255, "Sub type name cannot have more than 255 characters"),
 });

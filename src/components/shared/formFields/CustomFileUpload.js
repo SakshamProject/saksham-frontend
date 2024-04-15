@@ -6,8 +6,7 @@ import VideoFileIcon from "@mui/icons-material/VideoFile";
 import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect, useRef, useState } from "react";
-
-import useNotify from "../../../hooks/useNotify";
+import { dispatchNotifyError } from "../../../utils/dispatch";
 
 const InputField = styled("input")(() => ({
   display: "none",
@@ -51,13 +50,12 @@ export const CustomFileUpload = ({
   const [fileName, setFileName] = useState((value && value[0]?.name) || "");
   const myRefname = useRef(null);
   const [key, setKey] = useState(false);
-  const { notifyError } = useNotify();
 
   const handleClick = (e) => myRefname.current.click();
 
   const onImageChange = (event) => {
     if (event.target.files[0].size > 10000000) {
-      return notifyError("Size should be less than 10MB");
+      return dispatchNotifyError("Size should be less than 10MB");
     } else if (event.target.files && event.target.files[0]) {
       let reader = new FileReader();
       reader.onload = (e) => {
@@ -76,7 +74,7 @@ export const CustomFileUpload = ({
       ) {
         reader.readAsDataURL(event.target.files[0]);
       } else {
-        notifyError("Media type not supported");
+        dispatchNotifyError("Media type not supported");
       }
     }
   };

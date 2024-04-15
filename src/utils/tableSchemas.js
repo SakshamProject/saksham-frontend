@@ -15,16 +15,3 @@ export const getTableSchemas = (columns = []) => {
   }
   return { filterFields, filterInitialValues };
 };
-
-export const sortedValues = (column, value) => {
-  const getObj = column?.find((item) => item?.accessor === value?.[0]?.id);
-
-  let output = [];
-
-  output.push({
-    orderByColumn: getObj?.accessor || "",
-    sortOrder: value?.[0]?.desc ? "desc" : "asc",
-  });
-
-  return output;
-};

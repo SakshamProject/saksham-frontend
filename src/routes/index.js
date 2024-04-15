@@ -7,7 +7,7 @@ export const SUPER_ADMIN_ROUTES = [
     element: routeElements.Dashboard,
   },
 
-  //sevakendra setup
+  //seva kendra setup
   {
     path: ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST,
     element: routeElements.SevaKendraMasterList,
@@ -17,7 +17,7 @@ export const SUPER_ADMIN_ROUTES = [
     element: routeElements.SevaKendraMasterForm,
   },
 
-  //designations
+  //designation
   {
     path: ROUTE_PATHS.DESIGNATIONS_LIST,
     element: routeElements.DesignationsList,
@@ -26,7 +26,7 @@ export const SUPER_ADMIN_ROUTES = [
     path: ROUTE_PATHS.DESIGNATIONS_FORM,
     element: routeElements.DesignationsForm,
   },
-  //sevakendra users
+  //seva kendra users
   {
     path: ROUTE_PATHS.SEVA_KENDRA_USERS_LIST,
     element: routeElements.SevaKendraUsersList,

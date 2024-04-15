@@ -3,7 +3,6 @@ import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { createQueryParams } from "../utils/queryParams";
-import { sortedValues } from "../utils/tableSchemas";
 
 const useTableCustomHooks = (path) => {
   const location = useLocation();

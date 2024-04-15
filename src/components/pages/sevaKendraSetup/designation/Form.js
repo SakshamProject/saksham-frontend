@@ -5,9 +5,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   fields,
   initialValues,
-} from "../../../../constants/sevaKendraSetup/designations";
+} from "../../../../constants/sevaKendraSetup/designation";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { validationSchema } from "../../../../validations/sevaKendraSetup/designations";
+import { validationSchema } from "../../../../validations/sevaKendraSetup/designation";
 import {
   CustomTextField,
   FormActions,

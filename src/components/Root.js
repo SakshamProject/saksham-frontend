@@ -9,19 +9,18 @@ import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 
 import { SERVER_ERROR } from "../constants/globalConstants.js";
-import useNotify from "../hooks/useNotify";
 import { ProtectedRoute } from "../routes/ProtectedRoute.js";
 import { SUPER_ADMIN_ROUTES } from "../routes/index.js";
 import { routeMapping } from "../routes/routeMapping.js";
 import { ROUTE_PATHS } from "../routes/routePaths.js";
 import { theme } from "../styles/theme";
+import { dispatchNotifyError } from "../utils/dispatch.js";
 import Login from "./pages/login/Login";
 import { UserNotification } from "./shared";
 import { CustomLoader } from "./shared/CustomLoader";
 import NotFound from "./shared/NotFound.js";
 
 const Root = () => {
-  const { notifyError } = useNotify();
   const snackBar = useSelector((state) => state?.snackBar);
   const isLoading = useSelector((state) => state?.isLoading);
 
@@ -29,22 +28,22 @@ const Root = () => {
     queryCache: new QueryCache({
       onError: ({ response }) => {
         if (response?.data?.name === "ZodError") {
-          notifyError(response?.data?.issues[0]?.message);
+          dispatchNotifyError(response?.data?.issues[0]?.message);
         } else if (typeof response?.data?.error?.message === "string") {
-          notifyError(response?.data?.error?.message);
+          dispatchNotifyError(response?.data?.error?.message);
         } else {
-          notifyError(SERVER_ERROR);
+          dispatchNotifyError(SERVER_ERROR);
         }
       },
     }),
     mutationCache: new MutationCache({
       onError: ({ response }) => {
         if (response?.data?.name === "ZodError") {
-          notifyError(response?.data?.issues[0]?.message);
+          dispatchNotifyError(response?.data?.issues[0]?.message);
         } else if (typeof response?.data?.error?.message === "string") {
-          notifyError(response?.data?.error?.message);
+          dispatchNotifyError(response?.data?.error?.message);
         } else {
-          notifyError(SERVER_ERROR);
+          dispatchNotifyError(SERVER_ERROR);
         }
       },
     }),

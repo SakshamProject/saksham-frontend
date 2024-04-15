@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+
 import {
   deleteApiService,
   getApiService,
@@ -22,9 +22,9 @@ import {
   initialValues,
   serviceNameColumns,
 } from "../../../constants/serviceMaster/serviceMaster";
-import useNotify from "../../../hooks/useNotify";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { findNameById, getValidValues } from "../../../utils/common";
+import { dispatchNotifySuccess } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
   CustomReactTable,
@@ -42,7 +42,6 @@ const Form = () => {
   const { state } = useLocation();
   const [params] = useSearchParams();
   const editId = params.get("editId");
-  const { notifySuccess } = useNotify();
   const isViewMode = state?.viewDetails;
   const [tableEditId, setTableEditId] = useState("");
   const [open, setOpen] = useState(false);
@@ -60,7 +59,7 @@ const Form = () => {
     mutationKey: ["deleteService"],
     mutationFn: (id) => deleteApiService(API_PATHS?.SERVICES, id),
     onSuccess: ({ data }) => {
-      notifySuccess(DELETED_SUCCESSFULLY("Service"));
+      dispatchNotifySuccess(DELETED_SUCCESSFULLY("Service"));
       serviceGetById();
       setOpen(false);
     },
@@ -78,7 +77,7 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SERVICES, tableEditId, data)
         : postApiService(API_PATHS?.SERVICES, data),
     onSuccess: () => {
-      notifySuccess(
+      dispatchNotifySuccess(
         tableEditId
           ? UPDATED_SUCCESSFULLY("Service")
           : ADDED_SUCCESSFULLY("Service")

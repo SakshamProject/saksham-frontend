@@ -6,11 +6,10 @@ const initialState = {
   snackBar: "",
   isLoading: false,
   userInfo: {},
-  seeds: {},
 };
 
 const { reducer, actions } = createSlice({
-  name: "app",
+  name: "appStates",
   initialState,
   reducers: {
     notifyUser: (state, action) => {
@@ -25,11 +24,7 @@ const { reducer, actions } = createSlice({
       state.userInfo = action?.payload;
     },
 
-    setSeed: (state, action) => {
-      state.seeds = { ...state.seeds, ...action.payload };
-    },
-
-    removeState: (state) => {
+    removeAppState: (state) => {
       state = {};
     },
   },
@@ -37,5 +32,5 @@ const { reducer, actions } = createSlice({
 
 export default reducer;
 
-export const { notifyUser, setIsLoading, setUserInfo, setSeed, removeState } =
+export const { notifyUser, setIsLoading, setUserInfo, removeAppState } =
   actions;
