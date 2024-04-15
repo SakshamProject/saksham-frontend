@@ -60,6 +60,7 @@ export const serviceMasterColumn = [
     Header: "Service Provided",
     accessor: "service",
     filterAccessor: "serviceName",
+    disableSortBy: true,
     width: 420,
     Cell: (props) => (
       <CustomCell

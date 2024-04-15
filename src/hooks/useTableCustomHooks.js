@@ -21,7 +21,7 @@ const useTableCustomHooks = (path) => {
       : [];
     const sortData = searchParam?.get("sort")
       ? JSON.parse(searchParam?.get("sort"))
-      : [];
+      : null;
 
     return { filterData, sortData };
   }, [searchParam]);
@@ -32,7 +32,10 @@ const useTableCustomHooks = (path) => {
       pageSize,
       currentPage: page,
     });
-    return navigate(`${path}?${newParams}`);
+    return navigate(
+      { pathname: path, search: newParams },
+      { state: location.state || null }
+    );
   };
 
   const onChangePageSize = (size) => {
@@ -41,24 +44,26 @@ const useTableCustomHooks = (path) => {
       pageSize: size,
       currentPage: size === pageSize ? currentPage : 1,
     });
-    return navigate(`${path}?${newParams}`);
+    return navigate(
+      { pathname: path, search: newParams },
+      { state: location.state || null }
+    );
   };
 
-  const handleTableData = (searchFields, columnData, defaultSortedValues) => {
+  const handleTableData = ({ initialSorting }) => {
     const start = pageSize * (currentPage - 1) + 1;
-    const listParams = {
-      pagination: { rows: pageSize, start },
-      search: searchData ? searchData : "",
+    return {
+      pagination: {
+        rows: pageSize,
+        start,
+      },
+      searchText: searchData ? searchData : "",
       sorting:
-        sortData.length === 0
-          ? defaultSortedValues || {
-              orderByColumn: "createdAt",
-              sortOrder: "desc",
-            }
-          : {},
+        initialSorting || !!sortData
+          ? sortData
+          : { orderByColumn: "createdAt", sortOrder: "desc" },
       filters: filterData?.length !== 0 ? filterData : [],
     };
-    return listParams;
   };
 
   const tableReRenderActions = () => {

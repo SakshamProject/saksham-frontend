@@ -4,13 +4,15 @@ export const getTableSchemas = (columns = []) => {
 
   if (columns?.length) {
     columns?.forEach((column, index) => {
-      filterFields.push({
-        id: index,
-        label: column?.Header,
-        queryName: column?.accessor,
-        fieldName: column?.filterAccessor || column?.accessor,
-      });
-      filterInitialValues[column?.accessor] = "";
+      if (!!column?.filterAccessor) {
+        filterFields.push({
+          id: index,
+          label: column?.Header,
+          queryName: column?.accessor,
+          fieldName: column?.filterAccessor,
+        });
+        filterInitialValues[column?.accessor] = "";
+      }
     });
   }
   return { filterFields, filterInitialValues };
