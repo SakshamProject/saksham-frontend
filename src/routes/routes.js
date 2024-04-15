@@ -33,6 +33,14 @@ export const SevaKendraUsersForm = lazy(() =>
   import("../components/pages/sevaKendraUsers/Form")
 );
 
+// Divyang Details
+export const DivyangDetailsList = lazy(() =>
+  import("../components/pages/divyangDetails/List")
+);
+export const DivyangDetailsForm = lazy(() =>
+  import("../components/pages/divyangDetails/Form")
+);
+
 // State Master
 export const StateMasterForm = lazy(() =>
   import("../components/pages/typeMasters/stateMaster/Form")
@@ -55,4 +63,12 @@ export const ServiceMasterList = lazy(() =>
 );
 export const ServiceMasterForm = lazy(() =>
   import("../components/pages/serviceMaster/Form")
+);
+
+// Service Mapping
+export const ServiceMappingList = lazy(() =>
+  import("../components/pages/serviceMapping/List")
+);
+export const ServiceMappingForm = lazy(() =>
+  import("../components/pages/serviceMapping/Form")
 );

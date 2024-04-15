@@ -82,6 +82,16 @@ export const SUPER_ADMIN_ROUTES = [
     ],
   },
 
+  //divyang details
+  {
+    path: ROUTE_PATHS.DIVYANG_DETAILS_LIST,
+    element: routeElements.DivyangDetailsList,
+  },
+  {
+    path: ROUTE_PATHS.DIVYANG_DETAILS_FORM,
+    element: routeElements.DivyangDetailsForm,
+  },
+
   //service master
   {
     path: ROUTE_PATHS.SERVICE_MASTER_LIST,
@@ -90,5 +100,15 @@ export const SUPER_ADMIN_ROUTES = [
   {
     path: ROUTE_PATHS.SERVICE_MASTER_FORM,
     element: routeElements.ServiceMasterForm,
+  },
+
+  //service mapping
+  {
+    path: ROUTE_PATHS.SERVICE_MAPPING_LIST,
+    element: routeElements.ServiceMappingList,
+  },
+  {
+    path: ROUTE_PATHS.SERVICE_MAPPING_FORM,
+    element: routeElements.ServiceMappingForm,
   },
 ];
