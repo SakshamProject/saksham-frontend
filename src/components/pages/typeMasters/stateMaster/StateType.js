@@ -202,7 +202,7 @@ const StateType = () => {
           <CustomTextField
             label={currentForm?.label}
             name={currentForm?.name}
-            fieldType={"alphabets"}
+            fieldType={currentForm?.fieldType}
             value={values?.[currentForm?.name]}
             onChange={handleChange}
             onBlur={handleBlur}
