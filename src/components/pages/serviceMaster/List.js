@@ -47,7 +47,7 @@ const List = () => {
 
       <CustomReactTable
         columnData={serviceMasterColumn || []}
-        rawData={dataList?.services || []}
+        rawData={dataList?.data || []}
         isLoading={isLoading}
         onPageNumberChange={onPageNumberChange}
         onChangePageSize={onChangePageSize}

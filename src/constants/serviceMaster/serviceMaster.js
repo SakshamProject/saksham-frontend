@@ -80,7 +80,7 @@ export const serviceNameColumns = ({
   {
     Header: "Service Name",
     accessor: "name",
-    width: 400,
+    width: 320,
     sticky: "left",
   },
   {
