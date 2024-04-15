@@ -6,8 +6,8 @@ import {
 } from "../redux/slice";
 import store from "../redux/store";
 
-const dispatchNotifyUser = (message, severity) => {
-  store.dispatch(notifyUser([message, severity]));
+const dispatchNotifyUser = (payload) => {
+  store.dispatch(notifyUser(payload));
 };
 
 const dispatchLoading = (isLoading) => {
@@ -23,11 +23,11 @@ const dispatchRemoveAppState = () => {
 };
 
 const dispatchNotifySuccess = (message) => {
-  dispatchNotifyUser(message, "success");
+  dispatchNotifyUser([message, "success"]);
 };
 
 const dispatchNotifyError = (message) => {
-  dispatchNotifyUser(message, "error");
+  dispatchNotifyUser([message, "error"]);
 };
 
 export {

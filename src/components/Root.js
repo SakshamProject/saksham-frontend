@@ -71,7 +71,7 @@ const Root = () => {
           <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />
         </Routes>
 
-        {snackBar && <UserNotification />}
+        {!!snackBar ? <UserNotification /> : <></>}
       </ThemeProvider>
     </QueryClientProvider>
   );
