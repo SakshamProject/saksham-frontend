@@ -1,5 +1,5 @@
 import { Chip, Stack, TextField } from "@mui/material";
-import useNotify from "../../../hooks/useNotify";
+import { dispatchNotifyError } from "../../../utils/dispatch";
 
 export const ChipTextField = ({
   customOnChange = () => {},
@@ -22,8 +22,6 @@ export const ChipTextField = ({
   chipAccessor = "",
   handleKeyPress = () => {},
 }) => {
-  const { notifyError } = useNotify();
-
   const handleDelete = (chipToDelete) => () => {
     const currentChips = chipValue?.filter(
       (chip) =>
@@ -42,7 +40,7 @@ export const ChipTextField = ({
       );
 
       if (duplicate) {
-        notifyError("Duplicate value");
+        dispatchNotifyError("Duplicate value");
         return;
       }
 

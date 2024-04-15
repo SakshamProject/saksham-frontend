@@ -18,10 +18,10 @@ export const SevaKendraMasterForm = lazy(() =>
 // Designations
 
 export const DesignationsList = lazy(() =>
-  import("../components/pages/sevaKendraSetup/designations/List")
+  import("../components/pages/sevaKendraSetup/designation/List")
 );
 export const DesignationsForm = lazy(() =>
-  import("../components/pages/sevaKendraSetup/designations/Form")
+  import("../components/pages/sevaKendraSetup/designation/Form")
 );
 
 // Seva Kendra Users

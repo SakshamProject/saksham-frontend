@@ -1,9 +1,20 @@
-import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-
-import useNotify from "../../../hooks/useNotify";
+import React from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { getApiService, getByIdApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import { statusSeeds } from "../../../constants/globalConstants";
+import {
+  fields,
+  genderSeeds,
+  initialValues,
+} from "../../../constants/sevaKendraUsers/sevaKendraUsers";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { theme } from "../../../styles";
+import { formatDate, getValidValues } from "../../../utils/common";
+import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
   CustomDatePicker,
   CustomRadioButton,
@@ -15,23 +26,9 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import {
-  fields,
-  genderSeeds,
-  initialValues,
-} from "../../../constants/sevaKendraUsers/sevaKendraUsers";
-import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
-import { getApiService, getByIdApiService } from "../../../api/api";
-import { API_PATHS } from "../../../api/apiPaths";
-import { formatDate, getValidValues } from "../../../utils/common";
-import { Grid } from "@mui/material";
 import StatusFields from "../../shared/StatusFields";
-import { theme } from "../../../styles";
-import { statusSeeds } from "../../../constants/globalConstants";
 
 const Form = () => {
-  const { notifySuccess } = useNotify();
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
@@ -65,9 +62,6 @@ const Form = () => {
     handleSubmit,
     setFieldValue,
     setFieldTouched,
-    setValues,
-    setTouched,
-    handleReset,
   } = formik;
 
   const { data: stateList } = useQuery({

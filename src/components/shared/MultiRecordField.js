@@ -4,7 +4,6 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 
 import { ADD, UPDATE } from "../../constants/globalConstants";
-import useNotify from "../../hooks/useNotify";
 import { CancelButton } from "../../styles/buttonStyle";
 import { dispatchNotifyError } from "../../utils/dispatch";
 import { CustomReactTable } from "./CustomReactTable";
@@ -51,7 +50,6 @@ export const MultiRecordField = ({
   disableLayout,
 }) => {
   const [tableEditId, setTableEditId] = useState("");
-  const { notifyError } = useNotify();
   const checkDuplicate = (value) => {
     const duplicate = uniqueFields?.find((unique) =>
       parentValue?.some(
@@ -60,7 +58,7 @@ export const MultiRecordField = ({
       )
     );
     if (duplicate) {
-      notifyError(duplicate?.message);
+      dispatchNotifyError(duplicate?.message);
       return true;
     }
     return false;

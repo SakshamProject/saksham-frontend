@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useEffect, useMemo, useState } from "react";
@@ -23,10 +23,10 @@ import {
   initialValues as initialValue,
   stateMasterColumns,
 } from "../../../../constants/typeMasters/stateMaster";
-import useNotify from "../../../../hooks/useNotify";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
+import { dispatchNotifySuccess } from "../../../../utils/dispatch";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
   CustomReactTable,
@@ -39,7 +39,6 @@ import {
 import CustomModal from "../../../shared/CustomModal";
 
 const StateType = () => {
-  const { notifySuccess } = useNotify();
   const { pathname } = useLocation();
   const currentScreen = useMemo(() => pathname.split("/")[3], [pathname]);
   const currentForm = formDetails?.[currentScreen];
@@ -63,7 +62,7 @@ const StateType = () => {
     mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: () => {
-      notifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
+      dispatchNotifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
       refetch();
       setOpen(false);
     },
@@ -95,7 +94,7 @@ const StateType = () => {
         ? updateApiService(currentForm?.apiPath, tableEditId, data)
         : postApiService(currentForm?.apiPath, data),
     onSuccess: () => {
-      notifySuccess(
+      dispatchNotifySuccess(
         tableEditId
           ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
           : ADDED_SUCCESSFULLY(currentForm?.validationLabel)

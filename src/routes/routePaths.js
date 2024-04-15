@@ -12,9 +12,9 @@ export const ROUTE_PATHS = {
   SEVA_KENDRA_MASTER_LIST: "/sevaKendraSetup/master/list",
   SEVA_KENDRA_MASTER_FORM: "/sevaKendraSetup/master/form",
 
-  //designations
-  DESIGNATIONS_LIST: "/sevaKendraSetup/designations/list",
-  DESIGNATIONS_FORM: "/sevaKendraSetup/designations/form",
+  //designation
+  DESIGNATIONS_LIST: "/sevaKendraSetup/designation/list",
+  DESIGNATIONS_FORM: "/sevaKendraSetup/designation/form",
 
   //seva kendra users
   SEVA_KENDRA_USERS_LIST: "/sevaKendraUsers/list",
