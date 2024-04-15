@@ -116,25 +116,25 @@ export const sevakendraColumn = [
   {
     Header: "State",
     accessor: "state",
-    // filterAccessor: "state",
+    filterAccessor: "state",
     width: 200,
   },
   {
     Header: "District",
     accessor: "district",
-    // filterAccessor: "district",
+    filterAccessor: "district",
     width: 200,
   },
   {
     Header: "Contact Name",
     accessor: "contactPersonName",
-    // filterAccessor: "contactPersonName",
+    filterAccessor: "contactPersonName",
     width: 200,
   },
   {
     Header: "Contact Number",
     accessor: "contactPersonNumber",
-    // filterAccessor: "contactPersonNumber",
+    filterAccessor: "contactPersonNumber",
     width: 200,
   },
 ];
