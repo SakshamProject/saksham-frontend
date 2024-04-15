@@ -54,6 +54,7 @@ export const formDetails = {
     routePath: ROUTE_PATHS.STATE_MASTER_TALUK,
     validationLabel: "Taluk",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.TALUK}`,
+    fieldType: "alphaNumeric",
   },
   municipality: {
     name: "name",
@@ -61,6 +62,7 @@ export const formDetails = {
     label: "Municipality *",
     validationLabel: "Municipality",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.MUNICIPALITY}`,
+    fieldType: "alphaNumeric",
   },
   corporation: {
     name: "name",
@@ -68,6 +70,7 @@ export const formDetails = {
     label: "Corporation *",
     validationLabel: "Corporation",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.CORPORATION}`,
+    fieldType: "alphaNumeric",
   },
   panchayatUnion: {
     name: "name",
@@ -75,6 +78,7 @@ export const formDetails = {
     label: "Panchayat Union *",
     validationLabel: "Panchayat Union",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.PANCHAYAT_UNION}`,
+    fieldType: "alphaNumeric",
   },
   townPanchayat: {
     name: "name",
@@ -82,6 +86,7 @@ export const formDetails = {
     label: "Town Panchayat *",
     validationLabel: "Town Panchayat",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.TOWN_PANCHAYAT}`,
+    fieldType: "alphaNumeric",
   },
   mlaConstituency: {
     name: "name",
@@ -89,6 +94,7 @@ export const formDetails = {
     label: "MLA Constituency *",
     validationLabel: "MLA Constituency",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.MLA_CONSTITUENCY}`,
+    fieldType: "alphaNumeric",
   },
   mpConstituency: {
     name: "name",
@@ -96,6 +102,7 @@ export const formDetails = {
     label: "MP Constituency *",
     validationLabel: "MP Constituency",
     apiPath: `${API_PATHS.STATE_MASTER}${API_PATHS.MP_CONSTITUENCY}`,
+    fieldType: "alphaNumeric",
   },
 };
 
