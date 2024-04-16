@@ -8,7 +8,7 @@ export const getTableSchemas = (columns = []) => {
         filterFields.push({
           id: index,
           label: column?.Header,
-          queryName: column?.accessor,
+          queryName: column?.accessor + "Drop",
           fieldName: column?.filterAccessor,
         });
         filterInitialValues[column?.accessor] = "";
