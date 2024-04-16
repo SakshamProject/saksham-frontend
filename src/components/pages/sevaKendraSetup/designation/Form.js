@@ -132,7 +132,10 @@ const Form = () => {
   const { data: sevaKendraNames } = useQuery({
     queryKey: ["getSevaKendraNameByDistrict", values?.districtId],
     queryFn: () =>
-      getByIdApiService(API_PATHS.SEVA_KENDRA_NAME, values?.districtId),
+      getByIdApiService(
+        API_PATHS?.DISTRICTS,
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`
+      ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
   });

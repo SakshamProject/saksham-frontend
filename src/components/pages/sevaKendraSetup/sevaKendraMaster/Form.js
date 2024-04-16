@@ -125,7 +125,9 @@ const Form = () => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
-        servicesBySevaKendra: data?.services,
+        servicesBySevaKendra: data?.services.filter(({ serviceid }) => ({
+          id: serviceid,
+        })),
         status: data?.currentStatus,
         date: new Date(),
         description: "",
