@@ -113,17 +113,15 @@ export const validationSchema = (editId) =>
     servicesBySevaKendra: array()
       .required("Services is required")
       .min(1, "Minimum one Service is required"),
-    auditLog: object({
-      status: string().nullable(),
-      description: string()
-        .trim()
-        .nullable()
-        .test(
-          "deactivationReason",
-          "Deactivation reason is required",
-          (value, context) =>
-            !(context.parent?.status !== CODES.ACTIVE && !!editId && !value)
-        )
-        .max(255, "Deactivation reason cannot have more than 255 characters"),
-    }),
+    status: string().nullable(),
+    description: string()
+      .trim()
+      .nullable()
+      .test(
+        "deactivationReason",
+        "Deactivation reason is required",
+        (value, context) =>
+          !(context.parent?.status !== CODES.ACTIVE && !!editId && !value)
+      )
+      .max(255, "Deactivation reason cannot have more than 255 characters"),
   });

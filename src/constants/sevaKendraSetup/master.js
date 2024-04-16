@@ -17,11 +17,9 @@ export const initialValues = {
     phoneNumber2: "",
   },
   servicesBySevaKendra: [],
-  auditLog: {
-    status: "ACTIVE",
-    date: "",
-    description: "",
-  },
+  status: "ACTIVE",
+  date: "",
+  description: "",
 };
 
 export const fields = {
@@ -69,12 +67,12 @@ export const fields = {
       type: "email",
     },
     phoneNumber1: {
-      label: "Phone No 1 *",
+      label: "Primary Number *",
       name: "contactPerson.phoneNumber1",
       type: "mobile",
     },
     phoneNumber2: {
-      label: "Phone No 2 *",
+      label: "Secondary Number *",
       name: "contactPerson.phoneNumber2",
       type: "mobile",
     },
@@ -82,6 +80,7 @@ export const fields = {
   servicesBySevaKendra: {
     label: "Service Types *",
     name: "servicesBySevaKendra",
+    accessor: "serviceId",
   },
 };
 
@@ -115,25 +114,25 @@ export const sevakendraColumn = [
   },
   {
     Header: "State",
-    accessor: "state",
+    accessor: "district.state.name",
     filterAccessor: "state",
     width: 200,
   },
   {
     Header: "District",
-    accessor: "district",
+    accessor: "district.name",
     filterAccessor: "district",
     width: 200,
   },
   {
     Header: "Contact Name",
-    accessor: "contactPersonName",
+    accessor: "contactPerson.name",
     filterAccessor: "contactPersonName",
     width: 200,
   },
   {
     Header: "Contact Number",
-    accessor: "contactPersonNumber",
+    accessor: "contactPerson.phoneNumber1",
     filterAccessor: "contactPersonNumber",
     width: 200,
   },

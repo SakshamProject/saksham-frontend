@@ -115,8 +115,21 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
+  const { mutate: sevaKendraGetById } = useMutation({
+    mutationKey: ["sevaKendraGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
+    onSuccess: ({ data: { data } }) => {
+      setValues(data);
+      setFieldValue(fields?.stateId?.name, data?.district?.state?.id);
+      setFieldValue(fields?.servicesBySevaKendra?.name, data?.services);
+      setFieldValue("status", data?.currentStatus);
+    },
+  });
+
   useEffect(() => {
-    !editId && setFieldValue(fields?.startDate?.name, new Date());
+    editId
+      ? sevaKendraGetById()
+      : setFieldValue(fields?.startDate?.name, new Date());
   }, []);
 
   return (
@@ -316,8 +329,7 @@ const Form = () => {
           getOptionLabel={(option) =>
             `${option?.name} - ${option?.serviceType?.name} `
           }
-          // accessor={fields?.servicesBySevaKendra?.accessor}
-          // labelAccessor="role"
+          accessor={editId ? fields?.servicesBySevaKendra?.accessor : ""}
         />
       </Grid>
 
