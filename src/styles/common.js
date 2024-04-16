@@ -1,4 +1,4 @@
-import { styled } from "@mui/material";
+import { Typography, styled } from "@mui/material";
 
 export const MultiRecordTitle = styled("span")(({ theme }) => ({
   textTransform: "capitalize",
@@ -11,4 +11,12 @@ export const MultiRecordTitle = styled("span")(({ theme }) => ({
     textTransform: "none",
     fontSize: "18px",
   },
+}));
+
+export const CustomTypography = styled(Typography)(({ theme }) => ({
+  color: theme?.palette?.textColor?.blue,
+  textTransform: "uppercase",
+  fontSize: "16px",
+  fontWeight: "bold",
+  marginBottom: 16,
 }));

@@ -1,5 +1,4 @@
-import styled from "@emotion/styled";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
@@ -22,7 +21,6 @@ import {
   initialValues,
 } from "../../../../constants/sevaKendraSetup/master";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { theme } from "../../../../styles";
 import { formatDate, getValidValues } from "../../../../utils/common";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
@@ -36,15 +34,8 @@ import {
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
 import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
+import { CustomTypography } from "../../../../styles";
 import { dispatchNotifySuccess } from "../../../../utils/dispatch";
-
-const CustomTypography = styled(Typography)({
-  color: theme?.palette?.textColor?.blue,
-  textTransform: "uppercase",
-  fontSize: "16px",
-  fontWeight: "bold",
-  marginBottom: 16,
-});
 
 const transformServices = (services) =>
   services.map(({ id }) => ({ serviceId: id }));

@@ -7,6 +7,7 @@ export const API_PATHS = {
   DESIGNATION: "/designation",
   FEATURES: "/designation/features",
   DESIGNATION_LIST: "/designation/list",
+  SEVA_KENDRA_NAME: "/sevakendras/districts",
 
   // State master
   STATE_MASTER: "/typemaster/statemaster",
@@ -28,6 +29,6 @@ export const API_PATHS = {
   DISTRICTS: "/typemaster/generalmaster/districts",
 
   // Service master
-  SERVICES: "/services",
-  SERVICES_LIST: "/services/list",
+  SERVICES: "services",
+  SERVICES_LIST: "services/list",
 };

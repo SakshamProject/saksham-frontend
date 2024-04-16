@@ -147,7 +147,7 @@ export const CustomFileUpload = ({
         name={name}
         key={key}
         type={"file"}
-        autoComplete={autoComplete || "off"}
+        autoComplete={autoComplete ? "on" : "off"}
         onChange={(event) => onImageChange(event)}
         label={label}
         disabled={disabled}

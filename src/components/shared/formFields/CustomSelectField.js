@@ -42,7 +42,7 @@ export const CustomSelectField = ({
           label={label}
           onChange={onChange}
           variant={variant || "outlined"}
-          autoComplete={autoComplete || "off"}
+          autoComplete={autoComplete}
           fullWidth
           onOpen={onOpen}
           name={name}

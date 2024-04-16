@@ -18,7 +18,7 @@ export const CustomTimePicker = ({
   customHelperText,
   setTouched,
   views,
-  autoComplete,
+  autoComplete = false,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -31,7 +31,6 @@ export const CustomTimePicker = ({
         disabled={disabled}
         onBlur={onBlur}
         value={value ? new Date(value) : null}
-        autoComplete={autoComplete || "off"}
         fullWidth
         onChange={onChange || (() => {})}
         minTime={minTime ? new Date(minTime) : null}
@@ -43,6 +42,7 @@ export const CustomTimePicker = ({
         sx={{ width: "100%" }}
         slotProps={{
           textField: {
+            autoComplete: autoComplete,
             onBlur: (e) => {
               !touched?.lastDonatedDate && setTouched(name, e.type === "blur");
             },

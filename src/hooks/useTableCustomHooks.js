@@ -50,7 +50,7 @@ const useTableCustomHooks = (path) => {
     );
   };
 
-  const handleTableData = ({ initialSorting }) => {
+  const handleTableData = ({ disableSorting }) => {
     const start = pageSize * (currentPage - 1) + 1;
     return {
       pagination: {
@@ -58,9 +58,13 @@ const useTableCustomHooks = (path) => {
         start,
       },
       searchText: searchData ? searchData : "",
-      sorting: !!sortData
-        ? sortData
-        : { orderByColumn: "createdAt", sortOrder: "desc" },
+      ...(disableSorting && !sortData
+        ? {}
+        : {
+            sorting: !!sortData
+              ? sortData
+              : { orderByColumn: "createdAt", sortOrder: "desc" },
+          }),
       filters: filterData?.length !== 0 ? filterData : [],
     };
   };

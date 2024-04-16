@@ -57,7 +57,7 @@ export const ChipTextField = ({
       value={value || ""}
       onChange={(e) => customOnChange({ event: e, value: e.target.value })}
       onKeyPress={handleInputKeyPress}
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete ? "on" : "off"}
       label={label}
       placeholder={placeholder}
       variant={variant || "outlined"}
