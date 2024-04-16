@@ -103,7 +103,7 @@ export const getLocalISOString = (date, dateOnly = false) => {
     })
     .replace(
       /(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)/,
-      (match, p1, p2, p3, p4, p5, p6) => {
+      (_, p1, p2, p3, p4, p5, p6) => {
         const hour = p4 === "24" ? "00" : p4;
         return `${p3}-${p1}-${p2}T${hour}:${p5}:${p6}Z`;
       }
