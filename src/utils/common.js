@@ -76,7 +76,7 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
     case "YYYY-MM-DD":
       return `${year}-${month}-${day}`;
     case "DD-MM-YYYY":
-      return `${year}-${month}-${day}`;
+      return `${day}-${month}-${year}`;
     case "HH:MM:SS":
       return `${hours}:${minutes}:${seconds}`;
     case "dateTime":
