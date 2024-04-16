@@ -1,4 +1,5 @@
 import { OptionsContainer } from "../styles";
+import { formatDate } from "../utils/common";
 
 // regex
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -40,7 +41,7 @@ export const DELETED_SUCCESSFULLY = (title) =>
 export const statusColumns = [
   {
     Header: "Status",
-    width: 200,
+    width: 160,
     accessor: "createdAt",
     Cell: (props) => (
       <OptionsContainer>{props?.row?.original?.status || ""}</OptionsContainer>
@@ -49,15 +50,17 @@ export const statusColumns = [
   {
     Header: "Date",
     accessor: "date",
-    width: 150,
+    width: 160,
     Cell: (props) => (
-      <OptionsContainer>{props?.value || "N/A"}</OptionsContainer>
+      <OptionsContainer>
+        {formatDate({ date: props?.value, format: "DD-MM-YYYY" }) || "N/A"}
+      </OptionsContainer>
     ),
   },
   {
     Header: "Reason",
     accessor: "description",
-    width: 150,
+    width: 320,
     Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
   },
 ];
