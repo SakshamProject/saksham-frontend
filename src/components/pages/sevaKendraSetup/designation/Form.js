@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -22,6 +22,7 @@ import {
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/designation";
 import {
+  AuditLog,
   CustomCheckBox,
   CustomTextField,
   FormActions,
@@ -32,12 +33,14 @@ import {
   ADDED_SUCCESSFULLY,
   UPDATED_SUCCESSFULLY,
 } from "../../../../constants/globalConstants";
+import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
-  const { state, search } = useLocation();
+  const { state } = useLocation();
+  const [params] = useSearchParams();
+  const editId = params.get("editId");
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
-  const editId = search?.editId;
 
   const { mutate } = useMutation({
     mutationKey: ["create and update"],
@@ -51,7 +54,6 @@ const Form = () => {
         dispatchNotifySuccess(UPDATED_SUCCESSFULLY("Designation"));
         handleOnReset();
       }
-
       dispatchNotifySuccess(ADDED_SUCCESSFULLY("Designation"));
       resetForm();
     },
@@ -66,7 +68,10 @@ const Form = () => {
       dispatchNotifyError("Minimum one access is required");
       return;
     }
-    mutate(value);
+    const payload = !!editId
+      ? { ...value, features: value?.featuresId }
+      : value;
+    mutate(payload);
   };
 
   const formik = useFormik({
@@ -84,7 +89,26 @@ const Form = () => {
     handleSubmit,
     setFieldValue,
     resetForm,
+    setValues,
   } = formik;
+
+  const { data } = useCustomQuery({
+    queryKey: ["fetchDesignationById"],
+    queryFn: () => getByIdApiService(API_PATHS.DESIGNATION, editId),
+    enabled: !!editId,
+    onSuccess: ({ data }) => {
+      setValues({
+        stateId: data?.data?.sevaKendra?.district?.state?.id,
+        districtId: data?.data?.sevaKendra?.district?.id,
+        sevaKendraId: data?.data?.sevaKendra?.id,
+        designation: data?.data?.name,
+        featuresId: data?.data?.features?.map((item) => item?.feature),
+        auditLog: {
+          ...data?.data?.designationAuditLog[0],
+        },
+      });
+    },
+  });
 
   const { data: accessMenu } = useQuery({
     queryKey: ["getAllAccessList"],
@@ -113,17 +137,24 @@ const Form = () => {
     enabled: !!values?.districtId,
   });
 
-  const checkExistence = (id) => values?.featuresId?.includes(id);
+  const checkExistence = (id) => {
+    if (!!editId) {
+      return values?.featuresId?.some((item) => item?.id === id);
+    }
+    return values?.featuresId?.includes(id);
+  };
 
   const checkItem = (id, name) => () => {
     if (checkExistence(id)) {
       setFieldValue(
         name,
-        values?.featuresId?.filter((item) => item !== id)
+        values?.featuresId?.filter((item) => {
+          return !!editId ? item?.id !== id : item !== id;
+        })
       );
       return;
     }
-    setFieldValue(name, [...values?.featuresId, id]);
+    setFieldValue(name, [...values?.featuresId, !!editId ? { id } : id]);
   };
 
   return (
@@ -143,6 +174,7 @@ const Form = () => {
           errors={errors?.stateId}
           touched={touched?.stateId}
           inputValues={stateList || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -158,6 +190,7 @@ const Form = () => {
           errors={errors?.districtId}
           touched={touched?.districtId}
           inputValues={districtList?.districts || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -173,6 +206,7 @@ const Form = () => {
           errors={errors?.sevaKendraId}
           touched={touched?.sevaKendraId}
           inputValues={sevaKendraNames || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -185,6 +219,7 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.designation}
           touched={touched?.designation}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -207,7 +242,16 @@ const Form = () => {
       <FormActions
         handleSubmit={handleSubmit}
         handleOnReset={handleOnReset}
+        isViewMode={isViewMode}
         isUpdate={!!editId}
+      />
+
+      <AuditLog
+        hide={!editId}
+        createdAt={data?.data?.data?.createdAt}
+        createdByName={`${data?.data?.data?.createdBy?.firstName} ${data?.data?.data?.createdBy?.lastName}`}
+        updatedAt={data?.data?.data?.updatedAt}
+        updatedByName={`${data?.data?.data?.updatedBy?.firstName} ${data?.data?.data?.updatedBy?.lastName}`}
       />
     </FormWrapper>
   );

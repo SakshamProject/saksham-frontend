@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
+import { formatDate } from "../../utils/common";
 
 const Title = styled(Typography)({
   textAlign: "left",
@@ -27,16 +28,16 @@ const ValueText = styled(Typography)({
   opacity: "1",
 });
 
-const formatDate = (date) => {
-  const formattedDate = new Date(date);
-  const formattedTime = new Date(date);
+export const AuditLog = ({
+  createdAt,
+  updatedAt,
+  createdByName,
+  updatedByName,
+  sx,
+  hide,
+}) => {
+  if (hide) return null;
 
-  return `${formattedDate === "Invalid date" ? "" : formattedDate} - ${
-    formattedTime === "Invalid date" ? "" : formattedTime
-  }`;
-};
-
-export const AuditLog = ({ data, sx }) => {
   return (
     <Grid
       container
@@ -51,14 +52,30 @@ export const AuditLog = ({ data, sx }) => {
       <Grid item xs={6}>
         <SecTitle>Created by</SecTitle>
         <ValueText>
-          {data?.createdBy?.name} - {formatDate(data?.createdAt)}
+          {createdByName
+            ? `${createdByName} - ${formatDate({
+                date: createdAt,
+                format: "YYYY-MM-DD",
+              })}`
+            : `${formatDate({
+                date: createdAt,
+                format: "YYYY-MM-DD",
+              })}`}
         </ValueText>
       </Grid>
 
       <Grid item xs={6}>
         <SecTitle>Updated by</SecTitle>
         <ValueText>
-          {data?.updatedBy?.name} - {formatDate(data?.updatedAt)}
+          {updatedByName
+            ? `${updatedByName} - ${formatDate({
+                date: updatedAt,
+                format: "YYYY-MM-DD",
+              })}`
+            : `${formatDate({
+                date: updatedAt,
+                format: "YYYY-MM-DD",
+              })}`}
         </ValueText>
       </Grid>
     </Grid>
