@@ -1,10 +1,9 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
 
-import styled from "@emotion/styled";
 import {
   deleteApiService,
   getApiService,
@@ -30,7 +29,7 @@ import {
 } from "../../../../constants/typeMasters/generalTypes";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { CustomTypography, theme } from "../../../../styles";
+import { CustomTypography } from "../../../../styles";
 import { findNameById } from "../../../../utils/common";
 import {
   dispatchNotifyError,

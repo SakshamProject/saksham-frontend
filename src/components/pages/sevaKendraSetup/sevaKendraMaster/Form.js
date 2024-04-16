@@ -97,8 +97,6 @@ const Form = () => {
     setFieldValue,
     setFieldTouched,
     setValues,
-    setTouched,
-    handleReset,
   } = formik;
 
   const { data: stateList } = useQuery({
@@ -139,6 +137,7 @@ const Form = () => {
     editId
       ? sevaKendraGetById()
       : setFieldValue(fields?.startDate?.name, new Date());
+    // eslint-disable-next-line
   }, []);
 
   return (
