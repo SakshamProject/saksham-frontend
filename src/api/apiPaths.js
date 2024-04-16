@@ -1,4 +1,14 @@
 export const API_PATHS = {
+  // Setup master
+  SEVAKENDRA: "/sevakendras",
+  SEVAKENDRA_LIST: "/sevakendras/list",
+
+  // Designation
+  DESIGNATION: "/designation",
+  FEATURES: "/designation/features",
+  DESIGNATION_LIST: "/designation/list",
+  SEVA_KENDRA_NAME: "/sevakendras/districts",
+
   // State master
   STATE_MASTER: "/typemaster/statemaster",
   TALUK: "/taluks",
@@ -21,10 +31,4 @@ export const API_PATHS = {
   // Service master
   SERVICES: "services",
   SERVICES_LIST: "services/list",
-
-  // Designation
-  DESIGNATION: "/designation",
-  FEATURES: "/designation/features",
-  DESIGNATION_LIST: "/designation/list",
-  SEVA_KENDRA_NAME: "/sevakendras/districts",
 };
