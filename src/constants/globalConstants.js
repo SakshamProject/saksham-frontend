@@ -43,14 +43,12 @@ export const statusColumns = [
     width: 200,
     accessor: "createdAt",
     Cell: (props) => (
-      <OptionsContainer>
-        {props?.row?.original?.status?.name || ""}
-      </OptionsContainer>
+      <OptionsContainer>{props?.row?.original?.status || ""}</OptionsContainer>
     ),
   },
   {
     Header: "Date",
-    accessor: "effectiveDate",
+    accessor: "date",
     width: 150,
     Cell: (props) => (
       <OptionsContainer>{props?.value || "N/A"}</OptionsContainer>
@@ -58,7 +56,7 @@ export const statusColumns = [
   },
   {
     Header: "Reason",
-    accessor: "deactivationReason",
+    accessor: "description",
     width: 150,
     Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
   },

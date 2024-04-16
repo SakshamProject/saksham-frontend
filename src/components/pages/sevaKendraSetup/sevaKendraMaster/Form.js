@@ -48,24 +48,29 @@ const Form = () => {
   const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
+    const auditLog = {
+      date: formatDate({ date: values?.date }),
+      status: values?.status,
+      description: values?.description,
+    };
     const payload = getValidValues({
       ...values,
-      startDate: formatDate({ date: values?.startDate }),
+      startDate: formatDate({ date: values?.startDate, dateOnly: true }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
-      auditLog: getValidValues({
-        ...values?.auditLog,
-        date: formatDate({ date: values?.auditLog?.date }),
-      }),
+      auditLog: getValidValues(auditLog),
+      currentStatus: values?.status,
     });
     onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["create and update"],
-    mutationFn: (data) =>
-      editId
+    mutationFn: (data) => {
+      console.log(data);
+      return editId
         ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
-        : postApiService(API_PATHS?.SEVAKENDRA, data),
+        : postApiService(API_PATHS?.SEVAKENDRA, data);
+    },
     onSuccess: () => {
       dispatchNotifySuccess(
         editId
@@ -119,10 +124,14 @@ const Form = () => {
     mutationKey: ["sevaKendraGetById"],
     mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
     onSuccess: ({ data: { data } }) => {
-      setValues(data);
-      setFieldValue(fields?.stateId?.name, data?.district?.state?.id);
-      setFieldValue(fields?.servicesBySevaKendra?.name, data?.services);
-      setFieldValue("status", data?.currentStatus);
+      setValues({
+        ...data,
+        stateId: data?.district?.state?.id,
+        servicesBySevaKendra: data?.services,
+        status: data?.currentStatus,
+        date: new Date(),
+        description: "",
+      });
     },
   });
 
@@ -164,6 +173,7 @@ const Form = () => {
           errors={errors?.stateId}
           touched={touched?.stateId}
           inputValues={stateList || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -179,6 +189,7 @@ const Form = () => {
           errors={errors?.districtId}
           touched={touched?.districtId}
           inputValues={districtList?.districts || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -345,7 +356,7 @@ const Form = () => {
           statusSeeds={statusSeeds}
           isViewMode={isViewMode}
           rowBreak={false}
-          // statusHistory={clientDetail?.data?.status}
+          statusHistory={values?.auditLog}
           disableListLayout
         />
       </WithCondition>
@@ -355,7 +366,8 @@ const Form = () => {
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST);
         }}
-        isUpdate={false}
+        isUpdate={editId}
+        isViewMode={isViewMode}
       />
 
       {/* {editId ? <AuditLog data={parameterDetails?.data} /> : <></>} */}

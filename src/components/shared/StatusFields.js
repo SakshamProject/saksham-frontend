@@ -30,10 +30,6 @@ function StatusFields({
 
     if (values?.status === CODES.ACTIVE) {
       setFieldValue("description", "");
-      setFieldValue("date", "");
-    }
-    if (values?.status === CODES.DEACTIVE) {
-      setFieldValue("date", new Date());
     }
     setFieldTouched("description", false);
   }, [values?.status]); // eslint-disable-line
@@ -68,7 +64,6 @@ function StatusFields({
             value={values?.date}
             onChange={setFieldValue}
             isViewMode={true}
-            maxDate={new Date()}
             fullWidth
             errors={errors?.date}
             onBlur={handleBlur}
@@ -93,7 +88,7 @@ function StatusFields({
         <Grid item xs={12}>
           <CustomReactTable
             columnData={statusColumns}
-            rawData={values?.statusHistory || statusHistory}
+            rawData={values?.statusHistory || statusHistory?.reverse()}
             disablePagination
             disableColumnHiding
             disableSort

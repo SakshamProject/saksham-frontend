@@ -18,7 +18,7 @@ export const initialValues = {
   },
   servicesBySevaKendra: [],
   status: "ACTIVE",
-  date: "",
+  date: new Date(),
   description: "",
 };
 

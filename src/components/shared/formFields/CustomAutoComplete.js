@@ -15,6 +15,7 @@ const CustomAutoComplete = ({
   accessor,
   labelAccessor,
   autoComplete,
+  isViewMode,
   customHelperText,
   sx,
   limitTags = 6,
@@ -40,7 +41,7 @@ const CustomAutoComplete = ({
       isOptionEqualToValue={(option, value) =>
         option?.[accessor || "id"] === value?.[accessor || "id"]
       }
-      readOnly={readOnly}
+      readOnly={readOnly || isViewMode}
       limitTags={limitTags}
       renderTags={(value, getTagProps) =>
         value?.map((option, index) => (

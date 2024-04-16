@@ -60,7 +60,7 @@ export const convertToDateObject = (dateString) => {
   return new Date(year, month, day);
 };
 
-export const formatDate = ({ date, format, time, localDate }) => {
+export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
   const dateValue = time ? new Date(getDateTime(time)) : new Date(date);
   const d = localDate ? convertToDateObject(localDate) : dateValue;
   const month = (d.getMonth() + 1).toString().padStart(2, "0");
@@ -69,7 +69,6 @@ export const formatDate = ({ date, format, time, localDate }) => {
   const hours = d.getHours().toString().padStart(2, "0");
   const minutes = d.getMinutes().toString().padStart(2, "0");
   const seconds = d.getSeconds().toString().padStart(2, "0");
-  const milliSeconds = d.getMilliseconds().toString().padStart(2, "0");
 
   if (!(date || time || localDate)) return "";
 
@@ -83,7 +82,7 @@ export const formatDate = ({ date, format, time, localDate }) => {
     case "dateTime":
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     default:
-      return getLocalISOString(d, true);
+      return getLocalISOString(d, dateOnly);
   }
 };
 
