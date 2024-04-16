@@ -40,9 +40,9 @@ export const columns = [
     filterAccessor: "sevaKendraState",
     width: 300,
     sticky: "left",
-    Cell: ({ row, value }) => (
+    Cell: ({ row }) => (
       <OptionsContainer>
-        {value}
+        {row?.original?.sevaKendra?.district?.state?.name}
         <EditPopover
           inputValues={[
             {
@@ -66,17 +66,20 @@ export const columns = [
     accessor: "district",
     width: 300,
     filterAccessor: "sevaKendraDistrict",
+    Cell: ({ row }) => row?.original?.sevaKendra?.district?.name,
   },
   {
     Header: "Seva Kendra Name",
     accessor: "name",
     width: 300,
     filterAccessor: "sevaKendraName",
+    Cell: ({ row }) => row?.original?.sevaKendra?.name,
   },
   {
     Header: "Designations",
     accessor: "designations",
     width: 300,
     filterAccessor: "designations",
+    Cell: ({ row }) => row?.original?.name,
   },
 ];

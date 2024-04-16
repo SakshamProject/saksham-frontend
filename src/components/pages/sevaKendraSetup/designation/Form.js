@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
@@ -32,12 +32,14 @@ import {
   ADDED_SUCCESSFULLY,
   UPDATED_SUCCESSFULLY,
 } from "../../../../constants/globalConstants";
+import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
-  const { state, search } = useLocation();
+  const { state } = useLocation();
+  const [params] = useSearchParams();
+  const editId = params.get("editId");
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
-  const editId = search?.editId;
 
   const { mutate } = useMutation({
     mutationKey: ["create and update"],
@@ -51,7 +53,6 @@ const Form = () => {
         dispatchNotifySuccess(UPDATED_SUCCESSFULLY("Designation"));
         handleOnReset();
       }
-
       dispatchNotifySuccess(ADDED_SUCCESSFULLY("Designation"));
       resetForm();
     },
@@ -85,6 +86,15 @@ const Form = () => {
     setFieldValue,
     resetForm,
   } = formik;
+
+  useCustomQuery({
+    queryKey: ["fetchDesignationById"],
+    queryFn: () => getByIdApiService(API_PATHS.DESIGNATION, editId),
+    enabled: !!editId,
+    onSuccess: ({ data }) => {
+      console.log({ data });
+    },
+  });
 
   const { data: accessMenu } = useQuery({
     queryKey: ["getAllAccessList"],
@@ -207,6 +217,7 @@ const Form = () => {
       <FormActions
         handleSubmit={handleSubmit}
         handleOnReset={handleOnReset}
+        isViewMode={isViewMode}
         isUpdate={!!editId}
       />
     </FormWrapper>

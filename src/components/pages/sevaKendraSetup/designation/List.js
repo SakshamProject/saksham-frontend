@@ -9,7 +9,6 @@ const List = () => {
       formPath={"DESIGNATIONS_FORM"}
       apiPath={"DESIGNATION_LIST"}
       columns={columns}
-      disableSortingPayload
     />
   );
 };

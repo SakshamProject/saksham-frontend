@@ -50,10 +50,9 @@ import {
 import CustomModal from "../../../shared/CustomModal";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
-
 const Form = () => {
-  const [name] = useSearchParams();
-  const editId = name.get("editId");
+  const [params] = useSearchParams();
+  const editId = params.get("editId");
   const { state } = useLocation();
   const isViewMode = state?.viewDetails;
   const generalType = state?.field;
