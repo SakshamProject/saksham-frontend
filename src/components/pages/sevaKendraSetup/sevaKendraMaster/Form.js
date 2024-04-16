@@ -298,7 +298,9 @@ const Form = () => {
           error={errors?.servicesBySevaKendra}
           isViewMode={isViewMode}
           inputValues={serviceTypeList || []}
-          getOptionLabel={(option) => `${option?.name} - ${option?.name} `}
+          getOptionLabel={(option) =>
+            `${option?.name} - ${option?.serviceType?.name} `
+          }
           // accessor={fields?.servicesBySevaKendra?.accessor}
           // labelAccessor="role"
         />

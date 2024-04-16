@@ -6,7 +6,6 @@ const List = () => {
     <CommonList
       label={"Services"}
       listPath={"SERVICE_MASTER_LIST"}
-      formPath={"SERVICE_MASTER_FORM"}
       apiPath={"SERVICES_LIST"}
       columns={serviceMasterColumn}
     />
