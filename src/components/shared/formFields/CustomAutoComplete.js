@@ -25,7 +25,7 @@ const CustomAutoComplete = ({
       multiple
       className={className}
       onChange={onChange}
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete ? "on" : "off"}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}

@@ -45,7 +45,7 @@ export const CustomPasswordField = ({
       type={showPassword ? "text" : "password"}
       name={name}
       fullWidth
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete ? "on" : "off"}
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}

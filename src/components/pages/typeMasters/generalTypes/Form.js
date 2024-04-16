@@ -30,7 +30,7 @@ import {
 } from "../../../../constants/typeMasters/generalTypes";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
-import { theme } from "../../../../styles";
+import { CustomTypography, theme } from "../../../../styles";
 import { findNameById } from "../../../../utils/common";
 import {
   dispatchNotifyError,
@@ -50,13 +50,6 @@ import {
 import CustomModal from "../../../shared/CustomModal";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
-const CustomTypography = styled(Typography)({
-  color: theme?.palette?.textColor?.blue,
-  textTransform: "uppercase",
-  fontSize: "16px",
-  fontWeight: "bold",
-  marginBottom: 16,
-});
 
 const Form = () => {
   const [name] = useSearchParams();

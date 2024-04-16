@@ -1,4 +1,4 @@
-import { array, object, string } from "yup";
+import { object, string } from "yup";
 
 export const validationSchema = object({
   stateId: string().required("Seva kendra state is required"),
@@ -9,6 +9,4 @@ export const validationSchema = object({
     .min(3, "Designation must be at least 3 characters long")
     .required("Designation is required")
     .max(255, "Designation cannot have more than 255 characters"),
-
-  featuresId: array().min(1, "Minimum one access is required"),
 });

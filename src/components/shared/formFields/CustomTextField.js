@@ -1,4 +1,4 @@
-import TextField from "@mui/material/TextField";
+import { TextField } from "@mui/material";
 
 export const CustomTextField = ({
   type,
@@ -52,7 +52,7 @@ export const CustomTextField = ({
       type={"text"}
       name={name}
       fullWidth={fullWidth || true}
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete}
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}

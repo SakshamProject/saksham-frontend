@@ -2,6 +2,17 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
+    commonColor: {
+      white: "#ffffff",
+      black: "#000000",
+      lightBlack: "#262626",
+      blue: "#1473E6",
+      lightBlue: " #4390ef",
+      darkBlue: "#082f5e",
+      red: "#ff0000",
+      orange: "#ff9900",
+    },
+
     backgroundColor: {
       tableHeader: "#D2E1FC",
       tablePagination: "#F8FCFF",

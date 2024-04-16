@@ -22,7 +22,7 @@ export const CustomSearch = ({
       }}
       name={name || ""}
       value={value || ""}
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete ? "on" : "off"}
       onChange={onChange ? onChange : () => {}}
       placeholder={label || ""}
       InputProps={{

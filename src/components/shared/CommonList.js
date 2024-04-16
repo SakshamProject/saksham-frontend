@@ -22,8 +22,8 @@ export const CommonList = ({
   disableColumnHiding = false,
   isGetApi = false,
   manualSort = false,
+  disableSortingPayload = false,
   rawDataAccessor = "",
-  initialSorting,
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -34,7 +34,9 @@ export const CommonList = ({
     tableReRenderActions,
   } = useTableCustomHooks(ROUTE_PATHS?.[listPath]);
 
-  const listParams = handleTableData({ initialSorting });
+  const listParams = handleTableData({
+    disableSorting: disableSortingPayload,
+  });
 
   const { pageSize, currentPage } = tableReRenderActions();
 
@@ -59,7 +61,6 @@ export const CommonList = ({
           listPath={ROUTE_PATHS?.[listPath]}
           filterFields={filterFields}
           filterFieldInitial={filterInitialValues}
-          isFilterParams={!!listParams?.filters?.length}
           disableSearchField={disableSearchField}
           disableFilter={disableFilters}
         />

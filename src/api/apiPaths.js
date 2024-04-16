@@ -26,4 +26,5 @@ export const API_PATHS = {
   DESIGNATION: "/designation",
   FEATURES: "/designation/features",
   DESIGNATION_LIST: "/designation/list",
+  SEVA_KENDRA_NAME: "/sevakendras/districts",
 };
