@@ -69,12 +69,12 @@ export const fields = {
       type: "email",
     },
     phoneNumber1: {
-      label: "Phone No 1 *",
+      label: "Primary Number *",
       name: "contactPerson.phoneNumber1",
       type: "mobile",
     },
     phoneNumber2: {
-      label: "Phone No 2 *",
+      label: "Secondary Number *",
       name: "contactPerson.phoneNumber2",
       type: "mobile",
     },
