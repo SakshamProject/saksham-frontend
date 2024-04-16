@@ -12,11 +12,7 @@ import {
   updateApiService,
 } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../constants/globalConstants";
+import { CODES } from "../../../constants/globalConstants";
 import {
   fields,
   initialValues,
@@ -24,7 +20,10 @@ import {
 } from "../../../constants/serviceMaster/serviceMaster";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { findNameById, getValidValues } from "../../../utils/common";
-import { dispatchNotifySuccess } from "../../../utils/dispatch";
+import {
+  dispatchNotifyAction,
+  dispatchNotifySuccess,
+} from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
   CustomReactTable,
@@ -38,7 +37,6 @@ import {
 import CustomModal from "../../shared/CustomModal";
 
 const Form = () => {
-  const navigate = useNavigate();
   const { state } = useLocation();
   const [params] = useSearchParams();
   const editId = params.get("editId");
@@ -59,7 +57,7 @@ const Form = () => {
     mutationKey: ["deleteService"],
     mutationFn: (id) => deleteApiService(API_PATHS?.SERVICES, id),
     onSuccess: ({ data }) => {
-      dispatchNotifySuccess(DELETED_SUCCESSFULLY("Service"));
+      dispatchNotifyAction("Service", CODES?.DELETE);
       serviceGetById();
       setOpen(false);
     },
@@ -77,10 +75,9 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SERVICES, tableEditId, data)
         : postApiService(API_PATHS?.SERVICES, data),
     onSuccess: () => {
-      dispatchNotifySuccess(
-        tableEditId
-          ? UPDATED_SUCCESSFULLY("Service")
-          : ADDED_SUCCESSFULLY("Service")
+      dispatchNotifyAction(
+        "Service",
+        tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       setFieldValue("name", "");
       setTouched({});
@@ -104,10 +101,7 @@ const Form = () => {
     errors,
     handleSubmit,
     setFieldValue,
-    setFieldTouched,
-    setValues,
     setTouched,
-    handleReset,
   } = formik;
 
   const { data: serviceTypeList } = useQuery({
@@ -124,7 +118,9 @@ const Form = () => {
     },
   });
 
-  useEffect(editId && serviceGetById, []);
+  useEffect(() => {
+    editId && serviceGetById();
+  }, []);
 
   return (
     <FormWrapper title="Service" navigateTo={ROUTE_PATHS.SERVICE_MASTER_LIST}>

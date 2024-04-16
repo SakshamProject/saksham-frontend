@@ -11,11 +11,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-  statusSeeds,
-} from "../../../../constants/globalConstants";
+import { CODES, statusSeeds } from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
@@ -35,7 +31,10 @@ import {
 import StatusFields from "../../../shared/StatusFields";
 import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
 import { CustomTypography } from "../../../../styles";
-import { dispatchNotifySuccess } from "../../../../utils/dispatch";
+import {
+  dispatchNotifyAction,
+  dispatchNotifySuccess,
+} from "../../../../utils/dispatch";
 
 const transformServices = (services) =>
   services.map(({ id }) => ({ serviceId: id }));
@@ -65,17 +64,14 @@ const Form = () => {
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["create and update"],
-    mutationFn: (data) => {
-      console.log(data);
-      return editId
+    mutationFn: (data) =>
+      editId
         ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
-        : postApiService(API_PATHS?.SEVAKENDRA, data);
-    },
+        : postApiService(API_PATHS?.SEVAKENDRA, data),
     onSuccess: () => {
-      dispatchNotifySuccess(
-        editId
-          ? UPDATED_SUCCESSFULLY("Seva Kendra")
-          : ADDED_SUCCESSFULLY("Seva Kendra")
+      dispatchNotifyAction(
+        "Seva Kendra",
+        editId ? CODES?.UPDATE : CODES?.ADDED
       );
       navigate(ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST);
     },
@@ -125,8 +121,8 @@ const Form = () => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
-        servicesBySevaKendra: data?.services.filter(({ serviceid }) => ({
-          id: serviceid,
+        servicesBySevaKendra: data?.services.map(({ serviceId }) => ({
+          id: serviceId,
         })),
         status: data?.currentStatus,
         date: new Date(),
@@ -146,7 +142,6 @@ const Form = () => {
     <FormWrapper
       title="Seva Kendra"
       navigateTo={ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST}
-      columnSpacing={3}
     >
       <Grid item xs={12}>
         <CustomTextField

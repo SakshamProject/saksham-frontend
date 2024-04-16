@@ -8,7 +8,6 @@ const Form = () => {
     <FormWrapper
       title="Service Mapping"
       navigateTo={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
-      columnSpacing={3}
       disableModes
     ></FormWrapper>
   );

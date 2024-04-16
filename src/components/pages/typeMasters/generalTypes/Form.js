@@ -12,11 +12,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import {
   DISABILITY_TYPE,
   DISTRICT,
@@ -32,6 +28,7 @@ import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import { findNameById } from "../../../../utils/common";
 import {
+  dispatchNotifyAction,
   dispatchNotifyError,
   dispatchNotifySuccess,
 } from "../../../../utils/dispatch";
@@ -71,10 +68,9 @@ const Form = () => {
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
-      dispatchNotifySuccess(
-        !!tableEditId
-          ? UPDATED_SUCCESSFULLY(values?.typeMaster)
-          : ADDED_SUCCESSFULLY(values?.typeMaster)
+      dispatchNotifyAction(
+        values?.typeMaster,
+        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       handleReset();
       refetch();
@@ -149,7 +145,7 @@ const Form = () => {
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
-      dispatchNotifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
+      dispatchNotifyAction(values?.typeMaster, CODES?.DELETE);
       refetch();
       setOpen(false);
     },

@@ -153,15 +153,15 @@ export const generalColumns = ({
               <Box>
                 <StyledIconButton
                   onClick={() => handleEdit(row?.original?.id)}
-                  disabled={tableEditId !== "" ? true : false}
+                  disabled={!!tableEditId}
                 >
-                  <EditIcon disabled={tableEditId !== "" ? true : false} />
+                  <EditIcon disabled={!!tableEditId} />
                 </StyledIconButton>
                 <StyledIconButton
                   onClick={() => handleDelete(row?.original?.id)}
-                  disabled={tableEditId !== "" ? true : false}
+                  disabled={!!tableEditId}
                 >
-                  <DeleteIcon disabled={tableEditId !== "" ? true : false} />
+                  <DeleteIcon disabled={!!tableEditId} />
                 </StyledIconButton>
               </Box>
             </WithCondition>

@@ -12,11 +12,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import {
   fields,
   formDetails,
@@ -26,7 +22,10 @@ import {
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
-import { dispatchNotifySuccess } from "../../../../utils/dispatch";
+import {
+  dispatchNotifyAction,
+  dispatchNotifySuccess,
+} from "../../../../utils/dispatch";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
   CustomReactTable,
@@ -62,7 +61,7 @@ const StateType = () => {
     mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: () => {
-      dispatchNotifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
+      dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
       refetch();
       setOpen(false);
     },
@@ -94,10 +93,9 @@ const StateType = () => {
         ? updateApiService(currentForm?.apiPath, tableEditId, data)
         : postApiService(currentForm?.apiPath, data),
     onSuccess: () => {
-      dispatchNotifySuccess(
-        tableEditId
-          ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
-          : ADDED_SUCCESSFULLY(currentForm?.validationLabel)
+      dispatchNotifyAction(
+        currentForm?.validationLabel,
+        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       if (tableEditId) handleReset();
       else {

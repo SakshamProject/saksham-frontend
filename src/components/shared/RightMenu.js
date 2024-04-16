@@ -26,7 +26,7 @@ export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      {RIGHT_SIDE_MENU().map(({ label, routePath }, key) => (
+      {RIGHT_SIDE_MENU()?.map(({ label, routePath }, key) => (
         <Titles key={key} onClick={() => redirect(routePath)}>
           {label}
         </Titles>

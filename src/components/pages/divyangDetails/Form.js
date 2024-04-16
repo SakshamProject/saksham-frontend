@@ -8,7 +8,6 @@ const Form = () => {
     <FormWrapper
       title="Divyang"
       navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
-      columnSpacing={3}
     ></FormWrapper>
   );
 };

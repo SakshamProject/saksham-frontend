@@ -17,8 +17,8 @@ import {
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import {
+  dispatchNotifyAction,
   dispatchNotifyError,
-  dispatchNotifySuccess,
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/designation";
 import {
@@ -29,10 +29,7 @@ import {
   FormWrapper,
   SingleAutoComplete,
 } from "../../../shared";
-import {
-  ADDED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
@@ -51,10 +48,13 @@ const Form = () => {
     },
     onSuccess: () => {
       if (!!editId) {
-        dispatchNotifySuccess(UPDATED_SUCCESSFULLY("Designation"));
         handleOnReset();
       }
-      dispatchNotifySuccess(ADDED_SUCCESSFULLY("Designation"));
+      dispatchNotifyAction(
+        "Designation",
+        !!editId ? CODES?.UPDATE : CODES?.ADDED
+      );
+
       resetForm();
     },
   });

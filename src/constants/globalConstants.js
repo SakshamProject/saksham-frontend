@@ -25,18 +25,13 @@ export const CODES = {
   PENDING: "pending",
   REJECTED: "rejected",
   APPROVED: "approved",
+  ADDED: "added",
+  UPDATE: "update",
+  DELETE: "delete",
 };
 
 // api messages
 export const SERVER_ERROR = "Something went wrong. Please try again!";
-
-export const ADDED_SUCCESSFULLY = (title) => `${title} Added successfully !`;
-
-export const UPDATED_SUCCESSFULLY = (title) =>
-  `${title} Updated successfully !`;
-
-export const DELETED_SUCCESSFULLY = (title) =>
-  `${title} Deleted successfully !`;
 
 export const statusColumns = [
   {
