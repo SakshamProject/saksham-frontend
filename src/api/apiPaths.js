@@ -1,5 +1,6 @@
 export const API_PATHS = {
   // Setup master
+  SEVAKENDRA: "/sevakendras",
   SEVAKENDRA_LIST: "/sevakendras/list",
 
   // Designation

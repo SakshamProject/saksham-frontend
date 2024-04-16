@@ -1,13 +1,22 @@
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
-import { getApiService, getByIdApiService } from "../../../../api/api";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { statusSeeds } from "../../../../constants/globalConstants";
+import {
+  ADDED_SUCCESSFULLY,
+  UPDATED_SUCCESSFULLY,
+  statusSeeds,
+} from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
@@ -27,6 +36,7 @@ import {
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
 import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
+import { dispatchNotifySuccess } from "../../../../utils/dispatch";
 
 const CustomTypography = styled(Typography)({
   color: theme?.palette?.textColor?.blue,
@@ -56,9 +66,24 @@ const Form = () => {
         date: formatDate({ date: values?.auditLog?.date }),
       }),
     });
-    // onSubmit(payload);
-    console.log(payload);
+    onSubmit(payload);
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["create and update"],
+    mutationFn: (data) =>
+      editId
+        ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
+        : postApiService(API_PATHS?.SEVAKENDRA, data),
+    onSuccess: () => {
+      dispatchNotifySuccess(
+        editId
+          ? UPDATED_SUCCESSFULLY("Seva Kendra")
+          : ADDED_SUCCESSFULLY("Seva Kendra")
+      );
+      navigate(ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST);
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -203,8 +228,7 @@ const Form = () => {
           name={fields?.startDate?.name}
           value={values?.startDate}
           onChange={setFieldValue}
-          isViewMode={true}
-          maxDate={new Date()}
+          isViewMode={isViewMode}
           fullWidth
           onBlur={handleBlur}
           setTouched={setFieldTouched}

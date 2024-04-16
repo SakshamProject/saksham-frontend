@@ -52,7 +52,9 @@ export const validationSchema = (editId) =>
           return context.createError({ message: "Invalid mobile number" });
         return true;
       }),
-    startDate: date().typeError("Invalid date"),
+    startDate: date()
+      .typeError("Invalid date")
+      .required("Seva Kendra Start Date is required"),
     contactPerson: object({
       name: string()
         .trim()

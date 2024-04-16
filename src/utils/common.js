@@ -69,7 +69,7 @@ export const formatDate = ({ date, format, time, localDate }) => {
   const hours = d.getHours().toString().padStart(2, "0");
   const minutes = d.getMinutes().toString().padStart(2, "0");
   const seconds = d.getSeconds().toString().padStart(2, "0");
-  // const milliSeconds = d.getMilliseconds().toString().padStart(2, "0");
+  const milliSeconds = d.getMilliseconds().toString().padStart(2, "0");
 
   if (!(date || time || localDate)) return "";
 
@@ -83,9 +83,32 @@ export const formatDate = ({ date, format, time, localDate }) => {
     case "dateTime":
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     default:
-      // return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
-      return d.toISOString();
+      return getLocalISOString(d, true);
   }
+};
+
+export const getLocalISOString = (date, dateOnly = false) => {
+  dateOnly && date.setHours(0, 0, 0, 0);
+  const options = {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Kolkata",
+  };
+
+  const formattedDate = date.toLocaleString("en-US", options);
+  const adjustedFormattedDate = formattedDate.replace(
+    /(\d+)\/(\d+)\/(\d+), (\d+):(\d+):(\d+)/,
+    (match, p1, p2, p3, p4, p5, p6) => {
+      const hour = p4 === "24" ? "00" : p4;
+      return `${p3}-${p1}-${p2}T${hour}:${p5}:${p6}Z`;
+    }
+  );
+  return adjustedFormattedDate;
 };
 
 export const findNameById = (id, data) =>
