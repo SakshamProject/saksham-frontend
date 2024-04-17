@@ -16,21 +16,23 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   fontWeight: "bold",
   height: "36px",
   cursor: "pointer",
-  color: theme.palette?.textColor?.main,
-  border: `1px solid ${theme.palette?.borderColor?.main}`,
+  color: theme.palette?.primary?.main,
+  borderColor: theme.palette?.primary?.main,
   "&:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.white,
+    backgroundColor: theme.palette?.commonColor?.white,
+    borderColor: theme.palette?.primary?.main,
   },
 }));
 
 export const SubmitButton = styled(Button)(({ theme }) => ({
   margin: "0 8px",
   height: "36px",
-  borderColor: theme.palette?.borderColor?.main,
-  backgroundColor: theme.palette?.backgroundColor?.allButton,
-  color: theme.palette?.textColor?.white,
+  borderColor: theme.palette?.primary?.main,
+  backgroundColor: theme.palette?.primary?.main,
+  color: theme.palette?.primary?.contrastText,
   "&:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.allButton,
+    backgroundColor: theme.palette?.primary?.main,
+    borderColor: theme.palette?.primary?.main,
   },
 }));
 
@@ -38,23 +40,23 @@ export const AddButton = styled(Button)(({ theme }) => ({
   marginLeft: 15,
   height: 38,
   float: "right",
-  backgroundColor: theme.palette?.backgroundColor?.green,
-  color: theme.palette?.textColor?.white,
+  backgroundColor: theme.palette?.commonColor?.green,
+  color: theme.palette?.commonColor?.white,
   "&:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.green,
+    backgroundColor: theme.palette?.commonColor?.green,
   },
 }));
 
 export const NewButton = styled(IconButton)(({ theme }) => ({
-  boxShadow: "0px 2px 4px #00000033",
   borderRadius: "4px",
   marginLeft: 14,
   padding: "7px  8px",
-  backgroundColor: theme.palette?.backgroundColor?.allButton,
-  color: theme.palette?.textColor?.white,
+  borderColor: theme.palette?.primary?.main,
+  backgroundColor: theme.palette?.primary?.main,
+  color: theme.palette?.primary?.contrastText,
   "&:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.allButton,
-    color: theme.palette?.textColor?.white,
+    borderColor: theme.palette?.primary?.main,
+    backgroundColor: theme.palette?.primary?.main,
   },
 }));
 
@@ -67,14 +69,14 @@ export const DeleteIcon = styled(Delete)(({ theme, disabled }) => ({
   height: 24,
   cursor: "pointer",
   color: disabled
-    ? theme?.palette?.borderColor?.lightGrey
-    : theme.palette?.textColor?.red,
+    ? theme?.palette?.commonColor?.lightGrey
+    : theme.palette?.commonColor?.red,
 }));
 
 export const EditIcon = styled(Edit)(({ theme, disabled }) => ({
   width: 24,
   height: 24,
   color: disabled
-    ? theme?.palette?.borderColor?.lightGrey
-    : theme.palette?.textColor?.orange,
+    ? theme?.palette?.commonColor?.lightGrey
+    : theme.palette?.commonColor?.orange,
 }));

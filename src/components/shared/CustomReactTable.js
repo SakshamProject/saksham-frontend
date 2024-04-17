@@ -43,11 +43,14 @@ export const CustomReactTable = ({
       }
       return acc;
     }, {});
+
     const data = {
       ...pageParams,
       sort: JSON.stringify(sortValue),
     };
+
     if (value?.length === 0) delete data?.sort;
+
     return navigate(
       {
         pathName: `${pathName}`,
@@ -58,6 +61,73 @@ export const CustomReactTable = ({
   };
 
   const Layout = disableLayout ? Fragment : ListingContainer;
+
+  const tableStyle = {
+    table: {
+      maxHeight: maxHeight || "calc(100vh - 280px)",
+      scrollbarWidth: "thin",
+      scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
+    },
+    mainContainer: {
+      maxWidth: "100%",
+    },
+    ".tableHead": {
+      maxWidth: "100%",
+      userSelect: "none",
+      color: theme?.palette?.tableColor?.headerText,
+    },
+    ".css1kciki3 .tableHead": {
+      backgroundColor: theme?.palette?.tableColor?.header,
+    },
+    th: {
+      font: "normal normal bold 14px/19px sans-serif !important",
+      display: "flex !important",
+      height: "64px !important",
+      backgroundColor: theme?.palette?.tableColor?.header,
+      color: theme?.palette?.tableColor?.headerText,
+    },
+    body: {
+      font: "normal normal normal 14px/19px sans-serif !important",
+    },
+    headerText: {
+      overflow: "visible",
+      userSelect: "none",
+    },
+    tr: {
+      display: "flex",
+      alignItems: "center",
+      height: "auto",
+      ".primaryRow": {
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      },
+      ".primaryRowData": {
+        display: "flex",
+        alignItems: "center",
+      },
+    },
+    td: {
+      padding: 10,
+      paddingRight: 30,
+      ".MuiBox-root": {
+        textOverflow: "ellipsis",
+      },
+    },
+    loaderContainer: {
+      display: "none !important",
+    },
+    tableHead: {
+      backgroundColor: theme?.palette?.tableColor?.header,
+    },
+    pagination: {
+      color: theme?.palette?.textColor?.paginationText,
+      font: "normal normal normal 14px/19px sans-serif !important",
+      backgroundColor: `${theme.palette?.tableColor?.pagination} !important`,
+      boxShadow: `${theme.palette?.tableColor?.shadow} 0px -2px 5px !important`,
+    },
+    ...style,
+  };
 
   return (
     <Layout>
@@ -80,71 +150,7 @@ export const CustomReactTable = ({
         manualSort={manualSort || false}
         onSort={tableSortValues}
         isLoading={isLoading || false}
-        style={{
-          table: {
-            maxHeight: maxHeight || "calc(100vh - 280px)",
-            scrollbarWidth: "thin",
-            scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
-          },
-          mainContainer: {
-            maxWidth: "100%",
-          },
-          ".tableHead": {
-            maxWidth: "100%",
-            userSelect: "none",
-            color: theme?.palette?.textColor?.main,
-          },
-          ".css1kciki3 .tableHead": {
-            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
-          },
-          th: {
-            font: "normal normal bold 14px/19px sans-serif !important",
-            display: "flex !important",
-            height: "64px !important",
-            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
-            color: theme?.palette?.textColor?.main,
-          },
-          body: {
-            font: "normal normal normal 14px/19px sans-serif !important",
-          },
-          headerText: {
-            overflow: "visible",
-            userSelect: "none",
-          },
-          tr: {
-            display: "flex",
-            alignItems: "center",
-            height: "auto",
-            ".primaryRow": {
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-            },
-            ".primaryRowData": {
-              display: "flex",
-              alignItems: "center",
-            },
-          },
-          td: {
-            padding: 10,
-            paddingRight: 30,
-            ".MuiBox-root": {
-              textOverflow: "ellipsis",
-            },
-          },
-          loaderContainer: {
-            display: "none !important",
-          },
-          tableHead: {
-            backgroundColor: theme.palette?.backgroundColor?.tableHeader,
-          },
-          pagination: {
-            color: theme?.palette?.textColor?.main,
-            font: "normal normal normal 14px/19px sans-serif !important",
-            backgroundColor: `${theme.palette?.backgroundColor?.tablePagination} !important`,
-          },
-          ...style,
-        }}
+        style={tableStyle}
       />
     </Layout>
   );

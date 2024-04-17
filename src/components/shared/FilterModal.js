@@ -102,7 +102,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
         aria-describedby="modal-modal-description"
         sx={{
           ".MuiModal-backdrop": {
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: theme.palette?.shadowColor?.main,
           },
         }}
       >

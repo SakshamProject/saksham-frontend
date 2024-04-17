@@ -20,7 +20,7 @@ export const CustomPasswordField = ({
   errors,
   customHelperText,
   placeholder,
-  autoComplete,
+  autoComplete = "off",
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -45,7 +45,7 @@ export const CustomPasswordField = ({
       type={showPassword ? "text" : "password"}
       name={name}
       fullWidth
-      autoComplete={autoComplete ? "on" : "off"}
+      autoComplete={autoComplete}
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}

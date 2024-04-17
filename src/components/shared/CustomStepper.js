@@ -4,22 +4,18 @@ import { useLocation } from "react-router-dom";
 
 import { theme } from "../../styles";
 
-const StepperContainer = styled(Box)(({ isHorizontal }) => ({
+const StepperContainer = styled(Box)(({ isHorizontal, theme }) => ({
   backgroundColor: "white",
   display: isHorizontal ? "block" : "flex",
   alignItems: "center",
   justifyContent: "flex-start",
-  border: "1px solid #707070",
+  border: `1px solid ${theme.palette?.primary?.main}`,
   borderWidth: isHorizontal ? 0 : 1,
   padding: isHorizontal ? "0 0 40px" : "0 20px",
   width: "100%",
   overflowY: "auto",
   borderRadius: "8px",
-
-  "::-webkit-scrollbar": {
-    display: "none",
-  },
-  // height: "100%",
+  scrollbarWidth: "none",
 }));
 
 const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
@@ -39,18 +35,18 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
       width: "1%",
     },
     ".MuiStepLabel-label.Mui-completed": {
-      color: theme.palette.primary.main,
+      color: theme.palette?.primary?.main,
       fontWeight: "900 ",
     },
     ".Mui-active": {
       ".MuiStepConnector-line": {
-        borderColor: theme.palette?.borderColor?.main,
+        borderColor: theme.palette?.primary?.main,
         borderWidth: "2px",
       },
     },
     ".MuiStepConnector-line": {
       borderWidth: "2px",
-      borderColor: theme.palette?.borderColor?.main,
+      borderColor: theme.palette?.primary?.main,
       transform: isHorizontal
         ? "translateX(16px) translateY(3px)"
         : "translateX(3px)",
@@ -59,21 +55,21 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
     ".MuiStepLabel-iconContainer": {
       padding: "0 !important",
-      border: `1px solid ${theme.palette?.borderColor?.main}`,
-      color: theme.palette?.textColor?.main,
+      border: `1px solid ${theme.palette?.primary?.main}`,
+      color: theme.palette?.primary?.contrastText,
       borderRadius: "60px",
       height: "14px",
       width: "14px",
-      background: theme.palette?.borderColor?.white,
+      background: theme.palette?.commonColor?.white,
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
     },
     ".MuiStepLabel-iconContainer.Mui-active": {
-      backgroundColor: theme.palette?.textColor?.main,
+      backgroundColor: theme.palette?.primary?.light,
     },
     ".MuiStepLabel-iconContainer.Mui-completed": {
-      backgroundColor: theme.palette?.backgroundColor?.main,
+      backgroundColor: theme.palette?.primary?.main,
     },
     ".MuiStepLabel-root.MuiStepLabel-horizontal": {
       display: "block !important",
@@ -91,7 +87,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
 const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   ".MuiStepLabel-label ": {
-    color: theme.palette.text.grey,
+    color: theme.palette?.primary?.main,
     fontWeight: "700",
     fontSize: "14px",
     width: "max-content",
@@ -99,16 +95,16 @@ const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   },
 
   ".MuiStepLabel-label.Mui-active": {
-    color: theme.palette.text.grey,
+    color: theme.palette?.primary?.contrastText,
     fontWeight: "700 ",
     paddingLeft: isHorizontal ? "0" : "10px",
   },
   ".Mui-disabled": {
-    color: theme.palette.primary.main,
+    color: theme.palette?.primary?.contrastText,
     fontWeight: "900 ",
   },
   ".MuiStepLabel-label.Mui-completed": {
-    color: theme.palette.primary.main,
+    color: theme.palette?.primary?.contrastText,
     fontWeight: "900 ",
   },
 }));
@@ -136,7 +132,7 @@ export const CustomStepper = ({
             sx={{
               background:
                 step?.route === location?.pathname &&
-                theme.palette?.backgroundColor?.sideMenuButton,
+                theme.palette?.primary?.main,
               borderRadius: step?.route === location?.pathname && "3px",
               zIndex: step?.route === location?.pathname && 999,
               paddingBlock: 1,

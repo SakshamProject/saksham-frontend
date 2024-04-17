@@ -8,7 +8,7 @@ export const CustomSearch = ({
   name,
   value,
   onChange,
-  autoComplete,
+  autoComplete = "off",
 }) => {
   return (
     <TextField
@@ -22,7 +22,7 @@ export const CustomSearch = ({
       }}
       name={name || ""}
       value={value || ""}
-      autoComplete={autoComplete ? "on" : "off"}
+      autoComplete={autoComplete}
       onChange={onChange ? onChange : () => {}}
       placeholder={label || ""}
       InputProps={{

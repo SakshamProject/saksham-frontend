@@ -1,13 +1,11 @@
 import { lazy } from "react";
 
 // Dashboard
-
 export const Dashboard = lazy(() =>
   import("../components/pages/dashboard/Dashboard")
 );
 
 // Seva Kendra Master
-
 export const SevaKendraMasterList = lazy(() =>
   import("../components/pages/sevaKendraSetup/sevaKendraMaster/List")
 );
@@ -16,7 +14,6 @@ export const SevaKendraMasterForm = lazy(() =>
 );
 
 // Designations
-
 export const DesignationsList = lazy(() =>
   import("../components/pages/sevaKendraSetup/designation/List")
 );
@@ -25,7 +22,6 @@ export const DesignationsForm = lazy(() =>
 );
 
 // Seva Kendra Users
-
 export const SevaKendraUsersList = lazy(() =>
   import("../components/pages/sevaKendraUsers/List")
 );

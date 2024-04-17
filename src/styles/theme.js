@@ -3,47 +3,43 @@ import { createTheme } from "@mui/material/styles";
 export const theme = createTheme({
   palette: {
     commonColor: {
-      white: "#ffffff",
+      white: "#FFFFFF",
       black: "#000000",
-      lightBlack: "#262626",
       blue: "#1473E6",
-      lightBlue: " #4390ef",
-      darkBlue: "#082f5e",
-      red: "#ff0000",
-      orange: "#ff9900",
-    },
-
-    backgroundColor: {
-      tableHeader: "#D2E1FC",
-      tablePagination: "#F8FCFF",
-      sideMenuButton: "#D6D6D6",
-      allButton: "#707070",
-      stepperButton: "#37383C",
-      radioButton: "#3949AB",
+      lightBlue: " #4390EF",
+      barkBlue: "#5353C6",
+      darkBlue: "#082F5E",
+      darkGreen: "#115523",
       green: "#3AD865",
-      white: "#ffffff",
-      black: "#282828",
-      grey: "#A9A9A9",
-      lightGrey: "#D3D3D3",
-      divider: "#6561A5",
+      lightGreen: " #7FE69B",
+      lightGrey: "#B3B3B3",
+      grey: "#595959",
+      red: "#D32F2F",
+      orange: "#FF9900",
     },
 
-    borderColor: {
-      main: "#707070",
-
-      blue: "#1473E6",
-      white: "#ffffff",
-      black: "#282828",
+    primary: {
+      main: "#B3B3B3",
+      light: "#D9D9D9",
+      dark: "#262626",
+      contrastText: "#ffffff",
     },
 
-    textColor: {
-      main: "#707070",
+    tableColor: {
+      header: "#808080",
+      headerText: "#F2F2F2",
+      pagination: "#D9D9D9",
+      paginationText: "#262626",
+      shadow: "#D3D3D3",
+    },
 
-      blue: "#1473E6",
-      white: "#ffffff",
-      black: "#282828",
-      red: "#ff0000",
-      orange: "#ff9900",
+    scrollbarColor: {
+      thumb: "#A9A9A9",
+      track: "#D3D3D3",
+    },
+
+    shadowColor: {
+      main: "#00000029",
     },
   },
 });

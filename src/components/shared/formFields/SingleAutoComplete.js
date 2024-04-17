@@ -22,7 +22,7 @@ export const SingleAutoComplete = ({
   disabled,
   customOnchange,
   customHelperText,
-  autoComplete = false,
+  autoComplete = "off",
 }) => {
   return (
     <Autocomplete

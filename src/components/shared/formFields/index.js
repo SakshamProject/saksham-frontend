@@ -1,7 +1,6 @@
 export * from "./CustomAutoComplete";
 export * from "./CustomCheckBox";
 export * from "./CustomDatePicker";
-export * from "./CustomFileUpload";
 export * from "./CustomPasswordField";
 export * from "./CustomRadioButton";
 export * from "./CustomSearch";

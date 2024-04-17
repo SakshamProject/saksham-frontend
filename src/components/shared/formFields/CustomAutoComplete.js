@@ -14,7 +14,7 @@ export const CustomAutoComplete = ({
   getOptionLabel,
   accessor,
   labelAccessor,
-  autoComplete,
+  autoComplete = "off",
   isViewMode,
   customHelperText,
   sx,
@@ -26,7 +26,7 @@ export const CustomAutoComplete = ({
       multiple
       className={className}
       onChange={onChange}
-      autoComplete={autoComplete ? "on" : "off"}
+      autoComplete={autoComplete}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}

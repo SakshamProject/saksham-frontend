@@ -3,30 +3,30 @@ import { Grid, Typography } from "@mui/material";
 import React from "react";
 import { formatDate } from "../../utils/common";
 
-const Title = styled(Typography)({
+const Title = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   font: "normal normal bold 16px/19px Lato",
   letterSpacing: "0px",
-  color: "#333333",
+  color: theme.palette?.commonColor?.black,
   opacity: "1",
-});
+}));
 
-const SecTitle = styled(Typography)({
+const SecTitle = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   font: "normal normal bold 16px/19px Lato",
   letterSpacing: "0px",
-  color: "#333333",
+  color: theme.palette?.commonColor?.black,
   opacity: "1",
   marginBottom: "5px",
-});
+}));
 
-const ValueText = styled(Typography)({
+const ValueText = styled(Typography)(({ theme }) => ({
   textAlign: "left",
   font: "normal normal normal 16px/19px Lato",
   letterSpacing: "0px",
-  color: "#333333",
+  color: theme.palette?.commonColor?.black,
   opacity: "1",
-});
+}));
 
 export const AuditLog = ({
   createdAt,
@@ -55,11 +55,11 @@ export const AuditLog = ({
           {createdByName
             ? `${createdByName} - ${formatDate({
                 date: createdAt,
-                format: "YYYY-MM-DD",
+                format: "DD-MM-YYYY",
               })}`
             : `${formatDate({
                 date: createdAt,
-                format: "YYYY-MM-DD",
+                format: "DD-MM-YYYY",
               })}`}
         </ValueText>
       </Grid>
@@ -70,11 +70,11 @@ export const AuditLog = ({
           {updatedByName
             ? `${updatedByName} - ${formatDate({
                 date: updatedAt,
-                format: "YYYY-MM-DD",
+                format: "DD-MM-YYYY",
               })}`
             : `${formatDate({
                 date: updatedAt,
-                format: "YYYY-MM-DD",
+                format: "DD-MM-YYYY",
               })}`}
         </ValueText>
       </Grid>

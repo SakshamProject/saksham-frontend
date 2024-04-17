@@ -27,7 +27,6 @@ const FormContainer = styled("div")(({ theme }) => ({
   alignItems: "start",
   width: "100%",
   scrollbarWidth: "none",
-  // scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
 }));
 
 const Form = () => {

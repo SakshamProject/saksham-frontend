@@ -1,4 +1,5 @@
 import { Chip, Stack, TextField } from "@mui/material";
+
 import { dispatchNotifyError } from "../../../utils/dispatch";
 
 export const ChipTextField = ({
@@ -14,7 +15,7 @@ export const ChipTextField = ({
   disabled,
   style,
   isViewMode,
-  autoComplete,
+  autoComplete = "off",
   fullWidth,
   placeholder,
   chipVariant,
@@ -57,7 +58,7 @@ export const ChipTextField = ({
       value={value || ""}
       onChange={(e) => customOnChange({ event: e, value: e.target.value })}
       onKeyPress={handleInputKeyPress}
-      autoComplete={autoComplete ? "on" : "off"}
+      autoComplete={autoComplete}
       label={label}
       placeholder={placeholder}
       variant={variant || "outlined"}

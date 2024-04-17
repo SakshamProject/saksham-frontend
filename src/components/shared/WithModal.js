@@ -9,6 +9,7 @@ import {
   FilterContainerStyle,
   FilterTitle,
   SubmitButton,
+  theme,
 } from "../../styles";
 
 const ModalName = styled(Typography)({
@@ -41,7 +42,10 @@ export const WithModal = ({
         <FilterTitle>
           <ModalName
             id="modal-modal-title"
-            sx={{ color: "#ffffff", width: "auto" }}
+            sx={{
+              color: theme.palette?.primary?.contrastText,
+              width: "auto",
+            }}
           >
             {title}
           </ModalName>

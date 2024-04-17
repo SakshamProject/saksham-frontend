@@ -11,8 +11,8 @@ const Search = styled("div")(({ theme }) => ({
   width: "250px",
   position: "relative",
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette?.backgroundColor?.white,
-  border: `1px solid ${theme.palette?.borderColor?.main}`,
+  backgroundColor: theme.palette?.commonColor?.white,
+  border: `1px solid ${theme.palette?.primary?.main}`,
   marginRight: theme.spacing(2),
   marginLeft: 0,
 }));
@@ -43,7 +43,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const CustomSearchField = ({ placeholder, autoComplete }) => {
+export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -119,7 +119,7 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
         value={value}
         onChange={onChange}
         onKeyPress={onSearchChange}
-        autoComplete={autoComplete ? "on" : "off"}
+        autoComplete={autoComplete}
         endAdornment={
           <InputAdornment position="end">
             {!!value && (

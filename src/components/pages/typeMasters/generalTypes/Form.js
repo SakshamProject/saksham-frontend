@@ -57,9 +57,8 @@ const Form = () => {
   const { searchData } = tableReRenderActions();
   const [open, setOpen] = useState(false);
 
-  // create and update api call
   const { mutate } = useMutation({
-    mutationKey: ["create and update"],
+    mutationKey: ["createAndUpdate"],
     mutationFn: ({ apiPath, payload }) => {
       return !!tableEditId
         ? updateApiService(apiPath, tableEditId, payload)
@@ -107,16 +106,14 @@ const Form = () => {
     resetForm,
   } = formik;
 
-  // general type seed api call
   const { data: allGeneralTypes } = useQuery({
-    queryKey: ["get all general types"],
+    queryKey: ["getAllGeneralTypes"],
     queryFn: () => getApiService(API_PATHS.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
 
-  // table data api call
   const { data: generalTypeList, refetch } = useQuery({
-    queryKey: ["get general types list", values?.typeMaster, searchData],
+    queryKey: ["getGeneralTypeList", values?.typeMaster, searchData],
     queryFn: () => {
       const apiPath = generalTypeApiPath(values);
       return getApiService(
@@ -126,17 +123,15 @@ const Form = () => {
     select: ({ data }) => data,
   });
 
-  // all states api call
   const { data: allStates } = useQuery({
-    queryKey: ["get all states", values?.typeMaster],
+    queryKey: ["getAllStates", values?.typeMaster],
     queryFn: () => getApiService(API_PATHS.STATES),
     select: ({ data }) => data?.data,
     enabled: generalTypeApiPath(values) === API_PATHS.DISTRICTS,
   });
 
-  // delete api call
   const { mutate: onDelete } = useMutation({
-    mutationKey: ["delete general type"],
+    mutationKey: ["deleteGeneralType"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath(values);
       return deleteApiService(apiPath, id);
@@ -148,11 +143,8 @@ const Form = () => {
     },
   });
 
-  const handleDelete = (id) => {
-    setOpen(id);
-  };
+  const handleDelete = (id) => setOpen(id);
 
-  // edit api call
   const { mutate: handleEdit } = useMutation({
     mutationKey: ["editGeneralType"],
     mutationFn: (id) => {
