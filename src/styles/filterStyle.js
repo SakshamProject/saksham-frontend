@@ -19,7 +19,7 @@ export const FilterContainerStyle = styled(Box)(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: "60%",
   maxWidth: "800px",
-  backgroundColor: theme.palette?.backgroundColor?.white,
+  backgroundColor: theme.palette?.commonColor?.white,
   boxShadow: 24,
   outline: 0,
 }));
@@ -31,7 +31,7 @@ export const FilterFormStyle = styled(Box)(({ theme }) => ({
   margin: 0,
   padding: 0,
   scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+  scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
 }));
 
 export const FilterTitle = styled(Box)(({ theme }) => ({
@@ -39,8 +39,8 @@ export const FilterTitle = styled(Box)(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   padding: "14px 20px",
-  backgroundColor: theme.palette?.backgroundColor?.allButton,
-  color: theme.palette?.textColor?.white,
+  backgroundColor: theme.palette?.primary?.main,
+  color: theme.palette?.primary?.contrastText,
 }));
 
 export const FilterIconButton = styled(IconButton)(({ theme }) => ({
@@ -49,11 +49,11 @@ export const FilterIconButton = styled(IconButton)(({ theme }) => ({
   padding: "7px  8px",
   fontSize: 14,
   borderRadius: 4,
-  backgroundColor: theme.palette?.backgroundColor?.allButton,
-  color: theme.palette?.textColor?.white,
+  backgroundColor: theme.palette?.primary?.main,
+  color: theme.palette?.primary?.contrastText,
   "&:hover": {
-    backgroundColor: theme.palette?.backgroundColor?.allButton,
-    color: theme.palette?.textColor?.white,
+    backgroundColor: theme.palette?.primary?.main,
+    color: theme.palette?.primary?.contrastText,
   },
 }));
 
@@ -61,8 +61,7 @@ export const FilterButtonModal = styled(Box)(({ theme }) => ({
   margin: 0,
   marginTop: 20,
   padding: "16px",
-  boxShadow: "0px -2px 6px #00000029",
-  // backgroundColor: theme.palette?.backgroundColor?.allButton,
+  boxShadow: `0px -2px 6px ${theme.palette?.shadowColor?.main} `,
   display: "flex",
   alignItems: "center",
   justifyContent: "flex-end",

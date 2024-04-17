@@ -18,7 +18,7 @@ export const CustomDatePicker = ({
   touched,
   errors,
   setTouched,
-  autoComplete,
+  autoComplete = "off",
   views,
   customHelperText,
   customOnChange,
@@ -34,7 +34,6 @@ export const CustomDatePicker = ({
           maxDate={maxDate ? dayjs(maxDate) : ""}
           views={views || ["year", "month", "day"]}
           style={style}
-          autoComplete={autoComplete ? "on" : "off"}
           readOnly={Boolean(isViewMode)}
           disabled={disabled}
           closeOnSelect
@@ -49,6 +48,7 @@ export const CustomDatePicker = ({
           sx={{ width: "100%" }}
           slotProps={{
             textField: {
+              autoComplete: autoComplete,
               onBlur: (e) => {
                 !touched?.lastDonatedDate &&
                   setTouched(name, e.type === "blur");

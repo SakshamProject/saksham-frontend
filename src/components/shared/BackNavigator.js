@@ -7,7 +7,7 @@ const Container = styled("div")(({ theme, disableBack }) => ({
   alignItems: "center",
   minHeight: 75,
   marginBottom: 16,
-  backgroundColor: theme.palette?.backgroundColor?.white,
+  backgroundColor: theme.palette?.commonColor?.white,
   marginLeft: disableBack ? 16 : "5%",
   position: "sticky",
 }));
@@ -17,13 +17,13 @@ const CustomHeader = styled("div")(({ theme }) => {
     fontSize: 22,
     marginLeft: 15,
     userSelect: "none",
-    color: theme?.palette?.textColor?.black,
+    color: theme?.palette?.commonColor?.black,
     fontWeight: "600",
   };
 });
 
 const BackIcon = styled(IconButton)(({ theme }) => ({
-  color: theme?.palette?.textColor?.black,
+  color: theme?.palette?.commonColor?.black,
   fontSize: 24,
 }));
 

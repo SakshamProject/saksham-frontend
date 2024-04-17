@@ -1,6 +1,7 @@
 import React from "react";
-import { Box, Grid, Modal, Typography } from "@mui/material";
+import { Box, Modal, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import styled from "@emotion/styled";
 
 import {
   CancelButton,
@@ -10,7 +11,6 @@ import {
   theme,
 } from "../../styles";
 import { CANCEL, DELETE, OKAY } from "../../constants/globalConstants";
-import styled from "@emotion/styled";
 
 const FilterContainerStyle = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -19,7 +19,7 @@ const FilterContainerStyle = styled(Box)(({ theme }) => ({
   transform: "translate(-50%, -50%)",
   width: "40%",
   maxWidth: "800px",
-  backgroundColor: theme.palette?.backgroundColor?.white,
+  backgroundColor: theme.palette?.commonColor?.white,
   boxShadow: 24,
   outline: 0,
 }));
@@ -31,7 +31,7 @@ const FilterFormStyle = styled(Box)(({ theme }) => ({
   margin: 0,
   padding: "14px 20px",
   scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+  scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
 }));
 
 const CustomModal = ({ open, setOpen, title, handle, content }) => {
@@ -45,7 +45,7 @@ const CustomModal = ({ open, setOpen, title, handle, content }) => {
       aria-describedby="modal-modal-description"
       sx={{
         ".MuiModal-backdrop": {
-          backgroundColor: "rgba(0,0,0,0.5)",
+          backgroundColor: theme.palette?.shadowColor?.main,
         },
       }}
       onKeyDown={(e) => {
@@ -58,7 +58,9 @@ const CustomModal = ({ open, setOpen, title, handle, content }) => {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            sx={{ color: theme?.palette?.textColor?.white }}
+            sx={{
+              color: theme?.palette?.commonColor?.white,
+            }}
           >
             {title || DELETE}
           </Typography>
@@ -70,7 +72,7 @@ const CustomModal = ({ open, setOpen, title, handle, content }) => {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            sx={{ color: theme?.palette?.textColor?.main }}
+            sx={{ color: theme?.palette?.commonColor?.white }}
           >
             {content}
           </Typography>

@@ -18,7 +18,7 @@ export const CustomTimePicker = ({
   customHelperText,
   setTouched,
   views,
-  autoComplete = false,
+  autoComplete = "off",
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -9,7 +9,7 @@ import { Popover } from "./Popover";
 export const CustomTabs = styled(Tabs)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  border: `1px solid ${theme?.palette?.borderColor?.main}`,
+  border: `1px solid ${theme?.palette?.primary?.main}`,
   borderTop: "none",
   paddingTop: 10,
   paddingBottom: "auto",
@@ -19,17 +19,17 @@ export const CustomTabs = styled(Tabs)(({ theme }) => ({
     overflowY: "auto",
     maxHeight: "100%",
     scrollbarWidth: "thin",
-    scrollbarColor: `${theme?.palette?.backgroundColor?.grey} ${theme?.palette?.backgroundColor?.lightGrey}`,
+    scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
   },
   ".MuiTabs-indicator": {
-    backgroundColor: theme.palette?.backgroundColor?.allButton,
+    backgroundColor: theme.palette?.primary?.main,
   },
 }));
 
 export const CustomTab = styled(Tab)(({ theme }) => ({
   margin: "5px auto",
   padding: "auto",
-  border: `1px solid ${theme?.palette?.borderColor?.main}`,
+  border: `1px solid ${theme?.palette?.primary?.main}`,
   width: "88%",
   height: 40,
   fontSize: 15,
@@ -37,10 +37,10 @@ export const CustomTab = styled(Tab)(({ theme }) => ({
   textAlign: "left",
   alignItems: "flex-start",
   borderRadius: 3,
-  color: theme?.palette?.textColor?.main,
+  color: theme?.palette?.commonColor?.black,
   "&.Mui-selected": {
-    color: theme?.palette?.textColor?.main,
-    backgroundColor: theme?.palette?.backgroundColor?.sideMenuButton,
+    color: theme?.palette?.primary?.contrastText,
+    backgroundColor: theme?.palette?.primary?.main,
   },
 }));
 
@@ -54,7 +54,7 @@ const popoverItemStyle = {
   display: "flex",
   alignItems: "center",
   padding: "0.3rem 0.8rem",
-  borderBottom: `1px solid ${theme.palette?.borderColor?.main}`,
+  borderBottom: `1px solid ${theme.palette?.commonColor?.grey}`,
   cursor: "pointer",
 };
 

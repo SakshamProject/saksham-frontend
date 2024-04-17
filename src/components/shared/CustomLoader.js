@@ -15,7 +15,7 @@ const Container = styled(Box)({
 });
 
 const CustomSpinner = styled(CircularProgress)(({ theme }) => ({
-  color: theme.palette?.textColor?.main,
+  color: theme.palette?.primary?.main,
 }));
 
 export const CustomLoader = () => {

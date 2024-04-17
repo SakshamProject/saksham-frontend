@@ -14,7 +14,6 @@ export * from "./FilterModal";
 export * from "./FormActions";
 export * from "./FormWrapper";
 export * from "./ListTopBar";
-export * from "./MultiRecordField";
 export * from "./NotFound";
 export * from "./Popover";
 export * from "./RightMenu";

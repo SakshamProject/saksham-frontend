@@ -12,7 +12,7 @@ const List = () => {
       isGetApi
       disableFilters
       disableSearchField
-      disablePagination
+      // disablePagination
       disableColumnHiding
       manualSort
     />

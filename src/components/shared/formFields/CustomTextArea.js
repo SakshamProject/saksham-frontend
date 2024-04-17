@@ -15,7 +15,7 @@ export const CustomTextarea = ({
   isViewMode,
   maxLength,
   fullWidth,
-  autoComplete,
+  autoComplete = "off",
   onkeydown,
   customHelperText,
   placeholder,

@@ -14,7 +14,7 @@ export const CustomTextField = ({
   maxLength,
   fullWidth,
   fieldType,
-  autoComplete,
+  autoComplete = "off",
   onkeydown,
   placeholder,
   endAdornment,

@@ -18,7 +18,7 @@ import { dispatchRemoveAppState } from "../../utils/dispatch";
 import { RightMenu } from "./RightMenu";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
-  color: theme.palette?.textColor?.black,
+  color: theme.palette?.commonColor?.black,
 }));
 
 const StyledLogo = styled("img")({

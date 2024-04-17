@@ -26,7 +26,7 @@ export const CustomSelectField = ({
   customHelperText,
   accessor,
   getOptionLabel,
-  autoComplete,
+  autoComplete = "off",
 }) => {
   return (
     <Box style={style}>

@@ -23,7 +23,7 @@ const ContainerAlign = styled(Box)({
 });
 
 const Title = styled(Typography)(({ theme }) => ({
-  color: theme.palette?.textColor?.black,
+  color: theme?.palette?.commonColor?.black,
   textTransform: "uppercase",
   fontWeight: "600",
   fontSize: "1.3rem",

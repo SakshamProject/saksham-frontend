@@ -6,6 +6,7 @@ import {
   RadioGroup,
 } from "@mui/material";
 import { styled } from "@mui/system";
+import { theme } from "../../../styles";
 
 const RadioBox = styled("div")(({ rowbreak }) => ({
   display: "flex",
@@ -32,7 +33,7 @@ export const CustomRadioButton = ({
   customHelperText,
 }) => {
   return (
-    <FormControl style={style}>
+    <FormControl style={{ ...style }}>
       <RadioBox
         rowbreak={rowBreak}
         style={{ justifyContent: "space-between", gap: 4 }}
@@ -62,7 +63,16 @@ export const CustomRadioButton = ({
             return (
               <FormControlLabel
                 value={option[accessor]}
-                control={<Radio onChange={(e) => e.target.blur()} />}
+                control={
+                  <Radio
+                    sx={{
+                      "&.Mui-checked": {
+                        color: theme.palette?.commonColor?.blue,
+                      },
+                    }}
+                    onChange={(e) => e.target.blur()}
+                  />
+                }
                 label={option?.name || option?.label}
                 key={key}
                 name={name}

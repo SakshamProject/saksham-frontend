@@ -3,7 +3,7 @@ import { Divider } from "@mui/material";
 import { theme } from "../../styles";
 
 export const DividerLine = ({
-  color = theme.palette?.backgroundColor?.divider,
+  color = theme.palette?.commonColor?.darkBlue,
   gap,
 }) => {
   return (
