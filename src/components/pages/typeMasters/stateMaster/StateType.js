@@ -12,23 +12,21 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import {
   fields,
   formDetails,
   initialValues as initialValue,
   stateMasterColumns,
+  tableStyles,
 } from "../../../../constants/typeMasters/stateMaster";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
-import { dispatchNotifySuccess } from "../../../../utils/dispatch";
+import { dispatchNotifyAction } from "../../../../utils/dispatch";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
+  CustomModal,
   CustomReactTable,
   CustomTextField,
   DividerLine,
@@ -36,7 +34,6 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../../shared";
-import CustomModal from "../../../shared/CustomModal";
 
 const StateType = () => {
   const { pathname } = useLocation();
@@ -62,7 +59,7 @@ const StateType = () => {
     mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: () => {
-      dispatchNotifySuccess(DELETED_SUCCESSFULLY(currentForm?.validationLabel));
+      dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
       refetch();
       setOpen(false);
     },
@@ -94,10 +91,9 @@ const StateType = () => {
         ? updateApiService(currentForm?.apiPath, tableEditId, data)
         : postApiService(currentForm?.apiPath, data),
     onSuccess: () => {
-      dispatchNotifySuccess(
-        tableEditId
-          ? UPDATED_SUCCESSFULLY(currentForm?.validationLabel)
-          : ADDED_SUCCESSFULLY(currentForm?.validationLabel)
+      dispatchNotifyAction(
+        currentForm?.validationLabel,
+        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       if (tableEditId) handleReset();
       else {
@@ -222,16 +218,6 @@ const StateType = () => {
           resetLabel={"Clear"}
           isUpdate={tableEditId}
           submitLabel="Add"
-          // submitButtonStyle={{
-          //   backgroundColor: tableEditId
-          //     ? theme?.palette?.backgroundColor?.blue
-          //     : theme?.palette?.success?.main,
-          //   "&:hover": {
-          //     backgroundColor: tableEditId
-          //       ? theme?.palette?.backgroundColor?.blue
-          //       : theme?.palette?.success?.main,
-          //   },
-          // }}
         />
       </StyledFormContainer>
 
@@ -261,18 +247,7 @@ const StateType = () => {
           disablePagination
           disableLayout
           count={dataList?.total}
-          style={{
-            tableHead: {
-              ".tr .th:first-child": {
-                boxShadow: "none !important",
-              },
-            },
-            tr: {
-              "div:nth-child(5)": {
-                flex: 1,
-              },
-            },
-          }}
+          style={tableStyles}
         />
       </Grid>
 

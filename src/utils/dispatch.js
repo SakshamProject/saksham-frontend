@@ -1,3 +1,4 @@
+import { CODES } from "../constants/globalConstants";
 import {
   notifyUser,
   removeAppState,
@@ -30,6 +31,16 @@ const dispatchNotifyError = (message) => {
   dispatchNotifyUser([message, "error"]);
 };
 
+const dispatchNotifyAction = (title, action) => {
+  const message =
+    action === CODES?.ADDED
+      ? `${title} Added successfully !`
+      : action === CODES?.UPDATE
+      ? `${title} Updated successfully !`
+      : (action === CODES?.DELETE)`${title} Deleted successfully !`;
+  dispatchNotifyUser([message, "success"]);
+};
+
 export {
   dispatchLoading,
   dispatchNotifyError,
@@ -37,4 +48,5 @@ export {
   dispatchNotifyUser,
   dispatchRemoveAppState,
   dispatchUserInfo,
+  dispatchNotifyAction,
 };

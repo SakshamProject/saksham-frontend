@@ -80,7 +80,7 @@ export const fields = {
   servicesBySevaKendra: {
     label: "Service Types *",
     name: "servicesBySevaKendra",
-    accessor: "serviceId",
+    accessor: "service.name",
   },
 };
 
@@ -116,24 +116,27 @@ export const sevakendraColumn = [
     Header: "State",
     accessor: "district.state.name",
     filterAccessor: "state",
-    width: 200,
+    width: 240,
   },
   {
     Header: "District",
     accessor: "district.name",
     filterAccessor: "district",
-    width: 200,
+    width: 240,
   },
   {
     Header: "Contact Name",
     accessor: "contactPerson.name",
     filterAccessor: "contactPersonName",
-    width: 200,
+    width: 240,
   },
   {
     Header: "Contact Number",
     accessor: "contactPerson.phoneNumber1",
     filterAccessor: "contactPersonNumber",
-    width: 200,
+    width: 240,
   },
 ];
+
+export const transformServices = (services) =>
+  services.map(({ id }) => ({ serviceId: id }));

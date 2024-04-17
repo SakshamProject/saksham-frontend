@@ -1,11 +1,6 @@
 import { styled } from "@mui/material";
 import { Suspense } from "react";
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 
 import { STEPS } from "../../../../constants/typeMasters/stateMaster";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../../shared";
@@ -37,7 +32,6 @@ const FormContainer = styled("div")(({ theme }) => ({
 const Form = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [params] = useSearchParams();
 
   const allSteps = STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
@@ -46,11 +40,7 @@ const Form = () => {
 
   return (
     <>
-      <BackNavigator
-        title={"State Types"}
-        disableBack={true}
-        disableModes={true}
-      />
+      <BackNavigator title={"State Types"} disableBack disableModes />
       <FormLayout>
         <StepperContainer>
           <CustomStepper

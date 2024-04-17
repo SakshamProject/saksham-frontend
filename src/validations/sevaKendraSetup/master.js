@@ -68,10 +68,10 @@ export const validationSchema = (editId) =>
         .max(255, "Email cannot have more than 255 characters"),
       phoneNumber1: string()
         .trim()
-        .required("Phone Number 1 is required")
+        .required("Primary Number is required")
         .test(
           "isNumeric",
-          "Phone Number 1 should contain only numbers",
+          "Primary Number should contain only numbers",
           (value) => {
             if (value && !/^\d+$/.test(value)) {
               return false;
@@ -79,7 +79,7 @@ export const validationSchema = (editId) =>
             return true;
           }
         )
-        .length(10, "Phone Number 1 should be 10 digits")
+        .length(10, "Primary Number should be 10 digits")
         .test("isZero", (value, context) => {
           if (!!value && Number(value) === 0)
             return context.createError({ message: "Invalid mobile number" });
@@ -87,10 +87,10 @@ export const validationSchema = (editId) =>
         }),
       phoneNumber2: string()
         .trim()
-        .required("Phone Number 2 is required")
+        .required("Secondary Number is required")
         .test(
           "isNumeric",
-          "Phone Number 2 should contain only numbers",
+          "Secondary Number should contain only numbers",
           (value) => {
             if (value && !/^\d+$/.test(value)) {
               return false;
@@ -98,13 +98,13 @@ export const validationSchema = (editId) =>
             return true;
           }
         )
-        .length(10, "Phone Number 2 should be 10 digits")
+        .length(10, "Secondary Number should be 10 digits")
         .test("isZero", (value, context) => {
           if (!!value && Number(value) === 0)
             return context.createError({ message: "Invalid mobile number" });
           if (value === context.parent?.phoneNumber1 && !!value)
             return context.createError({
-              message: "Phone Number 2 is not the same as the Phone Number 1",
+              message: "Secondary Number should not same as the Primary Number",
             });
           return true;
         })

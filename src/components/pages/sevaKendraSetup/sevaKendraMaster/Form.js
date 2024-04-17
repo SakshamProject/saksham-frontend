@@ -11,19 +11,17 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import {
-  ADDED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-  statusSeeds,
-} from "../../../../constants/globalConstants";
+import { CODES, statusSeeds } from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
+  transformServices,
 } from "../../../../constants/sevaKendraSetup/master";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { formatDate, getValidValues } from "../../../../utils/common";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
+  CustomAutoComplete,
   CustomDatePicker,
   CustomTextField,
   DividerLine,
@@ -33,12 +31,8 @@ import {
   WithCondition,
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
-import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
 import { CustomTypography } from "../../../../styles";
-import { dispatchNotifySuccess } from "../../../../utils/dispatch";
-
-const transformServices = (services) =>
-  services.map(({ id }) => ({ serviceId: id }));
+import { dispatchNotifyAction } from "../../../../utils/dispatch";
 
 const Form = () => {
   const { state } = useLocation();
@@ -49,33 +43,32 @@ const Form = () => {
 
   const handleOnSubmit = (values) => {
     const auditLog = {
-      date: formatDate({ date: values?.date }),
+      date: formatDate({ date: values?.date, format: "iso" }),
       status: values?.status,
       description: values?.description,
     };
     const payload = getValidValues({
       ...values,
-      startDate: formatDate({ date: values?.startDate, dateOnly: true }),
+      startDate: formatDate({ date: values?.startDate, format: "iso" }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
+      services: transformServices(values?.servicesBySevaKendra),
       auditLog: getValidValues(auditLog),
       currentStatus: values?.status,
+      effectiveFromDate: "",
     });
     onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["create and update"],
-    mutationFn: (data) => {
-      console.log(data);
-      return editId
+    mutationFn: (data) =>
+      editId
         ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
-        : postApiService(API_PATHS?.SEVAKENDRA, data);
-    },
+        : postApiService(API_PATHS?.SEVAKENDRA, data),
     onSuccess: () => {
-      dispatchNotifySuccess(
-        editId
-          ? UPDATED_SUCCESSFULLY("Seva Kendra")
-          : ADDED_SUCCESSFULLY("Seva Kendra")
+      dispatchNotifyAction(
+        "Seva Kendra",
+        editId ? CODES?.UPDATE : CODES?.ADDED
       );
       navigate(ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST);
     },
@@ -97,8 +90,6 @@ const Form = () => {
     setFieldValue,
     setFieldTouched,
     setValues,
-    setTouched,
-    handleReset,
   } = formik;
 
   const { data: stateList } = useQuery({
@@ -127,10 +118,18 @@ const Form = () => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
-        servicesBySevaKendra: data?.services,
-        status: data?.currentStatus,
-        date: new Date(),
-        description: "",
+        servicesBySevaKendra: data?.services?.map(({ service }) => ({
+          id: service.id,
+          name: service.name,
+          serviceType: {
+            id: service.serviceType.id,
+            name: service.serviceType.name,
+          },
+        })),
+        status: data?.status,
+        date:
+          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
       });
     },
   });
@@ -139,13 +138,12 @@ const Form = () => {
     editId
       ? sevaKendraGetById()
       : setFieldValue(fields?.startDate?.name, new Date());
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <FormWrapper
       title="Seva Kendra"
       navigateTo={ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST}
-      columnSpacing={3}
     >
       <Grid item xs={12}>
         <CustomTextField
@@ -340,7 +338,6 @@ const Form = () => {
           getOptionLabel={(option) =>
             `${option?.name} - ${option?.serviceType?.name} `
           }
-          accessor={editId ? fields?.servicesBySevaKendra?.accessor : ""}
         />
       </Grid>
 

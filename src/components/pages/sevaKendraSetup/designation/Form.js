@@ -17,8 +17,8 @@ import {
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import {
+  dispatchNotifyAction,
   dispatchNotifyError,
-  dispatchNotifySuccess,
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/designation";
 import {
@@ -29,10 +29,7 @@ import {
   FormWrapper,
   SingleAutoComplete,
 } from "../../../shared";
-import {
-  ADDED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
@@ -51,10 +48,13 @@ const Form = () => {
     },
     onSuccess: () => {
       if (!!editId) {
-        dispatchNotifySuccess(UPDATED_SUCCESSFULLY("Designation"));
         handleOnReset();
       }
-      dispatchNotifySuccess(ADDED_SUCCESSFULLY("Designation"));
+      dispatchNotifyAction(
+        "Designation",
+        !!editId ? CODES?.UPDATE : CODES?.ADDED
+      );
+
       resetForm();
     },
   });
@@ -108,6 +108,7 @@ const Form = () => {
         },
       });
     },
+    select: ({ data }) => data?.data,
   });
 
   const { data: accessMenu } = useQuery({
@@ -132,7 +133,10 @@ const Form = () => {
   const { data: sevaKendraNames } = useQuery({
     queryKey: ["getSevaKendraNameByDistrict", values?.districtId],
     queryFn: () =>
-      getByIdApiService(API_PATHS.SEVA_KENDRA_NAME, values?.districtId),
+      getByIdApiService(
+        API_PATHS?.DISTRICTS,
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`
+      ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
   });
@@ -248,10 +252,10 @@ const Form = () => {
 
       <AuditLog
         hide={!editId}
-        createdAt={data?.data?.data?.createdAt}
-        createdByName={`${data?.data?.data?.createdBy?.firstName} ${data?.data?.data?.createdBy?.lastName}`}
-        updatedAt={data?.data?.data?.updatedAt}
-        updatedByName={`${data?.data?.data?.updatedBy?.firstName} ${data?.data?.data?.updatedBy?.lastName}`}
+        createdAt={data?.createdAt}
+        createdByName={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
+        updatedAt={data?.updatedAt}
+        updatedByName={`${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`}
       />
     </FormWrapper>
   );

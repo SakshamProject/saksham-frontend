@@ -12,15 +12,10 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
+import { CODES } from "../../../../constants/globalConstants";
 import {
-  ADDED_SUCCESSFULLY,
-  DELETED_SUCCESSFULLY,
-  UPDATED_SUCCESSFULLY,
-} from "../../../../constants/globalConstants";
-import {
-  DISABILITY_TYPE,
-  DISTRICT,
-  EDUCATIONAL_QUALIFICATION,
+  GENERALTYPE_INCLUDE,
+  GENERAL_TYPES,
   fields,
   generalColumns,
   generalTypeApiPath,
@@ -32,8 +27,8 @@ import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import { findNameById } from "../../../../utils/common";
 import {
+  dispatchNotifyAction,
   dispatchNotifyError,
-  dispatchNotifySuccess,
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
@@ -45,8 +40,8 @@ import {
   ListTopbar,
   SingleAutoComplete,
   WithCondition,
+  CustomModal,
 } from "../../../shared";
-import CustomModal from "../../../shared/CustomModal";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const Form = () => {
@@ -70,10 +65,9 @@ const Form = () => {
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
-      dispatchNotifySuccess(
-        !!tableEditId
-          ? UPDATED_SUCCESSFULLY(values?.typeMaster)
-          : ADDED_SUCCESSFULLY(values?.typeMaster)
+      dispatchNotifyAction(
+        values?.typeMaster,
+        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       handleReset();
       refetch();
@@ -84,9 +78,9 @@ const Form = () => {
   const handleOnSubmit = (value) => {
     if (
       value?.chips?.length < 1 &&
-      [EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(values?.typeMaster)
+      GENERALTYPE_INCLUDE.includes(values?.typeMaster)
     ) {
-      dispatchNotifyError("Sub type name minimum one is required");
+      dispatchNotifyError("Minimum one Sub type name is required");
       return;
     }
     const payload = getGeneralTypePayload(value);
@@ -131,10 +125,9 @@ const Form = () => {
 
   const { data: allStates } = useQuery({
     queryKey: ["getAllStates", values?.typeMaster],
-    queryFn: () =>
-      generalTypeApiPath(values) === API_PATHS.DISTRICTS &&
-      getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS.STATES),
     select: ({ data }) => data?.data,
+    enabled: generalTypeApiPath(values) === API_PATHS.DISTRICTS,
   });
 
   const { mutate: onDelete } = useMutation({
@@ -144,7 +137,7 @@ const Form = () => {
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
-      dispatchNotifySuccess(DELETED_SUCCESSFULLY(values?.typeMaster));
+      dispatchNotifyAction(values?.typeMaster, CODES?.DELETE);
       refetch();
       setOpen(false);
     },
@@ -217,7 +210,7 @@ const Form = () => {
       </WithCondition>
 
       <WithCondition isValid={!isViewMode}>
-        <WithCondition isValid={values?.typeMaster === DISTRICT}>
+        <WithCondition isValid={values?.typeMaster === GENERAL_TYPES.DISTRICT}>
           <Grid item xs={6}>
             <SingleAutoComplete
               label={fields?.stateId?.label}
@@ -246,9 +239,7 @@ const Form = () => {
         </Grid>
 
         <WithCondition
-          isValid={[EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(
-            values?.typeMaster
-          )}
+          isValid={GENERALTYPE_INCLUDE.includes(values?.typeMaster)}
         >
           <Grid item xs={12}>
             <ChipTextField

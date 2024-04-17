@@ -147,17 +147,17 @@ export const stateMasterColumns = ({
           <div>
             <IconButton
               onClick={() => handleEditList(props?.row?.index)}
-              disabled={tableEditId !== "" ? true : false}
+              disabled={!!tableEditId}
             >
-              <EditIcon disabled={tableEditId !== "" ? true : false} />
+              <EditIcon disabled={!!tableEditId} />
             </IconButton>
             <IconButton
               onClick={() => {
                 handleDeleteList(props?.row?.index);
               }}
-              disabled={tableEditId !== "" ? true : false}
+              disabled={!!tableEditId}
             >
-              <DeleteIcon disabled={tableEditId !== "" ? true : false} />
+              <DeleteIcon disabled={!!tableEditId} />
             </IconButton>
           </div>
         </OptionsContainerChild>
@@ -165,3 +165,16 @@ export const stateMasterColumns = ({
     },
   },
 ];
+
+export const tableStyles = {
+  tableHead: {
+    ".tr .th:first-child": {
+      boxShadow: "none !important",
+    },
+  },
+  tr: {
+    "div:nth-child(5)": {
+      flex: 1,
+    },
+  },
+};

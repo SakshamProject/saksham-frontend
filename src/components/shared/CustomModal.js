@@ -34,7 +34,7 @@ const FilterFormStyle = styled(Box)(({ theme }) => ({
   scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
 }));
 
-const CustomModal = ({ open, setOpen, title, handle, content }) => {
+export const CustomModal = ({ open, setOpen, title, handle, content }) => {
   const handleClose = () => setOpen(false);
 
   return (
@@ -88,5 +88,3 @@ const CustomModal = ({ open, setOpen, title, handle, content }) => {
     </Modal>
   );
 };
-
-export default CustomModal;

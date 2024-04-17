@@ -13,26 +13,33 @@ import {
 import { Box } from "@mui/material";
 
 // General Types
-export const EDUCATIONAL_QUALIFICATION = "Educational Qualification";
-export const DISABILITY_TYPE = "Disability Type";
-export const COMMUNITY_CATEGORY = "Community Category";
-export const SERVICE_TYPE = "Service Type";
-export const STATE = "State";
-export const DISTRICT = "District";
+export const GENERAL_TYPES = {
+  EDUCATIONAL_QUALIFICATION: "Educational Qualification",
+  DISABILITY_TYPE: "Disability Type",
+  COMMUNITY_CATEGORY: "Community Category",
+  SERVICE_TYPE: "Service Type",
+  STATE: "State",
+  DISTRICT: "District",
+};
+
+export const GENERALTYPE_INCLUDE = [
+  GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION,
+  GENERAL_TYPES?.DISABILITY_TYPE,
+];
 
 export const generalTypeApiPath = (value) => {
   switch (value?.typeMaster) {
-    case EDUCATIONAL_QUALIFICATION:
+    case GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION:
       return API_PATHS.EDUCATION_QUALIFICATION;
-    case DISABILITY_TYPE:
+    case GENERAL_TYPES?.DISABILITY_TYPE:
       return API_PATHS.DISABILITY_TYPE;
-    case COMMUNITY_CATEGORY:
+    case GENERAL_TYPES?.COMMUNITY_CATEGORY:
       return API_PATHS.COMMUNITY_CATEGORY;
-    case SERVICE_TYPE:
+    case GENERAL_TYPES?.SERVICE_TYPE:
       return API_PATHS.SERVICE_TYPES;
-    case STATE:
+    case GENERAL_TYPES?.STATE:
       return API_PATHS.STATES;
-    case DISTRICT:
+    case GENERAL_TYPES?.DISTRICT:
       return API_PATHS.DISTRICTS;
     default:
       return "";
@@ -43,7 +50,7 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
   const { typeMaster, ...remaining } = value;
 
   switch (typeMaster) {
-    case SERVICE_TYPE:
+    case GENERAL_TYPES?.SERVICE_TYPE:
       return isPayload
         ? {
             serviceType: remaining?.name,
@@ -52,13 +59,13 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
             name: remaining?.name,
             typeMaster,
           };
-    case DISTRICT:
+    case GENERAL_TYPES?.DISTRICT:
       return {
         name: remaining?.name,
         stateId: remaining?.stateId,
         ...(!isPayload && { typeMaster }),
       };
-    case DISABILITY_TYPE:
+    case GENERAL_TYPES?.DISABILITY_TYPE:
       return isPayload
         ? {
             disabilityType: remaining?.name,
@@ -70,7 +77,7 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
             typeMaster,
             chip: "",
           };
-    case EDUCATIONAL_QUALIFICATION:
+    case GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION:
       return isPayload
         ? {
             name: remaining?.name,
@@ -139,7 +146,7 @@ export const generalColumns = ({
       width: 300,
       sticky: "left",
     },
-    type === DISTRICT && {
+    type === GENERAL_TYPES?.DISTRICT && {
       Header: "State",
       accessor: "state.name",
       width: 300,
@@ -153,15 +160,15 @@ export const generalColumns = ({
               <Box>
                 <StyledIconButton
                   onClick={() => handleEdit(row?.original?.id)}
-                  disabled={tableEditId !== "" ? true : false}
+                  disabled={!!tableEditId}
                 >
-                  <EditIcon disabled={tableEditId !== "" ? true : false} />
+                  <EditIcon disabled={!!tableEditId} />
                 </StyledIconButton>
                 <StyledIconButton
                   onClick={() => handleDelete(row?.original?.id)}
-                  disabled={tableEditId !== "" ? true : false}
+                  disabled={!!tableEditId}
                 >
-                  <DeleteIcon disabled={tableEditId !== "" ? true : false} />
+                  <DeleteIcon disabled={!!tableEditId} />
                 </StyledIconButton>
               </Box>
             </WithCondition>
@@ -172,7 +179,7 @@ export const generalColumns = ({
   ].filter((item) => item);
 
 export const initialValues = {
-  typeMaster: EDUCATIONAL_QUALIFICATION,
+  typeMaster: GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION,
   name: "",
   chip: "",
   stateId: "",
