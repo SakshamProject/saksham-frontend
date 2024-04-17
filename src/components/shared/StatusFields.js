@@ -95,6 +95,7 @@ function StatusFields({
             disableColumnHiding
             disableSort
             disableLayout={disableListLayout}
+            maxHeight={"40vh"}
           />
         </Grid>
       </WithCondition>
