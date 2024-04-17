@@ -9,12 +9,14 @@ export const useCustomQuery = ({
   onSuccess = () => {},
   enabled = true,
   invokeSuccess,
+  select,
 }) => {
   const [successCount, setSuccessCount] = useState(-1);
   const query = useQuery({
     queryKey: [queryKey, dependency],
     queryFn: queryFn,
     enabled: enabled,
+    select: select,
   });
 
   useEffect(() => {

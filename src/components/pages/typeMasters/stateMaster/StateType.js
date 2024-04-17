@@ -18,16 +18,15 @@ import {
   formDetails,
   initialValues as initialValue,
   stateMasterColumns,
+  tableStyles,
 } from "../../../../constants/typeMasters/stateMaster";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
-import {
-  dispatchNotifyAction,
-  dispatchNotifySuccess,
-} from "../../../../utils/dispatch";
+import { dispatchNotifyAction } from "../../../../utils/dispatch";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
+  CustomModal,
   CustomReactTable,
   CustomTextField,
   DividerLine,
@@ -35,7 +34,6 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../../shared";
-import CustomModal from "../../../shared/CustomModal";
 
 const StateType = () => {
   const { pathname } = useLocation();
@@ -220,16 +218,6 @@ const StateType = () => {
           resetLabel={"Clear"}
           isUpdate={tableEditId}
           submitLabel="Add"
-          // submitButtonStyle={{
-          //   backgroundColor: tableEditId
-          //     ? theme?.palette?.backgroundColor?.blue
-          //     : theme?.palette?.success?.main,
-          //   "&:hover": {
-          //     backgroundColor: tableEditId
-          //       ? theme?.palette?.backgroundColor?.blue
-          //       : theme?.palette?.success?.main,
-          //   },
-          // }}
         />
       </StyledFormContainer>
 
@@ -259,18 +247,7 @@ const StateType = () => {
           disablePagination
           disableLayout
           count={dataList?.total}
-          style={{
-            tableHead: {
-              ".tr .th:first-child": {
-                boxShadow: "none !important",
-              },
-            },
-            tr: {
-              "div:nth-child(5)": {
-                flex: 1,
-              },
-            },
-          }}
+          style={tableStyles}
         />
       </Grid>
 

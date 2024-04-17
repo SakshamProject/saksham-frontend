@@ -137,3 +137,6 @@ export const sevakendraColumn = [
     width: 240,
   },
 ];
+
+export const transformServices = (services) =>
+  services.map(({ id }) => ({ serviceId: id }));

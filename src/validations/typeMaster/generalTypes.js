@@ -1,9 +1,8 @@
 import { object, string } from "yup";
 
 import {
-  DISABILITY_TYPE,
-  DISTRICT,
-  EDUCATIONAL_QUALIFICATION,
+  GENERALTYPE_INCLUDE,
+  GENERAL_TYPES,
 } from "../../constants/typeMasters/generalTypes";
 
 export const validationSchema = object({
@@ -16,7 +15,8 @@ export const validationSchema = object({
   stateId: string().test(
     "isState",
     "State is required",
-    (value, context) => !(context?.parent?.typeMaster === DISTRICT && !value)
+    (value, context) =>
+      !(context?.parent?.typeMaster === GENERAL_TYPES?.DISTRICT && !value)
   ),
 
   chip: string()
@@ -26,11 +26,7 @@ export const validationSchema = object({
           message: "Sub type name must be at least 3 characters long",
         });
       }
-      if (
-        [EDUCATIONAL_QUALIFICATION, DISABILITY_TYPE].includes(
-          context?.parent?.typeMaster
-        )
-      ) {
+      if (GENERALTYPE_INCLUDE.includes(context?.parent?.typeMaster)) {
         if (!value && context?.parent?.chips?.length < 1)
           return context.createError({ message: "Sub type name is required" });
       }

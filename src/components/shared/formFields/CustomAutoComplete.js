@@ -1,6 +1,6 @@
 import { Autocomplete, Chip, TextField } from "@mui/material";
 
-const CustomAutoComplete = ({
+export const CustomAutoComplete = ({
   className,
   label,
   onChange,
@@ -74,5 +74,3 @@ const CustomAutoComplete = ({
     />
   );
 };
-
-export default CustomAutoComplete;

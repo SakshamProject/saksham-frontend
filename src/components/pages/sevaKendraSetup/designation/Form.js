@@ -108,6 +108,7 @@ const Form = () => {
         },
       });
     },
+    select: ({ data }) => data?.data,
   });
 
   const { data: accessMenu } = useQuery({
@@ -251,10 +252,10 @@ const Form = () => {
 
       <AuditLog
         hide={!editId}
-        createdAt={data?.data?.data?.createdAt}
-        createdByName={`${data?.data?.data?.createdBy?.firstName} ${data?.data?.data?.createdBy?.lastName}`}
-        updatedAt={data?.data?.data?.updatedAt}
-        updatedByName={`${data?.data?.data?.updatedBy?.firstName} ${data?.data?.data?.updatedBy?.lastName}`}
+        createdAt={data?.createdAt}
+        createdByName={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
+        updatedAt={data?.updatedAt}
+        updatedByName={`${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`}
       />
     </FormWrapper>
   );

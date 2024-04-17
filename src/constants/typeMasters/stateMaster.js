@@ -165,3 +165,16 @@ export const stateMasterColumns = ({
     },
   },
 ];
+
+export const tableStyles = {
+  tableHead: {
+    ".tr .th:first-child": {
+      boxShadow: "none !important",
+    },
+  },
+  tr: {
+    "div:nth-child(5)": {
+      flex: 1,
+    },
+  },
+};

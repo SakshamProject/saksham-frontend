@@ -15,11 +15,13 @@ import { CODES, statusSeeds } from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
+  transformServices,
 } from "../../../../constants/sevaKendraSetup/master";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { formatDate, getValidValues } from "../../../../utils/common";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
+  CustomAutoComplete,
   CustomDatePicker,
   CustomTextField,
   DividerLine,
@@ -29,15 +31,8 @@ import {
   WithCondition,
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
-import CustomAutoComplete from "../../../shared/formFields/CustomAutoComplete";
 import { CustomTypography } from "../../../../styles";
-import {
-  dispatchNotifyAction,
-  dispatchNotifySuccess,
-} from "../../../../utils/dispatch";
-
-const transformServices = (services) =>
-  services.map(({ id }) => ({ serviceId: id }));
+import { dispatchNotifyAction } from "../../../../utils/dispatch";
 
 const Form = () => {
   const { state } = useLocation();
