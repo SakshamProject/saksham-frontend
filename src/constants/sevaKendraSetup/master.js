@@ -80,7 +80,7 @@ export const fields = {
   servicesBySevaKendra: {
     label: "Service Types *",
     name: "servicesBySevaKendra",
-    accessor: "serviceId",
+    accessor: "service.name",
   },
 };
 

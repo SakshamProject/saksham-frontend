@@ -61,6 +61,7 @@ export const convertToDateObject = (dateString) => {
 };
 
 export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
+  dateOnly && date.setHours(0, 0, 0, 0);
   const dateValue = time ? new Date(getDateTime(time)) : new Date(date);
   const d = localDate ? convertToDateObject(localDate) : dateValue;
   const month = (d.getMonth() + 1).toString().padStart(2, "0");
@@ -81,14 +82,14 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
       return `${hours}:${minutes}:${seconds}`;
     case "dateTime":
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    case "iso":
+      return d.toISOString();
     default:
-      return getLocalISOString(d, dateOnly);
+      return getLocalISOString(d);
   }
 };
 
-export const getLocalISOString = (date, dateOnly = false) => {
-  dateOnly && date.setHours(0, 0, 0, 0);
-
+export const getLocalISOString = (date) => {
   return date
     .toLocaleString("en-US", {
       year: "numeric",

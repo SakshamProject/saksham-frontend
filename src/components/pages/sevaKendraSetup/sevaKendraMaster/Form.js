@@ -43,16 +43,18 @@ const Form = () => {
 
   const handleOnSubmit = (values) => {
     const auditLog = {
-      date: formatDate({ date: values?.date }),
+      date: formatDate({ date: values?.date, format: "iso" }),
       status: values?.status,
       description: values?.description,
     };
     const payload = getValidValues({
       ...values,
-      startDate: formatDate({ date: values?.startDate, dateOnly: true }),
+      startDate: formatDate({ date: values?.startDate, format: "iso" }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
+      services: transformServices(values?.servicesBySevaKendra),
       auditLog: getValidValues(auditLog),
       currentStatus: values?.status,
+      effectiveFromDate: "",
     });
     onSubmit(payload);
   };
@@ -116,12 +118,18 @@ const Form = () => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
-        servicesBySevaKendra: data?.services.map(({ serviceId }) => ({
-          id: serviceId,
+        servicesBySevaKendra: data?.services?.map(({ service }) => ({
+          id: service.id,
+          name: service.name,
+          serviceType: {
+            id: service.serviceType.id,
+            name: service.serviceType.name,
+          },
         })),
-        status: data?.currentStatus,
-        date: new Date(),
-        description: "",
+        status: data?.status,
+        date:
+          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
       });
     },
   });
@@ -130,8 +138,7 @@ const Form = () => {
     editId
       ? sevaKendraGetById()
       : setFieldValue(fields?.startDate?.name, new Date());
-    // eslint-disable-next-line
-  }, []);
+  }, []); // eslint-disable-line
 
   return (
     <FormWrapper
@@ -331,7 +338,6 @@ const Form = () => {
           getOptionLabel={(option) =>
             `${option?.name} - ${option?.serviceType?.name} `
           }
-          accessor={editId ? fields?.servicesBySevaKendra?.accessor : ""}
         />
       </Grid>
 

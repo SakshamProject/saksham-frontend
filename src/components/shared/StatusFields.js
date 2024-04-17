@@ -30,6 +30,7 @@ function StatusFields({
 
     if (values?.status === CODES.ACTIVE) {
       setFieldValue("description", "");
+      setFieldValue("date", new Date());
     }
     setFieldTouched("description", false);
   }, [values?.status]); // eslint-disable-line
@@ -63,7 +64,7 @@ function StatusFields({
             label={"Effective Date *"}
             value={values?.date}
             onChange={setFieldValue}
-            isViewMode={true}
+            isViewMode={isViewMode}
             fullWidth
             errors={errors?.date}
             onBlur={handleBlur}
