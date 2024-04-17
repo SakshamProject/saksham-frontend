@@ -243,6 +243,7 @@ const Form = () => {
           onChange={setFieldValue}
           isViewMode={isViewMode}
           fullWidth
+          minDate={new Date()}
           onBlur={handleBlur}
           setTouched={setFieldTouched}
           errors={errors?.startDate}
