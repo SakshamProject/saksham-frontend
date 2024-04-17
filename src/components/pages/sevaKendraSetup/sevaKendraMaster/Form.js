@@ -241,7 +241,7 @@ const Form = () => {
           name={fields?.startDate?.name}
           value={values?.startDate}
           onChange={setFieldValue}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || editId}
           fullWidth
           minDate={new Date()}
           onBlur={handleBlur}
