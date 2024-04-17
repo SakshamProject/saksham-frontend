@@ -66,7 +66,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
       justifyContent: "center",
     },
     ".MuiStepLabel-iconContainer.Mui-active": {
-      backgroundColor: theme.palette?.primary?.light,
+      background: theme.palette?.commonColor?.white,
     },
     ".MuiStepLabel-iconContainer.Mui-completed": {
       backgroundColor: theme.palette?.primary?.main,
@@ -87,7 +87,7 @@ const StyledStepper = styled(Stepper)(({ theme, isHorizontal }) => {
 
 const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   ".MuiStepLabel-label ": {
-    color: theme.palette?.primary?.main,
+    color: theme.palette?.commonColor?.black,
     fontWeight: "700",
     fontSize: "14px",
     width: "max-content",
@@ -95,7 +95,7 @@ const StyledStepLabel = styled(StepLabel)(({ theme, isHorizontal }) => ({
   },
 
   ".MuiStepLabel-label.Mui-active": {
-    color: theme.palette?.primary?.contrastText,
+    color: theme.palette?.commonColor?.white,
     fontWeight: "700 ",
     paddingLeft: isHorizontal ? "0" : "10px",
   },

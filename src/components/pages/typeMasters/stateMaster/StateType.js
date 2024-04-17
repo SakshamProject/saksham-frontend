@@ -56,7 +56,7 @@ const StateType = () => {
   };
 
   const { mutate: onDelete } = useMutation({
-    mutationKey: ["delete", currentForm?.apiPath, currentScreen],
+    mutationKey: ["deleteydrtr", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: () => {
       dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
