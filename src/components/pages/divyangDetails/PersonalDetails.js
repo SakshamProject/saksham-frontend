@@ -46,7 +46,7 @@ const PersonalDetails = () => {
     <Grid direction={"column"} width={"100%"}>
       <StyledFormContainer width="100%">
         <Grid container columnSpacing={3}>
-          <Grid item xs={12}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.name?.label}
               name={fields?.name?.name}

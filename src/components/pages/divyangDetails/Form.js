@@ -5,19 +5,21 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { styled } from "@mui/material";
+import { styled, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../shared";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 
-const FormLayout = styled("div")({
+const FormLayout = styled("div")(({ column }) => ({
   display: "flex",
   alignItems: "start",
   padding: "0 40px",
   gap: "24px",
   height: "calc(100% - 90px)",
-});
+  flexDirection: column ? "row" : "column",
+}));
 
 const StepperContainer = styled("div")({
   minWidth: "230px",
@@ -42,6 +44,8 @@ const Form = () => {
   const editId = params.get("editId");
   const allSteps = DIVYANG_STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   const onChange = (step) =>
     editId || true ? navigate(`${step?.route}${search}`, { state }) : null;
@@ -52,7 +56,7 @@ const Form = () => {
         title={"Divyang"}
         navigateTo={ROUTE_PATHS.DIVYANG_DETAILS_LIST}
       />
-      <FormLayout>
+      <FormLayout column={matches}>
         <StepperContainer>
           <CustomStepper
             steps={DIVYANG_STEPS}
