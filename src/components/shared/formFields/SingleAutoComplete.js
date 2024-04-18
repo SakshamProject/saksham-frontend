@@ -1,3 +1,4 @@
+import { ListItem } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 
@@ -23,13 +24,14 @@ export const SingleAutoComplete = ({
   customOnchange,
   customHelperText,
   autoComplete = "off",
+  size = "medium",
 }) => {
   return (
     <Autocomplete
+      size={size}
       className={className}
       label={label}
       name={name}
-      autoComplete={autoComplete}
       readOnly={readOnly || isViewMode}
       fullWidth={fullWidth || true}
       options={inputValues || []}
@@ -62,6 +64,7 @@ export const SingleAutoComplete = ({
             {...(inputValues?.length < 5 && {
               onKeyPress: (e) => e.preventDefault(),
             })}
+            autoComplete={autoComplete}
             variant="outlined"
             label={label}
             name={name}

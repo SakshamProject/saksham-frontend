@@ -28,6 +28,10 @@ export const API_PATHS = {
   DISTRICTS: "/typemaster/generalmaster/districts",
 
   // Service master
-  SERVICES: "services",
-  SERVICES_LIST: "services/list",
+  SERVICES: "/services",
+  SERVICES_LIST: "/services/list",
+
+  // Service Mapping
+  SERVICE_MAPPING: "/servicemapping",
+  SERVICE_MAPPING_LIST: "/servicemapping/list",
 };
