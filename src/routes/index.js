@@ -90,6 +90,28 @@ export const SUPER_ADMIN_ROUTES = [
   {
     path: ROUTE_PATHS.DIVYANG_DETAILS_FORM,
     element: routeElements.DivyangDetailsForm,
+    children: [
+      {
+        path: ROUTE_PATHS.DIVYANG_DETAILS_FORM_PERSONAL,
+        element: routeElements.DivyangForm,
+      },
+      {
+        path: ROUTE_PATHS.DIVYANG_DETAILS_FORM_IDPROOF,
+        element: routeElements.DivyangForm,
+      },
+      {
+        path: ROUTE_PATHS.DIVYANG_DETAILS_FORM_ADDRESS,
+        element: routeElements.DivyangForm,
+      },
+      {
+        path: ROUTE_PATHS.DIVYANG_DETAILS_FORM_DISABILITY,
+        element: routeElements.DivyangForm,
+      },
+      {
+        path: ROUTE_PATHS.DIVYANG_DETAILS_FORM_EMPLOYMENT,
+        element: routeElements.DivyangForm,
+      },
+    ],
   },
 
   //service master

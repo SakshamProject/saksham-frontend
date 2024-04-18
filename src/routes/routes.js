@@ -36,6 +36,9 @@ export const DivyangDetailsList = lazy(() =>
 export const DivyangDetailsForm = lazy(() =>
   import("../components/pages/divyangDetails/Form")
 );
+export const DivyangForm = lazy(() =>
+  import("../components/pages/divyangDetails/DivyangForm")
+);
 
 // State Master
 export const StateMasterForm = lazy(() =>

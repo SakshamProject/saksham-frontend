@@ -47,21 +47,15 @@ const Form = () => {
         : postApiService(API_PATHS.DESIGNATION, payload);
     },
     onSuccess: () => {
-      if (!!editId) {
-        handleOnReset();
-      }
       dispatchNotifyAction(
         "Designation",
         !!editId ? CODES?.UPDATE : CODES?.ADDED
       );
-
-      resetForm();
+      handleOnReset();
     },
   });
 
-  const handleOnReset = () => {
-    navigate(ROUTE_PATHS.DESIGNATIONS_LIST);
-  };
+  const handleOnReset = () => navigate(ROUTE_PATHS.DESIGNATIONS_LIST);
 
   const handleOnSubmit = (value) => {
     if (value?.featuresId?.length === 0) {
@@ -69,8 +63,12 @@ const Form = () => {
       return;
     }
     const payload = !!editId
-      ? { ...value, features: value?.featuresId }
-      : value;
+      ? {
+          ...value,
+          features: value?.featuresId,
+          auditLog: { date: new Date(), status: CODES?.ACTIVE },
+        }
+      : { ...value };
     mutate(payload);
   };
 
@@ -96,15 +94,15 @@ const Form = () => {
     queryKey: ["fetchDesignationById"],
     queryFn: () => getByIdApiService(API_PATHS.DESIGNATION, editId),
     enabled: !!editId,
-    onSuccess: ({ data }) => {
+    onSuccess: (data) => {
       setValues({
-        stateId: data?.data?.sevaKendra?.district?.state?.id,
-        districtId: data?.data?.sevaKendra?.district?.id,
-        sevaKendraId: data?.data?.sevaKendra?.id,
-        designation: data?.data?.name,
-        featuresId: data?.data?.features?.map((item) => item?.feature),
+        stateId: data?.sevaKendra?.district?.state?.id,
+        districtId: data?.sevaKendra?.district?.id,
+        sevaKendraId: data?.sevaKendra?.id,
+        designation: data?.name,
+        featuresId: data?.features?.map((item) => item?.feature),
         auditLog: {
-          ...data?.data?.designationAuditLog[0],
+          ...data?.designationAuditLog[0],
         },
       });
     },

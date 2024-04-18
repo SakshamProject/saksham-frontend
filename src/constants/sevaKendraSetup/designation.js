@@ -35,14 +35,14 @@ export const fields = {
 
 export const columns = [
   {
-    Header: "Seva Kendra State",
-    accessor: "state",
-    filterAccessor: "sevaKendraState",
+    Header: "Seva Kendra Name",
+    accessor: "sevaKendra.name",
+    filterAccessor: "sevaKendraName",
     width: 300,
     sticky: "left",
-    Cell: ({ row }) => (
+    Cell: ({ row, value }) => (
       <OptionsContainer>
-        {row?.original?.sevaKendra?.district?.state?.name}
+        {value}
         <EditPopover
           inputValues={[
             {
@@ -62,24 +62,21 @@ export const columns = [
     ),
   },
   {
-    Header: "District",
-    accessor: "district",
+    Header: "Seva Kendra State",
+    accessor: "sevaKendra.district.state.name",
+    filterAccessor: "sevaKendraState",
     width: 300,
-    filterAccessor: "sevaKendraDistrict",
-    Cell: ({ row }) => row?.original?.sevaKendra?.district?.name,
   },
   {
-    Header: "Seva Kendra Name",
-    accessor: "name",
+    Header: "District",
+    accessor: "sevaKendra.district.name",
     width: 300,
-    filterAccessor: "sevaKendraName",
-    Cell: ({ row }) => row?.original?.sevaKendra?.name,
+    filterAccessor: "sevaKendraDistrict",
   },
   {
     Header: "Designations",
-    accessor: "designations",
+    accessor: "name",
     width: 300,
     filterAccessor: "designations",
-    Cell: ({ row }) => row?.original?.name,
   },
 ];

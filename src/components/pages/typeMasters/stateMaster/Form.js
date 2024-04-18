@@ -19,7 +19,7 @@ const StepperContainer = styled("div")({
   maxHeight: "100%",
 });
 
-const FormContainer = styled("div")(({ theme }) => ({
+const FormContainer = styled("div")({
   display: "flex",
   maxHeight: "100%",
   overflow: "auto",
@@ -27,7 +27,7 @@ const FormContainer = styled("div")(({ theme }) => ({
   alignItems: "start",
   width: "100%",
   scrollbarWidth: "none",
-}));
+});
 
 const Form = () => {
   const navigate = useNavigate();
