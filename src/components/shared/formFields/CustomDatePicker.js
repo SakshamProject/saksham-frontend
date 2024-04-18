@@ -22,6 +22,7 @@ export const CustomDatePicker = ({
   views,
   customHelperText,
   customOnChange,
+  size = "medium",
 }) => {
   return (
     <>
@@ -48,7 +49,8 @@ export const CustomDatePicker = ({
           sx={{ width: "100%" }}
           slotProps={{
             textField: {
-              autoComplete: autoComplete,
+              size,
+              autoComplete,
               onBlur: (e) => {
                 !touched?.lastDonatedDate &&
                   setTouched(name, e.type === "blur");

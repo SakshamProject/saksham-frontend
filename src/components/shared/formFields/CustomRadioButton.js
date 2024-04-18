@@ -62,7 +62,7 @@ export const CustomRadioButton = ({
           {inputValues?.map((option, key) => {
             return (
               <FormControlLabel
-                value={option[accessor]}
+                value={option[accessor] || option?.id || option?.name}
                 control={
                   <Radio
                     sx={{
