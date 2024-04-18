@@ -1,7 +1,5 @@
 import { ROUTE_PATHS } from "../../routes/routePaths";
 
-export const initialValues = {};
-
 export const DIVYANG_STEPS = [
   {
     label: "Personal Details",

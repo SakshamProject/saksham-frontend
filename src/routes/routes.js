@@ -36,8 +36,20 @@ export const DivyangDetailsList = lazy(() =>
 export const DivyangDetailsForm = lazy(() =>
   import("../components/pages/divyangDetails/Form")
 );
-export const DivyangForm = lazy(() =>
-  import("../components/pages/divyangDetails/DivyangForm")
+export const PersonalDetails = lazy(() =>
+  import("../components/pages/divyangDetails/PersonalDetails")
+);
+export const IdProffUploads = lazy(() =>
+  import("../components/pages/divyangDetails/IdProffUploads")
+);
+export const Address = lazy(() =>
+  import("../components/pages/divyangDetails/Address")
+);
+export const DisabilityDetails = lazy(() =>
+  import("../components/pages/divyangDetails/DisabilityDetails")
+);
+export const EmploymentDetails = lazy(() =>
+  import("../components/pages/divyangDetails/EmploymentDetails")
 );
 
 // State Master
