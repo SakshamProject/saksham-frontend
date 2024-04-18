@@ -96,7 +96,7 @@ export const StyledFormContainer = styled(Paper)(({ theme, width }) => {
     border: `1px solid ${theme?.palette?.primary.main}`,
     boxSizing: "border-box",
     boxShadow: "none",
-    minWidth: "500px",
+    // minWidth: "500px",
     backgroundColor: theme.palette?.commonColor?.white,
   };
 });

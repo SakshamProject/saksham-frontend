@@ -23,16 +23,3 @@ export const validationSchema = (editId) =>
     //     .max(255, "Deactivation reason cannot have more than 255 characters"),
     // }),
   });
-
-// First name
-// Last name
-// Divyang ID
-// Mail ID
-// Mobile
-// Blood Group
-// DOB
-// Father Name
-// Mother Name
-// Educational Qualification
-// Religion
-// Community

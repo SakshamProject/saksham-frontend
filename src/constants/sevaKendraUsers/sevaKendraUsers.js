@@ -94,16 +94,3 @@ export const fields = {
     name: "confirmPassword",
   },
 };
-
-export const genderSeeds = [
-  {
-    name: "Male",
-    id: "male",
-    code: "male",
-  },
-  {
-    name: "Female",
-    id: "female",
-    code: "female",
-  },
-];

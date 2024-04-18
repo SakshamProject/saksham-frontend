@@ -11,7 +11,7 @@ import { theme } from "../../../styles";
 const RadioBox = styled("div")(({ rowbreak }) => ({
   display: "flex",
   alignItems: rowbreak ? "left" : "center",
-  flexDirection: rowbreak && "column",
+  flexDirection: rowbreak ? "column" : "row",
 }));
 
 export const CustomRadioButton = ({

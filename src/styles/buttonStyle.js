@@ -17,10 +17,9 @@ export const CancelButton = styled(Button)(({ theme }) => ({
   height: "36px",
   cursor: "pointer",
   color: theme.palette?.primary?.main,
-  borderColor: theme.palette?.primary?.main,
+  border: `1px solid ${theme.palette?.primary?.main}`,
   "&:hover": {
     backgroundColor: theme.palette?.commonColor?.white,
-    borderColor: theme.palette?.primary?.main,
   },
 }));
 

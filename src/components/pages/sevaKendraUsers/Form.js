@@ -6,10 +6,8 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 import { getApiService, getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { statusSeeds } from "../../../constants/globalConstants";
 import {
   fields,
-  genderSeeds,
   initialValues,
 } from "../../../constants/sevaKendraUsers/sevaKendraUsers";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
@@ -28,6 +26,7 @@ import {
   WithCondition,
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
+import { genders, statusSeeds } from "../../../constants/seeds";
 
 const Form = () => {
   const { state } = useLocation();
@@ -192,7 +191,7 @@ const Form = () => {
 
       <Grid item xs={12}>
         <CustomRadioButton
-          name="genderId"
+          name={fields?.genderId?.name}
           label={fields?.genderId?.label}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -201,7 +200,7 @@ const Form = () => {
           errors={errors?.genderId}
           isViewMode={isViewMode}
           accessor="code"
-          inputValues={genderSeeds}
+          inputValues={genders()}
           rowBreak
           labelStyle={{
             color: theme?.palette?.textColor?.blue,
