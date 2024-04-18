@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { FormControlLabel, Grid } from "@mui/material";
 import { useFormik } from "formik";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -86,7 +86,6 @@ const Form = () => {
     errors,
     handleSubmit,
     setFieldValue,
-    resetForm,
     setValues,
   } = formik;
 
@@ -146,7 +145,7 @@ const Form = () => {
     return values?.featuresId?.includes(id);
   };
 
-  const checkItem = (id, name) => () => {
+  const checkItem = (id, name) => {
     if (checkExistence(id)) {
       setFieldValue(
         name,
@@ -157,6 +156,19 @@ const Form = () => {
       return;
     }
     setFieldValue(name, [...values?.featuresId, !!editId ? { id } : id]);
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target?.checked) {
+      setFieldValue(
+        fields?.featuresId?.name,
+        accessMenu?.map((item) => {
+          return !!editId ? { id: item?.id } : item?.id;
+        })
+      );
+      return;
+    }
+    setFieldValue(fields?.featuresId?.name, []);
   };
 
   return (
@@ -226,7 +238,23 @@ const Form = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <CustomTypography>{fields.featuresId.label}</CustomTypography>
+        <CustomTypography sx={{ marginBottom: 0 }}>
+          {fields.featuresId.label}
+        </CustomTypography>
+      </Grid>
+
+      <Grid item xs={12}>
+        <CustomCheckBox
+          label={"Select All"}
+          name="selectAll"
+          indeterminate={
+            values?.featuresId?.length !== 0 &&
+            values?.featuresId?.length !== accessMenu?.length
+          }
+          onChange={handleSelectAll}
+          checked={values?.featuresId?.length === accessMenu?.length}
+          isViewMode={isViewMode}
+        />
       </Grid>
 
       {accessMenu?.map((menu) => (
@@ -234,7 +262,7 @@ const Form = () => {
           <CustomCheckBox
             name={menu?.id}
             label={menu?.name}
-            onChange={checkItem(menu?.id, fields.featuresId.name)}
+            onChange={() => checkItem(menu?.id, fields.featuresId.name)}
             checked={checkExistence(menu?.id)}
             isViewMode={isViewMode}
           />

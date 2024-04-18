@@ -35,10 +35,10 @@ export const fields = {
 
 export const columns = [
   {
-    Header: "Seva Kendra Name",
-    accessor: "sevaKendra.name",
-    filterAccessor: "sevaKendraName",
+    Header: "Designations",
+    accessor: "name",
     width: 300,
+    filterAccessor: "designations",
     sticky: "left",
     Cell: ({ row, value }) => (
       <OptionsContainer>
@@ -62,6 +62,12 @@ export const columns = [
     ),
   },
   {
+    Header: "Seva Kendra Name",
+    accessor: "sevaKendra.name",
+    filterAccessor: "sevaKendraName",
+    width: 300,
+  },
+  {
     Header: "Seva Kendra State",
     accessor: "sevaKendra.district.state.name",
     filterAccessor: "sevaKendraState",
@@ -72,11 +78,5 @@ export const columns = [
     accessor: "sevaKendra.district.name",
     width: 300,
     filterAccessor: "sevaKendraDistrict",
-  },
-  {
-    Header: "Designations",
-    accessor: "name",
-    width: 300,
-    filterAccessor: "designations",
   },
 ];
