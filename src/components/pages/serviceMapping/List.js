@@ -11,6 +11,7 @@ import { useFormik } from "formik";
 import { useQuery } from "@tanstack/react-query";
 import { API_PATHS } from "../../../api/apiPaths";
 import { getApiService } from "../../../api/api";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
 
 const List = () => {
   const { values, errors, touched, setFieldValue } = useFormik({
@@ -32,8 +33,8 @@ const List = () => {
     <ListingContainer>
       <ListTopbar
         label={"Service Mapping"}
-        listPath={"SERVICE_MAPPING_LIST"}
-        newFormPath={"SERVICE_MAPPING_FORM"}
+        listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
+        newFormPath={ROUTE_PATHS?.SERVICE_MAPPING_FORM}
         style={{
           marginLeft: "0",
           width: "100% !important",
