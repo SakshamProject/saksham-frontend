@@ -37,7 +37,9 @@ const dispatchNotifyAction = (title, action) => {
       ? `${title} Added successfully !`
       : action === CODES?.UPDATE
       ? `${title} Updated successfully !`
-      : (action === CODES?.DELETE)`${title} Deleted successfully !`;
+      : action === CODES?.DELETE
+      ? `${title} Deleted successfully !`
+      : "";
   dispatchNotifyUser([message, "success"]);
 };
 

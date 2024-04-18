@@ -12,7 +12,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { CODES } from "../../../../constants/globalConstants";
+import { CODES, DELETE_MSG } from "../../../../constants/globalConstants";
 import {
   GENERALTYPE_INCLUDE,
   GENERAL_TYPES,
@@ -302,7 +302,7 @@ const Form = () => {
       <CustomModal
         open={open}
         setOpen={setOpen}
-        content={`Are you sure you want to delete this ${values?.typeMaster} ${
+        content={`${DELETE_MSG}${values?.typeMaster} ${
           findNameById(
             open,
             generalTypeList?.data?.educationQualificationType ||

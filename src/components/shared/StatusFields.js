@@ -66,6 +66,7 @@ function StatusFields({
             onChange={setFieldValue}
             isViewMode={isViewMode}
             fullWidth
+            minDate={new Date()}
             errors={errors?.date}
             onBlur={handleBlur}
             setTouched={setFieldTouched}
@@ -94,6 +95,7 @@ function StatusFields({
             disableColumnHiding
             disableSort
             disableLayout={disableListLayout}
+            maxHeight={"40vh"}
           />
         </Grid>
       </WithCondition>

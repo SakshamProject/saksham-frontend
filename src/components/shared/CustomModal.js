@@ -72,7 +72,7 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            sx={{ color: theme?.palette?.commonColor?.white }}
+            sx={{ color: theme?.palette?.commonColor?.black }}
           >
             {content}
           </Typography>

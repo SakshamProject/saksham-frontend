@@ -8,10 +8,10 @@ export const getTableSchemas = (columns = []) => {
         filterFields.push({
           id: index,
           label: column?.Header,
-          queryName: column?.accessor + "Drop",
+          queryName: column?.filterAccessor + "Drop",
           fieldName: column?.filterAccessor,
         });
-        filterInitialValues[column?.accessor] = "";
+        filterInitialValues[column?.filterAccessor] = "";
       }
     });
   }

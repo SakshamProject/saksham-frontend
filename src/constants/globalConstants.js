@@ -16,6 +16,7 @@ export const OKAY = "OKAY";
 export const ADD = "Add";
 export const SKIP = "Skip";
 export const DELETE = "Delete";
+export const DELETE_MSG = "Are you sure you want to delete this ";
 
 export const CODES = {
   ACTIVE: "ACTIVE",

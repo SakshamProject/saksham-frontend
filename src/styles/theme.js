@@ -8,7 +8,7 @@ export const theme = createTheme({
       blue: "#1473E6",
       lightBlue: " #4390EF",
       barkBlue: "#5353C6",
-      darkBlue: "#082F5E",
+      darkBlue: "#8582B8",
       darkGreen: "#115523",
       green: "#3AD865",
       lightGreen: " #7FE69B",
@@ -19,7 +19,7 @@ export const theme = createTheme({
     },
 
     primary: {
-      main: "#B3B3B3",
+      main: "#808080",
       light: "#D9D9D9",
       dark: "#262626",
       contrastText: "#ffffff",

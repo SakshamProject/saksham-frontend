@@ -44,7 +44,6 @@ const Form = () => {
         date: formatDate({ date: values?.auditLog?.date }),
       }),
     });
-    // onSubmit(payload);
     console.log(payload);
   };
 

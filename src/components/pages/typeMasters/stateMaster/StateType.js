@@ -12,7 +12,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { CODES } from "../../../../constants/globalConstants";
+import { CODES, DELETE_MSG } from "../../../../constants/globalConstants";
 import {
   fields,
   formDetails,
@@ -56,9 +56,9 @@ const StateType = () => {
   };
 
   const { mutate: onDelete } = useMutation({
-    mutationKey: ["delete", currentForm?.apiPath, currentScreen],
+    mutationKey: ["deleteydrtr", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
       dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
       refetch();
       setOpen(false);
@@ -254,9 +254,9 @@ const StateType = () => {
       <CustomModal
         open={open}
         setOpen={setOpen}
-        content={`Are you sure you want to delete this ${
-          currentForm?.validationLabel
-        } ${findNameById(open, dataList?.data) || ""}?`}
+        content={`${DELETE_MSG}${currentForm?.validationLabel} ${
+          findNameById(open, dataList?.data) || ""
+        }?`}
         handle={() => onDelete(open)}
       />
     </Grid>

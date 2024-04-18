@@ -37,6 +37,11 @@ export const ROUTE_PATHS = {
   //divyang details
   DIVYANG_DETAILS_LIST: "/divyangDetails/list",
   DIVYANG_DETAILS_FORM: "/divyangDetails/form",
+  DIVYANG_DETAILS_FORM_PERSONAL: "/divyangDetails/form/personal",
+  DIVYANG_DETAILS_FORM_IDPROOF: "/divyangDetails/form/idproff",
+  DIVYANG_DETAILS_FORM_ADDRESS: "/divyangDetails/form/address",
+  DIVYANG_DETAILS_FORM_DISABILITY: "/divyangDetails/form/disability",
+  DIVYANG_DETAILS_FORM_EMPLOYMENT: "/divyangDetails/form/employment",
 
   //service master
   SERVICE_MASTER_LIST: "/serviceMaster/list",

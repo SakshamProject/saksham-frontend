@@ -20,7 +20,7 @@ export const AppBarLayout = styled("div")(({ theme }) => ({
   justifyContent: "space-between",
   alignItems: "center",
   position: "sticky",
-  backgroundColor: theme.palette?.primary?.main,
+  // backgroundColor: theme.palette?.primary?.main,
   color: theme.palette?.commonColor?.black,
   border: `1px solid ${theme.palette?.primary?.main}`,
 }));
