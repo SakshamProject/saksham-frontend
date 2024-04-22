@@ -63,7 +63,6 @@ export const validationSchema = (editId) =>
         .max(255, "Contact Person Name cannot have more than 255 characters"),
       email: string()
         .trim()
-        .required("Email Id is required")
         .matches(EMAIL_REGEX, "Enter Valid Email")
         .max(255, "Email cannot have more than 255 characters"),
       phoneNumber1: string()
@@ -87,7 +86,6 @@ export const validationSchema = (editId) =>
         }),
       phoneNumber2: string()
         .trim()
-        .required("Secondary Number is required")
         .test(
           "isNumeric",
           "Secondary Number should contain only numbers",

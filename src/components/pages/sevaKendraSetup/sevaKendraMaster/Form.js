@@ -11,7 +11,7 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { CODES, statusSeeds } from "../../../../constants/globalConstants";
+import { CODES } from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
@@ -33,6 +33,7 @@ import {
 import StatusFields from "../../../shared/StatusFields";
 import { CustomTypography } from "../../../../styles";
 import { dispatchNotifyAction } from "../../../../utils/dispatch";
+import { statusSeeds } from "../../../../constants/seeds";
 
 const Form = () => {
   const { state } = useLocation();
@@ -49,6 +50,7 @@ const Form = () => {
     };
     const payload = getValidValues({
       ...values,
+      contactPerson: getValidValues(values?.contactPerson),
       startDate: formatDate({ date: values?.startDate, format: "iso" }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
       services: transformServices(values?.servicesBySevaKendra),

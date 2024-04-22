@@ -33,8 +33,8 @@ const List = () => {
     <ListingContainer>
       <ListTopbar
         label={"Service Mapping"}
-        listPath={ROUTE_PATHS.SERVICE_MAPPING_LIST}
-        newFormPath={ROUTE_PATHS.SERVICE_MAPPING_FORM}
+        listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
+        newFormPath={ROUTE_PATHS?.SERVICE_MAPPING_FORM}
         style={{
           marginLeft: "0",
           width: "100% !important",

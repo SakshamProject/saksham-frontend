@@ -60,14 +60,3 @@ export const statusColumns = [
     Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
   },
 ];
-
-export const statusSeeds = [
-  {
-    id: "ACTIVE",
-    name: "Active",
-  },
-  {
-    id: "DEACTIVE",
-    name: "Deactive",
-  },
-];

@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 
 import { CustomSelectField, CustomTextField } from ".";
-import { filterStringSeeds } from "../../constants/filterFieldSeeds.js";
+import { filterStringSeeds } from "../../constants/seeds.js";
 import {
   APPLY,
   CANCEL,

@@ -5,19 +5,23 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { styled } from "@mui/material";
+import { styled, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../shared";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 
-const FormLayout = styled("div")({
+const FormLayout = styled("div")(({ matches }) => ({
   display: "flex",
   alignItems: "start",
   padding: "0 40px",
   gap: "24px",
   height: "calc(100% - 90px)",
-});
+  flexDirection: matches ? "row" : "column",
+  overflow: !matches && "auto",
+  scrollbarWidth: "none",
+}));
 
 const StepperContainer = styled("div")({
   minWidth: "230px",
@@ -25,15 +29,15 @@ const StepperContainer = styled("div")({
   maxHeight: "100%",
 });
 
-const FormContainer = styled("div")({
+const FormContainer = styled("div")(({ matches }) => ({
   display: "flex",
   maxHeight: "100%",
-  overflow: "auto",
+  overflow: matches && "auto",
   justifyContent: "center",
   alignItems: "start",
   width: "100%",
   scrollbarWidth: "none",
-});
+}));
 
 const Form = () => {
   const navigate = useNavigate();
@@ -42,6 +46,8 @@ const Form = () => {
   const editId = params.get("editId");
   const allSteps = DIVYANG_STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   const onChange = (step) =>
     editId || true ? navigate(`${step?.route}${search}`, { state }) : null;
@@ -52,7 +58,7 @@ const Form = () => {
         title={"Divyang"}
         navigateTo={ROUTE_PATHS.DIVYANG_DETAILS_LIST}
       />
-      <FormLayout>
+      <FormLayout matches={matches}>
         <StepperContainer>
           <CustomStepper
             steps={DIVYANG_STEPS}
@@ -62,7 +68,7 @@ const Form = () => {
           />
         </StepperContainer>
         <Suspense fallback={<CustomLoader />}>
-          <FormContainer>
+          <FormContainer matches={matches}>
             <Outlet />
           </FormContainer>
         </Suspense>
