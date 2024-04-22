@@ -48,3 +48,14 @@ export const statusSeeds = [
     name: "Deactive",
   },
 ];
+
+export const yesNoSeed = [
+  {
+    id: "YES",
+    name: "Yes",
+  },
+  {
+    id: "NO",
+    name: "No",
+  },
+];

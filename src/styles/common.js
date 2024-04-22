@@ -1,8 +1,8 @@
 import { Typography, styled } from "@mui/material";
 
-export const CustomTypography = styled(Typography)(({ theme }) => ({
+export const CustomTypography = styled(Typography)(({ theme, capitalize }) => ({
   color: theme?.palette?.commonColor?.blue,
-  textTransform: "uppercase",
+  textTransform: !!capitalize ? "capitalize" : "uppercase",
   fontSize: "16px",
   fontWeight: "bold",
   marginBottom: 16,

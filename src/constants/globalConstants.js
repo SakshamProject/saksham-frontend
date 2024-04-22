@@ -3,6 +3,11 @@ import { formatDate } from "../utils/common";
 
 // regex
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+export const LOWER_CASE = /(?=.*?[a-z])/;
+export const UPPER_CASE = /(?=.*?[A-Z])/;
+export const NUMBER = /(?=.*?[0-9])/;
+export const SPECIAL_CHARACTER =
+  /(?=.*?[!@#$%^&*()\-_=+\\[\]{}\\|;:'",.<>\\/?`~])/;
 
 // button labels
 export const NEW = "NEW";
@@ -29,6 +34,8 @@ export const CODES = {
   ADDED: "added",
   UPDATE: "update",
   DELETE: "delete",
+  YES: "YES",
+  NO: "NO",
 };
 
 // api messages

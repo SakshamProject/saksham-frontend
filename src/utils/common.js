@@ -114,3 +114,29 @@ export const findNameById = (id, data) =>
   (data?.find((item) => item?.id === id)?.name || "")
     ?.toLowerCase()
     ?.replace(/^\w/, (c) => c?.toUpperCase());
+
+export const getMinimumAgeDate = (value) => {
+  const now = new Date();
+  return new Date(
+    now.getFullYear() - parseInt(value),
+    now.getMonth(),
+    now.getDate()
+  );
+};
+
+export const getAge = (dob) => {
+  const today = new Date();
+  const birthDate = new Date(dob);
+  let age = today.getFullYear() - birthDate.getFullYear();
+  const m = today.getMonth() - birthDate.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+    age--;
+  }
+  return age;
+};
+
+export const minMaxAge = ({ maxYear = 100, minYear = 18 } = {}) => {
+  const minDate = new Date().setFullYear(new Date().getFullYear() - minYear);
+  const maxDate = new Date().setFullYear(new Date().getFullYear() - maxYear);
+  return { min: new Date(minDate), max: new Date(maxDate) };
+};

@@ -343,7 +343,6 @@ const Form = () => {
           setFieldValue={setFieldValue}
           statusSeeds={statusSeeds}
           isViewMode={isViewMode}
-          rowBreak={false}
           // statusHistory={clientDetail?.data?.status}
           disableListLayout
         />
