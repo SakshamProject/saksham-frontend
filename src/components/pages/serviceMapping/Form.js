@@ -12,11 +12,11 @@ import {
   FormActions,
   FormWrapper,
   SingleAutoComplete,
+  DivyangDetail,
 } from "../../shared";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { formFields } from "../../../constants/serviceMapping/serviceMapping";
 import { CustomTypography, theme } from "../../../styles";
-import DivyangDetail from "../../shared/DivyangDetails";
 
 const Form = () => {
   const { state } = useLocation();
@@ -103,7 +103,7 @@ const Form = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <DivyangDetail   />
+        <DivyangDetail />
       </Grid>
 
       <Grid item xs={12}>

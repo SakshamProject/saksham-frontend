@@ -41,6 +41,9 @@ export const CustomTextField = ({
     if (fieldType === "decimal") {
       return !/[0-9.]/.test(e.key) && e.preventDefault();
     }
+    if (fieldType === "noSpace") {
+      return !/[0-9A-Za-z/]/.test(e.key) && e.preventDefault();
+    }
   };
 
   return (

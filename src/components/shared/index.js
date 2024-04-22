@@ -9,6 +9,7 @@ export * from "./CustomReactTable";
 export * from "./CustomSearchField";
 export * from "./CustomStepper";
 export * from "./DividerLine";
+export * from "./DivyangDetails";
 export * from "./EditPopover";
 export * from "./FilterModal";
 export * from "./FormActions";

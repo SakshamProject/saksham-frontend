@@ -1,9 +1,8 @@
-import { Grid, useMediaQuery } from "@mui/material";
-import React, { useEffect, useMemo } from "react";
+import { Grid } from "@mui/material";
+import React, { useEffect } from "react";
 import { useFormik } from "formik";
-import { useTheme } from "@mui/material/styles";
 
-import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
+import { StyledFormContainer, theme } from "../../../styles";
 import {
   fields,
   initialValues,
@@ -20,11 +19,7 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import {
-  getAge,
-  getMinimumAgeDate,
-  getValidValues,
-} from "../../../utils/common";
+import { getAge, getValidValues } from "../../../utils/common";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { genders, yesNoSeed } from "../../../constants/seeds";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -40,8 +35,6 @@ const PersonalDetails = () => {
   const [params] = useSearchParams();
   const isViewMode = state?.viewDetails;
   const editId = params.get("editId");
-  const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
