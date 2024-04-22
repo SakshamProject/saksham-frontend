@@ -1,26 +1,26 @@
 import { Grid } from "@mui/material";
 import {
+  CommonList,
   CustomDatePicker,
   CustomRadioButton,
-  CustomReactTable,
   ListTopbar,
   SingleAutoComplete,
 } from "../../shared";
 import { ListingContainer } from "../../../styles";
 import { useFormik } from "formik";
 import { useQuery } from "@tanstack/react-query";
+
 import { API_PATHS } from "../../../api/apiPaths";
 import { getApiService } from "../../../api/api";
+import {
+  listInitialValues as initialValues,
+  listFields,
+} from "../../../constants/serviceMapping/serviceMapping";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 
 const List = () => {
-  const { values, errors, touched, setFieldValue } = useFormik({
-    initialValues: {
-      status: "",
-      districtId: "",
-      startDate: "",
-      endDate: "",
-    },
+  const { values, errors, touched, setFieldValue, handleChange } = useFormik({
+    initialValues,
   });
 
   const { data: allDistricts } = useQuery({
@@ -42,44 +42,34 @@ const List = () => {
       />
 
       <CustomRadioButton
-        label={"Service Status"}
-        name={"status"}
-        labelStyle={{ color: "blue" }}
-        value="pending"
-        inputValues={[
-          {
-            id: "pending",
-            name: "Pending",
-          },
-          {
-            id: "completed",
-            name: "Completed",
-          },
-        ]}
+        label={listFields?.status?.label}
+        name={listFields?.status?.name}
+        labelStyle={listFields?.status?.labelStyle}
+        value={values?.status}
+        inputValues={listFields?.status?.inputValues}
+        onChange={handleChange}
       />
 
       <Grid container columnGap={2}>
         <Grid item xs={3}>
           <SingleAutoComplete
-            label={"Seva Kendra District"}
-            name={"districtId"}
-            size="small"
+            label={listFields?.districtId?.label}
+            name={listFields?.districtId?.name}
+            size={listFields?.districtId?.size}
             value={values?.districtId}
             errors={errors?.districtId}
             touched={touched?.districtId}
             onChange={setFieldValue}
             inputValues={allDistricts || []}
-            getOptionLabel={(option) =>
-              `${option?.name} - ${option?.state?.name}`
-            }
+            getOptionLabel={listFields?.districtId?.getOptionLabel}
           />
         </Grid>
 
         <Grid item xs={3}>
           <CustomDatePicker
-            name="startDate"
-            label={"Start Date"}
-            size="small"
+            name={listFields?.startDate?.name}
+            label={listFields?.startDate?.label}
+            size={listFields?.startDate?.size}
             value={values?.startDate}
             onChange={setFieldValue}
             fullWidth
@@ -90,9 +80,9 @@ const List = () => {
 
         <Grid item xs={3}>
           <CustomDatePicker
-            name="endDate"
-            label={"End Date"}
-            size="small"
+            name={listFields?.endDate?.name}
+            label={listFields?.endDate?.label}
+            size={listFields?.endDate?.size}
             value={values?.endDate}
             onChange={setFieldValue}
             fullWidth
@@ -103,7 +93,13 @@ const List = () => {
         </Grid>
       </Grid>
 
-      {/* <CustomReactTable columnData={[]} /> */}
+      <CommonList
+        disableLayout
+        disableTopBar
+        listPath={"SERVICE_MAPPING_LIST"}
+        formPath={"SERVICE_MAPPING_FORM"}
+        apiPath={"SERVICE_MAPPING_LIST"}
+      />
     </ListingContainer>
   );
 };

@@ -23,6 +23,9 @@ export const CustomCheckBox = ({
           "&.Mui-checked": {
             color: theme.palette?.commonColor?.blue,
           },
+          "&.MuiCheckbox-indeterminate": {
+            color: theme.palette?.commonColor?.blue,
+          },
         }}
         checked={Boolean(checked)}
         indeterminate={indeterminate}

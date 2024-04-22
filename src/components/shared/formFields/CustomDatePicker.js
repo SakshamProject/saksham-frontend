@@ -17,7 +17,7 @@ export const CustomDatePicker = ({
   disabled,
   touched,
   errors,
-  setTouched,
+  setTouched = () => {},
   autoComplete = "off",
   views,
   customHelperText,
