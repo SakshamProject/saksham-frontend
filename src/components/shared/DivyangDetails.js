@@ -59,10 +59,10 @@ const DivyangDetail = ({
 
       <Grid item xs={8}>
         {defaultDivyangDetailColumns?.map((item, key) => (
-          <WithCondition isValid={!!divyangDetail[item?.accessor]}>
+          <WithCondition isValid={!!divyangDetail?.[item?.accessor]}>
             <DetailSection key={key + item?.accessor} sx={{ display: "flex" }}>
               <Title>{`${item?.Header} : `}</Title>
-              <Typography>{divyangDetail[item?.accessor]}</Typography>
+              <Typography>{divyangDetail?.[item?.accessor]}</Typography>
             </DetailSection>
           </WithCondition>
         ))}
