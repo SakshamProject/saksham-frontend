@@ -49,11 +49,12 @@ const PersonalDetails = () => {
     const payload = getValidValues(values);
     console.log(payload);
     // onSubmit(payload);
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    // validationSchema,
     onSubmit: handleOnSubmit,
   });
 
