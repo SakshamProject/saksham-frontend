@@ -43,8 +43,7 @@ export const CommonList = ({
       const path = customApiPath || API_PATHS?.[apiPath];
       return isGetApi
         ? getApiService(path)
-        : // : postApiService(path, { ...listParams });
-          postApiService(path);
+        : postApiService(path, { ...listParams });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,
