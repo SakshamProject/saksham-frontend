@@ -52,8 +52,7 @@ export const CustomDatePicker = ({
               size,
               autoComplete,
               onBlur: (e) => {
-                !touched?.lastDonatedDate &&
-                  setTouched(name, e.type === "blur");
+                setTouched(name, e.type === "blur");
               },
               error: customHelperText || (!!touched && !!errors),
               helperText: customHelperText || (!!touched && errors) || " ",

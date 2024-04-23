@@ -59,3 +59,14 @@ export const yesNoSeed = [
     name: "No",
   },
 ];
+
+export const locationSeed = [
+  {
+    id: "RURAL",
+    name: "Rural",
+  },
+  {
+    id: "URBAN",
+    name: "Urban",
+  },
+];

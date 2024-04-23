@@ -1,33 +1,198 @@
-export const initialValues = {};
+import { CODES } from "../globalConstants";
 
-export const fields = {};
+export const initialValues = {
+  doorNumber: "",
+  flatNumber: "",
+  streetName: "",
+  nagarName: "",
+  stateId: "",
+  districtId: "",
+  isRural: CODES?.RURAL,
+  villageName: "",
+  panchayatUnionId: "",
+  talukId: "",
+  townPanchayatId: "",
+  municipalityId: "",
+  corporationId: "",
+  MLAConstituencyId: "",
+  MPConstituancyId: "",
+  pincode: "",
+  isSameAddress: false,
+  doorNumberCommunication: "",
+  flatNumberCommunication: "",
+  streetNameCommunication: "",
+  nagarNameCommunication: "",
+  stateIdCommunication: "",
+  districtIdCommunication: "",
+  isRuralCommunication: CODES?.RURAL,
+  villageNameCommunication: "",
+  panchayatUnionIdCommunication: "",
+  talukIdCommunication: "",
+  townPanchayatIdCommunication: "",
+  municipalityIdCommunication: "",
+  corporationIdCommunication: "",
+  MLAConstituencyIdCommunication: "",
+  MPConstituancyIdCommunication: "",
+  pincodeCommunication: "",
+};
 
-//   doorNumber
-//   flatNumber
-//   streetName
-//   nagarName
-//   districtId
-//   doorNumberCommunication
-//   flatNumberCommunication
-//   nagarNameCommunication
-//   districtIdCommunication
-//   isRural
-//   villageName
-//   panchayatUnionId
-//   talukId
-//   townPanchayatId
-//   municipalityId
-//   corporationId
-//   MLAConstituencyId
-//   MPConstituancyId
-//   pincode
+export const fields = {
+  doorNumber: {
+    label: "Door No *",
+    name: "doorNumber",
+  },
+  flatNumber: {
+    label: "Flat No",
+    name: "flatNumber",
+  },
+  streetName: {
+    label: "Street Name *",
+    name: "streetName",
+  },
+  nagarName: {
+    label: "Nagar Name",
+    name: "nagarName",
+  },
+  stateId: {
+    label: "State *",
+    name: "stateId",
+  },
+  districtId: {
+    label: "District *",
+    name: "districtId",
+  },
+  isRural: {
+    label: "Location",
+    name: "isRural",
+  },
+  villageName: {
+    label: "Village Name *",
+    name: "villageName",
+  },
+  panchayatUnionId: {
+    label: "Panchayat Union *",
+    name: "panchayatUnionId",
+  },
+  talukId: {
+    label: "Taluk *",
+    name: "talukId",
+  },
+  townPanchayatId: {
+    label: "Town Panchayat *",
+    name: "townPanchayatId",
+  },
+  municipalityId: {
+    label: "Municipality *",
+    name: "municipalityId",
+  },
+  corporationId: {
+    label: "Corporation *",
+    name: "corporationId",
+  },
+  MLAConstituencyId: {
+    label: "MLA Constituency *",
+    name: "MLAConstituencyId",
+  },
+  MPConstituancyId: {
+    label: "MP Constituency *",
+    name: "MPConstituancyId",
+  },
+  pincode: {
+    label: "Pincode *",
+    name: "pincode",
+    type: "mobile",
+  },
+  isSameAddress: {
+    label: "Permanent Address is Same as Communication Address",
+    name: "isSameAddress",
+  },
+  doorNumberCommunication: {
+    label: "Door No *",
+    name: "doorNumberCommunication",
+  },
+  flatNumberCommunication: {
+    label: "Flat No",
+    name: "flatNumberCommunication",
+  },
+  streetNameCommunication: {
+    label: "Street Name *",
+    name: "streetNameCommunication",
+  },
+  nagarNameCommunication: {
+    label: "Nagar Name",
+    name: "nagarNameCommunication",
+  },
+  stateIdCommunication: {
+    label: "State *",
+    name: "stateIdCommunication",
+  },
+  districtIdCommunication: {
+    label: "District *",
+    name: "districtIdCommunication",
+  },
+  isRuralCommunication: {
+    label: "Location",
+    name: "isRuralCommunication",
+  },
+  villageNameCommunication: {
+    label: "Village Name *",
+    name: "villageNameCommunication",
+  },
+  panchayatUnionIdCommunication: {
+    label: "Panchayat Union *",
+    name: "panchayatUnionIdCommunication",
+  },
+  talukIdCommunication: {
+    label: "Taluk *",
+    name: "talukIdCommunication",
+  },
+  townPanchayatIdCommunication: {
+    label: "Town Panchayat *",
+    name: "townPanchayatIdCommunication",
+  },
+  municipalityIdCommunication: {
+    label: "Municipality *",
+    name: "municipalityIdCommunication",
+  },
+  corporationIdCommunication: {
+    label: "Corporation *",
+    name: "corporationIdCommunication",
+  },
+  MLAConstituencyIdCommunication: {
+    label: "MLA Constituency *",
+    name: "MLAConstituencyIdCommunication",
+  },
+  MPConstituancyIdCommunication: {
+    label: "MP Constituency *",
+    name: "MPConstituancyIdCommunication",
+  },
+  pincodeCommunication: {
+    label: "Pincode *",
+    name: "pincodeCommunication",
+    type: "mobile",
+  },
+};
 
-// required
+export const dependedValues = {
+  villageName: "",
+  panchayatUnionId: "",
+  talukId: "",
+  townPanchayatId: "",
+  municipalityId: "",
+  corporationId: "",
+  MLAConstituencyId: "",
+  MPConstituancyId: "",
+  pincode: "",
+};
 
-// Door Name
-// Street Name
-// State
-// District
-// If rural is selected - village name and panchayat union is mandatory
-// If urban - mla and mp constituency mandatory
-// pincode
+export const dependentValuesCommunication = {
+  villageNameCommunication: "",
+  panchayatUnionIdCommunication: "",
+  talukIdCommunication: "",
+  townPanchayatIdCommunication: "",
+  municipalityIdCommunication: "",
+  corporationIdCommunication: "",
+  MLAConstituencyIdCommunication: "",
+  MPConstituancyIdCommunication: "",
+  pincodeCommunication: "",
+};

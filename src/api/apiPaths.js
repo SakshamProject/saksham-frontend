@@ -27,6 +27,8 @@ export const API_PATHS = {
   STATES: "/typemaster/generalmaster/states",
   DISTRICTS: "/typemaster/generalmaster/districts",
 
+  // Divyang details
+
   // Service master
   SERVICES: "/services",
   SERVICES_LIST: "/services/list",

@@ -14,6 +14,7 @@ export const DRIVING_LICENSE_REGEX =
   /^(([A-Z]{2}[0-9]{2})|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/;
 export const RATION_CARD_REGEX = /^([a-zA-Z0-9]){8,12}\s*$/;
 export const AADHAR_CARD_REGEX = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
+export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
 
 // button labels
 export const NEW = "NEW";
@@ -42,6 +43,8 @@ export const CODES = {
   DELETE: "delete",
   YES: "YES",
   NO: "NO",
+  RURAL: "RURAL",
+  URBAN: "URBAN",
 };
 
 // api messages

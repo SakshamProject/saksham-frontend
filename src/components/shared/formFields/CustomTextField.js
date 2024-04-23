@@ -48,7 +48,7 @@ export const CustomTextField = ({
 
   return (
     <TextField
-      id="standard-basic"
+      id={label + name}
       label={label}
       placeholder={placeholder}
       variant={variant ? variant : "outlined"}

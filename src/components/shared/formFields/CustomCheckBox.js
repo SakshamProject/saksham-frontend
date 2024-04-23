@@ -35,7 +35,15 @@ export const CustomCheckBox = ({
         color="primary"
       />
 
-      <FormLabel htmlFor={name} sx={{ color: "#00000090", cursor: "pointer" }}>
+      <FormLabel
+        htmlFor={name}
+        sx={{
+          color: "#00000090",
+          cursor: "pointer",
+          paddingTop: "2px",
+          userSelect: "none",
+        }}
+      >
         {label}
       </FormLabel>
     </Box>
