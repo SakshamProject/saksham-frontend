@@ -11,13 +11,15 @@ import {
   FormActions,
 } from "../../shared";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { getValidValues } from "../../../utils/common";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/idProffUploads";
 import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
+import { multiPartFormData } from "../../../utils/multipartFormData";
+import { dispatchNotifyError } from "../../../utils/dispatch";
+import { getValidValues } from "../../../utils/common";
 
 const IdProffUploads = () => {
   const navigate = useNavigate();
@@ -30,10 +32,14 @@ const IdProffUploads = () => {
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL);
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
-    console.log(payload);
-    // onSubmit(payload);
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);
+    if (Object.keys(getValidValues(values))?.length < 4 && false) {
+      dispatchNotifyError("Atleast Upload any 2 Id Proofs");
+    } else {
+      const payload = multiPartFormData(values);
+      console.log(payload);
+      // onSubmit(payload);
+      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);
+    }
   };
 
   const formik = useFormik({
@@ -95,9 +101,15 @@ const IdProffUploads = () => {
                 value={values?.voterIdPicture}
                 error={errors?.voterIdPicture}
                 touched={touched?.voterIdPicture}
-                onChange={(e) =>
-                  setFieldValue(fields?.voterIdPicture?.name, e.target.files[0])
-                }
+                onChange={(e) => {
+                  setFieldValue(
+                    fields?.voterIdPicture?.name,
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.voterIdPicture?.name, false);
+                  setFieldTouched(fields?.voterId?.name, false);
+                }}
               />
             </Grid>
 
@@ -138,9 +150,15 @@ const IdProffUploads = () => {
                 value={values?.panCardPicture}
                 error={errors?.panCardPicture}
                 touched={touched?.panCardPicture}
-                onChange={(e) =>
-                  setFieldValue(fields?.panCardPicture?.name, e.target.files[0])
-                }
+                onChange={(e) => {
+                  setFieldValue(
+                    fields?.panCardPicture?.name,
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.panCardPicture?.name, false);
+                  setFieldTouched(fields?.panCardNumber?.name, false);
+                }}
               />
             </Grid>
 
@@ -181,12 +199,15 @@ const IdProffUploads = () => {
                 value={values?.drivingLicensePicture}
                 error={errors?.drivingLicensePicture}
                 touched={touched?.drivingLicensePicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.drivingLicensePicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.drivingLicensePicture?.name, false);
+                  setFieldTouched(fields?.drivingLicense?.name, false);
+                }}
               />
             </Grid>
 
@@ -227,12 +248,15 @@ const IdProffUploads = () => {
                 value={values?.rationCardPicture}
                 error={errors?.rationCardPicture}
                 touched={touched?.rationCardPicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.rationCardPicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.rationCardPicture?.name, false);
+                  setFieldTouched(fields?.rationCardNumber?.name, false);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -272,12 +296,15 @@ const IdProffUploads = () => {
                 value={values?.aadharCardPicture}
                 error={errors?.aadharCardPicture}
                 touched={touched?.aadharCardPicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.aadharCardPicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.aadharCardPicture?.name, false);
+                  setFieldTouched(fields?.aadharCardNumber?.name, false);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -316,12 +343,15 @@ const IdProffUploads = () => {
                 value={values?.pensionCardPicture}
                 error={errors?.pensionCardPicture}
                 touched={touched?.pensionCardPicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.pensionCardPicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.pensionCardPicture?.name, false);
+                  setFieldTouched(fields?.pensionCardNumber?.name, false);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -363,12 +393,18 @@ const IdProffUploads = () => {
                 value={values?.medicalInsurancePicture}
                 error={errors?.medicalInsurancePicture}
                 touched={touched?.medicalInsurancePicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.medicalInsurancePicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(
+                      fields?.medicalInsurancePicture?.name,
+                      false
+                    );
+                  setFieldTouched(fields?.medicalInsuranceNumber?.name, false);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -410,12 +446,18 @@ const IdProffUploads = () => {
                 value={values?.disabilitySchemePicture}
                 error={errors?.disabilitySchemePicture}
                 touched={touched?.disabilitySchemePicture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.disabilitySchemePicture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(
+                      fields?.disabilitySchemePicture?.name,
+                      false
+                    );
+                  setFieldTouched(fields?.disabilitySchemeNumber?.name, false);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -454,12 +496,15 @@ const IdProffUploads = () => {
                 value={values?.BPL_OR_APL_Picture}
                 error={errors?.BPL_OR_APL_Picture}
                 touched={touched?.BPL_OR_APL_Picture}
-                onChange={(e) =>
+                onChange={(e) => {
                   setFieldValue(
                     fields?.BPL_OR_APL_Picture?.name,
-                    e.target.files[0]
-                  )
-                }
+                    e?.target?.files[0] || ""
+                  );
+                  if (e?.target?.files[0])
+                    setFieldTouched(fields?.BPL_OR_APL_Picture?.name, false);
+                  setFieldTouched(fields?.BPL_OR_APL_Number?.name, false);
+                }}
               />
             </Grid>
 
@@ -470,7 +515,7 @@ const IdProffUploads = () => {
               disableSubmit={isViewMode}
               handleSkip={handleSkip}
               skipLabel={"Prev"}
-              submitLabel={"Save & Next"}
+              submitLabel={"Save\xa0&\xa0Next"}
             />
           </Grid>
         </StyledFormContainer>

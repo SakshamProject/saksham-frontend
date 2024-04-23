@@ -866,7 +866,7 @@ const Address = () => {
               disableSubmit={isViewMode}
               handleSkip={handleSkip}
               skipLabel={"Prev"}
-              submitLabel={"Save & Next"}
+              submitLabel={"Save\xa0&\xa0Next"}
             />
           </Grid>
         </StyledFormContainer>

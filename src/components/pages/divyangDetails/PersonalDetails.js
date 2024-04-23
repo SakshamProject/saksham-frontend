@@ -488,7 +488,7 @@ const PersonalDetails = () => {
             handleOnReset={handleOnReset}
             isUpdate={!!editId}
             disableSubmit={isViewMode}
-            submitLabel={"Save & Next"}
+            submitLabel={"Save\xa0&\xa0Next"}
           />
         </Grid>
       </StyledFormContainer>

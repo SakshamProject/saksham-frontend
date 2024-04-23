@@ -11,7 +11,13 @@ export const validationSchema = object({
   voterId: string()
     .trim()
     .matches(VOTERID_REGEX, "Enter Valid Voter ID")
-    .min(10, "Voter ID should be 10 characters"),
+    .min(10, "Voter ID should be 10 characters")
+    .test(
+      "voterId",
+      "Voter Id is required",
+      (value, context) => !(context.parent?.voterIdPicture && !value)
+    )
+    .nullable(),
   voterIdPicture: string()
     .test(
       "voterIdPicture",
@@ -22,7 +28,13 @@ export const validationSchema = object({
   panCardNumber: string()
     .trim()
     .matches(PAN_REGEX, "Enter Valid Pan Card Number")
-    .min(10, "Pan Card Number should be 10 characters"),
+    .min(10, "Pan Card Number should be 10 characters")
+    .test(
+      "panCardNumber",
+      "Pan is required",
+      (value, context) => !(context.parent?.panCardPicture && !value)
+    )
+    .nullable(),
   panCardPicture: string()
     .test(
       "panCardPicture",
@@ -33,7 +45,13 @@ export const validationSchema = object({
   drivingLicense: string()
     .trim()
     .matches(DRIVING_LICENSE_REGEX, "Enter Valid Driving License Number")
-    .min(15, "Driving License Number should be 15 characters"),
+    .min(15, "Driving License Number should be 15 characters")
+    .test(
+      "drivingLicense",
+      "Driving Lisence is required",
+      (value, context) => !(context.parent?.drivingLicensePicture && !value)
+    )
+    .nullable(),
   drivingLicensePicture: string()
     .test(
       "drivingLicensePicture",
@@ -44,7 +62,13 @@ export const validationSchema = object({
   rationCardNumber: string()
     .trim()
     .matches(RATION_CARD_REGEX, "Enter Valid Ration Card Number")
-    .min(8, "Ration Card Number should be 8 characters"),
+    .min(8, "Ration Card Number should be 8 characters")
+    .test(
+      "rationCardNumber",
+      "Ration Card is required",
+      (value, context) => !(context.parent?.rationCardPicture && !value)
+    )
+    .nullable(),
   rationCardPicture: string()
     .test(
       "rationCardPicture",
@@ -55,7 +79,13 @@ export const validationSchema = object({
   aadharCardNumber: string()
     .trim()
     .matches(AADHAR_CARD_REGEX, "Enter Valid Aadhar Card Number")
-    .min(12, "Aadhar Card Number should be 8 characters"),
+    .min(12, "Aadhar Card Number should be 8 characters")
+    .test(
+      "aadharCardNumber",
+      "Aadhar Card is required",
+      (value, context) => !(context.parent?.aadharCardPicture && !value)
+    )
+    .nullable(),
   aadharCardPicture: string()
     .test(
       "aadharCardPicture",
@@ -63,7 +93,15 @@ export const validationSchema = object({
       (value, context) => !(context.parent?.aadharCardNumber && !value)
     )
     .nullable(),
-  pensionCardNumber: string().trim().min(6, "Enter Valid Pension Card Number"),
+  pensionCardNumber: string()
+    .trim()
+    .min(6, "Enter Valid Pension Card Number")
+    .test(
+      "pensionCardNumber",
+      "Pension Card is required",
+      (value, context) => !(context.parent?.pensionCardPicture && !value)
+    )
+    .nullable(),
   pensionCardPicture: string()
     .test(
       "pensionCardPicture",
@@ -73,7 +111,13 @@ export const validationSchema = object({
     .nullable(),
   medicalInsuranceNumber: string()
     .trim()
-    .min(6, "Enter Valid Medical Insurance Number"),
+    .min(6, "Enter Valid Medical Insurance Number")
+    .test(
+      "medicalInsuranceNumber",
+      "Medical Insurance is required",
+      (value, context) => !(context.parent?.medicalInsurancePicture && !value)
+    )
+    .nullable(),
   medicalInsurancePicture: string()
     .test(
       "medicalInsurancePicture",
@@ -83,7 +127,13 @@ export const validationSchema = object({
     .nullable(),
   disabilitySchemeNumber: string()
     .trim()
-    .min(6, "Enter Valid Disability Scheme Number"),
+    .min(6, "Enter Valid Disability Scheme Number")
+    .test(
+      "disabilitySchemeNumber",
+      "Disability Scheme is required",
+      (value, context) => !(context.parent?.disabilitySchemePicture && !value)
+    )
+    .nullable(),
   disabilitySchemePicture: string()
     .test(
       "disabilitySchemePicture",
@@ -91,7 +141,15 @@ export const validationSchema = object({
       (value, context) => !(context.parent?.disabilitySchemeNumber && !value)
     )
     .nullable(),
-  BPL_OR_APL_Number: string().trim().min(6, "Enter Valid BPL or APL Number"),
+  BPL_OR_APL_Number: string()
+    .trim()
+    .min(6, "Enter Valid BPL or APL Number")
+    .test(
+      "BPL_OR_APL_Number",
+      "BPL or APL is required",
+      (value, context) => !(context.parent?.BPL_OR_APL_Picture && !value)
+    )
+    .nullable(),
   BPL_OR_APL_Picture: string()
     .test(
       "BPL_OR_APL_Picture",
