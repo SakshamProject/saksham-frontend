@@ -23,6 +23,8 @@ export const CommonList = ({
   isGetApi = false,
   manualSort = false,
   rawDataAccessor = "",
+  additionalFilters = {},
+  disablePayload = false,
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -38,13 +40,19 @@ export const CommonList = ({
   const { pageSize, currentPage } = tableReRenderActions();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["commonList" + API_PATHS?.[apiPath], { ...listParams }],
+    queryKey: [
+      "commonList" + API_PATHS?.[apiPath],
+      listParams,
+      additionalFilters,
+    ],
     queryFn: () => {
       const path = customApiPath || API_PATHS?.[apiPath];
       return isGetApi
         ? getApiService(path)
-        : // : postApiService(path, { ...listParams });
-          postApiService(path);
+        : postApiService(path, {
+            ...(!disablePayload ? listParams : {}),
+            ...additionalFilters,
+          });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,

@@ -6,6 +6,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import propTypes from "prop-types";
 
 export const CustomSelectField = ({
   label,
@@ -22,22 +23,21 @@ export const CustomSelectField = ({
   isViewMode,
   disabled,
   touched,
-  errors,
+  error,
   customHelperText,
   accessor,
   getOptionLabel,
-  autoComplete = "off",
+  autoComplete,
 }) => {
   return (
     <Box style={style}>
       <FormControl
         fullWidth
-        error={Boolean(customHelperText || (touched && errors))}
+        error={Boolean(customHelperText || (touched && error))}
       >
         <InputLabel id="demo-simple-select-error-label">{label}</InputLabel>
         <Select
           labelId="demo-simple-select-error-label"
-          id="demo-simple-select"
           value={value && inputValues?.length ? value : ""}
           label={label}
           onChange={onChange}
@@ -47,7 +47,7 @@ export const CustomSelectField = ({
           onOpen={onOpen}
           name={name}
           onBlur={onBlur}
-          error={Boolean(customHelperText || (touched && errors))}
+          error={Boolean(customHelperText || (touched && error))}
           className={className}
           style={fieldStyle}
           inputProps={{
@@ -57,8 +57,11 @@ export const CustomSelectField = ({
         >
           {inputValues?.map((option, index) => {
             return (
-              <MenuItem key={index} value={option?.id || option?.value}>
-                {(getOptionLabel && getOptionLabel(option)) ||
+              <MenuItem
+                key={index + option?.id}
+                value={option?.[accessor] || option?.id || option?.value}
+              >
+                {getOptionLabel(option) ||
                   option?.[accessor] ||
                   option?.name ||
                   option?.label ||
@@ -68,9 +71,31 @@ export const CustomSelectField = ({
           })}
         </Select>
         <FormHelperText error>
-          {customHelperText || (touched && errors) || " "}
+          {customHelperText || (touched && error) || " "}
         </FormHelperText>
       </FormControl>
     </Box>
   );
+};
+
+CustomSelectField.propTypes = {
+  className: propTypes.string,
+  label: propTypes.string,
+  onChange: propTypes.func,
+  onBlur: propTypes.func,
+  value: propTypes.string,
+  inputValues: propTypes.array,
+  variant: propTypes.string,
+  name: propTypes.string,
+  error: propTypes.string,
+  touched: propTypes.bool,
+  getOptionLabel: propTypes.func,
+  accessor: propTypes.string,
+  autoComplete: propTypes.string,
+  isViewMode: propTypes.bool,
+  customHelperText: propTypes.string,
+  onOpen: propTypes.any,
+  disabled: propTypes.bool,
+  fieldStyle: propTypes.object,
+  style: propTypes.object,
 };

@@ -1,9 +1,9 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
+import propTypes from "prop-types";
 
 export const CustomPasswordField = ({
-  id,
   name,
   onChange,
   value,
@@ -16,11 +16,10 @@ export const CustomPasswordField = ({
   showEyeIcon,
   touched,
   onKeyDown,
-  fixedErrors,
   errors,
   customHelperText,
   placeholder,
-  autoComplete = "off",
+  autoComplete ,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -38,10 +37,9 @@ export const CustomPasswordField = ({
 
   return (
     <TextField
-      id={id}
       label={label}
       placeholder={placeholder}
-      variant={variant ? variant : "outlined"}
+      variant={variant || "outlined"}
       type={showPassword ? "text" : "password"}
       name={name}
       fullWidth
@@ -52,9 +50,7 @@ export const CustomPasswordField = ({
       style={style}
       onKeyDown={onKeyDown}
       error={Boolean(customHelperText || (touched && errors))}
-      helperText={
-        customHelperText || (!fixedErrors && touched && errors ? errors : " ")
-      }
+      helperText={customHelperText || (touched && errors) ? errors : " "}
       InputProps={{
         readOnly: isViewMode,
         disabled: disabled,
@@ -75,4 +71,23 @@ export const CustomPasswordField = ({
       }}
     />
   );
+};
+
+CustomPasswordField.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.string,
+  onChange: propTypes.func,
+  variant: propTypes.string,
+  placeholder: propTypes.string,
+  showEyeIcon: propTypes.any,
+  onBlur: propTypes.func,
+  onKeyDown: propTypes.func,
 };

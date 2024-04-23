@@ -1,5 +1,6 @@
 import { Search } from "@mui/icons-material";
 import { IconButton, InputAdornment, TextField } from "@mui/material";
+import propTypes from "prop-types";
 
 export const CustomSearch = ({
   label,
@@ -8,7 +9,7 @@ export const CustomSearch = ({
   name,
   value,
   onChange,
-  autoComplete = "off",
+  autoComplete,
 }) => {
   return (
     <TextField
@@ -20,11 +21,11 @@ export const CustomSearch = ({
           paddingLeft: "5px",
         },
       }}
-      name={name || ""}
-      value={value || ""}
-      autoComplete={autoComplete}
-      onChange={onChange ? onChange : () => {}}
-      placeholder={label || ""}
+      name={name}
+      value={value}
+      autoComplete={autoComplete || "off"}
+      onChange={onChange}
+      placeholder={label}
       InputProps={{
         startAdornment: (
           <InputAdornment position="start">
@@ -36,4 +37,14 @@ export const CustomSearch = ({
       }}
     />
   );
+};
+
+CustomSearch.propTypes = {
+  value: propTypes.object,
+  name: propTypes.string,
+  label: propTypes.string,
+  onChange: propTypes.func,
+  width: propTypes.string,
+  height: propTypes.string,
+  autoComplete: propTypes.string,
 };

@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-
 import {
   deleteApiService,
   getApiService,
@@ -56,7 +55,7 @@ const StateType = () => {
   };
 
   const { mutate: onDelete } = useMutation({
-    mutationKey: ["deleteydrtr", currentForm?.apiPath, currentScreen],
+    mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: ({ data }) => {
       dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
@@ -93,7 +92,7 @@ const StateType = () => {
     onSuccess: () => {
       dispatchNotifyAction(
         currentForm?.validationLabel,
-        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
+        tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       if (tableEditId) handleReset();
       else {
@@ -147,7 +146,7 @@ const StateType = () => {
     queryFn: () =>
       getApiService(
         `${currentForm?.apiPath}${
-          !!searchData ? `?searchText=${searchData}` : ""
+          searchData ? `?searchText=${searchData}` : ""
         }`
       ),
     select: ({ data }) => data,

@@ -59,3 +59,18 @@ export const yesNoSeed = [
     name: "No",
   },
 ];
+
+export const serviceStatus = [
+  {
+    id: "PENDING",
+    name: "Pending",
+  },
+  {
+    id: "COMPLETED",
+    name: "Completed",
+  },
+  // {
+  //   id: "STOPPED",
+  //   name: "Stopped",
+  // },
+];

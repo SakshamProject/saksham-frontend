@@ -9,7 +9,7 @@ import {
 import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import React, { useEffect, useRef, useState } from "react";
-
+import propTypes from "prop-types";
 import { dispatchNotifyError } from "../../../utils/dispatch";
 
 const InputField = styled("input")(() => ({
@@ -48,34 +48,34 @@ export const FileUpload = ({
   error,
   customHelperText,
   disableResetForAllValues,
-  sx,
+  style,
 }) => {
   const [imgUrl, setImgUrl] = useState("");
-  const [fileName, setFileName] = useState((value && value[0]?.name) || "");
+  const [fileName, setFileName] = useState(value ? value[0]?.name : "");
   const myRefname = useRef(null);
   const [key, setKey] = useState(false);
 
-  const handleClick = (e) => myRefname.current.click();
+  const handleClick = () => myRefname.current.click();
 
   const onImageChange = (event) => {
-    if (event?.target?.files?.[0]?.size > 50000000) {
+    if (event?.target?.files[0]?.size > 50000000) {
       return dispatchNotifyError("Size should be less than 10MB");
-    } else if (event.target.files && event.target.files[0]) {
+    } else if (event?.target?.files[0]) {
       let reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = () => {
         if (type === "image" || type === "GIF") {
           setImgUrl(reader.result);
         }
         onChange(event);
         if (!isMultiRec) {
-          setFileName(event.target.files[0].name);
+          setFileName(event?.target?.files[0]?.name);
         }
       };
       if (
         !type ||
-        event.target.files[0].type.includes(type === "gif" ? "image" : type)
+        event?.target?.files[0]?.type.includes(type === "gif" ? "image" : type)
       ) {
-        reader.readAsDataURL(event.target.files[0]);
+        reader.readAsDataURL(event?.target?.files[0]);
       } else {
         dispatchNotifyError("Media type not supported");
       }
@@ -172,9 +172,9 @@ export const FileUpload = ({
           ...errorBorder,
           cursor: disabled ? "auto" : "pointer",
           position: "relative",
-          ...sx,
+          ...style,
         }}
-        onClick={(e) => handleClick(e)}
+        onClick={() => handleClick()}
       >
         {fileName && (
           <Box
@@ -218,8 +218,26 @@ export const FileUpload = ({
       </FileInputHolder>
 
       <FormHelperText error>
-        {customHelperText || (touched ? error : " ")}
+        {customHelperText || (touched && error) || " "}
       </FormHelperText>
     </FormControl>
   );
+};
+
+FileUpload.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  error: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  type: propTypes.string,
+  onChange: propTypes.func,
+  defaultLabel: propTypes.string,
+  setFieldValue: propTypes.func,
+  accept: propTypes.string,
+  isMultiRec: propTypes.bool,
+  disableResetForAllValues: propTypes.bool,
+  style: propTypes.object,
 };

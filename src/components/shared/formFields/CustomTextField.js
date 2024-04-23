@@ -1,10 +1,11 @@
 import { TextField } from "@mui/material";
+import propTypes from "prop-types";
 
 export const CustomTextField = ({
   type,
   name,
   onChange,
-  value = "",
+  value,
   variant,
   onBlur,
   label,
@@ -14,7 +15,7 @@ export const CustomTextField = ({
   maxLength,
   fullWidth,
   fieldType,
-  autoComplete = "off",
+  autoComplete,
   onkeydown,
   placeholder,
   endAdornment,
@@ -24,7 +25,7 @@ export const CustomTextField = ({
 }) => {
   const handleKeyPress = (e) => {
     if (fieldType === "mobile" && e.keyCode !== 13) {
-      return !/[0-9]/.test(e.key) && e.preventDefault();
+      return !/\d/.test(e.key) && e.preventDefault();
     }
     if (fieldType === "alphaNumeric") {
       return !/[0-9A-Za-z- /:_]/.test(e.key) && e.preventDefault();
@@ -35,20 +36,19 @@ export const CustomTextField = ({
     if (fieldType === "email") {
       return / /g.test(e.key) && e.preventDefault();
     }
-    if (type === "number" && e.keyCode !== 13) {
-      return !/[0-9]/.test(e.key) && e.keyCode !== 16 && e.preventDefault();
-    }
     if (fieldType === "decimal") {
       return !/[0-9.]/.test(e.key) && e.preventDefault();
+    }
+    if (type === "number" && e.keyCode !== 13) {
+      return !/\d/.test(e.key) && e.keyCode !== 16 && e.preventDefault();
     }
   };
 
   return (
     <TextField
-      id="standard-basic"
       label={label}
       placeholder={placeholder}
-      variant={variant ? variant : "outlined"}
+      variant={variant || "outlined"}
       type={"text"}
       name={name}
       fullWidth={fullWidth || true}
@@ -65,10 +65,10 @@ export const CustomTextField = ({
       InputProps={{
         endAdornment: endAdornment,
         onKeyPress: (e) => handleKeyPress(e),
-        onKeyDown: (e) => onkeydown && onkeydown(e),
+        onKeyDown: (e) => (onkeydown ? onkeydown(e) : () => {}),
         onInput: (e) => {
           const currentValue = e.target.value;
-          e.target.value = !!currentValue
+          e.target.value = currentValue
             ? e.target.value.replace(/\s+/g, " ")
             : "";
         },
@@ -82,4 +82,27 @@ export const CustomTextField = ({
       }}
     />
   );
+};
+
+CustomTextField.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.string,
+  onChange: propTypes.func,
+  variant: propTypes.string,
+  placeholder: propTypes.string,
+  onBlur: propTypes.func,
+  type: propTypes.string,
+  maxLength: propTypes.number,
+  fullWidth: propTypes.bool,
+  fieldType: propTypes.string,
+  onkeydown: propTypes.func,
+  endAdornment: propTypes.any,
 };

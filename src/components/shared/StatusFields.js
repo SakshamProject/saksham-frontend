@@ -65,7 +65,6 @@ function StatusFields({
             value={values?.date}
             onChange={setFieldValue}
             isViewMode={isViewMode}
-            fullWidth
             minDate={new Date()}
             errors={errors?.date}
             onBlur={handleBlur}

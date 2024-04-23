@@ -1,6 +1,7 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import propTypes from "prop-types";
 
 export const CustomTimePicker = ({
   label,
@@ -18,7 +19,7 @@ export const CustomTimePicker = ({
   customHelperText,
   setTouched,
   views,
-  autoComplete = "off",
+  autoComplete,
 }) => {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -53,4 +54,23 @@ export const CustomTimePicker = ({
       />
     </LocalizationProvider>
   );
+};
+
+CustomTimePicker.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.string,
+  onChange: propTypes.func,
+  setTouched: propTypes.func,
+  maxTime: propTypes.any,
+  minTime: propTypes.any,
+  className: propTypes.string,
+  views: propTypes.array,
+  onBlur: propTypes.func,
 };

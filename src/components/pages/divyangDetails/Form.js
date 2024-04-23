@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 import { styled, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../shared";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";

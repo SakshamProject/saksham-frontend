@@ -1,8 +1,8 @@
 import React from "react";
 import { useFormik } from "formik";
 import { Grid } from "@mui/material";
-
 import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   AuditLog,
   CustomDatePicker,
@@ -13,7 +13,6 @@ import {
   FormWrapper,
   SingleAutoComplete,
 } from "../../shared";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { formFields } from "../../../constants/serviceMapping/serviceMapping";
 import { CustomTypography, theme } from "../../../styles";
 import DivyangDetail from "../../shared/DivyangDetails";
@@ -103,7 +102,7 @@ const Form = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <DivyangDetail   />
+        <DivyangDetail />
       </Grid>
 
       <Grid item xs={12}>

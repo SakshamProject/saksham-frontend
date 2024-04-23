@@ -88,7 +88,7 @@ export const FormLayout = styled(Box)(() => ({
 
 export const StyledFormContainer = styled(Paper)(({ theme, width }) => {
   return {
-    width: width ?? "60%",
+    width: width || "60%",
     margin: "0px auto 30px",
     padding: "40px",
     height: "fit-content",

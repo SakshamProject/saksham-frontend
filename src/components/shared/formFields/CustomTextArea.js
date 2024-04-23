@@ -1,4 +1,5 @@
 import { TextField } from "@mui/material";
+import propTypes from "prop-types";
 
 export const CustomTextarea = ({
   type,
@@ -15,7 +16,7 @@ export const CustomTextarea = ({
   isViewMode,
   maxLength,
   fullWidth,
-  autoComplete = "off",
+  autoComplete,
   onkeydown,
   customHelperText,
   placeholder,
@@ -29,10 +30,9 @@ export const CustomTextarea = ({
       multiline
       maxRows={maxRows}
       minRows={minRows}
-      id="standard-basic"
       label={label}
       placeholder={placeholder}
-      variant={variant ? variant : "outlined"}
+      variant={variant || "outlined"}
       type={type || "text"}
       name={name}
       className={className}
@@ -46,7 +46,7 @@ export const CustomTextarea = ({
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) ? errors : " "}
       InputProps={{
-        onKeyDown: (e) => onkeydown && onkeydown(e),
+        onKeyDown: (e) => (onkeydown ? onkeydown(e) : () => {}),
         readOnly: isViewMode,
         disabled: disabled,
       }}
@@ -59,4 +59,29 @@ export const CustomTextarea = ({
       }}
     />
   );
+};
+
+CustomTextarea.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.string,
+  onChange: propTypes.func,
+  variant: propTypes.string,
+  placeholder: propTypes.string,
+  onBlur: propTypes.func,
+  type: propTypes.string,
+  maxLength: propTypes.number,
+  fullWidth: propTypes.bool,
+  onkeydown: propTypes.func,
+  endAdornment: propTypes.any,
+  minRows: propTypes.number,
+  maxRows: propTypes.number,
+  className: propTypes.string,
 };

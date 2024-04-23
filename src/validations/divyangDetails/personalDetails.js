@@ -1,4 +1,4 @@
-import { object, string, date } from "yup";
+import { date, object, string } from "yup";
 import {
   CODES,
   EMAIL_REGEX,
@@ -42,18 +42,17 @@ export const validationSchema = object({
   mobileNumber: string()
     .trim()
     .required("Mobile Number is required")
-    .test("isNumeric", "Mobile Number should contain only numbers", (value) => {
-      if (value && !/^\d+$/.test(value)) {
-        return false;
-      }
-      return true;
-    })
+    .test(
+      "isNumeric",
+      "Mobile Number should contain only numbers",
+      (value) => !(value && !/^\d+$/.test(value))
+    )
     .length(10, "Mobile Number should be 10 digits")
-    .test("isZero", (value, context) => {
-      if (!!value && Number(value) === 0)
-        return context.createError({ message: "Invalid mobile number" });
-      return true;
-    }),
+    .test(
+      "isZero",
+      "Invalid mobile number",
+      (value) => !(!!value && Number(value) === 0)
+    ),
   fatherName: string()
     .trim()
     .min(3, "Father Name must be at least 3 characters long")
@@ -82,18 +81,17 @@ export const validationSchema = object({
       "Spouse Number is required",
       (value, context) => !(context.parent?.isMarried !== CODES?.NO && !value)
     )
-    .test("isNumeric", "Spouse Number should contain only numbers", (value) => {
-      if (value && !/^\d+$/.test(value)) {
-        return false;
-      }
-      return true;
-    })
+    .test(
+      "isNumeric",
+      "Spouse Number should contain only numbers",
+      (value) => !(value && !/^\d+$/.test(value))
+    )
     .length(10, "Spouse Number should be 10 digits")
-    .test("isZero", (value, context) => {
-      if (!!value && Number(value) === 0)
-        return context.createError({ message: "Invalid Spouse number" });
-      return true;
-    })
+    .test(
+      "isZero",
+      "Invalid Spouse number",
+      (value) => !(!!value && Number(value) === 0)
+    )
     .max(255, "Spouse Number cannot have more than 255 characters"),
   qualification: string().required("Educational Qualification is required"),
   eductionQualification: string().required(

@@ -1,16 +1,13 @@
 import { Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   StyledButtonContainer,
   SubmitButton,
-} from "../../../styles/buttonStyle";
-import {
   LoginContainer,
   LoginHeading,
   LoginWrapper,
-} from "../../../styles/login";
+} from "../../../styles";
 import { setCookie } from "../../../utils/cookie";
 
 const Login = () => {

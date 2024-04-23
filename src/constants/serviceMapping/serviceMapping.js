@@ -1,28 +1,20 @@
 import { theme } from "../../styles";
+import { serviceStatus } from "../seeds";
 
 export const listInitialValues = {
-  status: "pending",
+  serviceStatus: "",
   districtId: "",
   startDate: "",
   endDate: "",
 };
 
-const serviceStatus = [
-  {
-    id: "pending",
-    name: "Pending",
-  },
-  {
-    id: "completed",
-    name: "Completed",
-  },
-];
-
 export const listFields = {
-  status: {
+  serviceStatus: {
     label: "Service Status",
-    name: "status",
-    labelStyle: { color: theme.palette?.commonColor?.blue },
+    name: "serviceStatus",
+    labelStyle: {
+      color: theme.palette?.commonColor?.blue,
+    },
     inputValues: serviceStatus,
   },
   districtId: {
@@ -40,6 +32,7 @@ export const listFields = {
     label: "End Date",
     name: "endDate",
     size: "small",
+    maxDate: new Date(),
   },
 };
 

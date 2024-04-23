@@ -57,11 +57,11 @@ const useTableCustomHooks = (path) => {
         rows: pageSize,
         start,
       },
-      searchText: searchData ? searchData : "",
       sorting: !!sortData
         ? sortData
         : { orderByColumn: "createdAt", sortOrder: "desc" },
       filters: filterData?.length !== 0 ? filterData : [],
+      ...(searchData ? { searchText: searchData } : {}),
     };
   };
 

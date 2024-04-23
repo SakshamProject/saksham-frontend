@@ -1,18 +1,26 @@
+import propTypes from "prop-types";
 import { Box, Checkbox, FormLabel } from "@mui/material";
 import { theme } from "../../../styles";
 
 export const CustomCheckBox = ({
   name = "",
   label = "",
-  onChange = () => {},
-  checked = false,
+  onChange,
+  checked,
   isViewMode,
   disabled,
-  style = {},
+  style,
   indeterminate,
+  labelStyle,
 }) => {
   return (
-    <Box style={{ display: "flex", alignItems: "center", ...style }}>
+    <Box
+      style={{
+        display: "flex",
+        alignItems: "center",
+        ...style,
+      }}
+    >
       <Checkbox
         id={name}
         name={name}
@@ -32,12 +40,30 @@ export const CustomCheckBox = ({
         disabled={isViewMode || disabled}
         onChange={onChange}
         inputProps={{ "aria-label": "controlled" }}
-        color="primary"
       />
 
-      <FormLabel htmlFor={name} sx={{ color: "#00000090", cursor: "pointer" }}>
+      <FormLabel
+        htmlFor={name}
+        sx={{
+          color: "#00000090",
+          cursor: "pointer",
+          ...labelStyle,
+        }}
+      >
         {label}
       </FormLabel>
     </Box>
   );
+};
+
+CustomCheckBox.propTypes = {
+  label: propTypes.string,
+  onChange: propTypes.func,
+  name: propTypes.string,
+  checked: propTypes.bool,
+  isViewMode: propTypes.bool,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  indeterminate: propTypes.bool,
+  labelStyle: propTypes.object,
 };

@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-
 import {
   getApiService,
   getByIdApiService,
@@ -244,7 +243,6 @@ const Form = () => {
           value={values?.startDate}
           onChange={setFieldValue}
           isViewMode={isViewMode || editId}
-          fullWidth
           minDate={new Date()}
           onBlur={handleBlur}
           setTouched={setFieldTouched}
