@@ -10,6 +10,7 @@ export const CustomCheckBox = ({
   disabled,
   style = {},
   indeterminate,
+  labelStyle,
 }) => {
   return (
     <Box style={{ display: "flex", alignItems: "center", ...style }}>
@@ -42,6 +43,7 @@ export const CustomCheckBox = ({
           cursor: "pointer",
           paddingTop: "2px",
           userSelect: "none",
+          ...labelStyle,
         }}
       >
         {label}
