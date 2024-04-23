@@ -47,7 +47,7 @@ const PersonalDetails = () => {
 
   const formik = useFormik({
     initialValues,
-    // validationSchema,
+    validationSchema,
     onSubmit: handleOnSubmit,
   });
 

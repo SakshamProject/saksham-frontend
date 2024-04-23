@@ -33,6 +33,7 @@ export const validationSchema = object({
   dateOfBirth: date()
     .typeError("Invalid date")
     .min(minMaxAge().max, "Date of birth should be less than 100 years old")
+    .max(new Date(), "Date of birth should be in Past")
     .required("Date of birth is required"),
   mailId: string()
     .trim()
