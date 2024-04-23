@@ -263,7 +263,7 @@ const Form = () => {
           <CustomCheckBox
             name={menu?.id}
             label={menu?.name}
-            style={{ marginLeft: "24px" }}
+            style={{ marginLeft: "18px" }}
             onChange={() => checkItem(menu?.id, fields.featuresId.name)}
             checked={checkExistence(menu?.id)}
             isViewMode={isViewMode}
