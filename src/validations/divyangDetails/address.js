@@ -6,11 +6,20 @@ export const validationSchema = object({
     .trim()
     .max(255, "Door Number cannot have more than 255 characters")
     .required("Door Number is required"),
+  flatNumber: string()
+    .trim()
+    .max(255, "Flat Number cannot have more than 255 characters")
+    .nullable(),
   streetName: string()
     .trim()
     .min(3, "Street Name must be at least 3 characters long")
     .max(255, "Street Name cannot have more than 255 characters")
     .required("Street Name is required"),
+  nagarName: string()
+    .trim()
+    .min(3, "Nagar Name must be at least 3 characters long")
+    .max(255, "Nagar Name cannot have more than 255 characters")
+    .nullable(),
   stateId: string().required("State is required"),
   districtId: string().required("District is required"),
   isRural: string().nullable(),
@@ -73,11 +82,20 @@ export const validationSchema = object({
     .trim()
     .max(255, "Door Number cannot have more than 255 characters")
     .required("Door Number is required"),
+  flatNumberCommunication: string()
+    .trim()
+    .max(255, "Flat Number cannot have more than 255 characters")
+    .nullable(),
   streetNameCommunication: string()
     .trim()
     .min(3, "Street Name must be at least 3 characters long")
     .max(255, "Street Name cannot have more than 255 characters")
     .required("Street Name is required"),
+  nagarNameCommunication: string()
+    .trim()
+    .min(3, "Nagar Name must be at least 3 characters long")
+    .max(255, "Nagar Name cannot have more than 255 characters")
+    .nullable(),
   stateIdCommunication: string().required("State is required"),
   districtIdCommunication: string().required("District is required"),
   isRuralCommunication: string().nullable(),
