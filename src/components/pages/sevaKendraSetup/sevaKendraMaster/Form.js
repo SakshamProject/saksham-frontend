@@ -55,7 +55,6 @@ const Form = () => {
       services: transformServices(values?.servicesBySevaKendra),
       auditLog: getValidValues(auditLog),
       currentStatus: values?.status,
-      effectiveFromDate: "",
     });
     onSubmit(payload);
   };
