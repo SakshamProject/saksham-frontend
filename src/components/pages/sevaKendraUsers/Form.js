@@ -155,7 +155,7 @@ const Form = () => {
           error={errors?.picture}
           touched={touched?.picture}
           onChange={(e) =>
-            setFieldValue(fields?.picture?.name, e.target.files[0])
+            setFieldValue(fields?.picture?.name, e?.target?.files[0])
           }
         />
       </Grid>

@@ -166,6 +166,8 @@ const Form = () => {
           value={values?.stateId}
           onChange={(_, value) => {
             setFieldValue(fields?.stateId?.name, value);
+            setFieldValue(fields?.districtId?.name, "");
+            setFieldTouched(fields?.districtId?.name, false);
           }}
           onBlur={handleBlur}
           errors={errors?.stateId}

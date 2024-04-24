@@ -158,14 +158,13 @@ const PersonalDetails = () => {
               accept={"image/*"}
               setFieldValue={setFieldValue}
               name={fields?.picture?.name}
-              // Blood Group
               label={fields?.picture?.label}
               defaultLabel={fields?.picture?.label}
               value={values?.picture}
               error={errors?.picture}
               touched={touched?.picture}
               onChange={(e) =>
-                setFieldValue(fields?.picture?.name, e.target.files[0])
+                setFieldValue(fields?.picture?.name, e?.target?.files[0])
               }
             />
           </Grid>
@@ -316,6 +315,7 @@ const PersonalDetails = () => {
               }}
             />
           </Grid>
+
           <WithCondition isValid={values?.isMarried === CODES?.YES}>
             <Grid item xs={12} md={6}>
               <CustomTextField

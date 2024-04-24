@@ -11,7 +11,7 @@ export const SingleAutoComplete = ({
   inputValues,
   readOnly,
   name,
-  error,
+  errors,
   touched,
   accessor,
   fullWidth,
@@ -66,8 +66,8 @@ export const SingleAutoComplete = ({
             variant="outlined"
             label={label}
             name={name}
-            error={error && touched}
-            helperText={customHelperText || (touched && error) || " "}
+            error={errors && touched}
+            helperText={customHelperText || (touched && errors) || " "}
             fullWidth
             readOnly={readOnly || isViewMode}
           />
@@ -86,7 +86,7 @@ SingleAutoComplete.propTypes = {
   inputValues: propTypes.array,
   readOnly: propTypes.bool,
   name: propTypes.string,
-  error: propTypes.string,
+  errors: propTypes.string,
   touched: propTypes.bool,
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,

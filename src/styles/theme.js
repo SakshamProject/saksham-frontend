@@ -16,6 +16,7 @@ export const theme = createTheme({
       grey: "#595959",
       red: "#D32F2F",
       orange: "#FF9900",
+      adornment: "#707070",
     },
 
     primary: {
