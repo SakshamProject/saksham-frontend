@@ -118,7 +118,7 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
         name="searchValue"
         value={value}
         onChange={onChange}
-        onKeyPress={onSearchChange}
+        onKeyDown={onSearchChange}
         autoComplete={autoComplete}
         endAdornment={
           <InputAdornment position="end">

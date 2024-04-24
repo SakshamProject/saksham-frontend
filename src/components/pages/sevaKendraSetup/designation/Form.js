@@ -1,8 +1,7 @@
-import { FormControlLabel, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useFormik } from "formik";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
-
 import {
   getApiService,
   getByIdApiService,
@@ -42,14 +41,14 @@ const Form = () => {
   const { mutate } = useMutation({
     mutationKey: ["create and update"],
     mutationFn: (payload) => {
-      return !!editId
+      return editId
         ? updateApiService(API_PATHS.DESIGNATION, editId, payload)
         : postApiService(API_PATHS.DESIGNATION, payload);
     },
     onSuccess: () => {
       dispatchNotifyAction(
         "Designation",
-        !!editId ? CODES?.UPDATE : CODES?.ADDED
+        editId ? CODES?.UPDATE : CODES?.ADDED
       );
       handleOnReset();
     },
@@ -62,7 +61,7 @@ const Form = () => {
       dispatchNotifyError("Minimum one access is required");
       return;
     }
-    const payload = !!editId
+    const payload = editId
       ? {
           ...value,
           features: value?.featuresId,
@@ -139,7 +138,7 @@ const Form = () => {
   });
 
   const checkExistence = (id) => {
-    if (!!editId) {
+    if (editId) {
       return values?.featuresId?.some((item) => item?.id === id);
     }
     return values?.featuresId?.includes(id);
@@ -150,12 +149,12 @@ const Form = () => {
       setFieldValue(
         name,
         values?.featuresId?.filter((item) => {
-          return !!editId ? item?.id !== id : item !== id;
+          return editId ? item?.id !== id : item !== id;
         })
       );
       return;
     }
-    setFieldValue(name, [...values?.featuresId, !!editId ? { id } : id]);
+    setFieldValue(name, [...(values?.featuresId || []), editId ? { id } : id]);
   };
 
   const handleSelectAll = (e) => {
@@ -163,7 +162,7 @@ const Form = () => {
       setFieldValue(
         fields?.featuresId?.name,
         accessMenu?.map((item) => {
-          return !!editId ? { id: item?.id } : item?.id;
+          return editId ? { id: item?.id } : item?.id;
         })
       );
       return;

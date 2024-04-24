@@ -1,6 +1,6 @@
-import { ListItem } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import propTypes from "prop-types";
 
 export const SingleAutoComplete = ({
   className,
@@ -8,12 +8,11 @@ export const SingleAutoComplete = ({
   onChange,
   onBlur,
   value,
-  inputValues = [],
+  inputValues,
   readOnly,
   name,
-  errors,
+  error,
   touched,
-  required,
   accessor,
   fullWidth,
   labelAccessor,
@@ -23,12 +22,12 @@ export const SingleAutoComplete = ({
   disabled,
   customOnchange,
   customHelperText,
-  autoComplete = "off",
-  size = "medium",
+  autoComplete,
+  size,
 }) => {
   return (
     <Autocomplete
-      size={size}
+      size={size || "medium"}
       className={className}
       label={label}
       name={name}
@@ -47,13 +46,12 @@ export const SingleAutoComplete = ({
         "No data Found"
       }
       onChange={
-        customOnchange
-          ? customOnchange
-          : (e, v) =>
-              onChange(
-                name,
-                isReturnObject ? v || { id: "" } : v?.[accessor || "id"] || ""
-              )
+        customOnchange ||
+        ((_, v) =>
+          onChange(
+            name,
+            isReturnObject ? v || { id: "" } : v?.[accessor || "id"] || ""
+          ))
       }
       onBlur={onBlur}
       disabled={Boolean(disabled)}
@@ -68,14 +66,39 @@ export const SingleAutoComplete = ({
             variant="outlined"
             label={label}
             name={name}
-            error={errors && touched}
-            helperText={customHelperText || (touched && errors) || " "}
+            error={error && touched}
+            helperText={customHelperText || (touched && error) || " "}
             fullWidth
-            required={required}
             readOnly={readOnly || isViewMode}
           />
         );
       }}
     />
   );
+};
+
+SingleAutoComplete.propTypes = {
+  className: propTypes.string,
+  label: propTypes.string,
+  onChange: propTypes.func,
+  onBlur: propTypes.func,
+  value: propTypes.string,
+  inputValues: propTypes.array,
+  readOnly: propTypes.bool,
+  name: propTypes.string,
+  error: propTypes.string,
+  touched: propTypes.bool,
+  getOptionLabel: propTypes.func,
+  accessor: propTypes.string,
+  labelAccessor: propTypes.string,
+  autoComplete: propTypes.string,
+  isViewMode: propTypes.bool,
+  customHelperText: propTypes.string,
+  sx: propTypes.number,
+  limitTags: propTypes.number,
+  isReturnObject: propTypes.any,
+  size: propTypes.string,
+  disabled: propTypes.bool,
+  customOnchange: propTypes.func,
+  fullWidth: propTypes.bool,
 };

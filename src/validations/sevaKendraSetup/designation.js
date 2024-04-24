@@ -6,7 +6,7 @@ export const validationSchema = object({
   sevaKendraId: string().required("Seva kendra name is required"),
   designation: string()
     .trim()
-    .min(3, "Designation must be at least 3 characters long")
     .required("Designation is required")
+    .min(3, "Designation must be at least 3 characters long")
     .max(255, "Designation cannot have more than 255 characters"),
 });

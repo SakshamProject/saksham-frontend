@@ -1,4 +1,17 @@
 import { Grid } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import { useEffect } from "react";
+import { getApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import {
+  listInitialValues as initialValues,
+  listFields,
+} from "../../../constants/serviceMapping/serviceMapping";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { ListingContainer } from "../../../styles";
+import { getValidValues } from "../../../utils/common";
+import { listValidationSchema as validationSchema } from "../../../validations/serviceMapping/serviceMapping";
 import {
   CommonList,
   CustomDatePicker,
@@ -6,21 +19,19 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../shared";
-import { ListingContainer } from "../../../styles";
-import { useFormik } from "formik";
-import { useQuery } from "@tanstack/react-query";
-
-import { API_PATHS } from "../../../api/apiPaths";
-import { getApiService } from "../../../api/api";
-import {
-  listInitialValues as initialValues,
-  listFields,
-} from "../../../constants/serviceMapping/serviceMapping";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
 
 const List = () => {
-  const { values, errors, touched, setFieldValue, handleChange } = useFormik({
+  const {
+    values,
+    errors,
+    touched,
+    setFieldValue,
+    handleChange,
+    setTouched,
+    handleSubmit,
+  } = useFormik({
     initialValues,
+    validationSchema,
   });
 
   const { data: allDistricts } = useQuery({
@@ -29,10 +40,14 @@ const List = () => {
     select: ({ data }) => data?.data,
   });
 
+  useEffect(() => {
+    handleSubmit();
+  }, [handleSubmit, values]);
+
   return (
     <ListingContainer>
       <ListTopbar
-        label={"Service Mapping"}
+        label="Service Mapping"
         listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
         newFormPath={ROUTE_PATHS?.SERVICE_MAPPING_FORM}
         style={{
@@ -42,11 +57,11 @@ const List = () => {
       />
 
       <CustomRadioButton
-        label={listFields?.status?.label}
-        name={listFields?.status?.name}
-        labelStyle={listFields?.status?.labelStyle}
-        value={values?.status}
-        inputValues={listFields?.status?.inputValues}
+        label={listFields?.serviceStatus?.label}
+        name={listFields?.serviceStatus?.name}
+        labelStyle={listFields?.serviceStatus?.labelStyle}
+        inputValues={listFields?.serviceStatus?.inputValues}
+        value={values?.serviceStatus}
         onChange={handleChange}
       />
 
@@ -56,12 +71,12 @@ const List = () => {
             label={listFields?.districtId?.label}
             name={listFields?.districtId?.name}
             size={listFields?.districtId?.size}
+            getOptionLabel={listFields?.districtId?.getOptionLabel}
             value={values?.districtId}
             errors={errors?.districtId}
             touched={touched?.districtId}
-            onChange={setFieldValue}
             inputValues={allDistricts || []}
-            getOptionLabel={listFields?.districtId?.getOptionLabel}
+            onChange={setFieldValue}
           />
         </Grid>
 
@@ -71,10 +86,10 @@ const List = () => {
             label={listFields?.startDate?.label}
             size={listFields?.startDate?.size}
             value={values?.startDate}
-            onChange={setFieldValue}
-            fullWidth
             errors={errors?.startDate}
             touched={touched?.startDate}
+            setTouched={() => setTouched}
+            onChange={setFieldValue}
           />
         </Grid>
 
@@ -83,12 +98,12 @@ const List = () => {
             name={listFields?.endDate?.name}
             label={listFields?.endDate?.label}
             size={listFields?.endDate?.size}
+            maxDate={listFields?.endDate?.maxDate}
             value={values?.endDate}
-            onChange={setFieldValue}
-            fullWidth
             errors={errors?.endDate}
             touched={touched?.endDate}
-            maxDate={new Date()}
+            setTouched={setTouched}
+            onChange={setFieldValue}
           />
         </Grid>
       </Grid>
@@ -97,8 +112,8 @@ const List = () => {
         disableLayout
         disableTopBar
         listPath={"SERVICE_MAPPING_LIST"}
-        formPath={"SERVICE_MAPPING_FORM"}
         apiPath={"SERVICE_MAPPING_LIST"}
+        additionFilters={getValidValues(values)}
       />
     </ListingContainer>
   );

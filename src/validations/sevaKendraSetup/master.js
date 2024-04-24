@@ -16,42 +16,32 @@ export const validationSchema = (editId) =>
       .max(255, "Address cannot have more than 255 characters"),
     landLineNumber: string()
       .trim()
-      .required("LandLine number is required")
+      .required("Landline number is required")
+      .length(10, "Landline number should be 10 digits")
       .test(
         "isNumeric",
-        "LandLine number should contain only numbers",
-        (value) => {
-          if (value && !/^\d+$/.test(value)) {
-            return false;
-          }
-          return true;
-        }
+        "Landline number should contain only numbers",
+        (value) => !(value && !/^\d+$/.test(value))
       )
-      .length(10, "Mobile number should be 10 digits")
-      .test("isZero", (value, context) => {
-        if (!!value && Number(value) === 0)
-          return context.createError({ message: "Invalid mobile number" });
-        return true;
-      }),
+      .test(
+        "isZero",
+        "Invalid landline number",
+        (value) => !(!!value && Number(value) === 0)
+      ),
     mobileNumber: string()
       .trim()
       .required("Mobile number is required")
+      .length(10, "Mobile number should be 10 digits")
       .test(
         "isNumeric",
         "Mobile number should contain only numbers",
-        (value) => {
-          if (value && !/^\d+$/.test(value)) {
-            return false;
-          }
-          return true;
-        }
+        (value) => !(value && !/^\d+$/.test(value))
       )
-      .length(10, "Mobile number should be 10 digits")
-      .test("isZero", (value, context) => {
-        if (!!value && Number(value) === 0)
-          return context.createError({ message: "Invalid mobile number" });
-        return true;
-      }),
+      .test(
+        "isZero",
+        "Invalid mobile number",
+        (value) => !(!!value && Number(value) === 0)
+      ),
     startDate: date()
       .typeError("Invalid date")
       .required("Seva Kendra Start Date is required"),
@@ -69,44 +59,36 @@ export const validationSchema = (editId) =>
       phoneNumber1: string()
         .trim()
         .required("Primary Number is required")
+        .length(10, "Primary Number should be 10 digits")
         .test(
           "isNumeric",
           "Primary Number should contain only numbers",
-          (value) => {
-            if (value && !/^\d+$/.test(value)) {
-              return false;
-            }
-            return true;
-          }
+          (value) => !(value && !/^\d+$/.test(value))
         )
-        .length(10, "Primary Number should be 10 digits")
-        .test("isZero", (value, context) => {
-          if (!!value && Number(value) === 0)
-            return context.createError({ message: "Invalid mobile number" });
-          return true;
-        }),
+        .test(
+          "isZero",
+          "Invalid mobile number",
+          (value) => !(!!value && Number(value) === 0)
+        ),
       phoneNumber2: string()
         .trim()
+        .length(10, "Secondary Number should be 10 digits")
         .test(
           "isNumeric",
           "Secondary Number should contain only numbers",
-          (value) => {
-            if (value && !/^\d+$/.test(value)) {
-              return false;
-            }
-            return true;
-          }
+          (value) => !(value && !/^\d+$/.test(value))
         )
-        .length(10, "Secondary Number should be 10 digits")
-        .test("isZero", (value, context) => {
-          if (!!value && Number(value) === 0)
-            return context.createError({ message: "Invalid mobile number" });
-          if (value === context.parent?.phoneNumber1 && !!value)
-            return context.createError({
-              message: "Secondary Number should not same as the Primary Number",
-            });
-          return true;
-        })
+        .test(
+          "isZero",
+          "Invalid mobile number",
+          (value) => !(!!value && Number(value) === 0)
+        )
+        .test(
+          "isSame",
+          "Secondary Number should not same as the Primary Number",
+          (value, context) =>
+            !(value === context.parent?.phoneNumber1 && !!value)
+        )
         .nullable(),
     }),
     servicesBySevaKendra: array()

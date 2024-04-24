@@ -1,4 +1,5 @@
 import { Autocomplete, Chip, TextField } from "@mui/material";
+import propTypes from "prop-types";
 
 export const CustomAutoComplete = ({
   className,
@@ -14,11 +15,11 @@ export const CustomAutoComplete = ({
   getOptionLabel,
   accessor,
   labelAccessor,
-  autoComplete = "off",
+  autoComplete,
   isViewMode,
   customHelperText,
   sx,
-  limitTags = 6,
+  limitTags,
 }) => {
   return (
     <Autocomplete
@@ -26,7 +27,7 @@ export const CustomAutoComplete = ({
       multiple
       className={className}
       onChange={onChange}
-      autoComplete={autoComplete}
+      autoComplete={autoComplete || "off"}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}
@@ -42,13 +43,13 @@ export const CustomAutoComplete = ({
         option?.[accessor || "id"] === value?.[accessor || "id"]
       }
       readOnly={readOnly || isViewMode}
-      limitTags={limitTags}
+      limitTags={limitTags || 6}
       renderTags={(value, getTagProps) =>
         value?.map((option, index) => (
           <Chip
-            key={index}
+            key={index + option?.name}
             variant="outlined"
-            label={option?.name || option?.[labelAccessor]}
+            label={option?.[labelAccessor] || option?.name}
             {...getTagProps({ index })}
           />
         ))
@@ -73,4 +74,25 @@ export const CustomAutoComplete = ({
       }}
     />
   );
+};
+
+CustomAutoComplete.propTypes = {
+  className: propTypes.string,
+  label: propTypes.string,
+  onChange: propTypes.func,
+  onBlur: propTypes.func,
+  value: propTypes.string,
+  inputValues: propTypes.array,
+  readOnly: propTypes.bool,
+  name: propTypes.string,
+  error: propTypes.string,
+  touched: propTypes.bool,
+  getOptionLabel: propTypes.func,
+  accessor: propTypes.string,
+  labelAccessor: propTypes.string,
+  autoComplete: propTypes.string,
+  isViewMode: propTypes.bool,
+  customHelperText: propTypes.string,
+  sx: propTypes.number,
+  limitTags: propTypes.number,
 };

@@ -5,6 +5,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
+import propTypes from "prop-types";
 import { styled } from "@mui/system";
 import { theme } from "../../../styles";
 
@@ -74,7 +75,7 @@ export const CustomRadioButton = ({
                   />
                 }
                 label={option?.name || option?.label}
-                key={key}
+                key={key + option?.name}
                 name={name}
                 disabled={disabled}
               />
@@ -87,4 +88,23 @@ export const CustomRadioButton = ({
       </FormHelperText>
     </FormControl>
   );
+};
+
+CustomRadioButton.propTypes = {
+  value: propTypes.object,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  isViewMode: propTypes.bool,
+  inputValues: propTypes.array,
+  onChange: propTypes.func,
+  labelStyle: propTypes.object,
+  rowBreak: propTypes.bool,
+  defaultValue: propTypes.any,
+  onBlur: propTypes.func,
+  accessor: propTypes.string,
 };

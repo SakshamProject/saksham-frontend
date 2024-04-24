@@ -3,7 +3,6 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useSearchParams } from "react-router-dom";
-
 import {
   deleteApiService,
   getApiService,
@@ -43,7 +42,6 @@ import {
   CustomModal,
 } from "../../../shared";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
-import { tableStyles } from "../../../../constants/typeMasters/stateMaster";
 
 const Form = () => {
   const [params] = useSearchParams();
@@ -61,14 +59,14 @@ const Form = () => {
   const { mutate } = useMutation({
     mutationKey: ["createAndUpdate"],
     mutationFn: ({ apiPath, payload }) => {
-      return !!tableEditId
+      return tableEditId
         ? updateApiService(apiPath, tableEditId, payload)
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
       dispatchNotifyAction(
         values?.typeMaster,
-        !!tableEditId ? CODES?.UPDATE : CODES?.ADDED
+        tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
       handleReset();
       refetch();
@@ -118,7 +116,7 @@ const Form = () => {
     queryFn: () => {
       const apiPath = generalTypeApiPath(values);
       return getApiService(
-        `${apiPath}${!!searchData ? `?searchText=${searchData}` : ""}`
+        `${apiPath}${searchData ? "?searchText=" + searchData : ""}`
       );
     },
     select: ({ data }) => data,
@@ -172,7 +170,7 @@ const Form = () => {
   }, [resetForm, setValues, values?.stateId, values?.typeMaster]);
 
   useEffect(() => {
-    if (!!generalType) setFieldValue("typeMaster", generalType);
+    if (generalType) setFieldValue("typeMaster", generalType);
   }, [generalType, setFieldValue]);
 
   return (
@@ -256,7 +254,7 @@ const Form = () => {
               customOnChange={({ value }) => setFieldValue("chip", value)}
               handleKeyPress={(chips) => setFieldValue("chips", chips)}
               isViewMode={isViewMode}
-              chipAccessor={!!tableEditId ? "name" : ""}
+              chipAccessor={tableEditId ? "name" : ""}
             />
           </Grid>
         </WithCondition>
@@ -266,7 +264,7 @@ const Form = () => {
         handleSubmit={handleSubmit}
         handleOnReset={handleReset}
         resetLabel="Clear"
-        submitLabel={!!tableEditId ? "Update" : "Add"}
+        submitLabel={tableEditId ? "Update" : "Add"}
         isViewMode={isViewMode}
       />
 

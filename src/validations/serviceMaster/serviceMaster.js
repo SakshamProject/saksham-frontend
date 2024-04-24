@@ -6,5 +6,5 @@ export const validationSchema = object({
     .trim()
     .min(3, "Service Name must be at least 3 characters long")
     .required("Service Name is required")
-    .max(255, "Name cannot have more than 255 characters"),
+    .max(255, "Service Name cannot have more than 255 characters"),
 });

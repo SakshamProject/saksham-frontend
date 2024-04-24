@@ -211,7 +211,6 @@ const PersonalDetails = () => {
               value={values?.dateOfBirth}
               onChange={setFieldValue}
               isViewMode={isViewMode}
-              fullWidth
               maxDate={new Date()}
               onBlur={handleBlur}
               setTouched={setFieldTouched}

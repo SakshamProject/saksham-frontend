@@ -2,7 +2,6 @@ import { Typography, styled } from "@mui/material";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import defaultAvatar from "../../assets/avatar.png";
 import companyLogo from "../../assets/logo.png";
 import { ROUTE_PATHS } from "../../routes/routePaths";

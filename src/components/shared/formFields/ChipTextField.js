@@ -1,9 +1,9 @@
 import { Chip, Stack, TextField } from "@mui/material";
-
+import propTypes from "prop-types";
 import { dispatchNotifyError } from "../../../utils/dispatch";
 
 export const ChipTextField = ({
-  customOnChange = () => {},
+  customOnChange,
   value,
   variant,
   touched,
@@ -15,13 +15,13 @@ export const ChipTextField = ({
   disabled,
   style,
   isViewMode,
-  autoComplete = "off",
+  autoComplete,
   fullWidth,
   placeholder,
   chipVariant,
-  chipValue = [],
-  chipAccessor = "",
-  handleKeyPress = () => {},
+  chipValue,
+  chipAccessor,
+  handleKeyPress,
 }) => {
   const handleDelete = (chipToDelete) => () => {
     const currentChips = chipValue?.filter(
@@ -45,7 +45,7 @@ export const ChipTextField = ({
         return;
       }
 
-      const currentChips = !!chipAccessor
+      const currentChips = chipAccessor
         ? [...chipValue, { [chipAccessor]: e.target.value.trim() }]
         : [...chipValue, e.target.value.trim()];
       customOnChange({ event: e, value: "" });
@@ -55,18 +55,21 @@ export const ChipTextField = ({
 
   return (
     <TextField
-      value={value || ""}
-      onChange={(e) => customOnChange({ event: e, value: e.target.value })}
-      onKeyPress={handleInputKeyPress}
-      autoComplete={autoComplete}
+      value={value}
+      onChange={(e) =>
+        customOnChange({
+          event: e,
+          value: e.target.value,
+        })
+      }
+      autoComplete={autoComplete || "off"}
       label={label}
       placeholder={placeholder}
       variant={variant || "outlined"}
       type={"text"}
       name={name}
-      fullWidth={fullWidth || true}
+      fullWidth={fullWidth}
       onBlur={onBlur}
-      style={style}
       sx={{
         ".MuiInputBase-root": {
           display: "flex",
@@ -76,13 +79,15 @@ export const ChipTextField = ({
             padding: "16px 14px",
           },
         },
+        ...style,
       }}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) || " "}
       InputProps={{
         readOnly: Boolean(isViewMode),
-        disabled: disabled,
-        startAdornment: !!chipValue?.length ? (
+        disabled,
+        onKeyPress: (e) => handleInputKeyPress(e),
+        startAdornment: chipValue?.length ? (
           <Stack
             direction="row"
             sx={{
@@ -92,9 +97,9 @@ export const ChipTextField = ({
               paddingTop: 1,
             }}
           >
-            {chipValue?.map((chip, index) => (
+            {chipValue?.map((chip, key) => (
               <Chip
-                key={index}
+                key={key + chip?.name}
                 label={chip?.[chipAccessor] || chip?.name || chip || ""}
                 variant={chipVariant || ""}
                 onDelete={handleDelete(chip)}
@@ -105,4 +110,26 @@ export const ChipTextField = ({
       }}
     />
   );
+};
+
+ChipTextField.propTypes = {
+  customOnChange: propTypes.func,
+  value: propTypes.object,
+  variant: propTypes.string,
+  touched: propTypes.func,
+  errors: propTypes.string,
+  customHelperText: propTypes.string,
+  name: propTypes.string,
+  onBlur: propTypes.func,
+  label: propTypes.string,
+  disabled: propTypes.bool,
+  style: propTypes.object,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.string,
+  fullWidth: propTypes.bool,
+  placeholder: propTypes.string,
+  chipVariant: propTypes.string,
+  chipValue: propTypes.array,
+  chipAccessor: propTypes.string,
+  handleKeyPress: propTypes.func,
 };

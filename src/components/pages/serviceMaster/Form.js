@@ -2,8 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-
+import { useLocation, useSearchParams } from "react-router-dom";
 import {
   deleteApiService,
   getApiService,
@@ -116,8 +115,8 @@ const Form = () => {
   });
 
   useEffect(() => {
-    editId && serviceGetById();
-  }, []);
+    if (editId) serviceGetById();
+  }, [editId, serviceGetById]);
 
   return (
     <FormWrapper title="Service" navigateTo={ROUTE_PATHS.SERVICE_MASTER_LIST}>

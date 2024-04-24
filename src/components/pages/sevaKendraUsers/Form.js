@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-
 import { getApiService, getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
@@ -216,7 +215,6 @@ const Form = () => {
           value={values?.dateOfBirth}
           onChange={setFieldValue}
           isViewMode={isViewMode}
-          fullWidth
           onBlur={handleBlur}
           setTouched={setFieldTouched}
           errors={errors?.dateOfBirth}

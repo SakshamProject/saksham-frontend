@@ -23,7 +23,7 @@ export const fields = {
   voterId: {
     label: "Voter ID No",
     name: "voterId",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   voterIdPicture: {
     label: "Upload Voter ID",
@@ -32,7 +32,7 @@ export const fields = {
   panCardNumber: {
     label: "Pan Card No",
     name: "panCardNumber",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   panCardPicture: {
     label: "Upload Pan Card",
@@ -41,7 +41,7 @@ export const fields = {
   drivingLicense: {
     label: "Driving License No",
     name: "drivingLicense",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   drivingLicensePicture: {
     label: "Upload Driving License",
@@ -50,7 +50,7 @@ export const fields = {
   rationCardNumber: {
     label: "Ration Card No",
     name: "rationCardNumber",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   rationCardPicture: {
     label: "Upload Ration Card",
@@ -77,7 +77,7 @@ export const fields = {
   medicalInsuranceNumber: {
     label: "Medical Insurance Card No",
     name: "medicalInsuranceNumber",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   medicalInsurancePicture: {
     label: "Upload Medical Insurance Card",
@@ -86,7 +86,7 @@ export const fields = {
   disabilitySchemeNumber: {
     label: "Disability Scheme Card No",
     name: "disabilitySchemeNumber",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   disabilitySchemePicture: {
     label: "Upload Disability Scheme Card",
@@ -95,7 +95,7 @@ export const fields = {
   BPL_OR_APL_Number: {
     label: "BPL/APL Card No",
     name: "BPL_OR_APL_Number",
-    type: "noSpace",
+    type: "alphaNumeric",
   },
   BPL_OR_APL_Picture: {
     label: "Upload BPL/APL Card",

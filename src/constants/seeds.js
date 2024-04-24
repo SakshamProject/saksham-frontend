@@ -60,6 +60,21 @@ export const yesNoSeed = [
   },
 ];
 
+export const serviceStatus = [
+  {
+    id: "PENDING",
+    name: "Pending",
+  },
+  {
+    id: "COMPLETED",
+    name: "Completed",
+  },
+  // {
+  //   id: "STOPPED",
+  //   name: "Stopped",
+  // },
+];
+
 export const locationSeed = [
   {
     id: "RURAL",

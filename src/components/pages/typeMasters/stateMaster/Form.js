@@ -1,7 +1,6 @@
 import { styled } from "@mui/material";
 import { Suspense } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-
 import { STEPS } from "../../../../constants/typeMasters/stateMaster";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../../shared";
 

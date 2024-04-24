@@ -1,6 +1,7 @@
 import styled from "@emotion/styled";
 import { Grid, Typography } from "@mui/material";
 import React from "react";
+import propTypes from "prop-types";
 import { formatDate } from "../../utils/common";
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -33,7 +34,7 @@ export const AuditLog = ({
   updatedAt,
   createdByName,
   updatedByName,
-  sx,
+  style,
   hide,
 }) => {
   if (hide) return null;
@@ -43,7 +44,7 @@ export const AuditLog = ({
       container
       rowSpacing={2}
       columnSpacing={3}
-      sx={{ padding: "10px 5px 0px 20px", ...sx }}
+      sx={{ padding: "10px 5px 0px 20px", ...style }}
     >
       <Grid item xs={12}>
         <Title>AUDIT LOG</Title>
@@ -80,4 +81,13 @@ export const AuditLog = ({
       </Grid>
     </Grid>
   );
+};
+
+AuditLog.propTypes = {
+  createdAt: propTypes.any,
+  updatedAt: propTypes.any,
+  createdByName: propTypes.string,
+  updatedByName: propTypes.string,
+  style: propTypes.string,
+  hide: propTypes.bool,
 };

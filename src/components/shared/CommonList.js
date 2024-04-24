@@ -23,6 +23,7 @@ export const CommonList = ({
   isGetApi = false,
   manualSort = false,
   rawDataAccessor = "",
+  additionalFilters = {},
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -38,12 +39,16 @@ export const CommonList = ({
   const { pageSize, currentPage } = tableReRenderActions();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["commonList" + API_PATHS?.[apiPath], { ...listParams }],
+    queryKey: [
+      "commonList" + API_PATHS?.[apiPath],
+      listParams,
+      additionalFilters,
+    ],
     queryFn: () => {
       const path = customApiPath || API_PATHS?.[apiPath];
       return isGetApi
         ? getApiService(path)
-        : postApiService(path, { ...listParams });
+        : postApiService(path, { ...listParams, ...additionalFilters });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,
@@ -56,7 +61,7 @@ export const CommonList = ({
           label={label}
           newFormPath={ROUTE_PATHS?.[formPath]}
           listPath={ROUTE_PATHS?.[listPath]}
-          filterFields={filterFields}
+          filterFields={filterFields || []}
           filterFieldInitial={filterInitialValues}
           disableSearchField={disableSearchField}
           disableFilter={disableFilters}
@@ -64,7 +69,7 @@ export const CommonList = ({
       </WithCondition>
 
       <CustomReactTable
-        columnData={columns}
+        columnData={columns || []}
         rawData={data?.[rawDataAccessor] || data?.data || []}
         isLoading={isLoading}
         onPageNumberChange={onPageNumberChange}
