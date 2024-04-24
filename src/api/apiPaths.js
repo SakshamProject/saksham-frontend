@@ -8,6 +8,9 @@ export const API_PATHS = {
   FEATURES: "/designation/features",
   DESIGNATION_LIST: "/designation/list",
 
+  // Seva kendra users
+  SEVAKENDRA_USERS_LIST: "/users/list",
+
   // State master
   STATE_MASTER: "/typemaster/statemaster",
   TALUK: "/taluks",
