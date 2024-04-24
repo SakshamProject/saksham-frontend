@@ -57,11 +57,9 @@ const useTableCustomHooks = (path) => {
         rows: pageSize,
         start,
       },
-      sorting: !!sortData
-        ? sortData
-        : { orderByColumn: "createdAt", sortOrder: "desc" },
+      sorting: sortData || { orderByColumn: "createdAt", sortOrder: "desc" },
       filters: filterData?.length !== 0 ? filterData : [],
-      ...(searchData ? { searchText: searchData } : {}),
+      searchText: searchData || "",
     };
   };
 
