@@ -23,7 +23,7 @@ export const fields = {
     name: "unemployedSince",
   },
   occupation: {
-    label: "Appliant Occupation",
+    label: "Applicant Occupation",
     name: "occupation",
   },
   income: {
