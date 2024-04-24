@@ -53,8 +53,9 @@ export const validationSchema = (editId) =>
         .max(255, "Contact Person Name cannot have more than 255 characters"),
       email: string()
         .trim()
-        .matches(EMAIL_REGEX, "Enter valid email")
-        .max(255, "Email cannot have more than 255 characters"),
+        .matches(EMAIL_REGEX, "Enter Valid Email")
+        .max(255, "Email cannot have more than 255 characters")
+        .nullable(),
       phoneNumber1: string()
         .trim()
         .required("Primary Number is required")

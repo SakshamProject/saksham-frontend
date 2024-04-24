@@ -4,8 +4,8 @@ import user from "../../assets/profile.png";
 import { WithCondition } from "./WithCondition";
 
 const StyledImage = styled("img")({
-  width: 175,
-  height: 200,
+  width: 160,
+  aspectRatio: 1 / 1,
   objectFit: "cover",
 });
 
@@ -40,7 +40,7 @@ const defaultDivyangDetailColumns = [
   },
 ];
 
-const DivyangDetail = ({
+export const DivyangDetail = ({
   divyangDetail,
   disableProfile = false,
   divyangDetailColumns = [],
@@ -70,5 +70,3 @@ const DivyangDetail = ({
     </>
   );
 };
-
-export default DivyangDetail;

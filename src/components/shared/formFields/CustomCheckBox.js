@@ -47,6 +47,8 @@ export const CustomCheckBox = ({
         sx={{
           color: "#00000090",
           cursor: "pointer",
+          paddingTop: "2px",
+          userSelect: "none",
           ...labelStyle,
         }}
       >

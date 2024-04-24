@@ -33,7 +33,7 @@ export const CustomAutoComplete = ({
       disabled={readOnly}
       options={inputValues || []}
       getOptionLabel={(option) =>
-        getOptionLabel(option) ||
+        (getOptionLabel && getOptionLabel(option)) ||
         option?.[labelAccessor] ||
         option?.name ||
         option?.label ||

@@ -61,7 +61,7 @@ export const CustomSelectField = ({
                 key={index + option?.id}
                 value={option?.[accessor] || option?.id || option?.value}
               >
-                {getOptionLabel(option) ||
+                {(getOptionLabel && getOptionLabel(option)) ||
                   option?.[accessor] ||
                   option?.name ||
                   option?.label ||

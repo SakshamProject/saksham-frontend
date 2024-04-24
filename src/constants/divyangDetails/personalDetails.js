@@ -1,3 +1,5 @@
+import { CODES } from "../globalConstants";
+
 export const initialValues = {
   firstName: "",
   lastName: "",
@@ -11,7 +13,7 @@ export const initialValues = {
   mobileNumber: "",
   fatherName: "",
   motherName: "",
-  isMarried: "NO",
+  isMarried: CODES?.NO,
   spouseName: "",
   spouseNumber: "",
   qualification: "",

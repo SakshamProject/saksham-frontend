@@ -12,10 +12,10 @@ import {
   FormActions,
   FormWrapper,
   SingleAutoComplete,
+  DivyangDetail,
 } from "../../shared";
 import { formFields } from "../../../constants/serviceMapping/serviceMapping";
 import { CustomTypography, theme } from "../../../styles";
-import DivyangDetail from "../../shared/DivyangDetails";
 
 const Form = () => {
   const { state } = useLocation();

@@ -74,3 +74,14 @@ export const serviceStatus = [
   //   name: "Stopped",
   // },
 ];
+
+export const locationSeed = [
+  {
+    id: "RURAL",
+    name: "Rural",
+  },
+  {
+    id: "URBAN",
+    name: "Urban",
+  },
+];

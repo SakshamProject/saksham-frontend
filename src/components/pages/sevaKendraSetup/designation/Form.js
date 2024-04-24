@@ -253,7 +253,7 @@ const Form = () => {
           onChange={handleSelectAll}
           checked={values?.featuresId?.length === accessMenu?.length}
           isViewMode={isViewMode}
-          labelStyle={{ fontStyle: "italic", fontWeight: 700 }}
+          labelStyle={{ fontStyle: "italic" }}
         />
       </Grid>
 
@@ -262,6 +262,7 @@ const Form = () => {
           <CustomCheckBox
             name={menu?.id}
             label={menu?.name}
+            style={{ marginLeft: "18px" }}
             onChange={() => checkItem(menu?.id, fields.featuresId.name)}
             checked={checkExistence(menu?.id)}
             isViewMode={isViewMode}

@@ -39,7 +39,7 @@ export const SingleAutoComplete = ({
       }
       disablePortal
       getOptionLabel={(option) =>
-        getOptionLabel(option) ||
+        (getOptionLabel && getOptionLabel(option)) ||
         option?.[labelAccessor] ||
         option?.name ||
         option?.label ||

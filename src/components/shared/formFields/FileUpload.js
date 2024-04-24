@@ -144,6 +144,7 @@ export const FileUpload = ({
     }
     setKey(!key);
     setFileName("");
+    onChange();
   };
 
   useEffect(() => {

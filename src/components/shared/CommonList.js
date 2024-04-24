@@ -24,7 +24,6 @@ export const CommonList = ({
   manualSort = false,
   rawDataAccessor = "",
   additionalFilters = {},
-  disablePayload = false,
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -49,10 +48,7 @@ export const CommonList = ({
       const path = customApiPath || API_PATHS?.[apiPath];
       return isGetApi
         ? getApiService(path)
-        : postApiService(path, {
-            ...(!disablePayload ? listParams : {}),
-            ...additionalFilters,
-          });
+        : postApiService(path, { ...listParams, ...additionalFilters });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,
@@ -65,7 +61,7 @@ export const CommonList = ({
           label={label}
           newFormPath={ROUTE_PATHS?.[formPath]}
           listPath={ROUTE_PATHS?.[listPath]}
-          filterFields={filterFields}
+          filterFields={filterFields || []}
           filterFieldInitial={filterInitialValues}
           disableSearchField={disableSearchField}
           disableFilter={disableFilters}
@@ -73,7 +69,7 @@ export const CommonList = ({
       </WithCondition>
 
       <CustomReactTable
-        columnData={columns}
+        columnData={columns || []}
         rawData={data?.[rawDataAccessor] || data?.data || []}
         isLoading={isLoading}
         onPageNumberChange={onPageNumberChange}

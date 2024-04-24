@@ -122,17 +122,18 @@ const StateType = () => {
     setValues,
     handleReset,
     setTouched,
+    setFieldTouched,
   } = formik;
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
     queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });
@@ -168,6 +169,8 @@ const StateType = () => {
               value={values?.stateId}
               onChange={(_, value) => {
                 setFieldValue(fields?.stateId?.name, value);
+                setFieldValue(fields?.districtId?.name, "");
+                setFieldTouched(fields?.districtId?.name, false);
               }}
               onBlur={handleBlur}
               errors={errors?.stateId}

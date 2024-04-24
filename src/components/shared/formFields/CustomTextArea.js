@@ -27,6 +27,7 @@ export const CustomTextarea = ({
 }) => {
   return (
     <TextField
+      id={label + name}
       multiline
       maxRows={maxRows}
       minRows={minRows}
