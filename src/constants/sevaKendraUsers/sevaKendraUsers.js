@@ -101,7 +101,7 @@ export const sevakendraUsersColumn = [
   {
     Header: "User Name",
     accessor: "firstName",
-    filterAccessor: "n",
+    filterAccessor: "name",
     width: 300,
     sticky: "left",
     Cell: ({ row }) => (

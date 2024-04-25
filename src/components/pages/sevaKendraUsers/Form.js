@@ -149,8 +149,6 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  console.log(errors);
-
   return (
     <FormWrapper
       title="Seva Kendra User"
