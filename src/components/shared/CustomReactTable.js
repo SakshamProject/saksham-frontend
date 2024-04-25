@@ -2,7 +2,7 @@ import { useTheme } from "@mui/material";
 import Table from "custom_react_table7";
 import { Fragment } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-
+import propTypes from "prop-types";
 import { ListingContainer } from "../../styles";
 import { parseQueryParams } from "../../utils/queryParams";
 
@@ -10,7 +10,6 @@ export const CustomReactTable = ({
   columnData,
   rawData,
   style,
-  columnSize,
   count,
   pageSize,
   currentPage,
@@ -19,7 +18,7 @@ export const CustomReactTable = ({
   disablePagination,
   disableColumnHiding,
   disableSort,
-  disableRowSelection = true,
+  disableRowSelection,
   selectedRows,
   isLoading,
   maxHeight,
@@ -132,12 +131,11 @@ export const CustomReactTable = ({
   return (
     <Layout>
       <Table
-        columnData={columnData}
-        rawData={rawData}
+        columnData={columnData || []}
+        rawData={rawData || []}
         selectRows={selectedRows}
-        columnSize={columnSize ? columnSize : true}
-        disableColumnHiding={disableColumnHiding ? disableColumnHiding : false}
-        disableRowSelection={disableRowSelection}
+        disableColumnHiding={disableColumnHiding || false}
+        disableRowSelection={disableRowSelection || true}
         pagination={!pagination}
         disablePagination={disablePagination}
         pageSizes={pageSize}
@@ -154,4 +152,25 @@ export const CustomReactTable = ({
       />
     </Layout>
   );
+};
+
+CustomReactTable.propTypes = {
+  columnData: propTypes.array,
+  rawData: propTypes.array,
+  style: propTypes.object,
+  count: propTypes.number,
+  pageSize: propTypes.number,
+  currentPage: propTypes.number,
+  onPageNumberChange: propTypes.func,
+  onChangePageSize: propTypes.func,
+  disablePagination: propTypes.bool,
+  disableColumnHiding: propTypes.bool,
+  disableSort: propTypes.bool,
+  disableRowSelection: propTypes.bool,
+  selectedRows: propTypes.any,
+  isLoading: propTypes.bool,
+  maxHeight: propTypes.string,
+  manualSort: propTypes.bool,
+  pagination: propTypes.bool,
+  disableLayout: propTypes.bool,
 };

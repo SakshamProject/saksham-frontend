@@ -1,7 +1,7 @@
 import { OptionsContainer } from "../styles";
 import { formatDate } from "../utils/common";
 
-// regex
+// Regex
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const LOWER_CASE = /(?=.*?[a-z])/;
 export const UPPER_CASE = /(?=.*?[A-Z])/;

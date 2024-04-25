@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useEffect } from "react";
-
+import propTypes from "prop-types";
 import { CODES, statusColumns } from "../../constants/globalConstants";
 import { CustomReactTable } from "./CustomReactTable";
 import { DividerLine } from "./DividerLine";
@@ -9,7 +9,7 @@ import { CustomRadioButton } from "./formFields/CustomRadioButton";
 import { CustomTextField } from "./formFields/CustomTextField";
 import { WithCondition } from "./WithCondition";
 
-function StatusFields({
+const StatusFields = ({
   handleChange,
   handleBlur,
   values,
@@ -19,12 +19,12 @@ function StatusFields({
   setFieldValue,
   setFieldTouched,
   statusSeeds,
-  rowBreak = true,
-  statusHistory = [],
+  rowBreak,
+  statusHistory,
   disableListLayout,
   hide,
   gap,
-}) {
+}) => {
   useEffect(() => {
     if (hide) return;
 
@@ -54,7 +54,7 @@ function StatusFields({
           isViewMode={isViewMode}
           accessor="id"
           inputValues={statusSeeds}
-          rowBreak={rowBreak}
+          rowBreak={rowBreak || true}
         />
       </Grid>
       <WithCondition isValid={values?.status === CODES.DEACTIVE}>
@@ -100,6 +100,23 @@ function StatusFields({
       </WithCondition>
     </>
   );
-}
+};
 
 export default StatusFields;
+
+StatusFields.propTypes = {
+  handleChange: propTypes.func,
+  handleBlur: propTypes.func,
+  values: propTypes.object,
+  touched: propTypes.object,
+  errors: propTypes.object,
+  isViewMode: propTypes.bool,
+  setFieldValue: propTypes.func,
+  setFieldTouched: propTypes.func,
+  statusSeeds: propTypes.any,
+  rowBreak: propTypes.bool,
+  statusHistory: propTypes.array,
+  disableListLayout: propTypes.bool,
+  hide: propTypes.bool,
+  gap: propTypes.any,
+};

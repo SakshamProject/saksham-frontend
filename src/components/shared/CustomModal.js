@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Modal, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
-
+import propTypes from "prop-types";
 import {
   CancelButton,
   FilterButtonModal,
@@ -64,7 +64,12 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
           >
             {title || DELETE}
           </Typography>
-          <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
+          <CloseIcon
+            onClick={handleClose}
+            style={{
+              cursor: "pointer",
+            }}
+          />
         </FilterTitle>
 
         <FilterFormStyle>
@@ -72,7 +77,9 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
             id="modal-modal-title"
             variant="h6"
             component="h2"
-            sx={{ color: theme?.palette?.commonColor?.black }}
+            sx={{
+              color: theme?.palette?.commonColor?.black,
+            }}
           >
             {content}
           </Typography>
@@ -87,4 +94,12 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
       </FilterContainerStyle>
     </Modal>
   );
+};
+
+CustomModal.propTypes = {
+  open: propTypes.any,
+  setOpen: propTypes.string,
+  title: propTypes.string,
+  handle: propTypes.func,
+  content: propTypes.any,
 };

@@ -1,5 +1,6 @@
 import { Popover as MuiPopover, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
 
 export const Popover = ({
   menuItems,
@@ -7,10 +8,10 @@ export const Popover = ({
   onClose,
   open,
   menuAction,
-  anchorOrigin = { vertical: "top", horizontal: "right" },
-  transformOrigin = { vertical: "top", horizontal: "left" },
-  popoverStyle = {},
-  popoverItemStyle = {},
+  anchorOrigin,
+  transformOrigin,
+  popoverStyle,
+  popoverItemStyle,
 }) => {
   const navigate = useNavigate();
 
@@ -27,10 +28,12 @@ export const Popover = ({
       anchorEl={anchorEl}
       open={open}
       style={popoverStyle}
-      anchorOrigin={anchorOrigin}
-      transformOrigin={transformOrigin}
+      anchorOrigin={anchorOrigin || { vertical: "top", horizontal: "right" }}
+      transformOrigin={
+        transformOrigin || { vertical: "top", horizontal: "left" }
+      }
     >
-      {menuItems.map((item) => (
+      {menuItems?.map((item) => (
         <Typography
           key={item?.name}
           style={popoverItemStyle}
@@ -41,4 +44,16 @@ export const Popover = ({
       ))}
     </MuiPopover>
   );
+};
+
+Popover.propTypes = {
+  menuItems: propTypes.array,
+  anchorEl: propTypes.any,
+  onClose: propTypes.func,
+  open: propTypes.any,
+  menuAction: propTypes.func,
+  anchorOrigin: propTypes.object,
+  transformOrigin: propTypes.object,
+  popoverStyle: propTypes.object,
+  popoverItemStyle: propTypes.object,
 };

@@ -11,10 +11,9 @@ export const SingleAutoComplete = ({
   inputValues,
   readOnly,
   name,
-  error,
+  errors,
   touched,
   accessor,
-  fullWidth,
   labelAccessor,
   isReturnObject,
   isViewMode,
@@ -32,7 +31,7 @@ export const SingleAutoComplete = ({
       label={label}
       name={name}
       readOnly={readOnly || isViewMode}
-      fullWidth={fullWidth || true}
+      fullWidth
       options={inputValues || []}
       value={
         inputValues?.find((item) => item?.[accessor || "id"] === value) || null
@@ -66,8 +65,8 @@ export const SingleAutoComplete = ({
             variant="outlined"
             label={label}
             name={name}
-            error={error && touched}
-            helperText={customHelperText || (touched && error) || " "}
+            error={errors && touched}
+            helperText={customHelperText || (touched && errors) || " "}
             fullWidth
             readOnly={readOnly || isViewMode}
           />
@@ -86,7 +85,7 @@ SingleAutoComplete.propTypes = {
   inputValues: propTypes.array,
   readOnly: propTypes.bool,
   name: propTypes.string,
-  error: propTypes.string,
+  errors: propTypes.string,
   touched: propTypes.bool,
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,
@@ -100,5 +99,4 @@ SingleAutoComplete.propTypes = {
   size: propTypes.string,
   disabled: propTypes.bool,
   customOnchange: propTypes.func,
-  fullWidth: propTypes.bool,
 };

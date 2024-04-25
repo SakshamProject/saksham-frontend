@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import queryString from "query-string";
 import { useEffect, useMemo, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
 
 const Search = styled("div")(({ theme }) => ({
   width: "250px",
@@ -67,7 +68,6 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
   };
 
   const onSearchChange = (e) => {
-    console.log(e);
     if (e?.key === "Enter" || e?.keyCode === 13) {
       navigate(
         {
@@ -137,4 +137,9 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
       />
     </Search>
   );
+};
+
+CustomSearchField.propTypes = {
+  placeholder: propTypes.string,
+  autoComplete: propTypes.string,
 };

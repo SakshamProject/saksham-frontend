@@ -27,6 +27,7 @@ export const listFields = {
     label: "Start Date",
     name: "startDate",
     size: "small",
+    maxDate: new Date(),
   },
   endDate: {
     label: "End Date",
@@ -35,6 +36,8 @@ export const listFields = {
     maxDate: new Date(),
   },
 };
+
+export const listColumns = [];
 
 export const formFields = {
   searchDivyangId: {

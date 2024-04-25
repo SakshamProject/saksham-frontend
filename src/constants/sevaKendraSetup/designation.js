@@ -26,6 +26,7 @@ export const fields = {
   designation: {
     label: "Designation *",
     name: "designation",
+    fieldType: "alphabets",
   },
   featuresId: {
     label: "Access",

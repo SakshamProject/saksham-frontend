@@ -22,7 +22,7 @@ export const DIVYANG_STEPS = [
     value: "disability",
   },
   {
-    label: "Employement Details",
+    label: "Employment Details",
     route: ROUTE_PATHS.DIVYANG_DETAILS_FORM_EMPLOYMENT,
     value: "employment",
   },

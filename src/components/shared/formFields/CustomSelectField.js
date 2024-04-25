@@ -23,7 +23,7 @@ export const CustomSelectField = ({
   isViewMode,
   disabled,
   touched,
-  error,
+  errors,
   customHelperText,
   accessor,
   getOptionLabel,
@@ -33,7 +33,7 @@ export const CustomSelectField = ({
     <Box style={style}>
       <FormControl
         fullWidth
-        error={Boolean(customHelperText || (touched && error))}
+        error={Boolean(customHelperText || (touched && errors))}
       >
         <InputLabel id="demo-simple-select-error-label">{label}</InputLabel>
         <Select
@@ -47,7 +47,7 @@ export const CustomSelectField = ({
           onOpen={onOpen}
           name={name}
           onBlur={onBlur}
-          error={Boolean(customHelperText || (touched && error))}
+          error={Boolean(customHelperText || (touched && errors))}
           className={className}
           style={fieldStyle}
           inputProps={{
@@ -71,7 +71,7 @@ export const CustomSelectField = ({
           })}
         </Select>
         <FormHelperText error>
-          {customHelperText || (touched && error) || " "}
+          {customHelperText || (touched && errors) || " "}
         </FormHelperText>
       </FormControl>
     </Box>
@@ -87,7 +87,7 @@ CustomSelectField.propTypes = {
   inputValues: propTypes.array,
   variant: propTypes.string,
   name: propTypes.string,
-  error: propTypes.string,
+  errors: propTypes.string,
   touched: propTypes.bool,
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,

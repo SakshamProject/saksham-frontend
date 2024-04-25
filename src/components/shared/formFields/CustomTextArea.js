@@ -15,7 +15,6 @@ export const CustomTextarea = ({
   style,
   isViewMode,
   maxLength,
-  fullWidth,
   autoComplete,
   onkeydown,
   customHelperText,
@@ -37,7 +36,7 @@ export const CustomTextarea = ({
       type={type || "text"}
       name={name}
       className={className}
-      fullWidth={fullWidth || true}
+      fullWidth
       autoComplete={autoComplete}
       onChange={onChange}
       onBlur={onBlur}
@@ -79,7 +78,6 @@ CustomTextarea.propTypes = {
   onBlur: propTypes.func,
   type: propTypes.string,
   maxLength: propTypes.number,
-  fullWidth: propTypes.bool,
   onkeydown: propTypes.func,
   endAdornment: propTypes.any,
   minRows: propTypes.number,

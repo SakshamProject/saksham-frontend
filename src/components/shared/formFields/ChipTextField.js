@@ -16,7 +16,6 @@ export const ChipTextField = ({
   style,
   isViewMode,
   autoComplete,
-  fullWidth,
   placeholder,
   chipVariant,
   chipValue,
@@ -68,7 +67,7 @@ export const ChipTextField = ({
       variant={variant || "outlined"}
       type={"text"}
       name={name}
-      fullWidth={fullWidth}
+      fullWidth
       onBlur={onBlur}
       sx={{
         ".MuiInputBase-root": {
@@ -126,7 +125,6 @@ ChipTextField.propTypes = {
   style: propTypes.object,
   isViewMode: propTypes.bool,
   autoComplete: propTypes.string,
-  fullWidth: propTypes.bool,
   placeholder: propTypes.string,
   chipVariant: propTypes.string,
   chipValue: propTypes.array,

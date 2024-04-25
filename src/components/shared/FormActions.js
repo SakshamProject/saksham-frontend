@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import React from "react";
-
+import propTypes from "prop-types";
 import {
   CANCEL,
   SKIP,
@@ -19,11 +19,11 @@ export const FormActions = ({
   handleOnReset,
   disableSubmit,
   handleSubmit,
-  submitLabel = SUBMIT,
-  resetLabel = CANCEL,
+  submitLabel,
+  resetLabel,
   isUpdate,
   handleSkip,
-  skipLabel = SKIP,
+  skipLabel,
   disableSkip,
   submitButtonStyle,
 }) => {
@@ -35,12 +35,12 @@ export const FormActions = ({
         <StyledButtonContainer>
           {!disableCancel && (
             <CancelButton variant="outlined" onClick={handleOnReset}>
-              {resetLabel}
+              {resetLabel || CANCEL}
             </CancelButton>
           )}
           {!disableSkip && handleSkip && (
             <CancelButton variant="outlined" onClick={handleSkip}>
-              {skipLabel}
+              {skipLabel || SKIP}
             </CancelButton>
           )}
           {disableSubmit ? (
@@ -52,11 +52,26 @@ export const FormActions = ({
               onClick={handleSubmit}
               sx={submitButtonStyle}
             >
-              {isUpdate ? UPDATE : submitLabel}
+              {isUpdate ? UPDATE : submitLabel || SUBMIT}
             </SubmitButton>
           )}
         </StyledButtonContainer>
       )}
     </Grid>
   );
+};
+
+FormActions.propTypes = {
+  isViewMode: propTypes.bool,
+  disableCancel: propTypes.bool,
+  handleOnReset: propTypes.func,
+  disableSubmit: propTypes.bool,
+  handleSubmit: propTypes.func,
+  submitLabel: propTypes.string,
+  resetLabel: propTypes.string,
+  isUpdate: propTypes.bool,
+  handleSkip: propTypes.func,
+  skipLabel: propTypes.string,
+  disableSkip: propTypes.bool,
+  submitButtonStyle: propTypes.object,
 };

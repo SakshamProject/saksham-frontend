@@ -40,7 +40,6 @@ const PersonalDetails = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
-    console.log(payload);
     // onSubmit(payload);
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
   };

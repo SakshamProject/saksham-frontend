@@ -45,7 +45,7 @@ export const FileUpload = ({
   isMultiRec,
   accept,
   touched,
-  error,
+  errors,
   customHelperText,
   disableResetForAllValues,
   style,
@@ -98,10 +98,10 @@ export const FileUpload = ({
   }, [value]);
 
   const errorBorder =
-    error && touched ? { border: "1.8px dashed #d32f2f" } : {};
+    errors && touched ? { border: "1.8px dashed #d32f2f" } : {};
 
   const errorText =
-    error && touched ? { color: "#d32f2f" } : { color: "rgba(0, 0, 0, 0.6)" };
+    errors && touched ? { color: "#d32f2f" } : { color: "rgba(0, 0, 0, 0.6)" };
 
   const imageIcon = () => {
     if (type === "image" || type === "GIF") {
@@ -163,7 +163,7 @@ export const FileUpload = ({
         label={label}
         disabled={disabled}
         accept={type === "GIF" ? "image/*" : accept}
-        error={Boolean(customHelperText || (touched && error))}
+        error={Boolean(customHelperText || (touched && errors))}
       />
 
       <FileInputHolder
@@ -219,7 +219,7 @@ export const FileUpload = ({
       </FileInputHolder>
 
       <FormHelperText error>
-        {customHelperText || (touched && error) || " "}
+        {customHelperText || (touched && errors) || " "}
       </FormHelperText>
     </FormControl>
   );
@@ -228,7 +228,7 @@ export const FileUpload = ({
 FileUpload.propTypes = {
   value: propTypes.object,
   touched: propTypes.func,
-  error: propTypes.string,
+  errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,
   label: propTypes.string,

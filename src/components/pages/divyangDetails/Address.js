@@ -3,7 +3,6 @@ import { Grid } from "@mui/material";
 import { useFormik } from "formik";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-
 import {
   CustomCheckBox,
   CustomRadioButton,
@@ -40,7 +39,6 @@ const Address = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
-    console.log(payload);
     // onSubmit(payload);
     // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY);
   };

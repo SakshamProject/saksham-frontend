@@ -42,7 +42,6 @@ const Form = () => {
         date: formatDate({ date: values?.auditLog?.date }),
       }),
     });
-    console.log(payload);
   };
 
   const formik = useFormik({

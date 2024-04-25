@@ -10,7 +10,7 @@ export const CustomAutoComplete = ({
   inputValues,
   readOnly,
   name,
-  error,
+  errors,
   touched,
   getOptionLabel,
   accessor,
@@ -61,8 +61,8 @@ export const CustomAutoComplete = ({
             name={name}
             variant="outlined"
             label={label}
-            error={Boolean(customHelperText || (touched && error))}
-            helperText={customHelperText || (touched && error ? error : " ")}
+            error={Boolean(customHelperText || (touched && errors))}
+            helperText={customHelperText || (touched && errors) || " "}
             fullWidth
             onKeyDown={(e) => {
               if (e?.keyCode === 13) {
@@ -85,7 +85,7 @@ CustomAutoComplete.propTypes = {
   inputValues: propTypes.array,
   readOnly: propTypes.bool,
   name: propTypes.string,
-  error: propTypes.string,
+  errors: propTypes.string,
   touched: propTypes.bool,
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,

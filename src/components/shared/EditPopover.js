@@ -1,8 +1,8 @@
 import { MoreHorizTwoTone } from "@mui/icons-material";
-import { IconButton, Popover as MuiPopper, styled } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { IconButton, Popover as MuiPopper, styled, Typography } from "@mui/material";
 import { useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
 
 const PopoverComponent = styled(MuiPopper)({
   ".MuiPaper-root": {
@@ -83,10 +83,10 @@ export const EditPopover = ({ inputValues, disable }) => {
             ) =>
               !toHide ? (
                 customComp ? (
-                  <Titles key={index}>{customComp}</Titles>
+                  <Titles key={index + label}>{customComp}</Titles>
                 ) : (
                   <Titles
-                    key={index}
+                    key={index + label}
                     onClick={() =>
                       customNavigation
                         ? customNavigation(id)
@@ -106,4 +106,9 @@ export const EditPopover = ({ inputValues, disable }) => {
       )}
     </div>
   );
+};
+
+EditPopover.propTypes = {
+  inputValues: propTypes.array,
+  disable: propTypes.bool,
 };

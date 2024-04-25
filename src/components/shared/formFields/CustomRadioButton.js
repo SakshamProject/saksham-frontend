@@ -55,7 +55,7 @@ export const CustomRadioButton = ({
           name={name}
           onChange={!isViewMode ? onChange : () => {}}
           onBlur={onBlur}
-          error={Boolean(customHelperText || (touched && errors)).toString()}
+          error={customHelperText || (touched && errors)}
           value={value || ""}
           defaultValue={defaultValue}
           row
@@ -91,7 +91,7 @@ export const CustomRadioButton = ({
 };
 
 CustomRadioButton.propTypes = {
-  value: propTypes.object,
+  value: propTypes.string,
   touched: propTypes.func,
   errors: propTypes.string,
   customHelperText: propTypes.string,

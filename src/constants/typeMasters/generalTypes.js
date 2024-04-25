@@ -12,7 +12,6 @@ import {
 
 import { Box } from "@mui/material";
 
-// General Types
 export const GENERAL_TYPES = {
   EDUCATIONAL_QUALIFICATION: "Educational Qualification",
   DISABILITY_TYPE: "Disability Type",

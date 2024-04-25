@@ -71,7 +71,7 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
   const minutes = d.getMinutes().toString().padStart(2, "0");
   const seconds = d.getSeconds().toString().padStart(2, "0");
 
-  if (!(date || time || localDate)) return "";
+  if (!(date || time || localDate)) return null;
 
   switch (format) {
     case "YYYY-MM-DD":
@@ -83,7 +83,7 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
     case "dateTime":
       return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     case "iso":
-      return d.toISOString();
+      return d?.toISOString();
     default:
       return getLocalISOString(d);
   }
