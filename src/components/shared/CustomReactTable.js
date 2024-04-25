@@ -13,6 +13,7 @@ export const CustomReactTable = ({
   count,
   pageSize,
   currentPage,
+  columnSize,
   onPageNumberChange,
   onChangePageSize,
   disablePagination,
@@ -135,6 +136,7 @@ export const CustomReactTable = ({
         rawData={rawData || []}
         selectRows={selectedRows}
         disableColumnHiding={disableColumnHiding || false}
+        columnSize={columnSize || true}
         disableRowSelection={disableRowSelection || true}
         pagination={!pagination}
         disablePagination={disablePagination}
@@ -161,6 +163,7 @@ CustomReactTable.propTypes = {
   count: propTypes.number,
   pageSize: propTypes.number,
   currentPage: propTypes.number,
+  columnSize: propTypes.bool,
   onPageNumberChange: propTypes.func,
   onChangePageSize: propTypes.func,
   disablePagination: propTypes.bool,
