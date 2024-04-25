@@ -131,7 +131,7 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}?status=ACTIVE`
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,

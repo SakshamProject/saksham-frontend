@@ -1,3 +1,4 @@
+import { Refresh } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
@@ -9,7 +10,7 @@ import {
   listFields,
 } from "../../../constants/serviceMapping/serviceMapping";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { ListingContainer } from "../../../styles";
+import { ListingContainer, SubmitButton } from "../../../styles";
 import {
   CustomDatePicker,
   CustomRadioButton,
@@ -35,6 +36,8 @@ const List = () => {
     setFieldValue,
     handleChange,
     setFieldTouched,
+    setValues,
+    setTouched,
   } = useFormik({
     initialValues,
     validationSchema: listValidationSchema,
@@ -70,7 +73,7 @@ const List = () => {
   });
 
   return (
-    <ListingContainer>
+    <ListingContainer sx={{ maxHeight: "100vh" }}>
       <ListTopbar
         label="Service Mapping"
         listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
@@ -144,6 +147,18 @@ const List = () => {
             }}
           />
         </Grid>
+
+        <Grid item>
+          <SubmitButton
+            sx={{ textTransform: "capitalize", height: "40px" }}
+            onClick={() => {
+              setValues({ ...initialValues });
+              setTouched({});
+            }}
+          >
+            Reset <Refresh />
+          </SubmitButton>
+        </Grid>
       </Grid>
 
       <CustomReactTable
@@ -155,6 +170,8 @@ const List = () => {
         pageSize={pageSize}
         currentPage={currentPage}
         count={data?.total}
+        maxHeight={"350px"}
+        disableLayout
       />
     </ListingContainer>
   );

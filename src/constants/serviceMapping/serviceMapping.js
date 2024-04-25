@@ -1,5 +1,7 @@
-import { theme } from "../../styles";
-import { serviceStatus } from "../seeds";
+import { EditPopover } from "../../components/shared";
+import { ROUTE_PATHS } from "../../routes/routePaths";
+import { OptionsContainer, theme } from "../../styles";
+import { serviceStatus, yesNoSeed } from "../seeds";
 
 export const listInitialValues = {
   serviceStatus: "",
@@ -37,76 +39,193 @@ export const listFields = {
   },
 };
 
-export const listColumns = [];
+const a = [
+  {
+    id: "03ef2237-d4e9-45d6-8cc2-d228bc6734d4",
+    createdAt: "2024-04-25T12:41:55.357Z",
+    updatedAt: "2024-04-25T12:41:55.357Z",
+    user: null,
+    dateOfService: "2024-04-24T07:19:01.000Z",
+    isCompleted: "PENDING",
+    service: {
+      id: "2cde6efa-c74b-4560-8ca5-e828b907eb1e",
+      name: "NNNNN",
+    },
+    divyang: {
+      id: "a599be29-d676-4ef9-9113-1a393eee2d02",
+      firstName: "divyang",
+    },
+  },
+];
+
+export const listColumns = [
+  {
+    Header: "Seva Kendra State",
+    // accessor: "name",
+    // filterAccessor: "designations",
+    width: 300,
+    sticky: "left",
+    Cell: ({ row, value }) => (
+      <OptionsContainer>
+        {value}
+        <EditPopover
+          inputValues={[
+            {
+              label: "View details",
+              id: row?.original?.id,
+              path: ROUTE_PATHS.SERVICE_MAPPING_FORM,
+              view: true,
+            },
+            {
+              label: "Update Status",
+              id: row?.original?.id,
+              path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
+            },
+          ]}
+        />
+      </OptionsContainer>
+    ),
+  },
+  {
+    Header: "District",
+    // accessor: "sevaKendra.name",
+    // filterAccessor: "sevaKendraName",
+    width: 300,
+  },
+  {
+    Header: "Seva Kendra",
+    // accessor: "sevaKendra.district.state.name",
+    // filterAccessor: "sevaKendraState",
+    width: 300,
+  },
+  {
+    Header: "Divyang",
+    // accessor: "sevaKendra.district.name",
+    // filterAccessor: "sevaKendraDistrict",
+    width: 300,
+  },
+  {
+    Header: "Service Name",
+    // accessor: "sevaKendra.district.state.name",
+    // filterAccessor: "sevaKendraState",
+    width: 300,
+  },
+  {
+    Header: "Service Date",
+    // accessor: "sevaKendra.district.name",
+    // filterAccessor: "sevaKendraDistrict",
+    width: 200,
+  },
+  {
+    Header: "Service Status",
+    // accessor: "sevaKendra.district.name",
+    // filterAccessor: "sevaKendraDistrict",
+    width: 180,
+  },
+];
 
 export const formFields = {
   searchDivyangId: {
     label: "Search By Divyang ID",
     name: "searchDivyangId",
+    fieldType: "alphaNumeric",
   },
   searchMobileNo: {
     label: "Search By Mobile No",
     name: "searchMobileNo",
+    type: "number",
   },
   searchAadharNo: {
     label: "Search By Aadhar No",
     name: "searchAadharNo",
+    type: "number",
   },
   searchUDIDNo: {
     label: "Search By UDID No",
     name: "searchUDIDNo",
+    fieldType: "alphaNumeric",
   },
   state: {
-    label: "Select seva kendra state",
-    name: "state",
+    label: "Select State *",
+    name: "stateId",
   },
   district: {
-    label: "Select seva kendra district",
-    name: "district",
+    label: "Select District *",
+    name: "districtId",
   },
   sevaKendra: {
-    label: "Select seva kendra",
-    name: "sevaKendra",
+    label: "Select seva kendra *",
+    name: "sevaKendraId",
   },
   assignUser: {
-    label: "Assign user",
-    name: "assignUser",
+    label: "Assign user *",
+    name: "userId",
+    getOptionLabel: (val) => `${val?.firstName} ${val?.lastName}`,
   },
   serviceType: {
-    label: "Select service type",
-    name: "serviceType",
+    label: "Select service type *",
+    name: "serviceTypeId",
   },
   serviceSubtype: {
-    label: "Select service sub type",
-    name: "serviceSubtype",
-  },
-  service: {
-    label: "Select service",
-    name: "service",
+    label: "Select service *",
+    name: "serviceId",
   },
   dateOfService: {
-    label: "Date of service",
+    label: "Date of service *",
     name: "dateOfService",
+    minDate: new Date(),
   },
   completedBefore: {
-    label: "Service to be completed before",
-    name: "completedBefore",
+    label: "Service to be completed before *",
+    name: "dueDate",
+    minDate: new Date(),
   },
   contactPersonName: {
     label: "Contact Person name",
-    name: "contactPersonName",
+    name: "nonSevaKendraFollowUp.name",
+    fieldType: "alphabets",
   },
   mobileNo: {
     label: "Mobile No",
-    name: "mobileNo",
+    name: "nonSevaKendraFollowUp.mobileNumber",
+    fieldType: "mobile",
   },
   emailId: {
     label: "Email",
-    name: "emailId",
+    name: "nonSevaKendraFollowUp.email",
+    fieldType: "email",
   },
   emailStatus: {
     label: "Mail divyang details",
-    name: "emailStatus",
-    inputValues: [],
+    name: "nonSevaKendraFollowUp.sendMail",
+    inputValues: yesNoSeed,
+    labelStyle: { fontWeight: "normal" },
   },
+};
+
+export const initialValues = {
+  searchDivyangId: "",
+  searchMobileNo: "",
+  searchAadharNo: "",
+  searchUDIDNo: "",
+
+  stateId: "",
+  districtId: "",
+  sevaKendraId: "",
+  userId: "",
+
+  serviceTypeId: "",
+  serviceId: "",
+  dateOfService: "",
+  dueDate: "",
+
+  nonSevaKendraFollowUp: {
+    name: "",
+    mobileNumber: "",
+    email: "",
+    sendMail: "NO",
+  },
+
+  divyangId: "",
+  isNonSevaKendraFollowUpRequired: false,
 };
