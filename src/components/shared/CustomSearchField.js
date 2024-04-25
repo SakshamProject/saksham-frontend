@@ -67,7 +67,7 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
   };
 
   const onSearchChange = (e) => {
-    if (e.charCode === 13) {
+    if (e?.keycode === 13 || e?.key === "Enter") {
       navigate(
         {
           pathName: `${pathName}`,

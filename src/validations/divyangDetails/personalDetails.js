@@ -113,6 +113,11 @@ export const validationSchema = object({
       (value, context) => !(context.parent?.communityCategoryId && !value)
     )
     .max(255, "Community cannot have more than 255 characters"),
+  loginUserName: string()
+    .trim()
+    .min(3, "Login User Name must be at least 3 characters long")
+    .max(255, "Login User Name cannot have more than 255 characters")
+    .required("Login User Name is required"),
   password: string()
     .trim()
     .required("Password is required")

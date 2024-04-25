@@ -48,14 +48,20 @@ const Form = () => {
     const payload = multiPartFormData(
       getValidValues({
         ...values,
-        status: values?.auditLog?.status,
+        status: values?.status,
+        currentStatus: values?.status,
+        date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
         dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
         effectiveDate: editId
           ? values?.effectiveDate || ""
           : formatDate({ date: new Date(), format: "iso" }),
         auditLog: getValidValues({
-          ...values?.auditLog,
-          date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
+          status: values?.status,
+          date: formatDate({ date: values?.date, format: "iso" }),
+          description: values?.description,
+          effectiveDate: editId
+            ? values?.effectiveDate || values?.date || ""
+            : formatDate({ date: new Date(), format: "iso" }),
         }),
       })
     );
@@ -111,7 +117,7 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`
+        API_PATHS?.ACTIVE(`${values?.districtId}${API_PATHS?.SEVAKENDRA}`)
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,

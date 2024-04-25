@@ -33,6 +33,8 @@ export const API_PATHS = {
   DISTRICTS: "/typemaster/generalmaster/districts",
 
   // Divyang details
+  DIVYANG_DETAILS: "/divyangDetails",
+  DIVYANG_DETAILS_LIST: "/divyangDetails/list",
 
   // Service master
   SERVICES: "/services",
@@ -41,4 +43,7 @@ export const API_PATHS = {
   // Service Mapping
   SERVICE_MAPPING: "/servicemapping",
   SERVICE_MAPPING_LIST: "/servicemapping/list",
+
+  //active
+  ACTIVE: (path) => `${path}?status=ACTIVE`,
 };
