@@ -13,7 +13,6 @@ export const CustomTextField = ({
   style,
   isViewMode,
   maxLength,
-  fullWidth,
   fieldType,
   autoComplete,
   onkeydown,
@@ -51,7 +50,7 @@ export const CustomTextField = ({
       variant={variant || "outlined"}
       type={"text"}
       name={name}
-      fullWidth={fullWidth || true}
+      fullWidth
       autoComplete={autoComplete}
       onChange={onChange}
       onBlur={onBlur}
@@ -101,7 +100,6 @@ CustomTextField.propTypes = {
   onBlur: propTypes.func,
   type: propTypes.string,
   maxLength: propTypes.number,
-  fullWidth: propTypes.bool,
   fieldType: propTypes.string,
   onkeydown: propTypes.func,
   endAdornment: propTypes.any,

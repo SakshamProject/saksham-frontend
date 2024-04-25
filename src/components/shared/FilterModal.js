@@ -7,7 +7,7 @@ import { useFormik } from "formik";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-
+import propTypes from "prop-types";
 import { CustomSelectField, CustomTextField } from ".";
 import { filterStringSeeds } from "../../constants/seeds.js";
 import {
@@ -38,7 +38,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
   const { filterData } = tableReRenderActions();
 
   const onSubmit = (data) => {
-    let getFilterValues = filterFields.map((item) => ({
+    let getFilterValues = filterFields?.map((item) => ({
       operation: data[item?.queryName],
       field: item?.fieldName,
       value: data?.[item?.fieldName]?.trim(),
@@ -132,7 +132,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                       alignItems: "center",
                       margin: 0,
                     }}
-                    key={index}
+                    key={index + item?.label}
                   >
                     <Grid item xs={3}>
                       <Typography>{item?.label}</Typography>
@@ -178,4 +178,10 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
       </Modal>
     </>
   );
+};
+
+FilterModal.propTypes = {
+  listPath: propTypes.string,
+  filterFields: propTypes.array,
+  filterFieldInitial: propTypes.object,
 };

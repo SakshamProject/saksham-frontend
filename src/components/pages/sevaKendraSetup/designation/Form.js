@@ -227,6 +227,7 @@ const Form = () => {
         <CustomTextField
           label={fields?.designation?.label}
           name={fields?.designation?.name}
+          fieldType={fields?.designation?.fieldType}
           value={values?.designation}
           onChange={handleChange}
           onBlur={handleBlur}

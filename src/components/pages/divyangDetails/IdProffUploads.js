@@ -36,7 +36,6 @@ const IdProffUploads = () => {
       dispatchNotifyError("Atleast Upload any 2 Id Proofs");
     } else {
       const payload = multiPartFormData(values);
-      console.log(payload);
       // onSubmit(payload);
       navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);
     }

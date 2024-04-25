@@ -61,7 +61,7 @@ export const convertToDateObject = (dateString) => {
 };
 
 export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
-  dateOnly && date.setHours(0, 0, 0, 0);
+  dateOnly && date?.setHours(0, 0, 0, 0);
   const dateValue = time ? new Date(getDateTime(time)) : new Date(date);
   const d = localDate ? convertToDateObject(localDate) : dateValue;
   const month = (d?.getMonth() + 1).toString().padStart(2, "0");
@@ -73,7 +73,7 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
   const seconds = d?.getSeconds().toString().padStart(2, "0");
   const ampm = hours24 >= 12 ? "PM" : "AM";
 
-  if (!(date || time || localDate)) return "";
+  if (!(date || time || localDate)) return null;
 
   switch (format) {
     case "YYYY-MM-DD":

@@ -1,5 +1,5 @@
 import { Box, IconButton } from "@mui/material";
-
+import propTypes from "prop-types";
 import { DeleteIcon, EditIcon } from "../../styles/buttonStyle";
 
 export const EditDelete = ({
@@ -23,4 +23,12 @@ export const EditDelete = ({
       )}
     </Box>
   );
+};
+
+EditDelete.propTypes = {
+  onEdit: propTypes.func,
+  onDelete: propTypes.func,
+  disableEdit: propTypes.bool,
+  disableDelete: propTypes.bool,
+  isViewMode: propTypes.bool,
 };

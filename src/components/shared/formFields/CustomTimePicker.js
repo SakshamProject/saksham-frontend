@@ -47,8 +47,8 @@ export const CustomTimePicker = ({
             onBlur: (e) => {
               !touched?.lastDonatedDate && setTouched(name, e.type === "blur");
             },
-            error: !!touched && !!errors,
-            helperText: (!!touched && errors) || " ",
+            error: Boolean(customHelperText || (touched && errors)),
+            helperText: customHelperText || (touched && errors) || " ",
           },
         }}
       />

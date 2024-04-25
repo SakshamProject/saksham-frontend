@@ -1,11 +1,11 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
-
+import propTypes from "prop-types";
 import user from "../../assets/profile.png";
 import { WithCondition } from "./WithCondition";
 
 const StyledImage = styled("img")({
   width: 160,
-  aspectRatio: 1 / 1,
+  aspectRatio: 1,
   objectFit: "cover",
 });
 
@@ -40,11 +40,7 @@ const defaultDivyangDetailColumns = [
   },
 ];
 
-export const DivyangDetail = ({
-  divyangDetail,
-  disableProfile = false,
-  divyangDetailColumns = [],
-}) => {
+export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
   return (
     <>
       <WithCondition isValid={!disableProfile}>
@@ -59,8 +55,11 @@ export const DivyangDetail = ({
 
       <Grid item xs={8}>
         {defaultDivyangDetailColumns?.map((item, key) => (
-          <WithCondition isValid={!!divyangDetail?.[item?.accessor]}>
-            <DetailSection key={key + item?.accessor} sx={{ display: "flex" }}>
+          <WithCondition
+            isValid={!!divyangDetail?.[item?.accessor]}
+            key={key + item?.accessor}
+          >
+            <DetailSection sx={{ display: "flex" }}>
               <Title>{`${item?.Header} : `}</Title>
               <Typography>{divyangDetail?.[item?.accessor]}</Typography>
             </DetailSection>
@@ -69,4 +68,9 @@ export const DivyangDetail = ({
       </Grid>
     </>
   );
+};
+
+DivyangDetail.propTypes = {
+  disableProfile: propTypes.bool,
+  divyangDetail: propTypes.any,
 };

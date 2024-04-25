@@ -22,5 +22,4 @@ export * from "./SideBarNavigation";
 export * from "./StatusFields";
 export * from "./UserNotification";
 export * from "./WithCondition";
-export * from "./WithModal";
 export * from "./formFields/index";

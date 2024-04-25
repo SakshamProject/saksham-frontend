@@ -2,7 +2,6 @@ import { Snackbar, Stack } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import React from "react";
 import { useSelector } from "react-redux";
-
 import { dispatchNotifyUser } from "../../utils/dispatch";
 
 const Alert = React.forwardRef((props, ref) => {
@@ -20,7 +19,7 @@ const Alert = React.forwardRef((props, ref) => {
 });
 
 export const UserNotification = () => {
-  const toastMessageState = useSelector((state) => state.snackBar);
+  const toastMessageState = useSelector((state) => state?.snackBar);
 
   const handleClose = (_, reason) => {
     if (reason === "clickaway") return;

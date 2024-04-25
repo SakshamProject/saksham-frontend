@@ -55,7 +55,7 @@ export const CustomRadioButton = ({
           name={name}
           onChange={!isViewMode ? onChange : () => {}}
           onBlur={onBlur}
-          error={Boolean(customHelperText || (touched && errors)).toString()}
+          error={customHelperText || (touched && errors)}
           value={value || ""}
           defaultValue={defaultValue}
           row

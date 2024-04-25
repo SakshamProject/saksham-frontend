@@ -1,38 +1,49 @@
+import { Refresh } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useEffect } from "react";
-import { getApiService } from "../../../api/api";
+import { getApiService, postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
   listInitialValues as initialValues,
+  listColumns,
   listFields,
 } from "../../../constants/serviceMapping/serviceMapping";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { ListingContainer } from "../../../styles";
-import { getValidValues } from "../../../utils/common";
-import { listValidationSchema as validationSchema } from "../../../validations/serviceMapping/serviceMapping";
+import { ListingContainer, SubmitButton } from "../../../styles";
 import {
-  CommonList,
   CustomDatePicker,
   CustomRadioButton,
+  CustomReactTable,
   ListTopbar,
   SingleAutoComplete,
 } from "../../shared";
+import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
+import { listValidationSchema } from "../../../validations/serviceMapping/serviceMapping";
+import { formatDate } from "../../../utils/common";
 
 const List = () => {
+  const {
+    onPageNumberChange,
+    onChangePageSize,
+    handleTableData,
+    tableReRenderActions,
+  } = useTableCustomHooks(ROUTE_PATHS.SERVICE_MAPPING_LIST);
   const {
     values,
     errors,
     touched,
     setFieldValue,
     handleChange,
+    setFieldTouched,
+    setValues,
     setTouched,
-    handleSubmit,
   } = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: listValidationSchema,
   });
+  const listParams = handleTableData();
+  const { pageSize, currentPage } = tableReRenderActions();
 
   const { data: allDistricts } = useQuery({
     queryKey: ["getAllDistricts"],
@@ -40,12 +51,29 @@ const List = () => {
     select: ({ data }) => data?.data,
   });
 
-  useEffect(() => {
-    handleSubmit();
-  }, [handleSubmit, values]);
+  const { isLoading, data } = useQuery({
+    queryKey: ["services", values, listParams],
+    queryFn: () => {
+      if (
+        (!!values?.startDate && !values?.endDate) ||
+        (!!values?.endDate && !values?.startDate) ||
+        (!!values?.startDate &&
+          !!values?.endDate &&
+          values?.startDate >= values?.endDate)
+      ) {
+        return { data: {} };
+      }
+
+      return postApiService(API_PATHS.SERVICE_MAPPING_LIST, {
+        ...values,
+        ...listParams,
+      });
+    },
+    select: ({ data }) => data,
+  });
 
   return (
-    <ListingContainer>
+    <ListingContainer sx={{ maxHeight: "100vh" }}>
       <ListTopbar
         label="Service Mapping"
         listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
@@ -85,11 +113,18 @@ const List = () => {
             name={listFields?.startDate?.name}
             label={listFields?.startDate?.label}
             size={listFields?.startDate?.size}
+            maxDate={listFields?.startDate?.maxDate}
             value={values?.startDate}
             errors={errors?.startDate}
             touched={touched?.startDate}
-            setTouched={() => setTouched}
-            onChange={setFieldValue}
+            setTouched={setFieldTouched}
+            customOnChange={(val) => {
+              setFieldTouched(listFields?.endDate?.name, true);
+              setFieldValue(
+                listFields?.startDate?.name,
+                formatDate({ date: val?.$d, format: "iso" })
+              );
+            }}
           />
         </Grid>
 
@@ -102,18 +137,41 @@ const List = () => {
             value={values?.endDate}
             errors={errors?.endDate}
             touched={touched?.endDate}
-            setTouched={setTouched}
-            onChange={setFieldValue}
+            setTouched={setFieldTouched}
+            customOnChange={(val) => {
+              setFieldTouched(listFields?.startDate?.name, true);
+              setFieldValue(
+                listFields?.endDate?.name,
+                formatDate({ date: val?.$d, format: "iso" })
+              );
+            }}
           />
+        </Grid>
+
+        <Grid item>
+          <SubmitButton
+            sx={{ textTransform: "capitalize", height: "40px" }}
+            onClick={() => {
+              setValues({ ...initialValues });
+              setTouched({});
+            }}
+          >
+            Reset <Refresh />
+          </SubmitButton>
         </Grid>
       </Grid>
 
-      <CommonList
+      <CustomReactTable
+        columnData={listColumns || []}
+        rawData={data?.data || []}
+        isLoading={isLoading}
+        onPageNumberChange={onPageNumberChange}
+        onChangePageSize={onChangePageSize}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        count={data?.total}
+        maxHeight={"350px"}
         disableLayout
-        disableTopBar
-        listPath={"SERVICE_MAPPING_LIST"}
-        apiPath={"SERVICE_MAPPING_LIST"}
-        additionFilters={getValidValues(values)}
       />
     </ListingContainer>
   );

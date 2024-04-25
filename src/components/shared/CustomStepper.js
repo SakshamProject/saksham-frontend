@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Box, Step, StepLabel, Stepper } from "@mui/material";
 import { useLocation } from "react-router-dom";
-
+import propTypes from "prop-types";
 import { theme } from "../../styles";
 
 const StepperContainer = styled(Box)(({ isHorizontal, theme }) => ({
@@ -126,9 +126,9 @@ export const CustomStepper = ({
         nonLinear={!isLinear}
         isHorizontal={isHorizontal}
       >
-        {steps.map((step, index) => (
+        {steps?.map((step, index) => (
           <Step
-            key={step.label}
+            key={index + step?.label}
             sx={{
               background:
                 step?.route === location?.pathname &&
@@ -141,14 +141,22 @@ export const CustomStepper = ({
           >
             <StyledStepLabel
               isHorizontal={isHorizontal}
-              key={step.label}
+              key={step?.label}
               StepIconComponent={() => ""}
             >
-              {step.label}
+              {step?.label}
             </StyledStepLabel>
           </Step>
         ))}
       </StyledStepper>
     </StepperContainer>
   );
+};
+
+CustomStepper.propTypes = {
+  activeStep: propTypes.any,
+  steps: propTypes.any,
+  onChange: propTypes.func,
+  isLinear: propTypes.bool,
+  isHorizontal: propTypes.bool,
 };

@@ -35,7 +35,7 @@ export const LoginContainer = styled(Box)(({ theme }) => ({
   padding: "3% 4%",
   borderRadius: 8,
   minWidth: "400px",
-  border: `1px solid ${theme.palette?.textColor?.main}`,
+  border: `1px solid ${theme.palette?.commonColor?.black}`,
 }));
 
 export const LoginHeading = styled(Typography)(({ theme }) => ({

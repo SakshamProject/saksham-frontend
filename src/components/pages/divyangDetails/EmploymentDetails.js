@@ -35,7 +35,6 @@ const EmploymentDetails = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
-    console.log(payload);
     // onSubmit(payload);
     // handleOnReset();
   };
@@ -101,7 +100,6 @@ const EmploymentDetails = () => {
                   value={values?.unemployedSince}
                   onChange={setFieldValue}
                   isViewMode={isViewMode}
-                  fullWidth
                   maxDate={new Date()}
                   onBlur={handleBlur}
                   setTouched={setFieldTouched}

@@ -1,7 +1,7 @@
 import { Add, Download } from "@mui/icons-material";
 import { Box, Typography, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import propTypes from "prop-types";
 import { NewButton } from "../../styles";
 import { CustomSearchField, FilterModal, WithCondition } from "./index";
 
@@ -62,7 +62,7 @@ export const ListTopbar = ({
             <CustomSearchField placeholder={placeholder} />
           </WithCondition>
 
-          {!!additionalComponent ? additionalComponent : <></>}
+          {additionalComponent || <></>}
 
           <WithCondition isValid={!disableFilter}>
             <FilterModal
@@ -74,7 +74,7 @@ export const ListTopbar = ({
 
           <WithCondition isValid={!disableNewForm && newFormPath}>
             <NewButton onClick={() => navigate(newFormPath)}>
-              {!!newButtonLabel ? newButtonLabel : <Add />}
+              {newButtonLabel || <Add />}
             </NewButton>
           </WithCondition>
 
@@ -87,4 +87,20 @@ export const ListTopbar = ({
       </ContainerAlign>
     </Container>
   );
+};
+
+ListTopbar.propTypes = {
+  label: propTypes.string,
+  disableSearchField: propTypes.bool,
+  disableFilter: propTypes.bool,
+  disableNewForm: propTypes.bool,
+  newFormPath: propTypes.string,
+  listPath: propTypes.string,
+  additionalComponent: propTypes.any,
+  filterFields: propTypes.array,
+  filterFieldInitial: propTypes.object,
+  newButtonLabel: propTypes.string,
+  onDownload: propTypes.func,
+  style: propTypes.object,
+  placeholder: propTypes.string,
 };

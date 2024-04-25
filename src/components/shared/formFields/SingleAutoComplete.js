@@ -14,7 +14,6 @@ export const SingleAutoComplete = ({
   errors,
   touched,
   accessor,
-  fullWidth,
   labelAccessor,
   isReturnObject,
   isViewMode,
@@ -32,7 +31,7 @@ export const SingleAutoComplete = ({
       label={label}
       name={name}
       readOnly={readOnly || isViewMode}
-      fullWidth={fullWidth || true}
+      fullWidth
       options={inputValues || []}
       value={
         inputValues?.find((item) => item?.[accessor || "id"] === value) || null
@@ -100,5 +99,4 @@ SingleAutoComplete.propTypes = {
   size: propTypes.string,
   disabled: propTypes.bool,
   customOnchange: propTypes.func,
-  fullWidth: propTypes.bool,
 };

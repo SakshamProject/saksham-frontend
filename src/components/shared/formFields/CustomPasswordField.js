@@ -19,7 +19,7 @@ export const CustomPasswordField = ({
   errors,
   customHelperText,
   placeholder,
-  autoComplete ,
+  autoComplete,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -50,7 +50,7 @@ export const CustomPasswordField = ({
       style={style}
       onKeyDown={onKeyDown}
       error={Boolean(customHelperText || (touched && errors))}
-      helperText={customHelperText || (touched && errors) ? errors : " "}
+      helperText={customHelperText || (touched && errors) || " "}
       InputProps={{
         readOnly: isViewMode,
         disabled: disabled,

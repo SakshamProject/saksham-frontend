@@ -1,4 +1,5 @@
 import { styled } from "@mui/material";
+import propTypes from "prop-types";
 
 const EllipsisDiv = styled("div")({
   display: "-webkit-box",
@@ -12,4 +13,9 @@ const EllipsisDiv = styled("div")({
 
 export const CustomCell = ({ value, children }) => {
   return <EllipsisDiv>{children || value || "--"}</EllipsisDiv>;
+};
+
+CustomCell.propTypes = {
+  value: propTypes.string,
+  children: propTypes.any,
 };

@@ -2,7 +2,7 @@
 import { Tab, Tabs, styled } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
+import propTypes from "prop-types";
 import { theme } from "../../styles";
 import { Popover } from "./Popover";
 
@@ -58,7 +58,7 @@ const popoverItemStyle = {
   cursor: "pointer",
 };
 
-export const SideBarNavigation = ({ menuList = [] }) => {
+export const SideBarNavigation = ({ menuList }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [activeMenu, setActiveMenu] = useState(menuList[0]);
   const [value, setValue] = useState(menuList[0]?.value);
@@ -95,7 +95,7 @@ export const SideBarNavigation = ({ menuList = [] }) => {
       value={value || false}
       onChange={handleTab}
     >
-      {menuList.map((menu) => (
+      {menuList?.map((menu) => (
         <CustomTab
           label={menu?.label}
           id={menu?.value}
@@ -116,4 +116,8 @@ export const SideBarNavigation = ({ menuList = [] }) => {
       )}
     </CustomTabs>
   );
+};
+
+SideBarNavigation.propTypes = {
+  menuList: propTypes.array,
 };

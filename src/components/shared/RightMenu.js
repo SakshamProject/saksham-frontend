@@ -1,6 +1,6 @@
 import { Popover as MuiPopper, styled } from "@mui/material";
 import Typography from "@mui/material/Typography";
-
+import propTypes from "prop-types";
 import { RIGHT_SIDE_MENU } from "../../constants/menus";
 
 const PopoverComponent = styled(MuiPopper)({
@@ -27,10 +27,17 @@ export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
       {RIGHT_SIDE_MENU()?.map(({ label, routePath }, key) => (
-        <Titles key={key} onClick={() => redirect(routePath)}>
+        <Titles key={key + label} onClick={() => redirect(routePath)}>
           {label}
         </Titles>
       ))}
     </PopoverComponent>
   );
+};
+
+RightMenu.propTypes = {
+  anchorEl: propTypes.any,
+  redirect: propTypes.func,
+  open: propTypes.any,
+  handleClose: propTypes.func,
 };

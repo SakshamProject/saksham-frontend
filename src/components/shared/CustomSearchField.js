@@ -6,6 +6,7 @@ import { styled } from "@mui/material/styles";
 import queryString from "query-string";
 import { useEffect, useMemo, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
+import propTypes from "prop-types";
 
 const Search = styled("div")(({ theme }) => ({
   width: "250px",
@@ -43,7 +44,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
+export const CustomSearchField = ({ placeholder, autoComplete }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -67,7 +68,7 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
   };
 
   const onSearchChange = (e) => {
-    if (e?.keycode === 13 || e?.key === "Enter") {
+    if (e?.key === "Enter" || e?.keyCode === 13) {
       navigate(
         {
           pathName: `${pathName}`,
@@ -83,7 +84,7 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
   };
 
   const onChange = (e) => {
-    if (e.target.value.trim() === "") {
+    if (e?.target?.value?.trim() === "") {
       navigate(
         {
           pathName: `${pathName}`,
@@ -95,7 +96,7 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
         { state: location.state || null }
       );
     }
-    setValue(e.target.value.replace(/\s+/g, " "));
+    setValue(e?.target?.value.replace(/\s+/g, " "));
   };
 
   useEffect(() => setValue(""), [pathName]);
@@ -136,4 +137,9 @@ export const CustomSearchField = ({ placeholder, autoComplete = "off" }) => {
       />
     </Search>
   );
+};
+
+CustomSearchField.propTypes = {
+  placeholder: propTypes.string,
+  autoComplete: propTypes.string,
 };

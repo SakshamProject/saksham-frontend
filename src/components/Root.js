@@ -7,7 +7,6 @@ import {
 } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
-
 import { SERVER_ERROR } from "../constants/globalConstants.js";
 import { ProtectedRoute } from "../routes/ProtectedRoute.js";
 import { SUPER_ADMIN_ROUTES } from "../routes/index.js";
@@ -71,7 +70,7 @@ const Root = () => {
           <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />
         </Routes>
 
-        {!!snackBar ? <UserNotification /> : <></>}
+        {snackBar ? <UserNotification /> : <></>}
       </ThemeProvider>
     </QueryClientProvider>
   );

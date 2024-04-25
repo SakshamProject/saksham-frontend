@@ -1,16 +1,16 @@
 import { Grid } from "@mui/material";
-
+import propTypes from "prop-types";
 import { FormLayout, StyledFormContainer } from "../../styles";
 import { BackNavigator } from "./BackNavigator";
 
 export const FormWrapper = ({
   children,
-  navigateTo = "",
-  title = "",
+  navigateTo,
+  title,
   rowSpacing,
   columnSpacing,
   disableBackNavigator,
-  formWidth = "70%",
+  formWidth,
   customTitle,
   disableModes,
 }) => {
@@ -26,7 +26,7 @@ export const FormWrapper = ({
       )}
 
       <FormLayout>
-        <StyledFormContainer width={formWidth}>
+        <StyledFormContainer width={formWidth || "70%"}>
           <Grid
             container
             rowSpacing={rowSpacing || 2}
@@ -38,4 +38,16 @@ export const FormWrapper = ({
       </FormLayout>
     </>
   );
+};
+
+FormWrapper.propTypes = {
+  children: propTypes.any,
+  navigateTo: propTypes.string,
+  title: propTypes.string,
+  rowSpacing: propTypes.number,
+  columnSpacing: propTypes.number,
+  disableBackNavigator: propTypes.bool,
+  formWidth: propTypes.string,
+  customTitle: propTypes.string,
+  disableModes: propTypes.bool,
 };

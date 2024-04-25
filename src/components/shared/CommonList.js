@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-
+import propTypes from "prop-types";
 import { getApiService, postApiService } from "../../api/api";
 import { API_PATHS } from "../../api/apiPaths";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks";
@@ -8,22 +8,21 @@ import { getTableSchemas } from "../../utils/tableSchemas";
 import { CustomReactTable, ListTopbar, WithCondition } from "./index";
 
 export const CommonList = ({
-  listPath = "",
-  formPath = "",
-  apiPath = "",
-  columns = [],
-  label = "",
-  customApiPath = "",
-  disableTopBar = false,
-  disableFilters = false,
-  disableSearchField = false,
-  disableLayout = false,
-  disablePagination = false,
-  disableColumnHiding = false,
-  isGetApi = false,
-  manualSort = false,
-  rawDataAccessor = "",
-  additionalFilters = {},
+  listPath,
+  formPath,
+  apiPath,
+  columns,
+  label,
+  customApiPath,
+  disableTopBar,
+  disableFilters,
+  disableSearchField,
+  disableLayout,
+  disablePagination,
+  disableColumnHiding,
+  isGetApi,
+  manualSort,
+  rawDataAccessor,
 }) => {
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
 
@@ -39,16 +38,12 @@ export const CommonList = ({
   const { pageSize, currentPage } = tableReRenderActions();
 
   const { data, isLoading } = useQuery({
-    queryKey: [
-      "commonList" + API_PATHS?.[apiPath],
-      listParams,
-      additionalFilters,
-    ],
+    queryKey: ["commonList" + API_PATHS?.[apiPath], listParams],
     queryFn: () => {
       const path = customApiPath || API_PATHS?.[apiPath];
       return isGetApi
         ? getApiService(path)
-        : postApiService(path, { ...listParams, ...additionalFilters });
+        : postApiService(path, { ...listParams });
     },
     enabled: !!customApiPath || !!API_PATHS?.[apiPath],
     select: ({ data }) => data,
@@ -87,3 +82,21 @@ export const CommonList = ({
 };
 
 export default CommonList;
+
+CommonList.propTypes = {
+  listPath: propTypes.string,
+  formPath: propTypes.string,
+  apiPath: propTypes.string,
+  columns: propTypes.array,
+  label: propTypes.string,
+  customApiPath: propTypes.string,
+  disableTopBar: propTypes.bool,
+  disableFilters: propTypes.bool,
+  disableSearchField: propTypes.bool,
+  disableLayout: propTypes.bool,
+  disablePagination: propTypes.bool,
+  disableColumnHiding: propTypes.bool,
+  isGetApi: propTypes.bool,
+  manualSort: propTypes.bool,
+  rawDataAccessor: propTypes.string,
+};
