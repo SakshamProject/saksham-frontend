@@ -67,9 +67,11 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
   const month = (d?.getMonth() + 1).toString().padStart(2, "0");
   const day = d?.getDate().toString().padStart(2, "0");
   const year = d?.getFullYear().toString();
-  const hours = d?.getHours().toString().padStart(2, "0");
+  const hours24 = d?.getHours();
+  const hours12 = hours24 % 12 || 12;
   const minutes = d?.getMinutes().toString().padStart(2, "0");
   const seconds = d?.getSeconds().toString().padStart(2, "0");
+  const ampm = hours24 >= 12 ? "PM" : "AM";
 
   if (!(date || time || localDate)) return "";
 
@@ -79,9 +81,11 @@ export const formatDate = ({ date, format, time, localDate, dateOnly }) => {
     case "DD-MM-YYYY":
       return `${day}-${month}-${year}`;
     case "HH:MM:SS":
-      return `${hours}:${minutes}:${seconds}`;
+      return `${hours24}:${minutes}:${seconds}`;
+    case "hh:MM AM/PM":
+      return `${hours12?.toString()?.padStart(2, "0")}:${minutes} ${ampm}`;
     case "dateTime":
-      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+      return `${year}-${month}-${day} ${hours24}:${minutes}:${seconds}`;
     case "iso":
       return d?.toISOString();
     default:

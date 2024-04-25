@@ -27,7 +27,7 @@ export const CustomAutoComplete = ({
       multiple
       className={className}
       onChange={onChange}
-      autoComplete={autoComplete || "off"}
+      autoComplete={Boolean(autoComplete)}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}
@@ -81,7 +81,7 @@ CustomAutoComplete.propTypes = {
   label: propTypes.string,
   onChange: propTypes.func,
   onBlur: propTypes.func,
-  value: propTypes.string,
+  value: propTypes.array,
   inputValues: propTypes.array,
   readOnly: propTypes.bool,
   name: propTypes.string,

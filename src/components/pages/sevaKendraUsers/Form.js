@@ -19,6 +19,7 @@ import { theme } from "../../../styles";
 import { formatDate, getValidValues } from "../../../utils/common";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
+  AuditLog,
   CustomDatePicker,
   CustomRadioButton,
   CustomTextField,
@@ -34,6 +35,7 @@ import { genders, statusSeeds } from "../../../constants/seeds";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { dispatchNotifyAction } from "../../../utils/dispatch";
 import { CODES } from "../../../constants/globalConstants";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const Form = () => {
   const { state } = useLocation();
@@ -126,30 +128,28 @@ const Form = () => {
     enabled: !!values?.sevaKendraId,
   });
 
-  const { mutate: sevaKendraUsersGetById } = useMutation({
-    mutationKey: ["sevaKendraUsersGetById"],
-    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
-    onSuccess: ({ data: { data } }) => {
+  const { data } = useCustomQuery({
+    queryKey: ["sevaKendraUsersGetById"],
+    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
+    enabled: !!editId,
+    onSuccess: (data) => {
       setValues({
         ...data,
+        ...data?.person,
         stateId: data?.designation?.sevaKendra?.district?.state?.id,
         districtId: data?.designation?.sevaKendra?.district?.id,
         sevaKendraId: data?.designation?.sevaKendra?.id,
         designationId: data?.designation?.id,
-        // status: data?.status,
-        // date:
-        //   data?.status === CODES?.ACTIVE
-        //     ? new Date()
-        //     : data?.effectiveFromDate,
-        // description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+        status: data?.status,
+        date:
+          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
       });
-      console.log(data);
     },
+    select: ({ data }) => data?.data,
   });
 
-  useEffect(() => {
-    if (editId) sevaKendraUsersGetById();
-  }, []); // eslint-disable-line
+  console.log(errors);
 
   return (
     <FormWrapper
@@ -446,7 +446,7 @@ const Form = () => {
           setFieldValue={setFieldValue}
           statusSeeds={statusSeeds}
           isViewMode={isViewMode}
-          // statusHistory={clientDetail?.data?.status}
+          statusHistory={values?.userAuditLog}
           disableListLayout
         />
       </WithCondition>
@@ -459,8 +459,17 @@ const Form = () => {
         isUpdate={editId}
         isViewMode={isViewMode}
       />
-
-      {/* {editId ? <AuditLog data={parameterDetails?.data} /> : <></>} */}
+      <AuditLog
+        hide={!editId}
+        auditLog={{
+          createdAt: data?.createdAt,
+          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
+          updatedAt: data?.updatedAt,
+          updatedBy: data?.updatedBy
+            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
+            : "",
+        }}
+      />
     </FormWrapper>
   );
 };

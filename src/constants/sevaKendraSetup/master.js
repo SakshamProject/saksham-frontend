@@ -1,6 +1,7 @@
 import { EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer } from "../../styles";
+import { CODES } from "../globalConstants";
 
 export const initialValues = {
   name: "",
@@ -17,7 +18,7 @@ export const initialValues = {
     phoneNumber2: "",
   },
   servicesBySevaKendra: [],
-  status: "ACTIVE",
+  status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
 };

@@ -279,10 +279,14 @@ const Form = () => {
 
       <AuditLog
         hide={!editId}
-        createdAt={data?.createdAt}
-        createdByName={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
-        updatedAt={data?.updatedAt}
-        updatedByName={`${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`}
+        auditLog={{
+          createdAt: data?.createdAt,
+          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
+          updatedAt: data?.updatedAt,
+          updatedBy: data?.updatedBy
+            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
+            : "",
+        }}
       />
     </FormWrapper>
   );

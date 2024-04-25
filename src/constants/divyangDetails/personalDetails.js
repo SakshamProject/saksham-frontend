@@ -5,7 +5,7 @@ export const initialValues = {
   lastName: "",
   divyangId: "",
   picture: "",
-  gender: "male",
+  gender: CODES?.MALE,
   bloodGroup: "",
   dateOfBirth: "",
   age: "",
