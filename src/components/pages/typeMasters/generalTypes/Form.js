@@ -83,7 +83,8 @@ const Form = () => {
       return;
     }
     const payload = getGeneralTypePayload(value);
-    const apiPath = generalTypeApiPath(value);
+    const apiPath = generalTypeApiPath?.[values?.typeMaster];
+
     mutate({ payload, apiPath });
   };
 
@@ -114,7 +115,7 @@ const Form = () => {
   const { data: generalTypeList, refetch } = useQuery({
     queryKey: ["getGeneralTypeList", values?.typeMaster, searchData],
     queryFn: () => {
-      const apiPath = generalTypeApiPath(values);
+      const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return getApiService(
         `${apiPath}${searchData ? "?searchText=" + searchData : ""}`
       );
@@ -126,13 +127,13 @@ const Form = () => {
     queryKey: ["getAllStates", values?.typeMaster],
     queryFn: () => getApiService(API_PATHS.STATES),
     select: ({ data }) => data?.data,
-    enabled: generalTypeApiPath(values) === API_PATHS.DISTRICTS,
+    enabled: generalTypeApiPath?.[values?.typeMaster] === API_PATHS.DISTRICTS,
   });
 
   const { mutate: onDelete } = useMutation({
     mutationKey: ["deleteGeneralType"],
     mutationFn: (id) => {
-      const apiPath = generalTypeApiPath(values);
+      const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
@@ -147,7 +148,7 @@ const Form = () => {
   const { mutate: handleEdit } = useMutation({
     mutationKey: ["editGeneralType"],
     mutationFn: (id) => {
-      const apiPath = generalTypeApiPath(values);
+      const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return getByIdApiService(apiPath, id);
     },
     onSuccess: ({ data }, id) => {

@@ -15,6 +15,7 @@ export const DRIVING_LICENSE_REGEX =
 export const RATION_CARD_REGEX = /^([a-zA-Z0-9]){8,12}\s*$/;
 export const AADHAR_CARD_REGEX = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
 export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
+export const PERCENTAGE_REGEX = /\b(?:[1-9]|[1-9][0-9]|100)\b/;
 
 // button labels
 export const NEW = "NEW";
@@ -45,6 +46,10 @@ export const CODES = {
   NO: "NO",
   RURAL: "RURAL",
   URBAN: "URBAN",
+  MALE: "MALE",
+  FEMALE: "FEMALE",
+  MARRIED: "MARRIED",
+  UNMARRIED: "UNMARRIED",
 };
 
 // api messages

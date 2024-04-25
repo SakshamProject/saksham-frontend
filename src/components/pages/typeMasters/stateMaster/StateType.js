@@ -211,6 +211,7 @@ const StateType = () => {
             touched={touched?.[currentForm?.name]}
           />
         </Grid>
+
         <FormActions
           handleSubmit={handleSubmit}
           handleOnReset={() => {

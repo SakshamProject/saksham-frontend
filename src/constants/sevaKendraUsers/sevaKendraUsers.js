@@ -1,3 +1,8 @@
+import { EditPopover } from "../../components/shared";
+import { ROUTE_PATHS } from "../../routes/routePaths";
+import { OptionsContainer } from "../../styles";
+import { CODES } from "../globalConstants";
+
 export const initialValues = {
   stateId: "",
   districtId: "",
@@ -6,11 +11,11 @@ export const initialValues = {
   picture: "",
   firstName: "",
   lastName: "",
-  genderId: "male",
+  gender: CODES?.MALE,
   dateOfBirth: "",
   designationId: "",
-  personalMailId: "",
-  personalContactNumber: "",
+  email: "",
+  contactNumber: "",
   whatsAppNumber: "",
   loginId: "",
   password: "",
@@ -53,9 +58,9 @@ export const fields = {
     name: "lastName",
     type: "alphabets",
   },
-  genderId: {
+  gender: {
     label: "Gender",
-    name: "genderId",
+    name: "gender",
   },
   dateOfBirth: {
     label: "Date of Birth *",
@@ -65,14 +70,14 @@ export const fields = {
     label: "Select Designation *",
     name: "designationId",
   },
-  personalMailId: {
+  email: {
     label: "Personal Mail Id *",
-    name: "personalMailId",
+    name: "email",
     type: "email",
   },
-  personalContactNumber: {
+  contactNumber: {
     label: "Personal Contact No *",
-    name: "personalContactNumber",
+    name: "contactNumber",
     type: "mobile",
   },
   whatsAppNumber: {
@@ -83,7 +88,6 @@ export const fields = {
   loginId: {
     label: "Login Id *",
     name: "loginId",
-    type: "mobile",
   },
   password: {
     label: "Password *",
@@ -94,3 +98,57 @@ export const fields = {
     name: "confirmPassword",
   },
 };
+
+export const sevakendraUsersColumn = [
+  {
+    Header: "User Name",
+    accessor: "firstName",
+    filterAccessor: "n",
+    width: 300,
+    sticky: "left",
+    Cell: ({ row }) => (
+      <OptionsContainer>
+        {row?.original?.firstName + " " + row?.original?.lastName}
+        <EditPopover
+          inputValues={[
+            {
+              label: "View details",
+              id: row?.original?.id,
+              path: ROUTE_PATHS?.SEVA_KENDRA_USERS_FORM,
+              view: true,
+            },
+            {
+              label: "Edit",
+              id: row?.original?.id,
+              path: ROUTE_PATHS?.SEVA_KENDRA_USERS_FORM,
+            },
+          ]}
+        />
+      </OptionsContainer>
+    ),
+  },
+  {
+    Header: "State",
+    accessor: "designation.sevaKendra.district.state.name",
+    filterAccessor: "state",
+    width: 240,
+  },
+  {
+    Header: "District",
+    accessor: "designation.sevaKendra.district.name",
+    filterAccessor: "district",
+    width: 240,
+  },
+  {
+    Header: "Seva Kendra Name",
+    accessor: "designation.sevaKendra.name",
+    filterAccessor: "sevaKendraName",
+    width: 240,
+  },
+  {
+    Header: "designation",
+    accessor: "designation.name",
+    filterAccessor: "designationName",
+    width: 240,
+  },
+];

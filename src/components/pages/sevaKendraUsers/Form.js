@@ -1,9 +1,14 @@
 import { Grid } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { getApiService, getByIdApiService } from "../../../api/api";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
@@ -26,6 +31,9 @@ import {
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
 import { genders, statusSeeds } from "../../../constants/seeds";
+import { multiPartFormData } from "../../../utils/multipartFormData";
+import { dispatchNotifyAction } from "../../../utils/dispatch";
+import { CODES } from "../../../constants/globalConstants";
 
 const Form = () => {
   const { state } = useLocation();
@@ -35,14 +43,34 @@ const Form = () => {
   const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues({
-      ...values,
-      auditLog: getValidValues({
-        ...values?.auditLog,
-        date: formatDate({ date: values?.auditLog?.date }),
-      }),
-    });
+    const payload = multiPartFormData(
+      getValidValues({
+        ...values,
+        status: values?.auditLog?.status,
+        dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+        effectiveDate: editId
+          ? values?.effectiveDate || ""
+          : formatDate({ date: new Date(), format: "iso" }),
+        auditLog: getValidValues({
+          ...values?.auditLog,
+          date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
+        }),
+      })
+    );
+    onSubmit(payload);
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["create and update"],
+    mutationFn: (data) =>
+      editId
+        ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
+        : postApiService(API_PATHS?.SEVAKENDRA_USERS, data),
+    onSuccess: () => {
+      dispatchNotifyAction("User", editId ? CODES?.UPDATE : CODES?.ADDED);
+      navigate(ROUTE_PATHS.SEVA_KENDRA_USERS_LIST);
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -59,6 +87,8 @@ const Form = () => {
     handleSubmit,
     setFieldValue,
     setFieldTouched,
+    setValues,
+    setTouched,
   } = formik;
 
   const { data: stateList } = useQuery({
@@ -74,6 +104,53 @@ const Form = () => {
     enabled: !!values?.stateId,
   });
 
+  const { data: sevaKendraList } = useQuery({
+    queryKey: ["sevaKendraListByDistrict", values?.districtId],
+    queryFn: () =>
+      getByIdApiService(
+        API_PATHS?.DISTRICTS,
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`
+      ),
+    select: ({ data }) => data?.data,
+    enabled: !!values?.districtId,
+  });
+
+  const { data: designationsList } = useQuery({
+    queryKey: ["designationsListBySevaKendra", values?.sevaKendraId],
+    queryFn: () =>
+      getByIdApiService(
+        API_PATHS?.SEVAKENDRA,
+        `${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`
+      ),
+    select: ({ data }) => data?.data,
+    enabled: !!values?.sevaKendraId,
+  });
+
+  const { mutate: sevaKendraUsersGetById } = useMutation({
+    mutationKey: ["sevaKendraUsersGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
+    onSuccess: ({ data: { data } }) => {
+      setValues({
+        ...data,
+        stateId: data?.designation?.sevaKendra?.district?.state?.id,
+        districtId: data?.designation?.sevaKendra?.district?.id,
+        sevaKendraId: data?.designation?.sevaKendra?.id,
+        designationId: data?.designation?.id,
+        // status: data?.status,
+        // date:
+        //   data?.status === CODES?.ACTIVE
+        //     ? new Date()
+        //     : data?.effectiveFromDate,
+        // description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+      });
+      console.log(data);
+    },
+  });
+
+  useEffect(() => {
+    if (editId) sevaKendraUsersGetById();
+  }, []); // eslint-disable-line
+
   return (
     <FormWrapper
       title="Seva Kendra User"
@@ -85,7 +162,19 @@ const Form = () => {
           name={fields?.stateId?.name}
           value={values?.stateId}
           onChange={(_, value) => {
-            setFieldValue(fields?.stateId?.name, value);
+            setValues({
+              ...values,
+              stateId: value,
+              districtId: "",
+              sevaKendraId: "",
+              designationId: "",
+            });
+            setTouched({
+              ...touched,
+              districtId: false,
+              sevaKendraId: false,
+              designationId: false,
+            });
           }}
           onBlur={handleBlur}
           errors={errors?.stateId}
@@ -100,7 +189,17 @@ const Form = () => {
           name={fields?.districtId?.name}
           value={values?.districtId}
           onChange={(_, value) => {
-            setFieldValue(fields?.districtId?.name, value);
+            setValues({
+              ...values,
+              districtId: value,
+              sevaKendraId: "",
+              designationId: "",
+            });
+            setTouched({
+              ...touched,
+              sevaKendraId: false,
+              designationId: false,
+            });
           }}
           onBlur={handleBlur}
           errors={errors?.districtId}
@@ -115,12 +214,17 @@ const Form = () => {
           name={fields?.sevaKendraId?.name}
           value={values?.sevaKendraId}
           onChange={(_, value) => {
-            setFieldValue(fields?.sevaKendraId?.name, value);
+            setValues({
+              ...values,
+              sevaKendraId: value,
+              designationId: "",
+            });
+            setFieldTouched(fields?.designationId?.name, false);
           }}
           onBlur={handleBlur}
           errors={errors?.sevaKendraId}
           touched={touched?.sevaKendraId}
-          inputValues={districtList?.sevaKendra || []}
+          inputValues={sevaKendraList || []}
         />
       </Grid>
 
@@ -137,7 +241,7 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.userId}
           touched={touched?.userId}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || editId}
           type={fields?.userId?.type}
         />
       </Grid>
@@ -154,7 +258,7 @@ const Form = () => {
           error={errors?.picture}
           touched={touched?.picture}
           onChange={(e) =>
-            setFieldValue(fields?.picture?.name, e.target.files[0])
+            setFieldValue(fields?.picture?.name, e?.target?.files[0])
           }
         />
       </Grid>
@@ -189,15 +293,14 @@ const Form = () => {
 
       <Grid item xs={12}>
         <CustomRadioButton
-          name={fields?.genderId?.name}
-          label={fields?.genderId?.label}
+          name={fields?.gender?.name}
+          label={fields?.gender?.label}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values?.genderId || ""}
-          touched={touched?.genderId}
-          errors={errors?.genderId}
+          value={values?.gender || ""}
+          touched={touched?.gender}
+          errors={errors?.gender}
           isViewMode={isViewMode}
-          accessor="code"
           inputValues={genders()}
           rowBreak
           labelStyle={{
@@ -216,6 +319,7 @@ const Form = () => {
           isViewMode={isViewMode}
           onBlur={handleBlur}
           setTouched={setFieldTouched}
+          maxDate={new Date()}
           errors={errors?.dateOfBirth}
           touched={touched?.dateOfBirth}
         />
@@ -232,7 +336,7 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.designationId}
           touched={touched?.designationId}
-          inputValues={districtList?.sevaKendra || []}
+          inputValues={designationsList || []}
         />
       </Grid>
 
@@ -242,29 +346,29 @@ const Form = () => {
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.personalMailId?.label}
-          name={fields?.personalMailId?.name}
-          value={values?.personalMailId}
+          label={fields?.email?.label}
+          name={fields?.email?.name}
+          value={values?.email}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.personalMailId}
-          touched={touched?.personalMailId}
+          errors={errors?.email}
+          touched={touched?.email}
           isViewMode={isViewMode}
-          fieldType={fields?.personalMailId?.type}
+          fieldType={fields?.email?.type}
         />
       </Grid>
 
       <Grid item xs={6}>
         <CustomTextField
-          label={fields?.personalContactNumber?.label}
-          name={fields?.personalContactNumber?.name}
-          value={values?.personalContactNumber}
+          label={fields?.contactNumber?.label}
+          name={fields?.contactNumber?.name}
+          value={values?.contactNumber}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.personalContactNumber}
-          touched={touched?.personalContactNumber}
+          errors={errors?.contactNumber}
+          touched={touched?.contactNumber}
           isViewMode={isViewMode}
-          fieldType={fields?.personalContactNumber?.type}
+          fieldType={fields?.contactNumber?.type}
           maxLength={10}
         />
       </Grid>
@@ -297,37 +401,39 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.loginId}
           touched={touched?.loginId}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || editId}
           fieldType={fields?.loginId?.type}
           maxLength={10}
         />
       </Grid>
 
-      <Grid item xs={6}>
-        <CustomTextField
-          label={fields?.password?.label}
-          name={fields?.password?.name}
-          value={values?.password}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          errors={errors?.password}
-          touched={touched?.password}
-          isViewMode={isViewMode}
-        />
-      </Grid>
+      <WithCondition isValid={!editId}>
+        <Grid item xs={6}>
+          <CustomTextField
+            label={fields?.password?.label}
+            name={fields?.password?.name}
+            value={values?.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            errors={errors?.password}
+            touched={touched?.password}
+            isViewMode={isViewMode}
+          />
+        </Grid>
 
-      <Grid item xs={6}>
-        <CustomTextField
-          label={fields?.confirmPassword?.label}
-          name={fields?.confirmPassword?.name}
-          value={values?.confirmPassword}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          errors={errors?.confirmPassword}
-          touched={touched?.confirmPassword}
-          isViewMode={isViewMode}
-        />
-      </Grid>
+        <Grid item xs={6}>
+          <CustomTextField
+            label={fields?.confirmPassword?.label}
+            name={fields?.confirmPassword?.name}
+            value={values?.confirmPassword}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            errors={errors?.confirmPassword}
+            touched={touched?.confirmPassword}
+            isViewMode={isViewMode}
+          />
+        </Grid>
+      </WithCondition>
 
       <WithCondition isValid={editId}>
         <StatusFields
@@ -350,7 +456,8 @@ const Form = () => {
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
         }}
-        isUpdate={false}
+        isUpdate={editId}
+        isViewMode={isViewMode}
       />
 
       {/* {editId ? <AuditLog data={parameterDetails?.data} /> : <></>} */}
