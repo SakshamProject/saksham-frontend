@@ -454,6 +454,19 @@ const PersonalDetails = () => {
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
 
+          <Grid item xs={12}>
+            <CustomTextField
+              label={fields?.loginUserName?.label}
+              name={fields?.loginUserName?.name}
+              value={values.loginUserName}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+              errors={errors.loginUserName}
+              touched={touched.loginUserName}
+            />
+          </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomPasswordField
               label={fields?.password?.label}
@@ -463,6 +476,7 @@ const PersonalDetails = () => {
               onChange={handleChange}
               onBlur={handleBlur}
               errors={errors.password}
+              isViewMode={isViewMode}
               touched={touched.password}
             />
           </Grid>
@@ -474,6 +488,7 @@ const PersonalDetails = () => {
               showEyeIcon
               value={values.confirmPassword}
               onChange={handleChange}
+              isViewMode={isViewMode}
               onBlur={handleBlur}
               errors={errors.confirmPassword}
               touched={touched.confirmPassword}

@@ -20,6 +20,7 @@ import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { formatDate, getValidValues } from "../../../../utils/common";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
+  AuditLog,
   CustomAutoComplete,
   CustomDatePicker,
   CustomTextField,
@@ -33,6 +34,7 @@ import StatusFields from "../../../shared/StatusFields";
 import { CustomTypography } from "../../../../styles";
 import { dispatchNotifyAction } from "../../../../utils/dispatch";
 import { statusSeeds } from "../../../../constants/seeds";
+import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
   const { state } = useLocation();
@@ -42,18 +44,17 @@ const Form = () => {
   const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
-    const auditLog = {
-      date: formatDate({ date: values?.date, format: "iso" }),
-      status: values?.status,
-      description: values?.description,
-    };
     const payload = getValidValues({
       ...values,
       contactPerson: getValidValues(values?.contactPerson),
       startDate: formatDate({ date: values?.startDate, format: "iso" }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
       services: transformServices(values?.servicesBySevaKendra),
-      auditLog: getValidValues(auditLog),
+      auditLog: getValidValues({
+        date: formatDate({ date: values?.date, format: "iso" }),
+        status: values?.status,
+        description: values?.description,
+      }),
       currentStatus: values?.status,
     });
     onSubmit(payload);
@@ -111,10 +112,11 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const { mutate: sevaKendraGetById } = useMutation({
-    mutationKey: ["sevaKendraGetById"],
-    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
-    onSuccess: ({ data: { data } }) => {
+  const { data } = useCustomQuery({
+    queryKey: ["sevaKendraGetById"],
+    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
+    enabled: !!editId,
+    onSuccess: (data) => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
@@ -132,12 +134,11 @@ const Form = () => {
         description: data?.status === CODES?.ACTIVE ? "" : data?.description,
       });
     },
+    select: ({ data }) => data?.data,
   });
 
   useEffect(() => {
-    editId
-      ? sevaKendraGetById()
-      : setFieldValue(fields?.startDate?.name, new Date());
+    if (!editId) setFieldValue(fields?.startDate?.name, new Date());
   }, []); // eslint-disable-line
 
   return (
@@ -369,7 +370,17 @@ const Form = () => {
         isViewMode={isViewMode}
       />
 
-      {/* {editId ? <AuditLog data={parameterDetails?.data} /> : <></>} */}
+      <AuditLog
+        hide={!editId}
+        auditLog={{
+          createdAt: data?.createdAt,
+          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
+          updatedAt: data?.updatedAt,
+          updatedBy: data?.updatedBy
+            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
+            : "",
+        }}
+      />
     </FormWrapper>
   );
 };

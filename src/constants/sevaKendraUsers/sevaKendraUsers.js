@@ -20,11 +20,9 @@ export const initialValues = {
   loginId: "",
   password: "",
   confirmPassword: "",
-  auditLog: {
-    status: "ACTIVE",
-    date: "",
-    description: "",
-  },
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {
@@ -103,7 +101,7 @@ export const sevakendraUsersColumn = [
   {
     Header: "User Name",
     accessor: "firstName",
-    filterAccessor: "n",
+    filterAccessor: "name",
     width: 300,
     sticky: "left",
     Cell: ({ row }) => (

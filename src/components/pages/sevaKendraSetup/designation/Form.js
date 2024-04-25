@@ -131,7 +131,7 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        `${values?.districtId}${API_PATHS?.SEVAKENDRA}?status=ACTIVE`
+        API_PATHS?.ACTIVE(`${values?.districtId}${API_PATHS?.SEVAKENDRA}`)
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -280,10 +280,14 @@ const Form = () => {
 
       <AuditLog
         hide={!editId}
-        createdAt={data?.createdAt}
-        createdByName={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
-        updatedAt={data?.updatedAt}
-        updatedByName={`${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`}
+        auditLog={{
+          createdAt: data?.createdAt,
+          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
+          updatedAt: data?.updatedAt,
+          updatedBy: data?.updatedBy
+            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
+            : "",
+        }}
       />
     </FormWrapper>
   );

@@ -1,7 +1,8 @@
 import styled from "@emotion/styled";
-import { Grid, Typography } from "@mui/material";
+import { Grid, Typography, useMediaQuery } from "@mui/material";
 import React from "react";
 import propTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
 import { formatDate } from "../../utils/common";
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -21,22 +22,25 @@ const SecTitle = styled(Typography)(({ theme }) => ({
   marginBottom: "5px",
 }));
 
-const ValueText = styled(Typography)(({ theme }) => ({
+const ValueText = styled(Typography)(({ theme, matches }) => ({
   textAlign: "left",
   font: "normal normal normal 16px/19px Lato",
   letterSpacing: "0px",
   color: theme.palette?.commonColor?.black,
   opacity: "1",
+  display: "flex",
+  flexDirection: matches === "true" ? "row" : "column",
 }));
 
-export const AuditLog = ({
-  createdAt,
-  updatedAt,
-  createdByName,
-  updatedByName,
-  style,
-  hide,
-}) => {
+const Texts = styled("span")({
+  font: "normal normal normal 16px/19px Lato",
+  padding: "0 4px 2px 0",
+});
+
+export const AuditLog = ({ auditLog, style, hide }) => {
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.up("lg"));
+
   if (hide) return null;
 
   return (
@@ -51,32 +55,56 @@ export const AuditLog = ({
       </Grid>
 
       <Grid item xs={6}>
-        <SecTitle>Created by</SecTitle>
-        <ValueText>
-          {createdByName
-            ? `${createdByName} - ${formatDate({
-                date: createdAt,
-                format: "DD-MM-YYYY",
-              })}`
-            : `${formatDate({
-                date: createdAt,
-                format: "DD-MM-YYYY",
-              })}`}
+        <SecTitle>Created&nbsp;by</SecTitle>
+        <ValueText matches={`${matches}`}>
+          {auditLog?.createdBy ? (
+            <>
+              <Texts>{auditLog?.createdBy}</Texts>
+              <Texts>{matches ? "-" : ""}</Texts>
+              <Texts>
+                {formatDate({
+                  date: auditLog?.createdAt,
+                  format: "DD-MM-YYYY",
+                })}
+              </Texts>
+              <Texts>{matches ? "-" : ""}</Texts>
+              <Texts>
+                {formatDate({
+                  date: auditLog?.createdAt,
+                  format: "hh:MM AM/PM",
+                })}
+              </Texts>
+            </>
+          ) : (
+            <Texts>N/A</Texts>
+          )}
         </ValueText>
       </Grid>
 
       <Grid item xs={6}>
-        <SecTitle>Updated by</SecTitle>
-        <ValueText>
-          {updatedByName
-            ? `${updatedByName} - ${formatDate({
-                date: updatedAt,
-                format: "DD-MM-YYYY",
-              })}`
-            : `${formatDate({
-                date: updatedAt,
-                format: "DD-MM-YYYY",
-              })}`}
+        <SecTitle>Updated&nbsp;by</SecTitle>
+        <ValueText matches={`${matches}`}>
+          {auditLog?.updatedBy ? (
+            <>
+              <Texts>{auditLog?.updatedBy}</Texts>
+              <Texts>{matches ? "-" : ""}</Texts>
+              <Texts>
+                {formatDate({
+                  date: auditLog?.updatedAt,
+                  format: "DD-MM-YYYY",
+                })}
+              </Texts>
+              <Texts>{matches ? "-" : ""}</Texts>
+              <Texts>
+                {formatDate({
+                  date: auditLog?.updatedAt,
+                  format: "hh:MM AM/PM",
+                })}
+              </Texts>
+            </>
+          ) : (
+            <Texts>N/A</Texts>
+          )}
         </ValueText>
       </Grid>
     </Grid>
@@ -84,10 +112,7 @@ export const AuditLog = ({
 };
 
 AuditLog.propTypes = {
-  createdAt: propTypes.any,
-  updatedAt: propTypes.any,
-  createdByName: propTypes.string,
-  updatedByName: propTypes.string,
+  auditLog: propTypes.object,
   style: propTypes.string,
   hide: propTypes.bool,
 };

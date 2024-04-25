@@ -73,7 +73,9 @@ export const validationSchema = (editId) =>
       .required("Login Id is required"),
     password: string()
       .trim()
-      .required("Password is required")
+      .test("password", "Password is required", (value) =>
+        editId ? true : !!value
+      )
       .matches(
         UPPER_CASE,
         "Password must contain at least one uppercase letter"
@@ -91,23 +93,31 @@ export const validationSchema = (editId) =>
       .max(25, "Password cannot have more than 25 characters"),
     confirmPassword: string()
       .trim()
-      .required("Confirm password is required")
       .test(
         "confirmPassword",
-        "Confirm password should be same",
-        (value, context) => value === context?.parent?.password
+        "Confirm password is required",
+        (value, context) => {
+          if (editId) return true;
+          if (!value)
+            return context.createError({
+              message: "Confirm password is required",
+            });
+          if (!!value && value !== context?.parent?.password)
+            return context.createError({
+              message: "Confirm password should be same",
+            });
+          return !!editId || !!value;
+        }
       ),
-    auditLog: object({
-      status: string().nullable(),
-      description: string()
-        .trim()
-        .nullable()
-        .test(
-          "deactivationReason",
-          "Deactivation reason is required",
-          (value, context) =>
-            !(context.parent?.status !== CODES.ACTIVE && !!editId && !value)
-        )
-        .max(255, "Deactivation reason cannot have more than 255 characters"),
-    }),
+    status: string().nullable(),
+    description: string()
+      .trim()
+      .nullable()
+      .test(
+        "deactivationReason",
+        "Deactivation reason is required",
+        (value, context) =>
+          !(context.parent?.status !== CODES.ACTIVE && !!editId && !value)
+      )
+      .max(255, "Deactivation reason cannot have more than 255 characters"),
   });

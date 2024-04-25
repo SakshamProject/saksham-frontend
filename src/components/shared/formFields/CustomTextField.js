@@ -84,15 +84,15 @@ export const CustomTextField = ({
 };
 
 CustomTextField.propTypes = {
-  value: propTypes.object,
-  touched: propTypes.func,
+  value: propTypes.string,
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,
   label: propTypes.string,
   disabled: propTypes.bool,
   style: propTypes.object,
-  isViewMode: propTypes.bool,
+  isViewMode: propTypes.oneOfType([propTypes.string, propTypes.bool]),
   autoComplete: propTypes.string,
   onChange: propTypes.func,
   variant: propTypes.string,
