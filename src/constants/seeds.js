@@ -20,18 +20,18 @@ export const filterStringSeeds = [
 export const genders = (all) =>
   [
     {
-      id: "male",
+      id: "MALE",
       name: "Male",
       code: "male",
     },
     {
-      id: "female",
+      id: "FEMALE",
       name: "Female",
       code: "female",
     },
     all
       ? {
-          id: "transgender",
+          id: "TRANSGENDER",
           name: "TransGender",
           code: "transgender",
         }

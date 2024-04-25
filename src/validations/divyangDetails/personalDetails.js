@@ -44,16 +44,16 @@ export const validationSchema = object({
     .trim()
     .required("Mobile Number is required")
     .test(
+      "isZero",
+      "Invalid mobile number",
+      (value) => !(!!value && Number(value) === 0)
+    )
+    .test(
       "isNumeric",
       "Mobile Number should contain only numbers",
       (value) => !(value && !/^\d+$/.test(value))
     )
-    .length(10, "Mobile Number should be 10 digits")
-    .test(
-      "isZero",
-      "Invalid mobile number",
-      (value) => !(!!value && Number(value) === 0)
-    ),
+    .length(10, "Mobile Number should be 10 digits"),
   fatherName: string()
     .trim()
     .min(3, "Father Name must be at least 3 characters long")

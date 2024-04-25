@@ -179,7 +179,6 @@ const PersonalDetails = () => {
               touched={touched?.gender}
               errors={errors?.gender}
               isViewMode={isViewMode}
-              accessor="code"
               inputValues={genders(true)}
               rowBreak
               labelStyle={{

@@ -5,11 +5,13 @@ export const API_PATHS = {
 
   // Designation
   DESIGNATION: "/designation",
+  DESIGNATIONS: "/designations",
   FEATURES: "/designation/features",
   DESIGNATION_LIST: "/designation/list",
 
   // Seva kendra users
   SEVAKENDRA_USERS_LIST: "/users/list",
+  SEVAKENDRA_USERS: "/users",
 
   // State master
   STATE_MASTER: "/typemaster/statemaster",

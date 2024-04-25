@@ -46,6 +46,10 @@ export const CODES = {
   NO: "NO",
   RURAL: "RURAL",
   URBAN: "URBAN",
+  MALE: "MALE",
+  FEMALE: "FEMALE",
+  MARRIED: "MARRIED",
+  UNMARRIED: "UNMARRIED",
 };
 
 // api messages
