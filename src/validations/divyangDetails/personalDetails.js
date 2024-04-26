@@ -27,7 +27,7 @@ export const validationSchema = object({
     .required("Divyang ID is required"),
   bloodGroup: string()
     .trim()
-    .min(3, "Blood Group must be at least 3 characters long")
+    // .min(3, "Blood Group must be at least 3 characters long")
     .max(255, "Blood Group cannot have more than 255 characters")
     .required("Blood Group is required"),
   dateOfBirth: date()

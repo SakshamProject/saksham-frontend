@@ -74,8 +74,8 @@ export const CustomPasswordField = ({
 };
 
 CustomPasswordField.propTypes = {
-  value: propTypes.string,
-  touched: propTypes.func,
+  value: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

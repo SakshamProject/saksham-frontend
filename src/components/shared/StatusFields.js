@@ -108,7 +108,7 @@ StatusFields.propTypes = {
   handleChange: propTypes.func,
   handleBlur: propTypes.func,
   values: propTypes.object,
-  touched: propTypes.object,
+  touched: propTypes.bool,
   errors: propTypes.object,
   isViewMode: propTypes.bool,
   setFieldValue: propTypes.func,

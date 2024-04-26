@@ -84,7 +84,7 @@ export const CustomTextField = ({
 };
 
 CustomTextField.propTypes = {
-  value: propTypes.string,
+  value: propTypes.oneOfType([propTypes.number, propTypes.string]),
   touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,

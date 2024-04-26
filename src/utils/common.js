@@ -136,7 +136,7 @@ export const getAge = (dob) => {
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
-  return age;
+  return age?.toString();
 };
 
 export const minMaxAge = ({ maxYear = 100, minYear = 18 } = {}) => {
