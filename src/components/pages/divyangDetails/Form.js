@@ -22,11 +22,12 @@ const FormLayout = styled("div")(({ matches }) => ({
   scrollbarWidth: "none",
 }));
 
-const StepperContainer = styled("div")({
-  minWidth: "230px",
+const StepperContainer = styled("div")(({ matches }) => ({
+  minWidth: matches ? "230px" : "100%",
+  maxWidth: "100%",
   display: "flex",
   maxHeight: "100%",
-});
+}));
 
 const FormContainer = styled("div")(({ matches }) => ({
   display: "flex",
@@ -58,12 +59,12 @@ const Form = () => {
         navigateTo={ROUTE_PATHS.DIVYANG_DETAILS_LIST}
       />
       <FormLayout matches={matches}>
-        <StepperContainer>
+        <StepperContainer matches={matches}>
           <CustomStepper
             steps={DIVYANG_STEPS}
             activeStep={activeStep}
             onChange={onChange}
-            // isHorizontal
+            ishorizontal={!matches}
           />
         </StepperContainer>
         <Suspense fallback={<CustomLoader />}>

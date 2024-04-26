@@ -159,7 +159,7 @@ const StateType = () => {
   }, [pathname]); //eslint-disable-line
 
   return (
-    <Grid direction={"column"} width={"100%"}>
+    <Grid container direction={"column"} width={"100%"}>
       <StyledFormContainer width="100%">
         <Grid container columnSpacing={3}>
           <Grid item xs={6}>
@@ -219,7 +219,7 @@ const StateType = () => {
             setTableEditId("");
           }}
           resetLabel={"Clear"}
-          isUpdate={tableEditId}
+          isUpdate={!!tableEditId}
           submitLabel="Add"
         />
       </StyledFormContainer>

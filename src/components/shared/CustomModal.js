@@ -96,7 +96,7 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
 
 CustomModal.propTypes = {
   open: propTypes.any,
-  setOpen: propTypes.string,
+  setOpen: propTypes.func,
   title: propTypes.string,
   handle: propTypes.func,
   content: propTypes.any,

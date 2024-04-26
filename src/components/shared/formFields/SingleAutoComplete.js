@@ -83,7 +83,7 @@ SingleAutoComplete.propTypes = {
   onBlur: propTypes.func,
   value: propTypes.string,
   inputValues: propTypes.array,
-  readOnly: propTypes.bool,
+  readOnly: propTypes.oneOfType([propTypes.string, propTypes.bool]),
   name: propTypes.string,
   errors: propTypes.string,
   touched: propTypes.bool,

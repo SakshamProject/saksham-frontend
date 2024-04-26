@@ -455,7 +455,7 @@ const Form = () => {
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
         }}
-        isUpdate={editId}
+        isUpdate={!!editId}
         isViewMode={isViewMode}
       />
       <AuditLog

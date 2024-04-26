@@ -159,7 +159,7 @@ const Form = () => {
             setTableEditId("");
           }}
           resetLabel={"Clear"}
-          isUpdate={tableEditId}
+          isUpdate={!!tableEditId}
           submitLabel="Add"
         />
       </WithCondition>

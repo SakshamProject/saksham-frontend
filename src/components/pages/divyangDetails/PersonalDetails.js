@@ -106,7 +106,7 @@ const PersonalDetails = () => {
   }, [values?.communityCategoryId]);
 
   return (
-    <Grid direction={"column"} width={"100%"}>
+    <Grid container direction={"column"} width={"100%"}>
       <StyledFormContainer width="100%">
         <Grid container columnSpacing={3} rowSpacing={1}>
           <Grid item xs={12} md={6}>

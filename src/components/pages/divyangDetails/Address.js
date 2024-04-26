@@ -142,7 +142,7 @@ const Address = () => {
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12}>
               <CustomTypography
-                capitalize
+                capitalize={"capitalize"}
                 variant="h6"
                 style={{ fontSize: "24px" }}
               >
@@ -560,7 +560,7 @@ const Address = () => {
 
             <Grid item xs={12}>
               <CustomTypography
-                capitalize
+                capitalize={"capitalize"}
                 variant="h6"
                 style={{ fontSize: "24px" }}
               >
