@@ -81,3 +81,23 @@ export const statusColumns = [
     Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
   },
 ];
+
+export const divyangDetailsColumn = [
+  {
+    accessor: "name",
+    Header: "Name",
+    Cell: (value) => `${value?.firstName}\xa0${value?.lastName}`,
+  },
+  {
+    accessor: "mobileNumber",
+    Header: "Mobile\xa0No",
+  },
+  {
+    accessor: "divyangId",
+    Header: "Divyang\xa0Id",
+  },
+  {
+    accessor: "aadharCardNumber",
+    Header: "Aadhar\xa0No",
+  },
+];

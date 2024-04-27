@@ -150,7 +150,7 @@ const List = () => {
 
         <Grid item>
           <SubmitButton
-            sx={{ textTransform: "capitalize", height: "40px" }}
+            sx={{ textTransform: "capitalize", height: "38px" }}
             onClick={() => {
               setValues({ ...initialValues });
               setTouched({});

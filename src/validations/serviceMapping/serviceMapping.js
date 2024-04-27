@@ -27,13 +27,8 @@ export const listValidationSchema = object({
 });
 
 export const validationSchema = object({
-  stateId: string().required("State is required"),
-  districtId: string().required("District is required"),
-  sevaKendraId: string().required("Seva Kendra is required"),
-  userId: string().required("Assign user is required"),
-
   serviceTypeId: string().required("Service type is required"),
-  serviceId: string().required("Service sub type is required"),
+  serviceId: string().required("Service is required"),
   dateOfService: date()
     .typeError("Invalid Date")
     .required("Date of service is required")
@@ -53,10 +48,43 @@ export const validationSchema = object({
       );
     }),
 
-  // nonSevaKendraFollowUp: object({
-  //   name: "",
-  //   mobileNumber: "",
-  //   email: "",
-  //   sendMail: "NO",
-  // }),
+  stateId: string().test(
+    "isRequired",
+    "State is required",
+    (value, context) =>
+      !value && context?.parent?.isNonSevaKendraFollowUpRequired !== "NO"
+  ),
+  districtId: string().test(
+    "isRequired",
+    "District is required",
+    (value, context) =>
+      !value && context?.parent?.isNonSevaKendraFollowUpRequired !== "NO"
+  ),
+  sevaKendraId: string().test(
+    "isRequired",
+    "Seva Kendra is required",
+    (value, context) =>
+      !value && context?.parent?.isNonSevaKendraFollowUpRequired !== "NO"
+  ),
+  userId: string().test(
+    "isRequired",
+    "Assign user is required",
+    (value, context) =>
+      !value && context?.parent?.isNonSevaKendraFollowUpRequired !== "NO"
+  ),
+
+  nonSevaKendraFollowUp: object({
+    name: string()
+      .trim()
+      .test(
+        "isRequired",
+        "Contact person name is required",
+        (value, context) => {
+          console.log(value, context?.from);
+        }
+      ),
+    // mobileNumber: "",
+    // email: "",
+    // sendMail: "NO",
+  }),
 });

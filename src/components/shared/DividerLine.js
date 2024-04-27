@@ -10,9 +10,8 @@ export const DividerLine = ({
     <Divider
       style={{
         background: color,
-        borderRadius: 20,
         minHeight: 2,
-        margin: gap || "",
+        margin: gap || "4px 0 24px",
       }}
     />
   );

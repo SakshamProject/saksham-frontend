@@ -15,12 +15,12 @@ export const CustomTextField = ({
   maxLength,
   fieldType,
   autoComplete,
-  onkeydown,
   placeholder,
   endAdornment,
   touched,
   errors,
   customHelperText,
+  onKeyPress,
 }) => {
   const handleKeyPress = (e) => {
     if (fieldType === "mobile" && e.keyCode !== 13) {
@@ -57,14 +57,15 @@ export const CustomTextField = ({
       value={value || ""}
       style={style}
       onKeyDown={(e) => {
-        if (fieldType === "number") return e.keyCode === 56;
+        if (fieldType === "number") return e?.keyCode === 56;
       }}
+      onKeyPress={(e) => onKeyPress && onKeyPress(e)}
       error={Boolean(customHelperText || (touched && errors))}
-      helperText={customHelperText || (touched && errors) ? errors : " "}
+      helperText={customHelperText || (touched && errors) || " "}
+      disabled={disabled}
       InputProps={{
         endAdornment: endAdornment,
         onKeyPress: (e) => handleKeyPress(e),
-        onKeyDown: (e) => (onkeydown ? onkeydown(e) : () => {}),
         onInput: (e) => {
           const currentValue = e.target.value;
           e.target.value = currentValue
@@ -101,6 +102,6 @@ CustomTextField.propTypes = {
   type: propTypes.string,
   maxLength: propTypes.number,
   fieldType: propTypes.string,
-  onkeydown: propTypes.func,
   endAdornment: propTypes.any,
+  onKeyPress: propTypes.func,
 };

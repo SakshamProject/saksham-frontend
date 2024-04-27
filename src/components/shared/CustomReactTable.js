@@ -97,6 +97,8 @@ export const CustomReactTable = ({
       display: "flex",
       alignItems: "center",
       height: "auto",
+      boxShadow:
+        "22px 16px 20px -20px rgba(0,0,0,0.45), -25px 0px 20px -20px rgba(0,0,0,0.45)",
       ".primaryRow": {
         display: "flex",
         alignItems: "center",

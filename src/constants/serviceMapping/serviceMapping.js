@@ -39,25 +39,6 @@ export const listFields = {
   },
 };
 
-const a = [
-  {
-    id: "03ef2237-d4e9-45d6-8cc2-d228bc6734d4",
-    createdAt: "2024-04-25T12:41:55.357Z",
-    updatedAt: "2024-04-25T12:41:55.357Z",
-    user: null,
-    dateOfService: "2024-04-24T07:19:01.000Z",
-    isCompleted: "PENDING",
-    service: {
-      id: "2cde6efa-c74b-4560-8ca5-e828b907eb1e",
-      name: "NNNNN",
-    },
-    divyang: {
-      id: "a599be29-d676-4ef9-9113-1a393eee2d02",
-      firstName: "divyang",
-    },
-  },
-];
-
 export const listColumns = [
   {
     Header: "Seva Kendra State",
@@ -181,17 +162,17 @@ export const formFields = {
     minDate: new Date(),
   },
   contactPersonName: {
-    label: "Contact Person name",
+    label: "Contact Person name *",
     name: "nonSevaKendraFollowUp.name",
     fieldType: "alphabets",
   },
   mobileNo: {
-    label: "Mobile No",
+    label: "Mobile No *",
     name: "nonSevaKendraFollowUp.mobileNumber",
     fieldType: "mobile",
   },
   emailId: {
-    label: "Email",
+    label: "Email *",
     name: "nonSevaKendraFollowUp.email",
     fieldType: "email",
   },
@@ -200,6 +181,11 @@ export const formFields = {
     name: "nonSevaKendraFollowUp.sendMail",
     inputValues: yesNoSeed,
     labelStyle: { fontWeight: "normal" },
+  },
+  isNonSevaKendraFollowUpRequired: {
+    label: "Forward to non seva kendra volunteer",
+    name: "isNonSevaKendraFollowUpRequired",
+    inputValues: yesNoSeed,
   },
 };
 
@@ -226,6 +212,6 @@ export const initialValues = {
     sendMail: "NO",
   },
 
-  divyangId: "",
-  isNonSevaKendraFollowUpRequired: false,
+  divyangId: "a599be29-d676-4ef9-9113-1a393eee2d02",
+  isNonSevaKendraFollowUpRequired: "NO",
 };

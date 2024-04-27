@@ -2,11 +2,13 @@ import { Box, Grid, Typography, styled } from "@mui/material";
 import propTypes from "prop-types";
 import user from "../../assets/profile.png";
 import { WithCondition } from "./WithCondition";
+import { divyangDetailsColumn } from "../../constants/globalConstants";
 
 const StyledImage = styled("img")({
-  width: 160,
+  width: 140,
   aspectRatio: 1,
   objectFit: "cover",
+  borderRadius: 16,
 });
 
 const DetailSection = styled(Box)({
@@ -20,25 +22,6 @@ const Title = styled(Typography)({
   marginRight: 16,
   fontWeight: 700,
 });
-
-const defaultDivyangDetailColumns = [
-  {
-    accessor: "name",
-    Header: "Name",
-  },
-  {
-    accessor: "mobileNo",
-    Header: "Mobile No",
-  },
-  {
-    accessor: "divyangId",
-    Header: "Divyang Id",
-  },
-  {
-    accessor: "aadharNo",
-    Header: "Aadhar No",
-  },
-];
 
 export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
   return (
@@ -54,7 +37,7 @@ export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
       </WithCondition>
 
       <Grid item xs={8}>
-        {defaultDivyangDetailColumns?.map((item, key) => (
+        {divyangDetailsColumn?.map((item, key) => (
           <WithCondition
             isValid={!!divyangDetail?.[item?.accessor]}
             key={key + item?.accessor}
