@@ -44,7 +44,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export const CustomSearchField = ({ placeholder, autoComplete }) => {
+export const CustomSearchField = ({ placeholder }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathName = location.pathname;
@@ -120,7 +120,7 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
         value={value}
         onChange={onChange}
         onKeyDown={onSearchChange}
-        autoComplete={autoComplete}
+        autoComplete={"off"}
         endAdornment={
           <InputAdornment position="end">
             {!!value && (
@@ -141,5 +141,4 @@ export const CustomSearchField = ({ placeholder, autoComplete }) => {
 
 CustomSearchField.propTypes = {
   placeholder: propTypes.string,
-  autoComplete: propTypes.string,
 };

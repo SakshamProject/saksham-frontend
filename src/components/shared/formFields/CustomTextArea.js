@@ -41,7 +41,7 @@ export const CustomTextarea = ({
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}
-      endAdornment={endAdornment}
+      endadornment={endAdornment}
       sx={style}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) ? errors : " "}
@@ -62,8 +62,8 @@ export const CustomTextarea = ({
 };
 
 CustomTextarea.propTypes = {
-  value: propTypes.object,
-  touched: propTypes.func,
+  value: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

@@ -40,8 +40,9 @@ const PersonalDetails = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
+    console.log(payload);
     // onSubmit(payload);
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
+    // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
   };
 
   const formik = useFormik({
@@ -106,7 +107,7 @@ const PersonalDetails = () => {
   }, [values?.communityCategoryId]);
 
   return (
-    <Grid direction={"column"} width={"100%"}>
+    <Grid container direction={"column"} width={"100%"}>
       <StyledFormContainer width="100%">
         <Grid container columnSpacing={3} rowSpacing={1}>
           <Grid item xs={12} md={6}>

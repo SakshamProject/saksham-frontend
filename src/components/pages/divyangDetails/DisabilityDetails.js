@@ -304,7 +304,7 @@ const DisabilityDetails = () => {
             </Grid>
 
             <Grid item xs={12}>
-              <CustomTypography capitalize>
+              <CustomTypography capitalize={"capitalize"}>
                 State Disability Book Details
               </CustomTypography>
             </Grid>

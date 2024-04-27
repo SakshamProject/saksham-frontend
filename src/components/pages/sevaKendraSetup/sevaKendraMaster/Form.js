@@ -366,7 +366,7 @@ const Form = () => {
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST);
         }}
-        isUpdate={editId}
+        isUpdate={!!editId}
         isViewMode={isViewMode}
       />
 

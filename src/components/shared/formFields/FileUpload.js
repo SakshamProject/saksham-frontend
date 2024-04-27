@@ -227,7 +227,7 @@ export const FileUpload = ({
 
 FileUpload.propTypes = {
   value: propTypes.oneOfType([propTypes.string, propTypes.object]),
-  touched: propTypes.func,
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

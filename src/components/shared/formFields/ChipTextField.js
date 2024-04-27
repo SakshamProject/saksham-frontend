@@ -115,7 +115,7 @@ ChipTextField.propTypes = {
   customOnChange: propTypes.func,
   value: propTypes.object,
   variant: propTypes.string,
-  touched: propTypes.func,
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

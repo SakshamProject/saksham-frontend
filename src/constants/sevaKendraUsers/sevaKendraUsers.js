@@ -144,7 +144,7 @@ export const sevakendraUsersColumn = [
     width: 240,
   },
   {
-    Header: "designation",
+    Header: "Designation",
     accessor: "designation.name",
     filterAccessor: "designationName",
     width: 240,

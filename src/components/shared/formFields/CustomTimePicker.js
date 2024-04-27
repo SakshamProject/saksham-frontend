@@ -58,7 +58,7 @@ export const CustomTimePicker = ({
 
 CustomTimePicker.propTypes = {
   value: propTypes.object,
-  touched: propTypes.func,
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

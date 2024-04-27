@@ -50,8 +50,7 @@ export const CustomDatePicker = ({
           textField: {
             size,
             autoComplete,
-            onBlur: (e) =>
-              (setTouched && setTouched(name, e.type === "blur")) || (() => {}),
+            onBlur: (e) => setTouched && setTouched(name, e.type === "blur"),
             error: Boolean(customHelperText || (touched && errors)),
             helperText: customHelperText || (touched && errors) || " ",
           },
@@ -64,7 +63,7 @@ export const CustomDatePicker = ({
 CustomDatePicker.propTypes = {
   customOnChange: propTypes.func,
   value: propTypes.any,
-  touched: propTypes.func,
+  touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

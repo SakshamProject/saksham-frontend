@@ -45,26 +45,21 @@ const Form = () => {
   const editId = params.get("editId");
 
   const handleOnSubmit = (values) => {
-    const payload = multiPartFormData(
-      getValidValues({
-        ...values,
+    const payload = getValidValues({
+      ...values,
+      status: values?.status,
+      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
+      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+      effectiveDate: editId
+        ? values?.effectiveDate || ""
+        : formatDate({ date: new Date(), format: "iso" }),
+      auditlog: getValidValues({
         status: values?.status,
-        currentStatus: values?.status,
-        date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
-        dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-        effectiveDate: editId
-          ? values?.effectiveDate || ""
-          : formatDate({ date: new Date(), format: "iso" }),
-        auditLog: getValidValues({
-          status: values?.status,
-          date: formatDate({ date: values?.date, format: "iso" }),
-          description: values?.description,
-          effectiveDate: editId
-            ? values?.effectiveDate || values?.date || ""
-            : formatDate({ date: new Date(), format: "iso" }),
-        }),
-      })
-    );
+        date: formatDate({ date: values?.date, format: "iso" }),
+        description: values?.description,
+      }),
+      currentStatus: values?.status,
+    });
     onSubmit(payload);
   };
 
@@ -460,7 +455,7 @@ const Form = () => {
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
         }}
-        isUpdate={editId}
+        isUpdate={!!editId}
         isViewMode={isViewMode}
       />
       <AuditLog
