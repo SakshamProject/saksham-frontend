@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import {
   CustomCheckBox,
@@ -29,10 +29,9 @@ import { validationSchema } from "../../../validations/divyangDetails/address";
 
 const Address = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const [params] = useSearchParams();
-  const isViewMode = state?.viewDetails;
-  const editId = params.get("editId");
+  const {
+    state: { isViewMode, editId },
+  } = useLocation();
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);

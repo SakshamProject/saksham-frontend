@@ -123,7 +123,7 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.SEVAKENDRA,
-        `${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`
+        API_PATHS?.ACTIVE(`${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`)
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.sevaKendraId,

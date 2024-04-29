@@ -19,6 +19,7 @@ import {
 import { CommonList, DividerLine, DivyangDetail } from "../../shared";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
+import noFile from "../../../assets/nofile.png";
 
 const Container = styled(Box)({
   height: 80,
@@ -142,7 +143,7 @@ const List = () => {
 
   return (
     <>
-      {1 === 2 ? (
+      {1 === 1 ? (
         <CommonList
           label={"Divyang Details"}
           listPath={"DIVYANG_DETAILS_LIST"}
@@ -241,8 +242,7 @@ const List = () => {
                   onClick={() =>
                     setOpen({
                       title: "Voter ID",
-                      image:
-                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                      image: "",
                     })
                   }
                   matches={`${matches}`}
@@ -263,8 +263,7 @@ const List = () => {
                   onClick={() =>
                     setOpen({
                       title: "Driving Lisence",
-                      image:
-                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                      image: "",
                     })
                   }
                   matches={`${matches}`}
@@ -288,8 +287,7 @@ const List = () => {
                   onClick={() =>
                     setOpen({
                       title: "Aadhar Card",
-                      image:
-                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                      image: "",
                     })
                   }
                   matches={`${matches}`}
@@ -299,8 +297,7 @@ const List = () => {
                   onClick={() =>
                     setOpen({
                       title: "Pension Card",
-                      image:
-                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                      image: "",
                     })
                   }
                   matches={`${matches}`}
@@ -321,8 +318,7 @@ const List = () => {
                   onClick={() =>
                     setOpen({
                       title: "Disability Scheme No",
-                      image:
-                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                      image: "",
                     })
                   }
                   matches={`${matches}`}
@@ -480,7 +476,7 @@ const List = () => {
                       </Close>
                     </Box>
                     <img
-                      src={open?.image}
+                      src={open?.image || noFile}
                       alt="img"
                       style={{
                         width: matches
@@ -492,7 +488,7 @@ const List = () => {
                           : "74%",
                         aspectRatio: 1 / 1.41,
                         objectPosition: "center",
-                        objectFit: "cover",
+                        objectFit: open?.image ? "cover" : "contain",
                         borderRadius: "4px",
                         boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.5)",
                         cursor: "pointer",
@@ -501,8 +497,11 @@ const List = () => {
                         display: "block",
                         margin: "auto",
                         userSelect: "none",
+                        background: "white",
                       }}
-                      onClick={(e) => e.stopPropagation()}
+                      onClick={(e) => {
+                        !!open?.image && e.stopPropagation();
+                      }}
                     />
                   </Box>
                 </Box>

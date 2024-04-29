@@ -18,7 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleSubmit = () => {
-    setCookie("token", "testing token");
+    // setCookie("token", "testing token");
     navigate(ROUTE_PATHS.DASHBOARD);
   };
 
@@ -27,20 +27,20 @@ const Login = () => {
   //     "password": "Abcd@123"
   // }
 
-  // const { data } = useQuery({
-  //   queryKey: ["communityCategory"],
-  //   queryFn: () =>
-  //     axios.post("http://localhost:3000/auth/user/login", {
-  //       userName: "admin",
-  //       password: "Abcd@123",
-  //     }),
-  // });
+  const { data } = useQuery({
+    queryKey: ["communityCategory"],
+    queryFn: () =>
+      axios.post("http://localhost:3000/auth/user/login", {
+        userName: "admin",
+        password: "Abcd@123",
+      }),
+  });
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setCookie("token", data?.data?.token);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (data) {
+      setCookie("token", data?.data?.token);
+    }
+  }, [data]);
 
   return (
     <LoginWrapper container>

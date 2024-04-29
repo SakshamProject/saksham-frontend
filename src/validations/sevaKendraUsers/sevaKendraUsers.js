@@ -89,8 +89,8 @@ export const validationSchema = (editId) =>
         SPECIAL_CHARACTER,
         "Password must contain at least one special character"
       )
-      .min(6, "Password must be at least 6 characters long")
-      .max(25, "Password cannot have more than 25 characters"),
+      .min(7, "Password must be at least 7 characters long")
+      .max(24, "Password cannot have more than 24 characters"),
     confirmPassword: string()
       .trim()
       .test(

@@ -7,11 +7,11 @@ export const appApi = axios.create({
     process.env.NODE_ENV === "development"
       ? process.env.REACT_APP_DEV_MODE
       : process.env.REACT_APP_PRO_MODE,
-  withCredentials: true,
 });
 
 appApi.interceptors.request.use(
   (config) => {
+    config.headers["authorization"] = getCookie("token");
     dispatchLoading(true);
     return config;
   },

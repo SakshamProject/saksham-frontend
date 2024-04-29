@@ -22,9 +22,12 @@ export const initialValues = {
   communityCategoryId: "",
   community: "",
   extraCurricularActivity: "",
-  loginUserName: "",
+  userName: "",
   password: "",
   confirmPassword: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {
@@ -121,9 +124,9 @@ export const fields = {
     label: "Extra Curricular Activity, If any",
     name: "extraCurricularActivity",
   },
-  loginUserName: {
+  userName: {
     label: "Login User Name *",
-    name: "loginUserName",
+    name: "userName",
   },
   password: {
     label: "Password *",

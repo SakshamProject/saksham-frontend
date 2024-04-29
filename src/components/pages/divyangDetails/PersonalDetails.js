@@ -19,15 +19,27 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { getAge, getValidValues } from "../../../utils/common";
+import { formatDate, getAge, getValidValues } from "../../../utils/common";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { genders, yesNoSeed } from "../../../constants/seeds";
+import {
+  bloodGroup,
+  genders,
+  statusSeeds,
+  yesNoSeed,
+} from "../../../constants/seeds";
 import { API_PATHS } from "../../../api/apiPaths";
-import { getApiService, getByIdApiService } from "../../../api/api";
-import { useQuery } from "@tanstack/react-query";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../api/api";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { validationSchema } from "../../../validations/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
+import StatusFields from "../../shared/StatusFields";
+import { dispatchNotifyAction } from "../../../utils/dispatch";
 
 const PersonalDetails = () => {
   const navigate = useNavigate();
@@ -39,11 +51,42 @@ const PersonalDetails = () => {
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
-    console.log(payload);
-    // onSubmit(payload);
-    // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
+    const payload = getValidValues({
+      ...values,
+      status: values?.status,
+      age: Number(values?.age),
+      isMarried: values?.isMarried === CODES?.YES,
+      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
+      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+      effectiveDate: editId
+        ? values?.effectiveDate || ""
+        : formatDate({ date: new Date(), format: "iso" }),
+      auditlog: getValidValues({
+        status: values?.status,
+        date: formatDate({ date: values?.date, format: "iso" }),
+        description: values?.description,
+      }),
+      currentStatus: values?.status,
+    });
+    onSubmit({ personalDetails: payload, pageNumber: 1 });
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["create and update"],
+    mutationFn: (data) =>
+      editId
+        ? updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data)
+        : postApiService(API_PATHS?.DIVYANG_DETAILS, data),
+    onSuccess: ({ data }) => {
+      dispatchNotifyAction("Divyang", editId ? CODES?.UPDATE : CODES?.ADDED);
+      navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF}`, {
+        state: {
+          editId: data?.data?.id,
+          isViewMode: !!isViewMode,
+        },
+      });
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -189,16 +232,17 @@ const PersonalDetails = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <CustomTextField
+            <SingleAutoComplete
               label={fields?.bloodGroup?.label}
               name={fields?.bloodGroup?.name}
               value={values?.bloodGroup}
-              onChange={handleChange}
+              onChange={(_, value) => {
+                setFieldValue(fields?.bloodGroup?.name, value);
+              }}
               onBlur={handleBlur}
               errors={errors?.bloodGroup}
               touched={touched?.bloodGroup}
-              isViewMode={isViewMode}
-              fieldType={fields?.bloodGroup?.type}
+              inputValues={bloodGroup || []}
             />
           </Grid>
 
@@ -457,14 +501,14 @@ const PersonalDetails = () => {
 
           <Grid item xs={12}>
             <CustomTextField
-              label={fields?.loginUserName?.label}
-              name={fields?.loginUserName?.name}
-              value={values.loginUserName}
+              label={fields?.userName?.label}
+              name={fields?.userName?.name}
+              value={values.userName}
               onChange={handleChange}
               onBlur={handleBlur}
               isViewMode={isViewMode}
-              errors={errors.loginUserName}
-              touched={touched.loginUserName}
+              errors={errors.userName}
+              touched={touched.userName}
             />
           </Grid>
 
@@ -495,6 +539,22 @@ const PersonalDetails = () => {
               touched={touched.confirmPassword}
             />
           </Grid>
+
+          <WithCondition isValid={editId}>
+            <StatusFields
+              setFieldTouched={setFieldTouched}
+              handleBlur={handleBlur}
+              handleChange={handleChange}
+              values={values}
+              touched={touched}
+              errors={errors}
+              setFieldValue={setFieldValue}
+              statusSeeds={statusSeeds}
+              isViewMode={isViewMode}
+              // statusHistory={values?.userAuditLog}
+              disableListLayout
+            />
+          </WithCondition>
 
           <FormActions
             handleSubmit={handleSubmit}
