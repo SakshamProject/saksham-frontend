@@ -17,6 +17,9 @@ export const initialValues = {
   udidCardNumber: "",
   udidEnrollmentNumber: "",
   udidCardUrl: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {

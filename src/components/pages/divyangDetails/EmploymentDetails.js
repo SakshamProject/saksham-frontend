@@ -28,9 +28,20 @@ const EmploymentDetails = () => {
   const isViewMode = state?.isViewMode;
   const editId = state?.editId;
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
+  const handleOnReset = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
   const handleSkip = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY);
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
@@ -225,7 +236,6 @@ const EmploymentDetails = () => {
             <FormActions
               handleSubmit={handleSubmit}
               handleOnReset={handleOnReset}
-              isUpdate={!!editId}
               isViewMode={isViewMode}
               disableSubmit={isViewMode}
               handleSkip={handleSkip}

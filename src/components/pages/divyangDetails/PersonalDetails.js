@@ -89,10 +89,9 @@ const PersonalDetails = () => {
       currentStatus: values?.status,
       educationQualifications: values?.educationQualifications?.map(
         (value) => ({
-          educationQualificationId: value?.educationQualificationId?.id,
-          ...(value?.educationQualificationTypeId && {
-            educationQualificationTypeId:
-              value?.educationQualificationTypeId?.id,
+          educationQualificationTypeId: value?.educationQualificationTypeId?.id,
+          ...(value?.educationQualificationId && {
+            educationQualificationId: value?.educationQualificationId?.id,
           }),
         })
       ),
@@ -115,7 +114,10 @@ const PersonalDetails = () => {
         ? updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data)
         : postApiService(API_PATHS?.DIVYANG_DETAILS, data),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction("Divyang", editId ? CODES?.UPDATE : CODES?.ADDED);
+      dispatchNotifyAction(
+        "Personal Details",
+        editId ? CODES?.SAVED : CODES?.ADDED
+      );
       navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF}`, {
         state: {
           editId: data?.data?.id,
@@ -133,27 +135,27 @@ const PersonalDetails = () => {
 
   const handleEducationQualification = () => {
     if (
-      !eqValues?.educationQualificationTypeId &&
+      !eqValues?.educationQualificationId &&
       !!educationQualificationSubType?.length
     ) {
       eqSetFieldError(
-        fields?.educationQualificationTypeId?.name,
+        fields?.educationQualificationId?.name,
         "Education Qualification Sub Type is required"
       );
       return;
     } else if (
       (values?.educationQualifications.some(
         (obj) =>
-          obj.educationQualificationTypeId?.id ===
-          eqValues?.educationQualificationTypeId
-      ) &&
-        !!eqValues?.educationQualificationTypeId) ||
-      (values?.educationQualifications.some(
-        (obj) =>
           obj.educationQualificationId?.id ===
           eqValues?.educationQualificationId
       ) &&
-        !eqValues?.educationQualificationTypeId)
+        !!eqValues?.educationQualificationId) ||
+      (values?.educationQualifications.some(
+        (obj) =>
+          obj.educationQualificationTypeId?.id ===
+          eqValues?.educationQualificationTypeId
+      ) &&
+        !eqValues?.educationQualificationId)
     ) {
       dispatchNotifyError("Education Qualification already added");
     } else {
@@ -162,19 +164,19 @@ const PersonalDetails = () => {
           ...values.educationQualifications,
         ];
         updatedEducationQualifications[tableEditId] = {
-          educationQualificationId: {
-            id: eqValues.educationQualificationId,
+          educationQualificationTypeId: {
+            id: eqValues.educationQualificationTypeId,
             name: getSeedNameById(
               educationQualification,
-              eqValues.educationQualificationId
+              eqValues.educationQualificationTypeId
             ),
           },
-          ...(eqValues.educationQualificationTypeId && {
-            educationQualificationTypeId: {
-              id: eqValues.educationQualificationTypeId,
+          ...(eqValues.educationQualificationId && {
+            educationQualificationId: {
+              id: eqValues.educationQualificationId,
               name: getSeedNameById(
                 educationQualificationSubType,
-                eqValues.educationQualificationTypeId
+                eqValues.educationQualificationId
               ),
             },
           }),
@@ -187,19 +189,19 @@ const PersonalDetails = () => {
         setFieldValue(fields?.educationQualifications?.name, [
           ...values?.educationQualifications,
           {
-            educationQualificationId: {
-              id: eqValues?.educationQualificationId,
+            educationQualificationTypeId: {
+              id: eqValues?.educationQualificationTypeId,
               name: getSeedNameById(
                 educationQualification,
-                eqValues?.educationQualificationId
+                eqValues?.educationQualificationTypeId
               ),
             },
-            ...(eqValues?.educationQualificationTypeId && {
-              educationQualificationTypeId: {
-                id: eqValues?.educationQualificationTypeId,
+            ...(eqValues?.educationQualificationId && {
+              educationQualificationId: {
+                id: eqValues?.educationQualificationId,
                 name: getSeedNameById(
                   educationQualificationSubType,
-                  eqValues?.educationQualificationTypeId
+                  eqValues?.educationQualificationId
                 ),
               },
             }),
@@ -262,15 +264,15 @@ const PersonalDetails = () => {
   const { data: educationQualificationSubType } = useQuery({
     queryKey: [
       "educationQualificationSubType",
-      eqValues?.educationQualificationId,
+      eqValues?.educationQualificationTypeId,
     ],
     queryFn: () =>
       getByIdApiService(
         API_PATHS.EDUCATION_QUALIFICATION,
-        eqValues?.educationQualificationId
+        eqValues?.educationQualificationTypeId
       ),
     select: ({ data }) => data?.data?.educationQualification,
-    enabled: !!eqValues?.educationQualificationId,
+    enabled: !!eqValues?.educationQualificationTypeId,
   });
 
   const { data } = useCustomQuery({
@@ -287,6 +289,13 @@ const PersonalDetails = () => {
         description: data?.status === CODES?.ACTIVE ? "" : data?.description,
         isMarried: data?.isMarried ? CODES?.YES : CODES?.NO,
         userName: data?.person?.userName,
+        educationQualifications: data?.educationQualifications.map((value) => ({
+          educationQualificationTypeId: value?.educationQualificationType,
+          educationQualificationId: {
+            id: value?.educationQualification?.id,
+            name: value?.educationQualification?.name,
+          },
+        })),
       });
     },
     select: ({ data }) => data?.data,
@@ -295,11 +304,11 @@ const PersonalDetails = () => {
   const handleEditList = (index) => {
     setTableEditId(index);
     eqSetValues({
-      educationQualificationId:
-        values?.educationQualifications[index]?.educationQualificationId?.id,
       educationQualificationTypeId:
         values?.educationQualifications[index]?.educationQualificationTypeId
           ?.id,
+      educationQualificationId:
+        values?.educationQualifications[index]?.educationQualificationId?.id,
     });
   };
 
@@ -555,23 +564,26 @@ const PersonalDetails = () => {
           </Grid>
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
-              label={fields?.educationQualificationId?.label}
-              name={fields?.educationQualificationId?.name}
-              value={eqValues?.educationQualificationId}
+              label={fields?.educationQualificationTypeId?.label}
+              name={fields?.educationQualificationTypeId?.name}
+              value={eqValues?.educationQualificationTypeId}
               onChange={(_, value) => {
-                eqSetFieldValue(fields?.educationQualificationId?.name, value);
-                eqSetFieldValue(fields?.educationQualificationTypeId?.name, "");
-                eqSetFieldTouched(
-                  fields?.educationQualificationId?.name,
-                  false
+                eqSetFieldValue(
+                  fields?.educationQualificationTypeId?.name,
+                  value
                 );
+                eqSetFieldValue(fields?.educationQualificationId?.name, "");
                 eqSetFieldTouched(
                   fields?.educationQualificationTypeId?.name,
                   false
                 );
+                eqSetFieldTouched(
+                  fields?.educationQualificationId?.name,
+                  false
+                );
               }}
-              errors={eqErrors?.educationQualificationId}
-              touched={eqTouched?.educationQualificationId}
+              errors={eqErrors?.educationQualificationTypeId}
+              touched={eqTouched?.educationQualificationTypeId}
               inputValues={educationQualification || []}
               isViewMode={isViewMode}
             />
@@ -579,27 +591,27 @@ const PersonalDetails = () => {
 
           <WithCondition
             isValid={
-              !!eqValues?.educationQualificationId &&
+              !!eqValues?.educationQualificationTypeId &&
               !!educationQualificationSubType?.length
             }
           >
             <Grid item xs={12} md={6}>
               <SingleAutoComplete
-                label={fields?.educationQualificationTypeId?.label}
-                name={fields?.educationQualificationTypeId?.name}
-                value={eqValues?.educationQualificationTypeId}
+                label={fields?.educationQualificationId?.label}
+                name={fields?.educationQualificationId?.name}
+                value={eqValues?.educationQualificationId}
                 onChange={(_, value) => {
                   eqSetFieldValue(
-                    fields?.educationQualificationTypeId?.name,
+                    fields?.educationQualificationId?.name,
                     value
                   );
                   eqSetFieldTouched(
-                    fields?.educationQualificationTypeId?.name,
+                    fields?.educationQualificationId?.name,
                     false
                   );
                 }}
-                errors={eqErrors?.educationQualificationTypeId}
-                touched={eqTouched?.educationQualificationTypeId}
+                errors={eqErrors?.educationQualificationId}
+                touched={eqTouched?.educationQualificationId}
                 inputValues={educationQualificationSubType || []}
                 isViewMode={isViewMode}
               />
@@ -756,7 +768,6 @@ const PersonalDetails = () => {
           <FormActions
             handleSubmit={handleSubmit}
             handleOnReset={handleOnReset}
-            isUpdate={!!editId}
             disableSubmit={isViewMode}
             submitLabel={"Save\xa0&\xa0Next"}
           />

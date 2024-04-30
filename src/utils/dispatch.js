@@ -39,6 +39,8 @@ const dispatchNotifyAction = (title, action) => {
       ? `${title} Updated successfully !`
       : action === CODES?.DELETE
       ? `${title} Deleted successfully !`
+      : action === CODES?.SAVED
+      ? `${title} Saved successfully !`
       : "";
   dispatchNotifyUser([message, "success"]);
 };

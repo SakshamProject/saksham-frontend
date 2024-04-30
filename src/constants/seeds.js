@@ -128,3 +128,18 @@ export const bloodGroup = [
     name: "Others",
   },
 ];
+
+export const authorities = [
+  {
+    id: "MEDICAL_BOARD",
+    name: "Medical Board",
+  },
+  {
+    id: "GOVERNMENT_DOCTOR",
+    name: "Government Doctor",
+  },
+  {
+    id: "PRIVATE_DOCTOR",
+    name: "Private Doctor",
+  },
+];

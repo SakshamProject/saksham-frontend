@@ -156,7 +156,7 @@ export const validationSchema = (editId) =>
   });
 
 export const eqValidationSchema = object({
-  educationQualificationId: string().required(
+  educationQualificationTypeId: string().required(
     "Educational Qualification is required"
   ),
 });
