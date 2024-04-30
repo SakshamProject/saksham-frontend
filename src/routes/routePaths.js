@@ -3,6 +3,8 @@ export const ROUTE_PATHS = {
   NOT_FOUND: "*",
 
   LOGIN: "/login",
+  FORGOT_PASSWORD: "/forgetPassword",
+  RESET_PASSWORD: "/resetPassword",
 
   PROFILE: "/profile",
 

@@ -1,20 +1,42 @@
 export const API_PATHS = {
+  // Login
+  LOGIN: "/auth/user/login",
+  LOGIN_DIVYANG: "/auth/divyang/login",
+
+  // Logout
+  LOGOUT: "/auth/user/logout",
+  LOGOUT_DIVYANG: "/auth/divyang/logout",
+
+  // Forget Password
+  FORGET_PASSWORD: "/auth/user/forgetpassword",
+  FORGET_PASSWORD_DIVYANG: "/auth/divyang/forgetpassword",
+
+  // Update Password
+  UPDATE_PASSWORD: "/auth/updatePassword",
+
+  // Divyang signup
+  SIGNUP: "/auth/divyang/signup",
+
+  // Reset Password
+  REST_PASSWORD: "/users/resetpassword",
+  REST_PASSWORD_DIVYANG: "/divyangdetails/resetpassword",
+
   // Setup master
-  SEVAKENDRA: "/sevakendras",
-  SEVAKENDRA_LIST: "/sevakendras/list",
+  SEVAKENDRA: "/api/sevakendras",
+  SEVAKENDRA_LIST: "/api/sevakendras/list",
 
   // Designation
-  DESIGNATION: "/designation",
-  DESIGNATIONS: "/designations",
-  FEATURES: "/designation/features",
-  DESIGNATION_LIST: "/designation/list",
+  DESIGNATION: "/api/designation",
+  DESIGNATIONS: "/api/designations",
+  FEATURES: "/api/designation/features",
+  DESIGNATION_LIST: "/api/designation/list",
 
   // Seva kendra users
-  SEVAKENDRA_USERS_LIST: "/users/list",
-  SEVAKENDRA_USERS: "/users",
+  SEVAKENDRA_USERS_LIST: "/api/users/list",
+  SEVAKENDRA_USERS: "/api/users",
 
   // State master
-  STATE_MASTER: "/typemaster/statemaster",
+  STATE_MASTER: "/api/typemaster/statemaster",
   TALUK: "/taluks",
   MUNICIPALITY: "/municipalities",
   CORPORATION: "/corporations",
@@ -24,26 +46,27 @@ export const API_PATHS = {
   MP_CONSTITUENCY: "/mp-constituencies",
 
   // General types
-  GENERAL_MASTER_SEED: "/typemaster/generalmaster/generalmasterseed",
-  EDUCATION_QUALIFICATION: "/typemaster/generalmaster/education-qualification",
-  COMMUNITY_CATEGORY: "/typemaster/generalmaster/communitycategory",
-  DISABILITY_TYPE: "/typemaster/generalmaster/disabilitytype",
-  SERVICE_TYPES: "/typemaster/generalmaster/servicetype",
-  STATES: "/typemaster/generalmaster/states",
-  DISTRICTS: "/typemaster/generalmaster/districts",
+  GENERAL_MASTER_SEED: "/api/typemaster/generalmaster/generalmasterseed",
+  EDUCATION_QUALIFICATION:
+    "/api/typemaster/generalmaster/education-qualification",
+  COMMUNITY_CATEGORY: "/api/typemaster/generalmaster/communitycategory",
+  DISABILITY_TYPE: "/api/typemaster/generalmaster/disabilitytype",
+  SERVICE_TYPES: "/api/typemaster/generalmaster/servicetype",
+  STATES: "/api/typemaster/generalmaster/states",
+  DISTRICTS: "/api/typemaster/generalmaster/districts",
 
   // Divyang details
-  DIVYANG_DETAILS: "/divyangDetails",
-  DIVYANG_DETAILS_LIST: "/divyangDetails/list",
+  DIVYANG_DETAILS: "/api/divyangDetails",
+  DIVYANG_DETAILS_LIST: "/api/divyangDetails/list",
 
   // Service master
-  SERVICES: "/services",
-  SERVICES_LIST: "/services/list",
+  SERVICES: "/api/services",
+  SERVICES_LIST: "/api/services/list",
 
   // Service Mapping
-  SERVICE_MAPPING: "/servicemapping",
-  SERVICE_MAPPING_LIST: "/servicemapping/list",
+  SERVICE_MAPPING: "/api/servicemapping",
+  SERVICE_MAPPING_LIST: "/api/servicemapping/list",
 
-  //active
+  // Active
   ACTIVE: (path) => `${path}?status=ACTIVE`,
 };

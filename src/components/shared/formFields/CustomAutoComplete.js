@@ -23,21 +23,22 @@ export const CustomAutoComplete = ({
 }) => {
   return (
     <Autocomplete
-      sx={sx}
       multiple
+      sx={sx}
       className={className}
       onChange={onChange}
-      autoComplete={Boolean(autoComplete)}
+      autoComplete={autoComplete}
       onBlur={onBlur}
       value={value || null}
       disabled={readOnly}
       options={inputValues || []}
       getOptionLabel={(option) =>
-        (getOptionLabel && getOptionLabel(option)) ||
-        option?.[labelAccessor] ||
-        option?.name ||
-        option?.label ||
-        "No data Found"
+        getOptionLabel
+          ? getOptionLabel(option)
+          : option?.[labelAccessor] ||
+            option?.name ||
+            option?.label ||
+            "No data Found"
       }
       isOptionEqualToValue={(option, value) =>
         option?.[accessor || "id"] === value?.[accessor || "id"]
@@ -65,7 +66,7 @@ export const CustomAutoComplete = ({
             helperText={customHelperText || (touched && errors) || " "}
             fullWidth
             onKeyDown={(e) => {
-              if (e?.keyCode === 13) {
+              if (e?.keyCode === 13 || e?.key === "Enter") {
                 e.preventDefault();
               }
             }}
@@ -90,7 +91,7 @@ CustomAutoComplete.propTypes = {
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,
   labelAccessor: propTypes.string,
-  autoComplete: propTypes.string,
+  autoComplete: propTypes.bool,
   isViewMode: propTypes.bool,
   customHelperText: propTypes.string,
   sx: propTypes.number,

@@ -24,7 +24,7 @@ export const LoginImageContainer = styled(Grid)({
 });
 
 export const ForgetPassword = styled("span")(({ theme }) => ({
-  color: theme.palette?.textColor?.blue,
+  color: theme.palette?.commonColor?.blue,
   cursor: "pointer",
   textDecoration: "underline",
 }));
@@ -42,11 +42,11 @@ export const LoginHeading = styled(Typography)(({ theme }) => ({
   width: "100%",
   fontSize: "32px",
   fontWeight: "500",
-  textTransform: "uppercase",
+  textTransform: "capitalize",
   letterSpacing: "0.00938em",
   display: "flex",
   alignItems: "center",
   gap: "27%",
   justifyContent: "center",
-  color: theme.palette?.textColor?.main,
+  color: theme.palette?.primary?.main,
 }));

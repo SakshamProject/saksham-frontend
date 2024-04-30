@@ -20,7 +20,8 @@ export const ChipTextField = ({
   chipVariant,
   chipValue,
   chipAccessor,
-  handleKeyPress,
+  onKeyPress,
+  onKeyDown,
 }) => {
   const handleDelete = (chipToDelete) => () => {
     const currentChips = chipValue?.filter(
@@ -28,15 +29,20 @@ export const ChipTextField = ({
         (chip?.[chipAccessor] || chip)?.toLowerCase() !==
         (chipToDelete?.[chipAccessor] || chipToDelete)?.toLowerCase()
     );
-    handleKeyPress(currentChips);
+    onKeyPress(currentChips);
   };
 
   const handleInputKeyPress = (e) => {
-    if (e.key === "Enter" && !!e.target.value.trim() && !errors) {
+    const currentValue = e?.target?.value.trim();
+    if (
+      (e?.key === "Enter" || e?.keycode === 13) &&
+      !!currentValue &&
+      !errors
+    ) {
       const duplicate = chipValue?.some(
         (item) =>
           (item?.[chipAccessor] || item)?.toLowerCase() ===
-          e.target.value.trim()?.toLowerCase()
+          currentValue?.toLowerCase()
       );
 
       if (duplicate) {
@@ -45,15 +51,28 @@ export const ChipTextField = ({
       }
 
       const currentChips = chipAccessor
-        ? [...chipValue, { [chipAccessor]: e.target.value.trim() }]
-        : [...chipValue, e.target.value.trim()];
+        ? [...chipValue, { [chipAccessor]: currentValue }]
+        : [...chipValue, currentValue];
       customOnChange({ event: e, value: "" });
-      handleKeyPress(currentChips);
+      onKeyPress(currentChips);
     }
+  };
+
+  const fieldStyle = {
+    ".MuiInputBase-root": {
+      display: "flex",
+      flexDirection: "column",
+      paddingLeft: "14px",
+      input: {
+        padding: "16px 14px",
+      },
+    },
+    ...style,
   };
 
   return (
     <TextField
+      fullWidth
       value={value}
       onChange={(e) =>
         customOnChange({
@@ -61,29 +80,19 @@ export const ChipTextField = ({
           value: e.target.value,
         })
       }
-      autoComplete={autoComplete || "off"}
+      autoComplete={autoComplete ? "on" : "off"}
       label={label}
       placeholder={placeholder}
       variant={variant || "outlined"}
       type={"text"}
       name={name}
-      fullWidth
       onBlur={onBlur}
-      sx={{
-        ".MuiInputBase-root": {
-          display: "flex",
-          flexDirection: "column",
-          paddingLeft: "14px",
-          input: {
-            padding: "16px 14px",
-          },
-        },
-        ...style,
-      }}
+      onKeyDown={onKeyDown}
+      sx={fieldStyle}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) || " "}
       InputProps={{
-        readOnly: Boolean(isViewMode),
+        readOnly: isViewMode,
         disabled,
         onKeyPress: (e) => handleInputKeyPress(e),
         startAdornment: chipValue?.length ? (
@@ -112,22 +121,23 @@ export const ChipTextField = ({
 };
 
 ChipTextField.propTypes = {
-  customOnChange: propTypes.func,
-  value: propTypes.object,
-  variant: propTypes.string,
   touched: propTypes.bool,
+  disabled: propTypes.bool,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.bool,
+  customOnChange: propTypes.func.isRequired,
+  onBlur: propTypes.func,
+  onKeyPress: propTypes.func,
+  onKeyDown: propTypes.func,
+  value: propTypes.object,
+  style: propTypes.object,
+  chipValue: propTypes.array,
+  variant: propTypes.string,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,
-  onBlur: propTypes.func,
   label: propTypes.string,
-  disabled: propTypes.bool,
-  style: propTypes.object,
-  isViewMode: propTypes.bool,
-  autoComplete: propTypes.string,
   placeholder: propTypes.string,
   chipVariant: propTypes.string,
-  chipValue: propTypes.array,
   chipAccessor: propTypes.string,
-  handleKeyPress: propTypes.func,
 };
