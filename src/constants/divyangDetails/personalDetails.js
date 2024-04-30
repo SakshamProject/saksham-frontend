@@ -1,4 +1,7 @@
+import { name } from "dayjs/locale/en-gb";
 import { CODES } from "../globalConstants";
+import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
+import { IconButton } from "@mui/material";
 
 export const initialValues = {
   firstName: "",
@@ -16,15 +19,22 @@ export const initialValues = {
   isMarried: CODES?.NO,
   spouseName: "",
   spouseNumber: "",
-  qualification: "",
-  eductionQualification: "",
+  educationQualifications: [],
   religion: "",
   communityCategoryId: "",
   community: "",
   extraCurricularActivity: "",
-  loginUserName: "",
+  userName: "",
   password: "",
   confirmPassword: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
+};
+
+export const eqInitialValues = {
+  educationQualificationId: "",
+  educationQualificationTypeId: "",
 };
 
 export const fields = {
@@ -95,13 +105,16 @@ export const fields = {
     name: "spouseNumber",
     type: "mobile",
   },
-  qualification: {
-    label: "Select Educational Qualification",
-    name: "qualification",
+  educationQualifications: {
+    name: "educationQualifications",
   },
-  eductionQualification: {
+  educationQualificationId: {
+    label: "Select Educational Qualification",
+    name: "educationQualificationId",
+  },
+  educationQualificationTypeId: {
     label: "Select Educational Qualification Sub Type *",
-    name: "eductionQualification",
+    name: "educationQualificationTypeId",
   },
   religion: {
     label: "Religion *",
@@ -121,9 +134,9 @@ export const fields = {
     label: "Extra Curricular Activity, If any",
     name: "extraCurricularActivity",
   },
-  loginUserName: {
+  userName: {
     label: "Login User Name *",
-    name: "loginUserName",
+    name: "userName",
   },
   password: {
     label: "Password *",
@@ -134,3 +147,47 @@ export const fields = {
     name: "confirmPassword",
   },
 };
+
+export const eqColumns = ({
+  tableEditId,
+  handleDeleteList,
+  handleEditList,
+}) => [
+  {
+    Header: "Qualification",
+    accessor: "educationQualificationId.name",
+    width: 240,
+    sticky: "left",
+  },
+  {
+    Header: "Sub Type",
+    accessor: "educationQualificationTypeId.name",
+    Cell: ({ value }) => value || "-",
+    width: 240,
+  },
+  {
+    Header: "   ",
+    Cell: (props) => {
+      return (
+        <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
+          <div>
+            <IconButton
+              onClick={() => handleEditList(props?.row?.index)}
+              disabled={tableEditId === 0 || !!tableEditId}
+            >
+              <EditIcon disabled={tableEditId === 0 || !!tableEditId} />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                handleDeleteList(props?.row?.index);
+              }}
+              disabled={tableEditId === 0 || !!tableEditId}
+            >
+              <DeleteIcon disabled={tableEditId === 0 || !!tableEditId} />
+            </IconButton>
+          </div>
+        </OptionsContainerChild>
+      );
+    },
+  },
+];

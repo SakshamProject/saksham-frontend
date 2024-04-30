@@ -11,7 +11,7 @@ import {
   FormActions,
 } from "../../shared";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   fields,
   initialValues,
@@ -24,9 +24,8 @@ import { getValidValues } from "../../../utils/common";
 const IdProffUploads = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const isViewMode = state?.viewDetails;
-  const editId = params.get("editId");
+  const isViewMode = state?.isViewMode;
+  const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL);

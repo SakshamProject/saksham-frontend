@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -33,9 +33,8 @@ import { CODES } from "../../../constants/globalConstants";
 const DisabilityDetails = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const isViewMode = state?.viewDetails;
-  const editId = params.get("editId");
+  const isViewMode = state?.isViewMode;
+  const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);

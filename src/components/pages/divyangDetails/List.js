@@ -1,11 +1,25 @@
-import { Box, Grid, Typography, styled, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Typography,
+  styled,
+  useMediaQuery,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
+import { useState } from "react";
+import CloseIcon from "@mui/icons-material/Close";
 
-import { divyangDetailsColumn } from "../../../constants/divyangDetails/divyangDetails";
+import {
+  divayangDetail,
+  divyangDetailsColumn,
+  mapDivyang,
+} from "../../../constants/divyangDetails/divyangDetails";
 import { CommonList, DividerLine, DivyangDetail } from "../../shared";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { useTheme } from "@mui/material/styles";
+import noFile from "../../../assets/nofile.png";
 
 const Container = styled(Box)({
   height: 80,
@@ -16,6 +30,14 @@ const Container = styled(Box)({
   flexDirection: "column",
   marginLeft: "5%",
 });
+
+const Close = styled(IconButton)(({ theme }) => ({
+  color: theme?.palette?.commonColor?.white,
+  fontSize: 24,
+  position: "absolute",
+  top: 10,
+  right: 10,
+}));
 
 const ContainerAlign = styled(Box)({
   width: "100%",
@@ -60,7 +82,7 @@ const CustomBox = styled(Box)(({ theme, matches, width }) => ({
   width: matches === "true" ? width || "100%" : "100%",
 }));
 
-const CustomDataShower = ({ title, value, link, matches, width }) => {
+const CustomDataShower = ({ title, value, matches, width, onClick }) => {
   return (
     <Box
       sx={{
@@ -80,14 +102,20 @@ const CustomDataShower = ({ title, value, link, matches, width }) => {
       >
         {title}
       </Box>
-      {link ? (
+      {onClick ? (
         <Box
           sx={{
             fontStyle: "italic",
             color: theme.palette?.commonColor?.barkBlue,
             textDecoration: "underline",
             marginBottom: "6px",
+            cursor: "pointer",
+            userSelect: "none",
+            "&:active": {
+              textDecoration: "none",
+            },
           }}
+          onClick={() => onClick()}
         >
           View File
         </Box>
@@ -109,10 +137,13 @@ const List = () => {
   const navigate = useNavigate();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
+  const matchesMd = useMediaQuery(theme.breakpoints.up("md"));
+  const matchesSm = useMediaQuery(theme.breakpoints.up("sm"));
+  const [open, setOpen] = useState(false);
 
   return (
     <>
-      {1 === 2 ? (
+      {1 === 1 ? (
         <CommonList
           label={"Divyang Details"}
           listPath={"DIVYANG_DETAILS_LIST"}
@@ -149,11 +180,9 @@ const List = () => {
               <Grid item xs={12}>
                 <DivyangDetail />
               </Grid>
-
               <Grid item xs={12}>
                 <DividerLine gap={"8px 0 24px"} />
               </Grid>
-
               <CustomBox matches={`${matches}`}>
                 <CustomDataShower
                   title={"DOB"}
@@ -209,23 +238,45 @@ const List = () => {
 
               <CustomBox matches={`${matches}`}>
                 <CustomDataShower
-                  title={"Votet ID"}
-                  link={" "}
+                  title={"Voter ID"}
+                  onClick={() =>
+                    setOpen({
+                      title: "Voter ID",
+                      image: "",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"PAN Card"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "PAN Card",
+                      image:
+                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"Driving Lisence"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Driving Lisence",
+                      image: "",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"Ration Card"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Ration Card",
+                      image:
+                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                    })
+                  }
                   matches={`${matches}`}
                 />
               </CustomBox>
@@ -233,22 +284,43 @@ const List = () => {
               <CustomBox matches={`${matches}`}>
                 <CustomDataShower
                   title={"Aadhar Card"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Aadhar Card",
+                      image: "",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"Pension Card"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Pension Card",
+                      image: "",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"Medical Insurance Card"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Medical Insurance Card",
+                      image:
+                        "https://www.pdffiller.com/preview/244/69/244069077.png",
+                    })
+                  }
                   matches={`${matches}`}
                 />
                 <CustomDataShower
                   title={"Disability Scheme No"}
-                  link={" "}
+                  onClick={() =>
+                    setOpen({
+                      title: "Disability Scheme No",
+                      image: "",
+                    })
+                  }
                   matches={`${matches}`}
                 />
               </CustomBox>
@@ -351,6 +423,91 @@ const List = () => {
                   width={"50%"}
                 />
               </CustomBox>
+              {/* {mapDivyang(divayangDetail(), matches)} */}
+
+              {open ? (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    width: "100%",
+                    height: "100%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 1000,
+                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    overflow: "auto",
+                    scrollbarWidth: "thin",
+                  }}
+                >
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      padding: "24px",
+                    }}
+                    onClick={() => setOpen(false)}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                      }}
+                    >
+                      <CustomTypography
+                        capitalize={"capitalize"}
+                        variant="h6"
+                        style={{
+                          fontSize: "24px",
+                        }}
+                        color={theme.palette.commonColor.white}
+                      >
+                        {open?.title}
+                      </CustomTypography>
+                      <Close onClick={() => setOpen(false)}>
+                        <CloseIcon sx={{ fontSize: 30 }} />
+                      </Close>
+                    </Box>
+                    <img
+                      src={open?.image || noFile}
+                      alt="img"
+                      style={{
+                        width: matches
+                          ? "32%"
+                          : matchesMd
+                          ? "40%"
+                          : matchesSm
+                          ? "56%"
+                          : "74%",
+                        aspectRatio: 1 / 1.41,
+                        objectPosition: "center",
+                        objectFit: open?.image ? "cover" : "contain",
+                        borderRadius: "4px",
+                        boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.5)",
+                        cursor: "pointer",
+                        transition: "transform 0.3s ease-in-out",
+                        position: "relative",
+                        display: "block",
+                        margin: "auto",
+                        userSelect: "none",
+                        background: "white",
+                      }}
+                      onClick={(e) => {
+                        !!open?.image && e.stopPropagation();
+                      }}
+                    />
+                  </Box>
+                </Box>
+              ) : (
+                ""
+              )}
             </StyledFormContainer>
           </Grid>
         </>

@@ -7,5 +7,6 @@ export const CustomTypography = styled(Typography)(
     fontSize: "16px",
     fontWeight: "bold",
     marginBottom: 16,
+    userSelect: "none",
   })
 );

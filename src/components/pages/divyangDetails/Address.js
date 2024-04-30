@@ -1,8 +1,8 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   CustomCheckBox,
   CustomRadioButton,
@@ -20,28 +20,65 @@ import {
   dependentValuesCommunication,
 } from "../../../constants/divyangDetails/address";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { getValidValues } from "../../../utils/common";
-import { getApiService, getByIdApiService } from "../../../api/api";
+import { formatDate, getValidValues } from "../../../utils/common";
+import {
+  getApiService,
+  getByIdApiService,
+  updateApiService,
+} from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import { locationSeed } from "../../../constants/seeds";
 import { CODES } from "../../../constants/globalConstants";
 import { validationSchema } from "../../../validations/divyangDetails/address";
+import { dispatchNotifyAction } from "../../../utils/dispatch";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const Address = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const isViewMode = state?.viewDetails;
-  const editId = params.get("editId");
+  const isViewMode = state?.isViewMode;
+  const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
-    // onSubmit(payload);
-    // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY);
+    const payload = getValidValues({
+      ...values,
+      status: values?.status,
+      isRural: values?.isRural === CODES?.RURAL,
+      isSameAddress: !!values?.isSameAddress,
+      isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
+      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
+      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+      effectiveDate: editId
+        ? values?.effectiveDate || ""
+        : formatDate({ date: new Date(), format: "iso" }),
+      auditLog: getValidValues({
+        status: values?.status,
+        date: formatDate({ date: values?.date, format: "iso" }),
+        description: values?.description,
+      }),
+      currentStatus: values?.status,
+    });
+
+    onSubmit({ addressRequest: payload, pageNumber: 3 });
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["update"],
+    mutationFn: (data) =>
+      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
+    onSuccess: ({ data }) => {
+      dispatchNotifyAction("Divyang", CODES?.UPDATE);
+      navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY}`, {
+        state: {
+          editId: data?.data?.id,
+          isViewMode: !!isViewMode,
+        },
+      });
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -97,6 +134,23 @@ const Address = () => {
     select: ({ data }) => data?.data,
     enabled: !!values?.districtIdCommunication,
   });
+
+  // const { data } = useCustomQuery({
+  //   queryKey: ["divyangGetById"],
+  //   queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+  //   enabled: !!editId,
+  //   onSuccess: (data) => {
+  //     console.log(data);
+  //     // setValues({
+  //     //   ...data,
+  //     //   status: data?.status,
+  //     //   date:
+  //     //     data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+  //     //   description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+  //     // });
+  //   },
+  //   select: ({ data }) => data?.data,
+  // });
 
   const removePermanentTouched = () => {
     setTouched({

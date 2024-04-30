@@ -85,3 +85,46 @@ export const locationSeed = [
     name: "Urban",
   },
 ];
+
+export const bloodGroup = [
+  {
+    id: "O_POSITIVE",
+    name: "O Positive",
+  },
+  {
+    id: "O_NEGATIVE",
+    name: "O Negative",
+  },
+  {
+    id: "B_POSITIVE",
+    name: "B Positive",
+  },
+  {
+    id: "B_NEGATIVE",
+    name: "B Negative",
+  },
+  {
+    id: "A_POSITIVE",
+    name: "A Positive",
+  },
+  {
+    id: "A_NEGATIVE",
+    name: "A Negative",
+  },
+  {
+    id: "AB_POSITIVE",
+    name: "AB Positive",
+  },
+  {
+    id: "AB_NEGATIVE",
+    name: "AB Negative",
+  },
+  {
+    id: "HH",
+    name: "HH",
+  },
+  {
+    id: "others",
+    name: "Others",
+  },
+];

@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
@@ -77,7 +77,8 @@ const Form = () => {
   const handleOnSubmit = (value) => {
     if (
       value?.chips?.length < 1 &&
-      GENERALTYPE_INCLUDE.includes(values?.typeMaster)
+      GENERALTYPE_INCLUDE.includes(values?.typeMaster) &&
+      !GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION
     ) {
       dispatchNotifyError("Minimum one Sub type name is required");
       return;
@@ -257,6 +258,9 @@ const Form = () => {
               isViewMode={isViewMode}
               chipAccessor={tableEditId ? "name" : ""}
             />
+            <Typography fontStyle={"italic"} fontSize={"13px"}>
+              <b>Note :</b> Press enter to add Sub types
+            </Typography>
           </Grid>
         </WithCondition>
       </WithCondition>
