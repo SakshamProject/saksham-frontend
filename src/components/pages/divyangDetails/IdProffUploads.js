@@ -23,15 +23,15 @@ import { getValidValues } from "../../../utils/common";
 
 const IdProffUploads = () => {
   const navigate = useNavigate();
-  const {
-    state: { isViewMode, editId },
-  } = useLocation();
+  const { state } = useLocation();
+  const isViewMode = state?.isViewMode;
+  const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL);
 
   const handleOnSubmit = (values) => {
-    if (Object.keys(getValidValues(values))?.length < 4) {
+    if (Object.keys(getValidValues(values))?.length < 4 && false) {
       dispatchNotifyError("Atleast Upload any 2 Id Proofs");
     } else {
       const payload = multiPartFormData(values);

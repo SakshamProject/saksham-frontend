@@ -43,14 +43,14 @@ const Form = () => {
   const navigate = useNavigate();
   const { pathname, search, state } = useLocation();
   const [params] = useSearchParams();
-  const editId = params.get("editId");
+  const editId = params.get("editId") || state?.editId;
   const allSteps = DIVYANG_STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
   const onChange = (step) =>
-    editId || true ? navigate(`${step?.route}${search}`, { state }) : null;
+    editId ? navigate(`${step?.route}${search}`, { state }) : null;
 
   return (
     <>

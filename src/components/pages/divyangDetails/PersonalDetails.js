@@ -1,9 +1,11 @@
 import { Grid } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 
 import { StyledFormContainer, theme } from "../../../styles";
 import {
+  eqColumns,
+  eqInitialValues,
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/personalDetails";
@@ -11,6 +13,7 @@ import {
   CustomDatePicker,
   CustomPasswordField,
   CustomRadioButton,
+  CustomReactTable,
   CustomTextField,
   CustomTextarea,
   DividerLine,
@@ -19,8 +22,13 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { formatDate, getAge, getValidValues } from "../../../utils/common";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  formatDate,
+  getAge,
+  getSeedNameById,
+  getValidValues,
+} from "../../../utils/common";
 import {
   bloodGroup,
   genders,
@@ -36,10 +44,17 @@ import {
 } from "../../../api/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { validationSchema } from "../../../validations/divyangDetails/personalDetails";
+import {
+  eqValidationSchema,
+  validationSchema,
+} from "../../../validations/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import StatusFields from "../../shared/StatusFields";
-import { dispatchNotifyAction } from "../../../utils/dispatch";
+import {
+  dispatchNotifyAction,
+  dispatchNotifyError,
+} from "../../../utils/dispatch";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const PersonalDetails = () => {
   const navigate = useNavigate();
@@ -47,10 +62,15 @@ const PersonalDetails = () => {
   const [params] = useSearchParams();
   const isViewMode = state?.viewDetails;
   const editId = params.get("editId");
+  const [tableEditId, setTableEditId] = useState("");
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
   const handleOnSubmit = (values) => {
+    if (!values?.educationQualifications?.length) {
+      dispatchNotifyError("Atleast Add One Education Qualification");
+      return;
+    }
     const payload = getValidValues({
       ...values,
       status: values?.status,
@@ -61,14 +81,31 @@ const PersonalDetails = () => {
       effectiveDate: editId
         ? values?.effectiveDate || ""
         : formatDate({ date: new Date(), format: "iso" }),
-      auditlog: getValidValues({
+      auditLog: getValidValues({
         status: values?.status,
         date: formatDate({ date: values?.date, format: "iso" }),
         description: values?.description,
       }),
       currentStatus: values?.status,
+      educationQualifications: values?.educationQualifications?.map(
+        (value) => ({
+          educationQualificationId: value?.educationQualificationId?.id,
+          ...(value?.educationQualificationTypeId && {
+            educationQualificationTypeId:
+              value?.educationQualificationTypeId?.id,
+          }),
+        })
+      ),
     });
-    onSubmit({ personalDetails: payload, pageNumber: 1 });
+    onSubmit({
+      personalDetails: payload,
+      pageNumber: 1,
+      auditLog: getValidValues({
+        status: values?.status,
+        date: formatDate({ date: values?.date, format: "iso" }),
+        description: values?.description,
+      }),
+    });
   };
 
   const { mutate: onSubmit } = useMutation({
@@ -88,9 +125,94 @@ const PersonalDetails = () => {
     },
   });
 
+  const resetEqvalues = () => {
+    setTableEditId("");
+    eqSetValues(eqInitialValues);
+    eqSetTouched({});
+  };
+
+  const handleEducationQualification = () => {
+    if (
+      !eqValues?.educationQualificationTypeId &&
+      !!educationQualificationSubType?.length
+    ) {
+      eqSetFieldError(
+        fields?.educationQualificationTypeId?.name,
+        "Education Qualification Sub Type is required"
+      );
+      return;
+    } else if (
+      (values?.educationQualifications.some(
+        (obj) =>
+          obj.educationQualificationTypeId?.id ===
+          eqValues?.educationQualificationTypeId
+      ) &&
+        !!eqValues?.educationQualificationTypeId) ||
+      (values?.educationQualifications.some(
+        (obj) =>
+          obj.educationQualificationId?.id ===
+          eqValues?.educationQualificationId
+      ) &&
+        !eqValues?.educationQualificationTypeId)
+    ) {
+      dispatchNotifyError("Education Qualification already added");
+    } else {
+      if (tableEditId === 0 || !!tableEditId) {
+        const updatedEducationQualifications = [
+          ...values.educationQualifications,
+        ];
+        updatedEducationQualifications[tableEditId] = {
+          educationQualificationId: {
+            id: eqValues.educationQualificationId,
+            name: getSeedNameById(
+              educationQualification,
+              eqValues.educationQualificationId
+            ),
+          },
+          ...(eqValues.educationQualificationTypeId && {
+            educationQualificationTypeId: {
+              id: eqValues.educationQualificationTypeId,
+              name: getSeedNameById(
+                educationQualificationSubType,
+                eqValues.educationQualificationTypeId
+              ),
+            },
+          }),
+        };
+        setFieldValue(
+          fields.educationQualifications.name,
+          updatedEducationQualifications
+        );
+      } else {
+        setFieldValue(fields?.educationQualifications?.name, [
+          ...values?.educationQualifications,
+          {
+            educationQualificationId: {
+              id: eqValues?.educationQualificationId,
+              name: getSeedNameById(
+                educationQualification,
+                eqValues?.educationQualificationId
+              ),
+            },
+            ...(eqValues?.educationQualificationTypeId && {
+              educationQualificationTypeId: {
+                id: eqValues?.educationQualificationTypeId,
+                name: getSeedNameById(
+                  educationQualificationSubType,
+                  eqValues?.educationQualificationTypeId
+                ),
+              },
+            }),
+          },
+        ]);
+      }
+      resetEqvalues();
+    }
+  };
+
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: validationSchema(editId),
     onSubmit: handleOnSubmit,
   });
 
@@ -106,6 +228,25 @@ const PersonalDetails = () => {
     setValues,
   } = formik;
 
+  const eqFormik = useFormik({
+    initialValues: eqInitialValues,
+    validationSchema: eqValidationSchema,
+    onSubmit: handleEducationQualification,
+  });
+
+  const {
+    values: eqValues,
+    handleBlur: eqHandleBlur,
+    touched: eqTouched,
+    errors: eqErrors,
+    handleSubmit: eqHandleSubmit,
+    setFieldValue: eqSetFieldValue,
+    setFieldTouched: eqSetFieldTouched,
+    setValues: eqSetValues,
+    setFieldError: eqSetFieldError,
+    setTouched: eqSetTouched,
+  } = eqFormik;
+
   const { data: educationQualification } = useQuery({
     queryKey: ["educationQualificationList"],
     queryFn: () => getApiService(API_PATHS?.EDUCATION_QUALIFICATION),
@@ -119,15 +260,55 @@ const PersonalDetails = () => {
   });
 
   const { data: educationQualificationSubType } = useQuery({
-    queryKey: ["educationQualificationSubType", values?.qualification],
+    queryKey: [
+      "educationQualificationSubType",
+      eqValues?.educationQualificationId,
+    ],
     queryFn: () =>
       getByIdApiService(
         API_PATHS.EDUCATION_QUALIFICATION,
-        values?.qualification
+        eqValues?.educationQualificationId
       ),
     select: ({ data }) => data?.data?.educationQualification,
-    enabled: !!values?.qualification,
+    enabled: !!eqValues?.educationQualificationId,
   });
+
+  const { data } = useCustomQuery({
+    queryKey: ["divyangGetById"],
+    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+    enabled: !!editId,
+    onSuccess: (data) => {
+      setValues({
+        ...initialValues,
+        ...data,
+        status: data?.status,
+        date:
+          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+        isMarried: data?.isMarried ? CODES?.YES : CODES?.NO,
+        userName: data?.person?.userName,
+      });
+    },
+    select: ({ data }) => data?.data,
+  });
+
+  const handleEditList = (index) => {
+    setTableEditId(index);
+    eqSetValues({
+      educationQualificationId:
+        values?.educationQualifications[index]?.educationQualificationId?.id,
+      educationQualificationTypeId:
+        values?.educationQualifications[index]?.educationQualificationTypeId
+          ?.id,
+    });
+  };
+
+  const handleDeleteList = (index) => {
+    setFieldValue(
+      fields?.educationQualifications?.name,
+      values?.educationQualifications?.filter((_, pos) => pos !== index)
+    );
+  };
 
   useEffect(() => {
     if (values?.dateOfBirth)
@@ -143,11 +324,6 @@ const PersonalDetails = () => {
       setFieldTouched(fields?.spouseNumber?.name, false);
     }
   }, [values?.isMarried]);
-
-  useEffect(() => {
-    setFieldValue(fields?.community?.name, "");
-    setFieldTouched(fields?.community?.name, false);
-  }, [values?.communityCategoryId]);
 
   return (
     <Grid container direction={"column"} width={"100%"}>
@@ -166,7 +342,6 @@ const PersonalDetails = () => {
               fieldType={fields?.firstName?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.lastName?.label}
@@ -180,7 +355,6 @@ const PersonalDetails = () => {
               fieldType={fields?.lastName?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.divyangId?.label}
@@ -194,7 +368,6 @@ const PersonalDetails = () => {
               fieldType={fields?.divyangId?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <FileUpload
               type={"image"}
@@ -211,7 +384,6 @@ const PersonalDetails = () => {
               }
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomRadioButton
               name={fields?.gender?.name}
@@ -230,7 +402,6 @@ const PersonalDetails = () => {
               }}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
               label={fields?.bloodGroup?.label}
@@ -245,7 +416,6 @@ const PersonalDetails = () => {
               inputValues={bloodGroup || []}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomDatePicker
               label={fields?.dateOfBirth?.label}
@@ -260,7 +430,6 @@ const PersonalDetails = () => {
               touched={touched?.dateOfBirth}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.age?.label}
@@ -274,7 +443,6 @@ const PersonalDetails = () => {
               fieldType={fields?.age?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mailId?.label}
@@ -288,7 +456,6 @@ const PersonalDetails = () => {
               fieldType={fields?.mailId?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mobileNumber?.label}
@@ -303,11 +470,9 @@ const PersonalDetails = () => {
               maxLength={10}
             />
           </Grid>
-
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.fatherName?.label}
@@ -321,7 +486,6 @@ const PersonalDetails = () => {
               fieldType={fields?.fatherName?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.motherName?.label}
@@ -335,11 +499,9 @@ const PersonalDetails = () => {
               fieldType={fields?.motherName?.type}
             />
           </Grid>
-
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
-
           <Grid item xs={12}>
             <CustomRadioButton
               name={fields?.isMarried?.name}
@@ -358,7 +520,6 @@ const PersonalDetails = () => {
               }}
             />
           </Grid>
-
           <WithCondition isValid={values?.isMarried === CODES?.YES}>
             <Grid item xs={12} md={6}>
               <CustomTextField
@@ -389,41 +550,84 @@ const PersonalDetails = () => {
               />
             </Grid>
           </WithCondition>
-
           <Grid item xs={12}>
             <DividerLine gap={"8px 0 24px"} />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
-              label={fields?.qualification?.label}
-              name={fields?.qualification?.name}
-              value={values?.qualification}
+              label={fields?.educationQualificationId?.label}
+              name={fields?.educationQualificationId?.name}
+              value={eqValues?.educationQualificationId}
               onChange={(_, value) => {
-                setFieldValue(fields?.qualification?.name, value);
-                setFieldValue(fields?.eductionQualification?.name, "");
+                eqSetFieldValue(fields?.educationQualificationId?.name, value);
+                eqSetFieldValue(fields?.educationQualificationTypeId?.name, "");
+                eqSetFieldTouched(
+                  fields?.educationQualificationId?.name,
+                  false
+                );
+                eqSetFieldTouched(
+                  fields?.educationQualificationTypeId?.name,
+                  false
+                );
               }}
-              onBlur={handleBlur}
-              errors={errors?.qualification}
-              touched={touched?.qualification}
+              errors={eqErrors?.educationQualificationId}
+              touched={eqTouched?.educationQualificationId}
               inputValues={educationQualification || []}
               isViewMode={isViewMode}
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <SingleAutoComplete
-              label={fields?.eductionQualification?.label}
-              name={fields?.eductionQualification?.name}
-              value={values?.eductionQualification}
-              onChange={(_, value) => {
-                setFieldValue(fields?.eductionQualification?.name, value);
-              }}
-              onBlur={handleBlur}
-              errors={errors?.eductionQualification}
-              touched={touched?.eductionQualification}
-              inputValues={educationQualificationSubType || []}
-              isViewMode={isViewMode}
+          <WithCondition
+            isValid={
+              !!eqValues?.educationQualificationId &&
+              !!educationQualificationSubType?.length
+            }
+          >
+            <Grid item xs={12} md={6}>
+              <SingleAutoComplete
+                label={fields?.educationQualificationTypeId?.label}
+                name={fields?.educationQualificationTypeId?.name}
+                value={eqValues?.educationQualificationTypeId}
+                onChange={(_, value) => {
+                  eqSetFieldValue(
+                    fields?.educationQualificationTypeId?.name,
+                    value
+                  );
+                  eqSetFieldTouched(
+                    fields?.educationQualificationTypeId?.name,
+                    false
+                  );
+                }}
+                errors={eqErrors?.educationQualificationTypeId}
+                touched={eqTouched?.educationQualificationTypeId}
+                inputValues={educationQualificationSubType || []}
+                isViewMode={isViewMode}
+              />
+            </Grid>
+          </WithCondition>
+
+          <FormActions
+            handleSubmit={eqHandleSubmit}
+            handleOnReset={resetEqvalues}
+            resetLabel={"Clear"}
+            isUpdate={tableEditId === 0 || !!tableEditId}
+            submitLabel="Add"
+          />
+
+          <Grid item xs={12} my={4}>
+            <CustomReactTable
+              columnData={
+                eqColumns({
+                  tableEditId,
+                  handleDeleteList,
+                  handleEditList,
+                }) || []
+              }
+              rawData={values?.educationQualifications || []}
+              manualSort
+              disablePagination
+              disableLayout
+              count={values?.educationQualifications?.length}
             />
           </Grid>
 
@@ -444,9 +648,7 @@ const PersonalDetails = () => {
               fieldType={fields?.religion?.type}
             />
           </Grid>
-
           <Grid item xs={12} md={6} />
-
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
               label={fields?.communityCategoryId?.label}
@@ -462,7 +664,6 @@ const PersonalDetails = () => {
               isViewMode={isViewMode}
             />
           </Grid>
-
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.community?.label}
@@ -476,11 +677,9 @@ const PersonalDetails = () => {
               fieldType={fields?.community?.type}
             />
           </Grid>
-
           <Grid item xs={12}>
             <DividerLine gap={"8px 0 24px"} />
           </Grid>
-
           <Grid item xs={12}>
             <CustomTextarea
               minRows={3}
@@ -494,11 +693,9 @@ const PersonalDetails = () => {
               isViewMode={isViewMode}
             />
           </Grid>
-
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
-
           <Grid item xs={12}>
             <CustomTextField
               label={fields?.userName?.label}
@@ -506,39 +703,40 @@ const PersonalDetails = () => {
               value={values.userName}
               onChange={handleChange}
               onBlur={handleBlur}
-              isViewMode={isViewMode}
+              isViewMode={isViewMode || editId}
               errors={errors.userName}
               touched={touched.userName}
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <CustomPasswordField
-              label={fields?.password?.label}
-              name={fields?.password?.name}
-              showEyeIcon
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={errors.password}
-              isViewMode={isViewMode}
-              touched={touched.password}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <CustomPasswordField
-              label={fields?.confirmPassword?.label}
-              name={fields?.confirmPassword?.name}
-              showEyeIcon
-              value={values.confirmPassword}
-              onChange={handleChange}
-              isViewMode={isViewMode}
-              onBlur={handleBlur}
-              errors={errors.confirmPassword}
-              touched={touched.confirmPassword}
-            />
-          </Grid>
+          <WithCondition isValid={!editId}>
+            <Grid item xs={12} md={6}>
+              <CustomPasswordField
+                label={fields?.password?.label}
+                name={fields?.password?.name}
+                showEyeIcon
+                value={values.password}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                errors={errors.password}
+                isViewMode={isViewMode}
+                touched={touched.password}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <CustomPasswordField
+                label={fields?.confirmPassword?.label}
+                name={fields?.confirmPassword?.name}
+                showEyeIcon
+                value={values.confirmPassword}
+                onChange={handleChange}
+                isViewMode={isViewMode}
+                onBlur={handleBlur}
+                errors={errors.confirmPassword}
+                touched={touched.confirmPassword}
+              />
+            </Grid>
+          </WithCondition>
 
           <WithCondition isValid={editId}>
             <StatusFields
@@ -555,7 +753,6 @@ const PersonalDetails = () => {
               disableListLayout
             />
           </WithCondition>
-
           <FormActions
             handleSubmit={handleSubmit}
             handleOnReset={handleOnReset}

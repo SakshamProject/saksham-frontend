@@ -24,9 +24,9 @@ import { CODES } from "../../../constants/globalConstants";
 
 const EmploymentDetails = () => {
   const navigate = useNavigate();
-  const {
-    state: { isViewMode, editId },
-  } = useLocation();
+  const { state } = useLocation();
+  const isViewMode = state?.isViewMode;
+  const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   const handleSkip = () =>
