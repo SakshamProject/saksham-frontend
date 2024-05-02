@@ -16,6 +16,7 @@ appApi.interceptors.request.use(
     return config;
   },
   (error) => {
+    dispatchLoading(false);
     return Promise.reject(error);
   }
 );
