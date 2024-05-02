@@ -1,3 +1,4 @@
+import { SaveOutlined } from "@mui/icons-material";
 import { OptionsContainer } from "../styles";
 import { formatDate } from "../utils/common";
 
@@ -46,6 +47,7 @@ export const CODES = {
   URBAN: "URBAN",
   MALE: "MALE",
   FEMALE: "FEMALE",
+  SAVED: "Saved",
 };
 
 // api messages

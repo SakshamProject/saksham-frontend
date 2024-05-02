@@ -33,8 +33,8 @@ export const initialValues = {
 };
 
 export const eqInitialValues = {
-  educationQualificationId: "",
   educationQualificationTypeId: "",
+  educationQualificationId: "",
 };
 
 export const fields = {
@@ -108,13 +108,13 @@ export const fields = {
   educationQualifications: {
     name: "educationQualifications",
   },
-  educationQualificationId: {
-    label: "Select Educational Qualification",
-    name: "educationQualificationId",
-  },
   educationQualificationTypeId: {
-    label: "Select Educational Qualification Sub Type *",
+    label: "Select Educational Qualification",
     name: "educationQualificationTypeId",
+  },
+  educationQualificationId: {
+    label: "Select Educational Qualification Sub Type *",
+    name: "educationQualificationId",
   },
   religion: {
     label: "Religion *",
@@ -155,13 +155,13 @@ export const eqColumns = ({
 }) => [
   {
     Header: "Qualification",
-    accessor: "educationQualificationId.name",
+    accessor: "educationQualificationTypeId.name",
     width: 240,
     sticky: "left",
   },
   {
     Header: "Sub Type",
-    accessor: "educationQualificationTypeId.name",
+    accessor: "educationQualificationId.name",
     Cell: ({ value }) => value || "-",
     width: 240,
   },

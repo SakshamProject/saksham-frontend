@@ -34,6 +34,9 @@ export const initialValues = {
   MLAConstituencyIdCommunication: "",
   MPConstituancyIdCommunication: "",
   pincodeCommunication: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {

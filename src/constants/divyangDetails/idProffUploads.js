@@ -1,3 +1,5 @@
+import { CODES } from "../globalConstants";
+
 export const initialValues = {
   voterId: "",
   voterIdPicture: "",
@@ -17,6 +19,9 @@ export const initialValues = {
   disabilitySchemePicture: "",
   BPL_OR_APL_Number: "",
   BPL_OR_APL_Picture: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {

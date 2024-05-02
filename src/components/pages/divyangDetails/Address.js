@@ -39,8 +39,20 @@ const Address = () => {
   const isViewMode = state?.isViewMode;
   const editId = state?.editId;
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
-  const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF);
+  const handleOnReset = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
+  const handleSkip = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues({
@@ -70,7 +82,7 @@ const Address = () => {
     mutationFn: (data) =>
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction("Divyang", CODES?.UPDATE);
+      dispatchNotifyAction("Address", CODES?.SAVED);
       navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY}`, {
         state: {
           editId: data?.data?.id,
@@ -135,22 +147,21 @@ const Address = () => {
     enabled: !!values?.districtIdCommunication,
   });
 
-  // const { data } = useCustomQuery({
-  //   queryKey: ["divyangGetById"],
-  //   queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-  //   enabled: !!editId,
-  //   onSuccess: (data) => {
-  //     console.log(data);
-  //     // setValues({
-  //     //   ...data,
-  //     //   status: data?.status,
-  //     //   date:
-  //     //     data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
-  //     //   description: data?.status === CODES?.ACTIVE ? "" : data?.description,
-  //     // });
-  //   },
-  //   select: ({ data }) => data?.data,
-  // });
+  const { data } = useCustomQuery({
+    queryKey: ["divyangGetById"],
+    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+    enabled: !!editId,
+    onSuccess: (data) => {
+      // setValues({
+      //   ...data,
+      //   status: data?.status,
+      //   date:
+      //     data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
+      //   description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+      // });
+    },
+    select: ({ data }) => data?.data,
+  });
 
   const removePermanentTouched = () => {
     setTouched({
@@ -913,7 +924,6 @@ const Address = () => {
             <FormActions
               handleSubmit={handleSubmit}
               handleOnReset={handleOnReset}
-              isUpdate={!!editId}
               isViewMode={isViewMode}
               disableSubmit={isViewMode}
               handleSkip={handleSkip}

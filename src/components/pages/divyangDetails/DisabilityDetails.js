@@ -26,7 +26,7 @@ import {
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
 import { API_PATHS } from "../../../api/apiPaths";
 import { getApiService, getByIdApiService } from "../../../api/api";
-import { yesNoSeed } from "../../../constants/seeds";
+import { authorities, yesNoSeed } from "../../../constants/seeds";
 import { tableStyles } from "../../../constants/typeMasters/stateMaster";
 import { CODES } from "../../../constants/globalConstants";
 
@@ -36,8 +36,20 @@ const DisabilityDetails = () => {
   const isViewMode = state?.isViewMode;
   const editId = state?.editId;
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
-  const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);
+  const handleOnReset = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
+  const handleSkip = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
@@ -235,7 +247,7 @@ const DisabilityDetails = () => {
                 onBlur={handleBlur}
                 errors={errors?.certificateIssuingAuthority}
                 touched={touched?.certificateIssuingAuthority}
-                inputValues={[] || []}
+                inputValues={authorities || []}
                 isViewMode={isViewMode}
               />
             </Grid>
@@ -397,7 +409,6 @@ const DisabilityDetails = () => {
             <FormActions
               handleSubmit={handleSubmit}
               handleOnReset={handleOnReset}
-              isUpdate={!!editId}
               isViewMode={isViewMode}
               disableSubmit={isViewMode}
               handleSkip={handleSkip}

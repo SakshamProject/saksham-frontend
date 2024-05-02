@@ -27,8 +27,20 @@ const IdProffUploads = () => {
   const isViewMode = state?.isViewMode;
   const editId = state?.editId;
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
-  const handleSkip = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL);
+  const handleOnReset = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
+  const handleSkip = () =>
+    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, {
+      state: {
+        isViewMode: isViewMode,
+        editId: editId,
+      },
+    });
 
   const handleOnSubmit = (values) => {
     if (Object.keys(getValidValues(values))?.length < 4 && false) {
@@ -36,7 +48,12 @@ const IdProffUploads = () => {
     } else {
       const payload = multiPartFormData(values);
       // onSubmit(payload);
-      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS);
+      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
+        state: {
+          isViewMode: isViewMode,
+          editId: editId,
+        },
+      });
     }
   };
 
@@ -509,7 +526,6 @@ const IdProffUploads = () => {
             <FormActions
               handleSubmit={handleSubmit}
               handleOnReset={handleOnReset}
-              isUpdate={!!editId}
               disableSubmit={isViewMode}
               handleSkip={handleSkip}
               skipLabel={"Prev"}

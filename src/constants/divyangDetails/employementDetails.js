@@ -11,6 +11,9 @@ export const initialValues = {
   motherIncome: "",
   spouseOccupation: "",
   spouseIncome: "",
+  status: CODES?.ACTIVE,
+  date: new Date(),
+  description: "",
 };
 
 export const fields = {
