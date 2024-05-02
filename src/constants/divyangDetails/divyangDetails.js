@@ -39,9 +39,9 @@ export const divyangDetailsColumn = [
     filterAccessor: "divyangName",
     width: 300,
     sticky: "left",
-    Cell: ({ row, value }) => (
+    Cell: ({ row }) => (
       <OptionsContainer>
-        {value}
+        {row?.original?.firstName + " " + row?.original?.lastName}
         <EditPopover
           inputValues={[
             {
