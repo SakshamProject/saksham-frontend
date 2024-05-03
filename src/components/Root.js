@@ -1,79 +1,48 @@
 import { ThemeProvider } from "@emotion/react";
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
 import { useSelector } from "react-redux";
-import { Route, Routes } from "react-router-dom";
-import { SERVER_ERROR } from "../constants/globalConstants.js";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { COOKIE_KEYS } from "../constants/globalConstants.js";
 import { ProtectedRoute } from "../routes/ProtectedRoute.js";
 import { getRoutes } from "../routes/index.js";
 import { routeMapping } from "../routes/routeMapping.js";
 import { ROUTE_PATHS } from "../routes/routePaths.js";
 import { theme } from "../styles/theme";
-import { dispatchNotifyError } from "../utils/dispatch.js";
+import { getCookie } from "../utils/cookie.js";
 import Login from "./pages/login/Login";
-import { UserNotification } from "./shared";
-import { CustomLoader } from "./shared/CustomLoader";
+import { CustomLoader, UserNotification } from "./shared";
 import NotFound from "./shared/NotFound.js";
 
 const Root = () => {
   const snackBar = useSelector((state) => state?.snackBar);
   const isLoading = useSelector((state) => state?.isLoading);
   const userInfo = useSelector((state) => state?.userInfo);
+  const navigate = useNavigate();
 
-  const queryClient = new QueryClient({
-    queryCache: new QueryCache({
-      onError: ({ response }) => {
-        if (response?.data?.name === "ZodError") {
-          dispatchNotifyError(response?.data?.issues[0]?.message);
-        } else if (typeof response?.data?.error?.message === "string") {
-          dispatchNotifyError(response?.data?.error?.message);
-        } else {
-          dispatchNotifyError(SERVER_ERROR);
-        }
-      },
-    }),
-    mutationCache: new MutationCache({
-      onError: ({ response }) => {
-        if (response?.data?.name === "ZodError") {
-          dispatchNotifyError(response?.data?.issues[0]?.message);
-        } else if (typeof response?.data?.error?.message === "string") {
-          dispatchNotifyError(response?.data?.error?.message);
-        } else {
-          dispatchNotifyError(SERVER_ERROR);
-        }
-      },
-    }),
-  });
-
-  queryClient.setDefaultOptions({
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  });
+  const getUserInfo = async () => {
+    if (!getCookie(COOKIE_KEYS.TOKEN)) {
+      navigate(ROUTE_PATHS.LOGIN);
+      return "";
+    }
+  };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        {isLoading ? <CustomLoader /> : null}
+    <ThemeProvider theme={theme}>
+      {isLoading ? <CustomLoader /> : null}
 
-        <Routes>
-          <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
+      <Routes>
+        <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
 
-          <Route path={ROUTE_PATHS.LAYOUT} element={<ProtectedRoute />}>
-            {routeMapping(getRoutes(userInfo?.designation?.features))}
-          </Route>
+        <Route path={ROUTE_PATHS.LAYOUT} element={<ProtectedRoute />}>
+          {routeMapping(
+            getRoutes({ designations: userInfo?.designation?.features })
+          )}
+        </Route>
 
-          <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />
-        </Routes>
+        <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />
+      </Routes>
 
-        {snackBar ? <UserNotification /> : <></>}
-      </ThemeProvider>
-    </QueryClientProvider>
+      {snackBar ? <UserNotification /> : <></>}
+    </ThemeProvider>
   );
 };
 

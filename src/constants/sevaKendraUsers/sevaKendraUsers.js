@@ -106,7 +106,7 @@ export const sevakendraUsersColumn = [
     sticky: "left",
     Cell: ({ row }) => (
       <OptionsContainer>
-        {row?.original?.firstName + " " + row?.original?.lastName}
+        {`${row?.original?.firstName} ${row?.original?.lastName}`}
         <EditPopover
           inputValues={[
             {

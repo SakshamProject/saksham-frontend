@@ -30,6 +30,13 @@ export const ADD = "Add";
 export const SKIP = "Skip";
 export const DELETE = "Delete";
 
+export const ZOD_ERROR = "ZodError";
+export const STRING = "string";
+
+export const COOKIE_KEYS = {
+  TOKEN: "token",
+};
+
 // codes
 export const CODES = {
   ACTIVE: "ACTIVE",

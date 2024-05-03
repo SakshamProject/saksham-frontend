@@ -1,4 +1,4 @@
-export const filterStringSeeds = [
+export const filterQuerySeed = [
   {
     id: "equals",
     name: "Equal",
@@ -17,28 +17,23 @@ export const filterStringSeeds = [
   },
 ];
 
-export const genders = (all) =>
+export const genderSeed = (all) =>
   [
     {
       id: "MALE",
       name: "Male",
-      code: "male",
     },
     {
       id: "FEMALE",
       name: "Female",
-      code: "female",
     },
-    all
-      ? {
-          id: "TRANSGENDER",
-          name: "TransGender",
-          code: "transgender",
-        }
-      : "",
+    all && {
+      id: "TRANSGENDER",
+      name: "TransGender",
+    },
   ].filter((item) => item);
 
-export const statusSeeds = [
+export const statusSeed = [
   {
     id: "ACTIVE",
     name: "Active",
@@ -69,10 +64,6 @@ export const serviceStatus = [
     id: "COMPLETED",
     name: "Completed",
   },
-  // {
-  //   id: "STOPPED",
-  //   name: "Stopped",
-  // },
 ];
 
 export const locationSeed = [

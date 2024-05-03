@@ -3,14 +3,3 @@ export const initialValues = {
   password: "",
   rememberMe: false,
 };
-
-// export const verifyOtpInitialValues = {
-// 	emailId: "",
-// 	otp: "",
-// };
-
-// export const setPasswordInitialValues = {
-// 	otp: "",
-// 	password: "",
-// 	confirmPassword: "",
-// };

@@ -1,6 +1,7 @@
 import axios from "axios";
-import { dispatchLoading } from "../utils/dispatch";
+import { COOKIE_KEYS } from "../constants/globalConstants";
 import { getCookie } from "../utils/cookie";
+import { dispatchLoading } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
@@ -11,7 +12,7 @@ export const appApi = axios.create({
 
 appApi.interceptors.request.use(
   (config) => {
-    config.headers["authorization"] = getCookie("token");
+    config.headers["authorization"] = getCookie(COOKIE_KEYS.TOKEN);
     dispatchLoading(true);
     return config;
   },

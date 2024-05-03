@@ -7,22 +7,20 @@ import { createQueryParams } from "../utils/queryParams";
 const useTableCustomHooks = (path) => {
   const location = useLocation();
   const navigate = useNavigate();
-
   const pageParams = queryString.parse(location?.search);
   const pageSize = parseInt(pageParams?.pageSize) || 10;
   const currentPage = parseInt(pageParams?.currentPage) || 1;
-  const search = location.search;
+  const search = location?.search;
   const searchParam = useMemo(() => new URLSearchParams(search), [search]);
   const searchData = searchParam?.get("search");
 
   const { filterData, sortData } = useMemo(() => {
     const filterData = searchParam?.get("filter")
       ? JSON.parse(searchParam?.get("filter"))
-      : [];
+      : null;
     const sortData = searchParam?.get("sort")
       ? JSON.parse(searchParam?.get("sort"))
       : null;
-
     return { filterData, sortData };
   }, [searchParam]);
 
@@ -34,7 +32,7 @@ const useTableCustomHooks = (path) => {
     });
     return navigate(
       { pathname: path, search: newParams },
-      { state: location.state || null }
+      { state: location?.state || null }
     );
   };
 
@@ -46,31 +44,22 @@ const useTableCustomHooks = (path) => {
     });
     return navigate(
       { pathname: path, search: newParams },
-      { state: location.state || null }
+      { state: location?.state || null }
     );
   };
 
   const handleTableData = () => {
     const start = pageSize * (currentPage - 1) + 1;
     return {
-      pagination: {
-        rows: pageSize,
-        start,
-      },
+      pagination: { rows: pageSize, start },
       sorting: sortData || { orderByColumn: "createdAt", sortOrder: "desc" },
-      filters: filterData?.length !== 0 ? filterData : [],
+      filters: filterData || [],
       searchText: searchData || "",
     };
   };
 
   const tableReRenderActions = () => {
-    return {
-      pageSize,
-      sortData,
-      searchData,
-      currentPage,
-      filterData,
-    };
+    return { pageSize, sortData, searchData, currentPage, filterData };
   };
 
   return {

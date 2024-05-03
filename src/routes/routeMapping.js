@@ -1,9 +1,11 @@
 import { Route } from "react-router-dom";
 
-export const routeMapping = (menu = []) => {
-  return menu?.map(({ path, element: Component, children = null }, key) => (
-    <Route path={path} element={<Component />} key={key + path}>
-      {children && routeMapping(children)}
-    </Route>
-  ));
-};
+export const routeMapping = (routes = []) =>
+  routes?.map((route, key) => {
+    const Component = route?.element;
+    return (
+      <Route path={route?.path} element={<Component />} key={route?.key + key}>
+        {route?.children && routeMapping(route?.children)}
+      </Route>
+    );
+  });

@@ -1,33 +1,33 @@
 import { appApi } from "./config";
 
 // Get services
-export const getApiService = (path) => {
-  return appApi.get(path);
+export const getApiService = async (path) => {
+  return await appApi.get(path);
 };
 
-export const getByIdApiService = (path, id) => {
-  return appApi.get(`${path}/${id}`);
+export const getByIdApiService = async (path, id) => {
+  return await appApi.get(`${path}/${id}`);
 };
 
 // Post services
-export const postApiService = (path, value = {}) => {
-  return appApi.post(`${path}`, value);
+export const postApiService = async (path, value = {}) => {
+  return await appApi.post(path, value);
 };
 
-export const postUpdateApiService = (path, id, value = {}) => {
-  return appApi.post(`${path}/${id}`, value);
+export const postUpdateApiService = async (path, id, value = {}) => {
+  return await appApi.post(`${path}/${id}`, value);
 };
 
 // Update services
-export const putApiService = (path, value = {}) => {
-  return appApi.put(`${path}`, value);
+export const putApiService = async (path, value = {}) => {
+  return await appApi.put(path, value);
 };
 
-export const updateApiService = (path, id, value = {}) => {
-  return appApi.put(`${path}/${id}`, value);
+export const updateApiService = async (path, id, value = {}) => {
+  return await appApi.put(`${path}/${id}`, value);
 };
 
 // Delete service
-export const deleteApiService = (path, id) => {
-  return appApi.delete(`${path}/${id}`);
+export const deleteApiService = async (path, id) => {
+  return await appApi.delete(`${path}/${id}`);
 };

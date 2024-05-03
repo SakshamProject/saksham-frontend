@@ -31,8 +31,8 @@ import {
 } from "../../../utils/common";
 import {
   bloodGroup,
-  genders,
-  statusSeeds,
+  genderSeed,
+  statusSeed,
   yesNoSeed,
 } from "../../../constants/seeds";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -403,7 +403,7 @@ const PersonalDetails = () => {
               touched={touched?.gender}
               errors={errors?.gender}
               isViewMode={isViewMode}
-              inputValues={genders(true)}
+              inputValues={genderSeed(true)}
               rowBreak
               labelStyle={{
                 color: theme?.palette?.commonColor?.blue,
@@ -759,7 +759,7 @@ const PersonalDetails = () => {
               touched={touched}
               errors={errors}
               setFieldValue={setFieldValue}
-              statusSeeds={statusSeeds}
+              statusSeeds={statusSeed}
               isViewMode={isViewMode}
               // statusHistory={values?.userAuditLog}
               disableListLayout

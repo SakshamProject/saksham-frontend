@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { API_PATHS } from "../../api/apiPaths";
 import { EditPopover, WithCondition } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
@@ -9,8 +10,6 @@ import {
   StyledIconButton,
   theme,
 } from "../../styles";
-
-import { Box } from "@mui/material";
 
 export const GENERAL_TYPES = {
   EDUCATIONAL_QUALIFICATION: "Educational Qualification",
@@ -41,19 +40,16 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
   switch (typeMaster) {
     case GENERAL_TYPES?.SERVICE_TYPE:
       return isPayload
-        ? {
-            serviceType: remaining?.name,
-          }
-        : {
-            name: remaining?.name,
-            typeMaster,
-          };
+        ? { serviceType: remaining?.name }
+        : { name: remaining?.name, typeMaster };
+
     case GENERAL_TYPES?.DISTRICT:
       return {
         name: remaining?.name,
         stateId: remaining?.stateId,
         ...(!isPayload && { typeMaster }),
       };
+
     case GENERAL_TYPES?.DISABILITY_TYPE:
       return isPayload
         ? {
@@ -66,6 +62,7 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
             typeMaster,
             chip: "",
           };
+
     case GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION:
       return isPayload
         ? {
@@ -78,15 +75,11 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
             typeMaster,
             chip: "",
           };
+
     default:
       return isPayload
-        ? {
-            name: remaining?.name,
-          }
-        : {
-            name: remaining?.name,
-            typeMaster,
-          };
+        ? { name: remaining?.name }
+        : { name: remaining?.name, typeMaster };
   }
 };
 
@@ -130,7 +123,7 @@ export const generalColumns = ({
 }) =>
   [
     {
-      Header: `${type}`,
+      Header: type,
       accessor: "name",
       width: 300,
       sticky: "left",
@@ -143,21 +136,23 @@ export const generalColumns = ({
     {
       Header: " ",
       Cell: ({ row }) => {
+        const disabled = !!tableEditId;
+
         return (
           <OptionsContainerChild>
             <WithCondition isValid={!isViewMode}>
               <Box>
                 <StyledIconButton
                   onClick={() => handleEdit(row?.original?.id)}
-                  disabled={!!tableEditId}
+                  disabled={disabled}
                 >
-                  <EditIcon disabled={!!tableEditId} />
+                  <EditIcon disabled={disabled} />
                 </StyledIconButton>
                 <StyledIconButton
                   onClick={() => handleDelete(row?.original?.id)}
-                  disabled={!!tableEditId}
+                  disabled={disabled}
                 >
-                  <DeleteIcon disabled={!!tableEditId} />
+                  <DeleteIcon disabled={disabled} />
                 </StyledIconButton>
               </Box>
             </WithCondition>

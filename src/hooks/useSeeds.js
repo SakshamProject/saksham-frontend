@@ -1,19 +1,28 @@
 import { useQueries } from "@tanstack/react-query";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+import { getApiService, postApiService } from "../api/api";
+import { dispatchSeeds } from "../utils/dispatch";
 
-import { getSeedService } from "../api/api";
-import { setSeed } from "../redux/slice";
-
-const useSeeds = (seedPaths = []) => {
+function useSeeds(seedPaths = []) {
   const seeds = useSelector((state) => state?.seeds);
-  const dispatch = useDispatch();
+
+  // useQueries(
+  //   seedPaths.map(({ path, name }) => ({
+  //     queryKey: ["seedData", path],
+  //     queryFn: () => getSeedService(path),
+  //     enabled: !seeds?.[name] && !!path,
+  //     onSuccess: ({ data }) => {
+  //       dispatch(setSeed({ [name]: [...data] }));
+  //     },
+  //   }))
+  // );
 
   useQueries({
-    queries: seedPaths.map(({ path, name }) => ({
+    queries: seedPaths.map(({ path, name, isGet = true }) => ({
       queryKey: ["seedData", path],
       queryFn: async () => {
-        const response = await getSeedService(path);
-        dispatch(setSeed({ [name]: response?.data || [] }));
+        const response = isGet ? getApiService(path) : postApiService(path, {});
+        dispatchSeeds({ [name]: response?.data });
         return response;
       },
       enabled: !seeds?.[name] && !!path,
@@ -21,6 +30,6 @@ const useSeeds = (seedPaths = []) => {
   });
 
   return { ...seeds };
-};
+}
 
 export default useSeeds;

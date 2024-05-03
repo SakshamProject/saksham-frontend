@@ -1,6 +1,6 @@
 export const getTableSchemas = (columns = []) => {
-  let filterFields = [];
-  let filterInitialValues = {};
+  const filterFields = [];
+  const filterInitialValues = {};
 
   if (columns?.length) {
     columns?.forEach((column, index) => {

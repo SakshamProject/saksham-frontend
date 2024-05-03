@@ -152,7 +152,9 @@ const ROUTES = [
   },
 ];
 
-export const getRoutes = (designations) => {
+export const getRoutes = ({ designations = [], all = false }) => {
+  if (all) return ROUTES;
+
   return designations?.reduce((acc, designation) => {
     const validRoutes = ROUTES?.filter(
       (route) => designation?.feature?.name === route?.key

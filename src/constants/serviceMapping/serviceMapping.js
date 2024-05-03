@@ -1,6 +1,7 @@
 import { EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer, theme } from "../../styles";
+import { CODES } from "../globalConstants";
 import { serviceStatus, yesNoSeed } from "../seeds";
 
 export const listInitialValues = {
@@ -194,24 +195,20 @@ export const initialValues = {
   searchMobileNo: "",
   searchAadharNo: "",
   searchUDIDNo: "",
-
   stateId: "",
   districtId: "",
   sevaKendraId: "",
   userId: "",
-
   serviceTypeId: "",
   serviceId: "",
   dateOfService: "",
   dueDate: "",
-
   nonSevaKendraFollowUp: {
     name: "",
     mobileNumber: "",
     email: "",
-    sendMail: "NO",
+    sendMail: CODES.NO,
   },
-
-  divyangId: "a599be29-d676-4ef9-9113-1a393eee2d02",
-  isNonSevaKendraFollowUpRequired: "NO",
+  divyangId: "",
+  isNonSevaKendraFollowUpRequired: CODES.NO,
 };

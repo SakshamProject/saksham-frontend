@@ -1,23 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  snackBar: "",
+  snackbar: "",
   isLoading: false,
   userInfo: {},
   seeds: {},
 };
 
 const { reducer, actions } = createSlice({
-  name: "appStates",
+  name: "globalStates",
   initialState,
   reducers: {
-    notifyUser: (state, action) => {
+    setSnackbar: (state, action) => {
       if (!action.payload) {
-        state.snackBar = null;
+        state.snackbar = null;
         return;
       }
       const [message, severity] = action.payload;
-      state.snackBar = { message, severity };
+      state.snackbar = { message, severity };
     },
 
     setIsLoading: (state, action) => {
@@ -28,13 +28,25 @@ const { reducer, actions } = createSlice({
       state.userInfo = action?.payload;
     },
 
-    removeAppState: (state) => {
-      state = {};
+    setSeeds: (state, action) => {
+      state.seeds = { ...state.seeds, ...action.payload };
+    },
+
+    removeGlobalStates: (state) => {
+      state.isLoading = initialState?.isLoading;
+      state.seeds = initialState?.seeds;
+      state.snackbar = initialState?.snackbar;
+      state.userInfo = initialState?.userInfo;
     },
   },
 });
 
 export default reducer;
 
-export const { notifyUser, setIsLoading, setUserInfo, removeAppState } =
-  actions;
+export const {
+  setIsLoading,
+  setSnackbar,
+  setSeeds,
+  setUserInfo,
+  removeGlobalStates,
+} = actions;

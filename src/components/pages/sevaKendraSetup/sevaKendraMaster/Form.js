@@ -33,7 +33,7 @@ import {
 import StatusFields from "../../../shared/StatusFields";
 import { CustomTypography } from "../../../../styles";
 import { dispatchNotifyAction } from "../../../../utils/dispatch";
-import { statusSeeds } from "../../../../constants/seeds";
+import { statusSeed } from "../../../../constants/seeds";
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
@@ -353,7 +353,7 @@ const Form = () => {
           touched={touched}
           errors={errors}
           setFieldValue={setFieldValue}
-          statusSeeds={statusSeeds}
+          statusSeeds={statusSeed}
           isViewMode={isViewMode}
           rowBreak={false}
           statusHistory={values?.auditLog}

@@ -1,56 +1,48 @@
 import { CODES } from "../constants/globalConstants";
 import {
-  notifyUser,
-  removeAppState,
+  removeGlobalStates,
   setIsLoading,
+  setSeeds,
+  setSnackbar,
   setUserInfo,
 } from "../redux/slice";
 import store from "../redux/store";
 
-const dispatchNotifyUser = (payload) => {
-  store.dispatch(notifyUser(payload));
+export const dispatchSnackbar = (payload) => {
+  store.dispatch(setSnackbar(payload));
 };
 
-const dispatchLoading = (isLoading) => {
+export const dispatchIsLoading = (isLoading) => {
   store.dispatch(setIsLoading(isLoading));
 };
 
-const dispatchUserInfo = (userInfo) => {
+export const dispatchUserInfo = (userInfo) => {
   store.dispatch(setUserInfo(userInfo));
 };
 
-const dispatchRemoveAppState = () => {
-  store.dispatch(removeAppState());
+export const dispatchRemoveGlobalStates = () => {
+  store.dispatch(removeGlobalStates());
 };
 
-const dispatchNotifySuccess = (message) => {
-  dispatchNotifyUser([message, "success"]);
+export const dispatchSeeds = (payload) => {
+  store.dispatch(setSeeds(payload));
 };
 
-const dispatchNotifyError = (message) => {
-  dispatchNotifyUser([message, "error"]);
+export const dispatchSnackbarSuccess = (message) => {
+  dispatchSnackbar([message, "success"]);
 };
 
-const dispatchNotifyAction = (title, action) => {
-  const message =
-    action === CODES?.ADDED
-      ? `${title} Added successfully !`
-      : action === CODES?.UPDATE
-      ? `${title} Updated successfully !`
-      : action === CODES?.DELETE
-      ? `${title} Deleted successfully !`
-      : action === CODES?.SAVED
-      ? `${title} Saved successfully !`
-      : "";
-  dispatchNotifyUser([message, "success"]);
+export const dispatchSnackbarError = (message) => {
+  dispatchSnackbar([message, "error"]);
 };
 
-export {
-  dispatchLoading,
-  dispatchNotifyAction,
-  dispatchNotifyError,
-  dispatchNotifySuccess,
-  dispatchNotifyUser,
-  dispatchRemoveAppState,
-  dispatchUserInfo,
+export const dispatchResponseAction = (title, action) => {
+  let message = "";
+
+  if (action === CODES?.ADDED) message = `${title} Added successfully !`;
+  if (action === CODES?.UPDATE) message = `${title} Updated successfully !`;
+  if (action === CODES?.DELETE) message = `${title} Deleted successfully !`;
+  if (action === CODES?.SAVED) message = `${title} Saved successfully !`;
+
+  dispatchSnackbar([message, "success"]);
 };

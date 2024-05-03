@@ -140,4 +140,4 @@ export const sevakendraColumn = [
 ];
 
 export const transformServices = (services) =>
-  services.map(({ id }) => ({ serviceId: id }));
+  services?.map(({ id }) => ({ serviceId: id }));

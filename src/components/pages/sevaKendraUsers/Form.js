@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   getApiService,
@@ -10,13 +10,17 @@ import {
   updateApiService,
 } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
+import { CODES } from "../../../constants/globalConstants";
+import { genderSeed, statusSeed } from "../../../constants/seeds";
 import {
   fields,
   initialValues,
 } from "../../../constants/sevaKendraUsers/sevaKendraUsers";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
 import { formatDate, getValidValues } from "../../../utils/common";
+import { dispatchNotifyAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
   AuditLog,
@@ -31,11 +35,6 @@ import {
   WithCondition,
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
-import { genders, statusSeeds } from "../../../constants/seeds";
-import { multiPartFormData } from "../../../utils/multipartFormData";
-import { dispatchNotifyAction } from "../../../utils/dispatch";
-import { CODES } from "../../../constants/globalConstants";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const Form = () => {
   const { state } = useLocation();
@@ -300,7 +299,7 @@ const Form = () => {
           touched={touched?.gender}
           errors={errors?.gender}
           isViewMode={isViewMode}
-          inputValues={genders()}
+          inputValues={genderSeed()}
           rowBreak
           labelStyle={{
             color: theme?.palette?.textColor?.blue,
@@ -443,7 +442,7 @@ const Form = () => {
           touched={touched}
           errors={errors}
           setFieldValue={setFieldValue}
-          statusSeeds={statusSeeds}
+          statusSeeds={statusSeed}
           isViewMode={isViewMode}
           statusHistory={values?.userAuditLog}
           disableListLayout

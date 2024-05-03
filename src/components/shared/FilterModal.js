@@ -4,17 +4,17 @@ import { Grid, useTheme } from "@mui/material";
 import Modal from "@mui/material/Modal";
 import Typography from "@mui/material/Typography";
 import { useFormik } from "formik";
+import propTypes from "prop-types";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
 import { CustomSelectField, CustomTextField } from ".";
-import { filterStringSeeds } from "../../constants/seeds.js";
 import {
   APPLY,
   CANCEL,
   CLEAR_FILTER,
 } from "../../constants/globalConstants.js";
+import { filterQuerySeed } from "../../constants/seeds.js";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks.js";
 import {
   CancelButton,
@@ -143,7 +143,7 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                         inputValues={
                           item?.querySeeds
                             ? item?.querySeeds
-                            : filterStringSeeds || []
+                            : filterQuerySeed || []
                         }
                         name={item?.queryName}
                         onChange={handleChange}

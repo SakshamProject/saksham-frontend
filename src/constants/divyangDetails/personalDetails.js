@@ -1,7 +1,6 @@
-import { name } from "dayjs/locale/en-gb";
-import { CODES } from "../globalConstants";
-import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
 import { IconButton } from "@mui/material";
+import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
+import { CODES } from "../globalConstants";
 
 export const initialValues = {
   firstName: "",
@@ -166,24 +165,24 @@ export const eqColumns = ({
     width: 240,
   },
   {
-    Header: "   ",
+    Header: " ",
     Cell: (props) => {
+      const disabled = tableEditId === 0 || !!tableEditId;
+
       return (
         <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
           <div>
             <IconButton
               onClick={() => handleEditList(props?.row?.index)}
-              disabled={tableEditId === 0 || !!tableEditId}
+              disabled={disabled}
             >
-              <EditIcon disabled={tableEditId === 0 || !!tableEditId} />
+              <EditIcon disabled={disabled} />
             </IconButton>
             <IconButton
-              onClick={() => {
-                handleDeleteList(props?.row?.index);
-              }}
-              disabled={tableEditId === 0 || !!tableEditId}
+              onClick={() => handleDeleteList(props?.row?.index)}
+              disabled={disabled}
             >
-              <DeleteIcon disabled={tableEditId === 0 || !!tableEditId} />
+              <DeleteIcon disabled={disabled} />
             </IconButton>
           </div>
         </OptionsContainerChild>

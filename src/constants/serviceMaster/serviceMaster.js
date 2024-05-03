@@ -85,25 +85,25 @@ export const serviceNameColumns = ({
     sticky: "left",
   },
   {
-    Header: "   ",
+    Header: " ",
     Cell: (props) => {
+      const disabled = !!tableEditId;
+
       return (
         <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
           <WithCondition isValid={!isViewMode}>
             <div>
               <IconButton
                 onClick={() => handleEditList(props?.row?.index)}
-                disabled={!!tableEditId}
+                disabled={disabled}
               >
-                <EditIcon disabled={!!tableEditId} />
+                <EditIcon disabled={disabled} />
               </IconButton>
               <IconButton
-                onClick={() => {
-                  handleDeleteList(props?.row?.index);
-                }}
-                disabled={!!tableEditId}
+                onClick={() => handleDeleteList(props?.row?.index)}
+                disabled={disabled}
               >
-                <DeleteIcon disabled={!!tableEditId} />
+                <DeleteIcon disabled={disabled} />
               </IconButton>
             </div>
           </WithCondition>

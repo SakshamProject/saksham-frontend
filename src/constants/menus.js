@@ -12,7 +12,7 @@ export const RIGHT_SIDE_MENU = () => [
   },
 ];
 
-export const SIDE_MENUS = [
+const SIDE_MENUS = [
   {
     label: "Dashboard",
     navigateTo: ROUTE_PATHS.DASHBOARD,
@@ -75,8 +75,13 @@ export const SIDE_MENUS = [
   },
 ];
 
-export const getSideMenus = (designations) => {
-  return designations?.map((designation) =>
-    SIDE_MENUS?.filter((menu) => designation?.feature?.name === menu?.key)
-  );
+export const getSideMenus = ({ all = false, designations = [] }) => {
+  if (all) return SIDE_MENUS;
+
+  return designations?.reduce((acc, designation) => {
+    const validMenu = SIDE_MENUS?.filter(
+      (menu) => designation?.feature?.name === menu?.key
+    );
+    return [...acc, ...validMenu];
+  }, []);
 };

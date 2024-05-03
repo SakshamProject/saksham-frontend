@@ -125,39 +125,39 @@ export const stateMasterColumns = ({
 }) => [
   {
     Header: currentForm?.validationLabel,
-    accessor: `name`,
+    accessor: "name",
     width: 220,
     sticky: "left",
   },
   {
     Header: "District",
-    accessor: `district.name`,
+    accessor: "district.name",
     width: 180,
   },
   {
     Header: "State",
-    accessor: `district.state.name`,
+    accessor: "district.state.name",
     width: 180,
   },
   {
-    Header: "   ",
+    Header: " ",
     Cell: (props) => {
+      const disabled = !!tableEditId;
+
       return (
         <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
           <div>
             <IconButton
               onClick={() => handleEditList(props?.row?.index)}
-              disabled={!!tableEditId}
+              disabled={disabled}
             >
-              <EditIcon disabled={!!tableEditId} />
+              <EditIcon disabled={disabled} />
             </IconButton>
             <IconButton
-              onClick={() => {
-                handleDeleteList(props?.row?.index);
-              }}
-              disabled={!!tableEditId}
+              onClick={() => handleDeleteList(props?.row?.index)}
+              disabled={disabled}
             >
-              <DeleteIcon disabled={!!tableEditId} />
+              <DeleteIcon disabled={disabled} />
             </IconButton>
           </div>
         </OptionsContainerChild>
