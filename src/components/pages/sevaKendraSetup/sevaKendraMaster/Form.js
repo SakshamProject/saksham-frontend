@@ -32,7 +32,7 @@ import {
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
 import { CustomTypography } from "../../../../styles";
-import { dispatchNotifyAction } from "../../../../utils/dispatch";
+import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { statusSeed } from "../../../../constants/seeds";
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
@@ -67,7 +67,7 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
         : postApiService(API_PATHS?.SEVAKENDRA, data),
     onSuccess: () => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         "Seva Kendra",
         editId ? CODES?.UPDATE : CODES?.ADDED
       );

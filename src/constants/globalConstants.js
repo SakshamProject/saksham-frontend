@@ -37,6 +37,10 @@ export const COOKIE_KEYS = {
   TOKEN: "token",
 };
 
+export const LOCAL_STORAGE_KEYS = {
+  REMEMBER: "remember",
+};
+
 // codes
 export const CODES = {
   ACTIVE: "ACTIVE",

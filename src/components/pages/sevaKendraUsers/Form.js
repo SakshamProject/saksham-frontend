@@ -20,7 +20,7 @@ import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
 import { formatDate, getValidValues } from "../../../utils/common";
-import { dispatchNotifyAction } from "../../../utils/dispatch";
+import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
   AuditLog,
@@ -69,7 +69,7 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
         : postApiService(API_PATHS?.SEVAKENDRA_USERS, data),
     onSuccess: () => {
-      dispatchNotifyAction("User", editId ? CODES?.UPDATE : CODES?.ADDED);
+      dispatchResponseAction("User", editId ? CODES?.UPDATE : CODES?.ADDED);
       navigate(ROUTE_PATHS.SEVA_KENDRA_USERS_LIST);
     },
   });

@@ -8,9 +8,9 @@ import {
 } from "@mui/icons-material";
 import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
-import React, { useEffect, useRef, useState } from "react";
 import propTypes from "prop-types";
-import { dispatchNotifyError } from "../../../utils/dispatch";
+import React, { useEffect, useRef, useState } from "react";
+import { dispatchSnackbarError } from "../../../utils/dispatch";
 
 const InputField = styled("input")(() => ({
   display: "none",
@@ -59,7 +59,7 @@ export const FileUpload = ({
 
   const onImageChange = (event) => {
     if (event?.target?.files[0]?.size > 50000000) {
-      return dispatchNotifyError("Size should be less than 10MB");
+      return dispatchSnackbarError("Size should be less than 10MB");
     } else if (event?.target?.files[0]) {
       let reader = new FileReader();
       reader.onload = () => {
@@ -77,7 +77,7 @@ export const FileUpload = ({
       ) {
         reader.readAsDataURL(event?.target?.files[0]);
       } else {
-        dispatchNotifyError("Media type not supported");
+        dispatchSnackbarError("Media type not supported");
       }
     }
   };

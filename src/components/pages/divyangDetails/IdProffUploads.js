@@ -1,8 +1,18 @@
-import React from "react";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
+import React from "react";
 
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  fields,
+  initialValues,
+} from "../../../constants/divyangDetails/idProffUploads";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { StyledFormContainer } from "../../../styles";
+import { getValidValues } from "../../../utils/common";
+import { dispatchSnackbarError } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
+import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
 import {
   CustomTextField,
   DividerLine,
@@ -10,16 +20,6 @@ import {
   FileUpload,
   FormActions,
 } from "../../shared";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { useLocation, useNavigate } from "react-router-dom";
-import {
-  fields,
-  initialValues,
-} from "../../../constants/divyangDetails/idProffUploads";
-import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
-import { multiPartFormData } from "../../../utils/multipartFormData";
-import { dispatchNotifyError } from "../../../utils/dispatch";
-import { getValidValues } from "../../../utils/common";
 
 const IdProffUploads = () => {
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const IdProffUploads = () => {
 
   const handleOnSubmit = (values) => {
     if (Object.keys(getValidValues(values))?.length < 4 && false) {
-      dispatchNotifyError("Atleast Upload any 2 Id Proofs");
+      dispatchSnackbarError("Atleast Upload any 2 Id Proofs");
     } else {
       const payload = multiPartFormData(values);
       // onSubmit(payload);

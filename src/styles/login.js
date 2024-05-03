@@ -32,10 +32,13 @@ export const ForgetPassword = styled("span")(({ theme }) => ({
 export const LoginContainer = styled(Box)(({ theme }) => ({
   width: "35%",
   height: "auto",
-  padding: "3% 4%",
+  padding: "3%",
   borderRadius: 8,
-  minWidth: "400px",
   border: `1px solid ${theme.palette?.commonColor?.black}`,
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    border: "none",
+  },
 }));
 
 export const LoginHeading = styled(Typography)(({ theme }) => ({

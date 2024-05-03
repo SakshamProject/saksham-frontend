@@ -1,6 +1,6 @@
 import { Chip, Stack, TextField } from "@mui/material";
 import propTypes from "prop-types";
-import { dispatchNotifyError } from "../../../utils/dispatch";
+import { dispatchSnackbarError } from "../../../utils/dispatch";
 
 export const ChipTextField = ({
   customOnChange,
@@ -46,7 +46,7 @@ export const ChipTextField = ({
       );
 
       if (duplicate) {
-        dispatchNotifyError("Duplicate value");
+        dispatchSnackbarError("Duplicate value");
         return;
       }
 

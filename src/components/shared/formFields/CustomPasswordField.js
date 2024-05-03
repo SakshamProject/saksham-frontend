@@ -43,7 +43,7 @@ export const CustomPasswordField = ({
       type={showPassword ? "text" : "password"}
       name={name}
       fullWidth
-      autoComplete={autoComplete}
+      autoComplete={autoComplete || "off"}
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}
@@ -83,11 +83,11 @@ CustomPasswordField.propTypes = {
   disabled: propTypes.bool,
   style: propTypes.object,
   isViewMode: propTypes.bool,
-  autoComplete: propTypes.string,
+  autoComplete: propTypes.bool,
   onChange: propTypes.func,
   variant: propTypes.string,
   placeholder: propTypes.string,
-  showEyeIcon: propTypes.any,
+  showEyeIcon: propTypes.bool,
   onBlur: propTypes.func,
   onKeyDown: propTypes.func,
 };

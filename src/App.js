@@ -8,45 +8,45 @@ import {
   ZOD_ERROR,
 } from "./constants/globalConstants.js";
 import store from "./redux/store";
-import { dispatchNotifyError } from "./utils/dispatch.js";
+import { dispatchSnackbarError } from "./utils/dispatch.js";
+
+const queryClient = new ReactQuery.QueryClient({
+  queryCache: new ReactQuery.QueryCache({
+    onError: ({ response }) => {
+      if (response?.data?.name === ZOD_ERROR) {
+        const issue = response?.data?.issues[0];
+        console.log("query cache", { issue });
+        dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);
+      } else if (typeof response?.data?.error?.message === STRING) {
+        dispatchSnackbarError(response?.data?.error?.message);
+      } else {
+        dispatchSnackbarError(SERVER_ERROR);
+      }
+    },
+  }),
+  mutationCache: new ReactQuery.MutationCache({
+    onError: ({ response }) => {
+      if (response?.data?.name === ZOD_ERROR) {
+        const issue = response?.data?.issues[0];
+        console.log("mutation cache", { issue });
+        dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);
+      } else if (typeof response?.data?.error?.message === STRING) {
+        dispatchSnackbarError(response?.data?.error?.message);
+      } else {
+        dispatchSnackbarError(SERVER_ERROR);
+      }
+    },
+  }),
+});
+
+queryClient.setDefaultOptions({
+  queries: {
+    refetchOnWindowFocus: false,
+    retry: false,
+  },
+});
 
 const App = () => {
-  const queryClient = new ReactQuery.QueryClient({
-    queryCache: new ReactQuery.QueryCache({
-      onError: ({ response }) => {
-        if (response?.data?.name === ZOD_ERROR) {
-          const issue = response?.data?.issues[0];
-          console.log("query cache", { issue });
-          dispatchNotifyError(`${issue?.path[0]} ${issue?.message}`);
-        } else if (typeof response?.data?.error?.message === STRING) {
-          dispatchNotifyError(response?.data?.error?.message);
-        } else {
-          dispatchNotifyError(SERVER_ERROR);
-        }
-      },
-    }),
-    mutationCache: new ReactQuery.MutationCache({
-      onError: ({ response }) => {
-        if (response?.data?.name === ZOD_ERROR) {
-          const issue = response?.data?.issues[0];
-          console.log("mutation cache", { issue });
-          dispatchNotifyError(`${issue?.path[0]} ${issue?.message}`);
-        } else if (typeof response?.data?.error?.message === STRING) {
-          dispatchNotifyError(response?.data?.error?.message);
-        } else {
-          dispatchNotifyError(SERVER_ERROR);
-        }
-      },
-    }),
-  });
-
-  queryClient.setDefaultOptions({
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-    },
-  });
-
   return (
     <BrowserRouter>
       <Provider store={store}>

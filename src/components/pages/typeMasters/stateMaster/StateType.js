@@ -22,7 +22,7 @@ import {
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
-import { dispatchNotifyAction } from "../../../../utils/dispatch";
+import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { validationSchema as validation } from "../../../../validations/typeMaster/stateMaster";
 import {
   CustomModal,
@@ -58,7 +58,7 @@ const StateType = () => {
     mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction(currentForm?.validationLabel, CODES?.DELETE);
+      dispatchResponseAction(currentForm?.validationLabel, CODES?.DELETE);
       refetch();
       setOpen(false);
     },
@@ -90,7 +90,7 @@ const StateType = () => {
         ? updateApiService(currentForm?.apiPath, tableEditId, data)
         : postApiService(currentForm?.apiPath, data),
     onSuccess: () => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         currentForm?.validationLabel,
         tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );

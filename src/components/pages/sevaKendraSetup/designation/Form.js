@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   getApiService,
   getByIdApiService,
@@ -9,15 +9,17 @@ import {
   updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
+import { CODES } from "../../../../constants/globalConstants";
 import {
   fields,
   initialValues,
 } from "../../../../constants/sevaKendraSetup/designation";
+import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import {
-  dispatchNotifyAction,
-  dispatchNotifyError,
+  dispatchResponseAction,
+  dispatchSnackbarError,
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/designation";
 import {
@@ -28,8 +30,6 @@ import {
   FormWrapper,
   SingleAutoComplete,
 } from "../../../shared";
-import { CODES } from "../../../../constants/globalConstants";
-import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
   const { state } = useLocation();
@@ -46,7 +46,7 @@ const Form = () => {
         : postApiService(API_PATHS.DESIGNATION, payload);
     },
     onSuccess: () => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         "Designation",
         editId ? CODES?.UPDATE : CODES?.ADDED
       );
@@ -58,7 +58,7 @@ const Form = () => {
 
   const handleOnSubmit = (value) => {
     if (value?.featuresId?.length === 0) {
-      dispatchNotifyError("Minimum one access is required");
+      dispatchSnackbarError("Minimum one access is required");
       return;
     }
     const payload = editId

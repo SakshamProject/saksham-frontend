@@ -1,14 +1,46 @@
 import { Grid } from "@mui/material";
-import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
+import React, { useEffect, useState } from "react";
 
-import { StyledFormContainer, theme } from "../../../styles";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+  updateApiService,
+} from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
 import {
   eqColumns,
   eqInitialValues,
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/personalDetails";
+import { CODES } from "../../../constants/globalConstants";
+import {
+  bloodGroup,
+  genderSeed,
+  statusSeed,
+  yesNoSeed,
+} from "../../../constants/seeds";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { StyledFormContainer, theme } from "../../../styles";
+import {
+  formatDate,
+  getAge,
+  getSeedNameById,
+  getValidValues,
+} from "../../../utils/common";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
+import {
+  eqValidationSchema,
+  validationSchema,
+} from "../../../validations/divyangDetails/personalDetails";
 import {
   CustomDatePicker,
   CustomPasswordField,
@@ -22,39 +54,7 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import {
-  formatDate,
-  getAge,
-  getSeedNameById,
-  getValidValues,
-} from "../../../utils/common";
-import {
-  bloodGroup,
-  genderSeed,
-  statusSeed,
-  yesNoSeed,
-} from "../../../constants/seeds";
-import { API_PATHS } from "../../../api/apiPaths";
-import {
-  getApiService,
-  getByIdApiService,
-  postApiService,
-  updateApiService,
-} from "../../../api/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import {
-  eqValidationSchema,
-  validationSchema,
-} from "../../../validations/divyangDetails/personalDetails";
-import { CODES } from "../../../constants/globalConstants";
 import StatusFields from "../../shared/StatusFields";
-import {
-  dispatchNotifyAction,
-  dispatchNotifyError,
-} from "../../../utils/dispatch";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const PersonalDetails = () => {
   const navigate = useNavigate();
@@ -68,7 +68,7 @@ const PersonalDetails = () => {
 
   const handleOnSubmit = (values) => {
     if (!values?.educationQualifications?.length) {
-      dispatchNotifyError("Atleast Add One Education Qualification");
+      dispatchSnackbarError("At least Add One Education Qualification");
       return;
     }
     const payload = getValidValues({
@@ -114,7 +114,7 @@ const PersonalDetails = () => {
         ? updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data)
         : postApiService(API_PATHS?.DIVYANG_DETAILS, data),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         "Personal Details",
         editId ? CODES?.SAVED : CODES?.ADDED
       );
@@ -157,7 +157,7 @@ const PersonalDetails = () => {
       ) &&
         !eqValues?.educationQualificationId)
     ) {
-      dispatchNotifyError("Education Qualification already added");
+      dispatchSnackbarError("Education Qualification already added");
     } else {
       if (tableEditId === 0 || !!tableEditId) {
         const updatedEducationQualifications = [

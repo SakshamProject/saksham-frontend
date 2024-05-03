@@ -21,6 +21,7 @@ export const CustomTextField = ({
   errors,
   customHelperText,
   onKeyPress,
+  onKeyDown,
 }) => {
   const handleKeyPress = (e) => {
     if (fieldType === "mobile" && e.keyCode !== 13) {
@@ -51,34 +52,35 @@ export const CustomTextField = ({
       type={"text"}
       name={name}
       fullWidth
-      autoComplete={autoComplete}
+      autoComplete={autoComplete ? "on" : "off"}
       onChange={onChange}
       onBlur={onBlur}
-      value={value || ""}
+      value={value}
       style={style}
       onKeyDown={(e) => {
         if (fieldType === "number") return e?.keyCode === 56;
       }}
-      onKeyPress={(e) => onKeyPress && onKeyPress(e)}
+      onKeyPress={(e) => (onKeyPress ? onKeyPress(e) : () => {})}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) || " "}
       disabled={disabled}
       InputProps={{
         endAdornment: endAdornment,
         onKeyPress: (e) => handleKeyPress(e),
+        onKeyDown: (e) => (onKeyDown ? onKeyDown(e) : () => {}),
         onInput: (e) => {
-          const currentValue = e.target.value;
+          const currentValue = e?.target?.value;
           e.target.value = currentValue
-            ? e.target.value.replace(/\s+/g, " ")
+            ? e.target?.value?.replace(/\s+/g, " ")
             : "";
         },
-        readOnly: Boolean(isViewMode),
+        readOnly: isViewMode,
         disabled: disabled,
       }}
       onInput={(e) => {
         e.target.value &&
           maxLength &&
-          (e.target.value = e.target.value.toString().slice(0, maxLength));
+          (e.target.value = e?.target?.value?.toString()?.slice(0, maxLength));
       }}
     />
   );
@@ -93,8 +95,8 @@ CustomTextField.propTypes = {
   label: propTypes.string,
   disabled: propTypes.bool,
   style: propTypes.object,
-  isViewMode: propTypes.oneOfType([propTypes.string, propTypes.bool]),
-  autoComplete: propTypes.string,
+  isViewMode: propTypes.bool,
+  autoComplete: propTypes.bool,
   onChange: propTypes.func,
   variant: propTypes.string,
   placeholder: propTypes.string,
@@ -104,4 +106,5 @@ CustomTextField.propTypes = {
   fieldType: propTypes.string,
   endAdornment: propTypes.any,
   onKeyPress: propTypes.func,
+  onKeyDown: propTypes.func,
 };

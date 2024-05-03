@@ -19,9 +19,10 @@ import {
 } from "../../../constants/serviceMaster/serviceMaster";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { findNameById, getValidValues } from "../../../utils/common";
-import { dispatchNotifyAction } from "../../../utils/dispatch";
+import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/serviceMaster/serviceMaster";
 import {
+  CustomModal,
   CustomReactTable,
   CustomTextField,
   DividerLine,
@@ -29,7 +30,6 @@ import {
   FormWrapper,
   SingleAutoComplete,
   WithCondition,
-  CustomModal,
 } from "../../shared";
 
 const Form = () => {
@@ -53,7 +53,7 @@ const Form = () => {
     mutationKey: ["deleteService"],
     mutationFn: (id) => deleteApiService(API_PATHS?.SERVICES, id),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction("Service", CODES?.DELETE);
+      dispatchResponseAction("Service", CODES?.DELETE);
       serviceGetById();
       setOpen(false);
     },
@@ -71,7 +71,7 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SERVICES, tableEditId, data)
         : postApiService(API_PATHS?.SERVICES, data),
     onSuccess: () => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         "Service",
         tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );

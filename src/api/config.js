@@ -1,7 +1,7 @@
 import axios from "axios";
 import { COOKIE_KEYS } from "../constants/globalConstants";
 import { getCookie } from "../utils/cookie";
-import { dispatchLoading } from "../utils/dispatch";
+import { dispatchIsLoading } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
@@ -13,7 +13,7 @@ export const appApi = axios.create({
 appApi.interceptors.request.use(
   (config) => {
     config.headers["authorization"] = getCookie(COOKIE_KEYS.TOKEN);
-    dispatchLoading(true);
+    dispatchIsLoading(true);
     return config;
   },
   (error) => {
@@ -23,11 +23,11 @@ appApi.interceptors.request.use(
 
 appApi.interceptors.response.use(
   (response) => {
-    dispatchLoading(false);
+    dispatchIsLoading(false);
     return response;
   },
   async (error) => {
-    dispatchLoading(false);
+    dispatchIsLoading(false);
     return Promise.reject(error);
   }
 );

@@ -1,8 +1,35 @@
+import ForgetPassword from "../components/pages/login/ForgetPassword";
+import Login from "../components/pages/login/Login";
+import ResetPassword from "../components/pages/login/ResetPassword";
+import Signup from "../components/pages/login/Signup";
 import { CODES } from "../constants/globalConstants";
 import { ROUTE_PATHS } from "./routePaths";
 import * as routeElements from "./routes";
 
-const ROUTES = [
+export const GENERAL_ROUTES = [
+  {
+    path: ROUTE_PATHS?.LOGIN,
+    element: Login,
+    key: "login",
+  },
+  {
+    path: ROUTE_PATHS?.FORGOT_PASSWORD,
+    element: ForgetPassword,
+    key: "forget password",
+  },
+  {
+    path: ROUTE_PATHS?.RESET_PASSWORD,
+    element: ResetPassword,
+    key: "reset password",
+  },
+  {
+    path: ROUTE_PATHS?.SIGNUP,
+    element: Signup,
+    key: "signup",
+  },
+];
+
+const PROTECTED_ROUTES = [
   {
     path: ROUTE_PATHS?.DASHBOARD,
     element: routeElements?.Dashboard,
@@ -153,10 +180,10 @@ const ROUTES = [
 ];
 
 export const getRoutes = ({ designations = [], all = false }) => {
-  if (all) return ROUTES;
+  if (all) return PROTECTED_ROUTES;
 
   return designations?.reduce((acc, designation) => {
-    const validRoutes = ROUTES?.filter(
+    const validRoutes = PROTECTED_ROUTES?.filter(
       (route) => designation?.feature?.name === route?.key
     );
     return [...acc, ...validRoutes];

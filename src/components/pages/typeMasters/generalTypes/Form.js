@@ -26,11 +26,12 @@ import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import { findNameById } from "../../../../utils/common";
 import {
-  dispatchNotifyAction,
-  dispatchNotifyError,
+  dispatchResponseAction,
+  dispatchSnackbarError,
 } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/typeMaster/generalTypes";
 import {
+  CustomModal,
   CustomRadioButton,
   CustomReactTable,
   CustomTextField,
@@ -39,7 +40,6 @@ import {
   ListTopbar,
   SingleAutoComplete,
   WithCondition,
-  CustomModal,
 } from "../../../shared";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
@@ -64,7 +64,7 @@ const Form = () => {
         : postApiService(apiPath, payload);
     },
     onSuccess: () => {
-      dispatchNotifyAction(
+      dispatchResponseAction(
         values?.typeMaster,
         tableEditId ? CODES?.UPDATE : CODES?.ADDED
       );
@@ -80,7 +80,7 @@ const Form = () => {
       GENERALTYPE_INCLUDE.includes(values?.typeMaster) &&
       !GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION
     ) {
-      dispatchNotifyError("Minimum one Sub type name is required");
+      dispatchSnackbarError("Minimum one Sub type name is required");
       return;
     }
     const payload = getGeneralTypePayload(value);
@@ -138,7 +138,7 @@ const Form = () => {
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
-      dispatchNotifyAction(values?.typeMaster, CODES?.DELETE);
+      dispatchResponseAction(values?.typeMaster, CODES?.DELETE);
       refetch();
       setOpen(false);
     },

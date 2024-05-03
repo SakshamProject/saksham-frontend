@@ -1,8 +1,28 @@
-import React from "react";
 import { Grid } from "@mui/material";
-import { useFormik } from "formik";
-import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  getApiService,
+  getByIdApiService,
+  updateApiService,
+} from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import {
+  dependedValues,
+  dependentValuesCommunication,
+  fields,
+  initialValues,
+} from "../../../constants/divyangDetails/address";
+import { CODES } from "../../../constants/globalConstants";
+import { locationSeed } from "../../../constants/seeds";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
+import { formatDate, getValidValues } from "../../../utils/common";
+import { dispatchResponseAction } from "../../../utils/dispatch";
+import { validationSchema } from "../../../validations/divyangDetails/address";
 import {
   CustomCheckBox,
   CustomRadioButton,
@@ -12,26 +32,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import {
-  fields,
-  initialValues,
-  dependedValues,
-  dependentValuesCommunication,
-} from "../../../constants/divyangDetails/address";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { formatDate, getValidValues } from "../../../utils/common";
-import {
-  getApiService,
-  getByIdApiService,
-  updateApiService,
-} from "../../../api/api";
-import { API_PATHS } from "../../../api/apiPaths";
-import { locationSeed } from "../../../constants/seeds";
-import { CODES } from "../../../constants/globalConstants";
-import { validationSchema } from "../../../validations/divyangDetails/address";
-import { dispatchNotifyAction } from "../../../utils/dispatch";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 
 const Address = () => {
   const navigate = useNavigate();
@@ -82,7 +82,7 @@ const Address = () => {
     mutationFn: (data) =>
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
     onSuccess: ({ data }) => {
-      dispatchNotifyAction("Address", CODES?.SAVED);
+      dispatchResponseAction("Address", CODES?.SAVED);
       navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY}`, {
         state: {
           editId: data?.data?.id,

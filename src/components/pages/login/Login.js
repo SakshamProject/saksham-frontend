@@ -1,12 +1,14 @@
-import { Box, Grid, styled } from "@mui/material";
+import { Box, Grid, styled, useMediaQuery } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
+import { LOCAL_STORAGE_KEYS } from "../../../constants/globalConstants";
 import { initialValues } from "../../../constants/login/login";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { theme } from "../../../styles";
 import {
   CancelButton,
   StyledButtonContainer,
@@ -21,7 +23,7 @@ import {
 import { getValidValues } from "../../../utils/common";
 import { setCookie } from "../../../utils/cookie";
 import {
-  dispatchNotifySuccess,
+  dispatchSnackbarSuccess,
   dispatchUserInfo,
 } from "../../../utils/dispatch";
 import {
@@ -29,21 +31,26 @@ import {
   objectEncryption,
 } from "../../../utils/encryptionAndDecryption";
 import {
-  getLocalStorage,
-  removeLocalStorage,
-  setLocalStorage,
+  getLocalStorageItem,
+  removeLocalStorageItem,
+  setLocalStorageItem,
 } from "../../../utils/localStorage";
 import { validationSchema } from "../../../validations/login/login";
 import {
   CustomCheckBox,
   CustomPasswordField,
   CustomTextField,
+  WithCondition,
 } from "../../shared/index";
 
 const Login = () => {
   const navigate = useNavigate();
-  const localStoreValue = objectDecryption(getLocalStorage("remember"));
   const [roleStatus, setRoleStatus] = useState(false);
+  const isMobile = useMediaQuery(theme?.breakpoints?.down("sm"));
+
+  const localStoreValue = objectDecryption(
+    getLocalStorageItem(LOCAL_STORAGE_KEYS?.REMEMBER)
+  );
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["login"],
@@ -54,21 +61,18 @@ const Login = () => {
     },
     onSuccess: ({ data }, value) => {
       if (value?.rememberMe) {
-        setLocalStorage("remember", objectEncryption({ ...value, roleStatus }));
+        setLocalStorageItem(
+          LOCAL_STORAGE_KEYS.REMEMBER,
+          objectEncryption({ ...value, roleStatus })
+        );
       } else {
-        removeLocalStorage("remember");
+        removeLocalStorageItem(LOCAL_STORAGE_KEYS.REMEMBER);
       }
       setCookie("token", data?.token);
       dispatchUserInfo(data?.user);
-      dispatchNotifySuccess(data?.message);
+      dispatchSnackbarSuccess(data?.message);
       navigate(ROUTE_PATHS.DASHBOARD);
     },
-  });
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit,
   });
 
   const {
@@ -81,32 +85,45 @@ const Login = () => {
     setFieldValue,
     handleReset,
     setValues,
-  } = formik;
-
-  const handleForgetPassword = () => {
-    navigate(ROUTE_PATHS.RESET_PASSWORD);
-  };
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
 
   const RoleButton = styled(CancelButton)(({ theme, roletype }) => ({
     width: "100%",
     marginRight: "0 !important",
     margin: roletype === "divyang" ? "0 8px 0 0" : "0 0 0 16px",
-    ...((!roleStatus && roletype === "divyang") ||
-    (roleStatus && roletype === "user")
-      ? {
-          backgroundColor: theme.palette?.primary?.main,
-          color: theme.palette?.primary?.contrastText,
-          ":hover": {
-            backgroundColor: theme.palette?.primary?.main,
-            color: theme.palette?.primary?.contrastText,
-          },
-        }
-      : {}),
+    ...(((!roleStatus && roletype === "divyang") ||
+      (roleStatus && roletype === "user")) && {
+      backgroundColor: theme.palette?.primary?.main,
+      color: theme.palette?.primary?.contrastText,
+      ":hover": {
+        backgroundColor: theme.palette?.primary?.main,
+        color: theme.palette?.primary?.contrastText,
+      },
+    }),
   }));
 
-  const roleHandleClick = (status) => {
-    handleReset();
-    setRoleStatus(status);
+  const roleHandleClick = useCallback(
+    (status) => {
+      handleReset();
+      setRoleStatus(status);
+      if (
+        status === localStoreValue?.roleStatus &&
+        localStoreValue?.rememberMe
+      ) {
+        const { roleStatus, ...value } = localStoreValue;
+        setValues({ ...value });
+      }
+    },
+    [handleReset, localStoreValue, setValues]
+  );
+
+  const getLoginTitle = () => {
+    if (isMobile) return "Login";
+    return roleStatus ? "User Login" : "Divyang Login";
   };
 
   useEffect(() => {
@@ -115,8 +132,13 @@ const Login = () => {
       setRoleStatus(roleStatus);
       setValues({ ...value });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, []); //eslint-disable-line
+
+  useEffect(() => {
+    if (isMobile) {
+      roleHandleClick(false);
+    }
+  }, [isMobile, roleHandleClick]);
 
   return (
     <Box>
@@ -124,27 +146,30 @@ const Login = () => {
         <LoginContainer>
           <Grid container gap={2}>
             <Grid item xs={12}>
-              <LoginHeading sx={{ fontSize: "28px" }}>
-                {roleStatus ? "User" : "Divyang"} Login
-              </LoginHeading>
+              <LoginHeading>{getLoginTitle()}</LoginHeading>
             </Grid>
 
-            <StyledButtonContainer
-              sx={{
-                margin: "16px 0",
-                justifyContent: "space-between",
-              }}
-            >
-              <RoleButton
-                onClick={() => roleHandleClick(false)}
-                roletype="divyang"
+            <WithCondition isValid={!isMobile}>
+              <StyledButtonContainer
+                sx={{
+                  margin: "16px 0",
+                  justifyContent: "space-between",
+                }}
               >
-                Divyang
-              </RoleButton>
-              <RoleButton onClick={() => roleHandleClick(true)} roletype="user">
-                User
-              </RoleButton>
-            </StyledButtonContainer>
+                <RoleButton
+                  onClick={() => roleHandleClick(false)}
+                  roletype="divyang"
+                >
+                  Divyang
+                </RoleButton>
+                <RoleButton
+                  onClick={() => roleHandleClick(true)}
+                  roletype="user"
+                >
+                  User
+                </RoleButton>
+              </StyledButtonContainer>
+            </WithCondition>
 
             <Grid item xs={12}>
               <CustomTextField
@@ -156,9 +181,7 @@ const Login = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onKeyDown={(e) => {
-                  if (e?.keyCode === 13 || e?.key === "Enter") {
-                    handleSubmit();
-                  }
+                  if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
                 }}
               />
             </Grid>
@@ -198,22 +221,32 @@ const Login = () => {
                 />
               </Box>
 
-              <ForgetPassword onClick={handleForgetPassword}>
+              <ForgetPassword
+                onClick={() => navigate(ROUTE_PATHS.RESET_PASSWORD)}
+              >
                 Forget Password
               </ForgetPassword>
             </StyledButtonContainer>
 
-            <Grid item xs={12}>
-              <StyledButtonContainer sx={{ justifyContent: "center" }}>
-                <SubmitButton
-                  color="primary"
-                  onClick={handleSubmit}
-                  sx={{ padding: "6px 24px !important" }}
-                >
-                  Submit
-                </SubmitButton>
-              </StyledButtonContainer>
+            <Grid item xs={12} sx={{ margin: "16px 0", textAlign: "center" }}>
+              <SubmitButton
+                onClick={handleSubmit}
+                sx={{
+                  borderRadius: "18px",
+                  width: "50%",
+                }}
+              >
+                Login
+              </SubmitButton>
             </Grid>
+
+            <WithCondition isValid={!roleStatus}>
+              <Grid item xs={12} sx={{ textAlign: "center" }}>
+                <ForgetPassword onClick={() => navigate(ROUTE_PATHS.SIGNUP)}>
+                  Click here to register
+                </ForgetPassword>
+              </Grid>
+            </WithCondition>
           </Grid>
         </LoginContainer>
       </LoginWrapper>
