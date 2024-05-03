@@ -1,7 +1,7 @@
 import { Box, Grid, styled } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -19,6 +19,20 @@ import {
   LoginWrapper,
 } from "../../../styles/login";
 import { getValidValues } from "../../../utils/common";
+import { setCookie } from "../../../utils/cookie";
+import {
+  dispatchNotifySuccess,
+  dispatchUserInfo,
+} from "../../../utils/dispatch";
+import {
+  objectDecryption,
+  objectEncryption,
+} from "../../../utils/encryptionAndDecryption";
+import {
+  getLocalStorage,
+  removeLocalStorage,
+  setLocalStorage,
+} from "../../../utils/localStorage";
 import { validationSchema } from "../../../validations/login/login";
 import {
   CustomCheckBox,
@@ -28,6 +42,7 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+  const localStoreValue = objectDecryption(getLocalStorage("remember"));
   const [roleStatus, setRoleStatus] = useState(false);
 
   const { mutate: onSubmit } = useMutation({
@@ -37,7 +52,17 @@ const Login = () => {
       const { rememberMe, ...payload } = value;
       return postApiService(apiPath, getValidValues(payload));
     },
-    onSuccess: ({ data }) => {},
+    onSuccess: ({ data }, value) => {
+      if (value?.rememberMe) {
+        setLocalStorage("remember", objectEncryption({ ...value, roleStatus }));
+      } else {
+        removeLocalStorage("remember");
+      }
+      setCookie("token", data?.token);
+      dispatchUserInfo(data?.user);
+      dispatchNotifySuccess(data?.message);
+      navigate(ROUTE_PATHS.DASHBOARD);
+    },
   });
 
   const formik = useFormik({
@@ -55,6 +80,7 @@ const Login = () => {
     handleSubmit,
     setFieldValue,
     handleReset,
+    setValues,
   } = formik;
 
   const handleForgetPassword = () => {
@@ -82,6 +108,15 @@ const Login = () => {
     handleReset();
     setRoleStatus(status);
   };
+
+  useEffect(() => {
+    if (localStoreValue?.rememberMe) {
+      const { roleStatus, ...value } = localStoreValue;
+      setRoleStatus(roleStatus);
+      setValues({ ...value });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Box>

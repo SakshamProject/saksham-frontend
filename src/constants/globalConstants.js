@@ -1,4 +1,3 @@
-import { SaveOutlined } from "@mui/icons-material";
 import { OptionsContainer } from "../styles";
 import { formatDate } from "../utils/common";
 
@@ -48,6 +47,13 @@ export const CODES = {
   MALE: "MALE",
   FEMALE: "FEMALE",
   SAVED: "Saved",
+  DASHBOARD: "DASHBOARD",
+  SEVAKENDRA_SETUP: "SEVAKENDRA_SETUP",
+  SEVAKENDRA_USERS: "SEVAKENDRA_USERS",
+  TYPE_MASTERS: "TYPE_MASTERS",
+  DIVYANG_DETAILS: "DIVYANG_DETAILS",
+  SERVICE_MASTER: "SERVICE_MASTER",
+  SERVICE_MAPPING: "SERVICE_MAPPING",
 };
 
 // api messages

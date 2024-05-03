@@ -13,7 +13,7 @@ const useSeeds = (seedPaths = []) => {
       queryKey: ["seedData", path],
       queryFn: async () => {
         const response = await getSeedService(path);
-        dispatch(setSeed({ [name]: [...response?.data] }));
+        dispatch(setSeed({ [name]: response?.data || [] }));
         return response;
       },
       enabled: !seeds?.[name] && !!path,

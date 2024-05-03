@@ -1,8 +1,7 @@
-import { Box, Grid, styled } from "@mui/material";
-import { DividerLine, EditPopover } from "../../components/shared";
-import { ROUTE_PATHS } from "../../routes/routePaths";
-import { CustomTypography, OptionsContainer, theme } from "../../styles";
 import React from "react";
+import { EditPopover } from "../../components/shared";
+import { ROUTE_PATHS } from "../../routes/routePaths";
+import { OptionsContainer } from "../../styles";
 
 export const DIVYANG_STEPS = [
   {
@@ -235,7 +234,7 @@ export const divyangDetailsColumn = [
 //               width={item.width}
 //             />
 //           </CustomBox>
-//           {console.log(item?.divider)}
+//
 //           {item.divider ? (
 //             <Grid item xs={12}>
 //               <DividerLine gap={"8px 0 24px"} />

@@ -2,6 +2,4 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import reducer from "./slice";
 
-export default configureStore({
-  reducer,
-});
+export default configureStore({ reducer });

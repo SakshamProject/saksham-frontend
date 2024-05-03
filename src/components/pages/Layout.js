@@ -1,6 +1,7 @@
 import { Suspense } from "react";
+import { useSelector } from "react-redux";
 import { Outlet } from "react-router-dom";
-import { SIDE_MENU } from "../../constants/menus";
+import { getSideMenus } from "../../constants/menus";
 import {
   AppContainerLayout,
   AppMainContainer,
@@ -10,12 +11,16 @@ import { CustomLoader, SideBarNavigation } from "../shared";
 import { AppBar } from "../shared/AppBar";
 
 export const Layout = () => {
+  const userInfo = useSelector((state) => state?.userInfo);
+
   return (
     <AppContainerLayout>
       <AppBar />
 
       <AppMainContainer>
-        <SideBarNavigation menuList={SIDE_MENU} />
+        <SideBarNavigation
+          menuList={getSideMenus(userInfo?.designation?.features)}
+        />
 
         <Suspense fallback={<CustomLoader />}>
           <AppMainLayout>

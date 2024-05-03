@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { Route, Routes } from "react-router-dom";
 import { SERVER_ERROR } from "../constants/globalConstants.js";
 import { ProtectedRoute } from "../routes/ProtectedRoute.js";
-import { SUPER_ADMIN_ROUTES } from "../routes/index.js";
+import { getRoutes } from "../routes/index.js";
 import { routeMapping } from "../routes/routeMapping.js";
 import { ROUTE_PATHS } from "../routes/routePaths.js";
 import { theme } from "../styles/theme";
@@ -22,6 +22,7 @@ import NotFound from "./shared/NotFound.js";
 const Root = () => {
   const snackBar = useSelector((state) => state?.snackBar);
   const isLoading = useSelector((state) => state?.isLoading);
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const queryClient = new QueryClient({
     queryCache: new QueryCache({
@@ -64,7 +65,7 @@ const Root = () => {
           <Route path={ROUTE_PATHS.LOGIN} element={<Login />} />
 
           <Route path={ROUTE_PATHS.LAYOUT} element={<ProtectedRoute />}>
-            {routeMapping(SUPER_ADMIN_ROUTES)}
+            {routeMapping(getRoutes(userInfo?.designation?.features))}
           </Route>
 
           <Route path={ROUTE_PATHS.NOT_FOUND} element={<NotFound />} />

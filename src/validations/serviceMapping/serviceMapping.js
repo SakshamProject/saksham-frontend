@@ -79,9 +79,7 @@ export const validationSchema = object({
       .test(
         "isRequired",
         "Contact person name is required",
-        (value, context) => {
-          console.log(value, context?.from);
-        }
+        (value, context) => {}
       ),
     // mobileNumber: "",
     // email: "",

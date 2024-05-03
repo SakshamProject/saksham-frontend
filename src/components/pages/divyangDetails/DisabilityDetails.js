@@ -1,15 +1,21 @@
-import React from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useFormik } from "formik";
 import { Grid, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { getValidValues } from "../../../utils/common";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { getApiService, getByIdApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/disabilityDetails";
+import { CODES } from "../../../constants/globalConstants";
+import { authorities, yesNoSeed } from "../../../constants/seeds";
+import { tableStyles } from "../../../constants/typeMasters/stateMaster";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
+import { getValidValues } from "../../../utils/common";
 import { validationSchema } from "../../../validations/divyangDetails/disabilityDetails";
 import {
   CustomDatePicker,
@@ -23,12 +29,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { API_PATHS } from "../../../api/apiPaths";
-import { getApiService, getByIdApiService } from "../../../api/api";
-import { authorities, yesNoSeed } from "../../../constants/seeds";
-import { tableStyles } from "../../../constants/typeMasters/stateMaster";
-import { CODES } from "../../../constants/globalConstants";
 
 const DisabilityDetails = () => {
   const navigate = useNavigate();
@@ -53,7 +53,6 @@ const DisabilityDetails = () => {
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
-    console.log(payload);
     // onSubmit(payload);
     // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
   };

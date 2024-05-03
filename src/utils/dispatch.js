@@ -15,8 +15,8 @@ const dispatchLoading = (isLoading) => {
   store.dispatch(setIsLoading(isLoading));
 };
 
-const dispatchUserInfo = (useInfo) => {
-  store.dispatch(setUserInfo(useInfo));
+const dispatchUserInfo = (userInfo) => {
+  store.dispatch(setUserInfo(userInfo));
 };
 
 const dispatchRemoveAppState = () => {
@@ -47,10 +47,10 @@ const dispatchNotifyAction = (title, action) => {
 
 export {
   dispatchLoading,
+  dispatchNotifyAction,
   dispatchNotifyError,
   dispatchNotifySuccess,
   dispatchNotifyUser,
   dispatchRemoveAppState,
   dispatchUserInfo,
-  dispatchNotifyAction,
 };

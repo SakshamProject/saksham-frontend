@@ -1,11 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { makeNotification } from "./actions";
-
 const initialState = {
   snackBar: "",
   isLoading: false,
   userInfo: {},
+  seeds: {},
 };
 
 const { reducer, actions } = createSlice({
@@ -13,11 +12,16 @@ const { reducer, actions } = createSlice({
   initialState,
   reducers: {
     notifyUser: (state, action) => {
-      state.snackBar = makeNotification(action.payload);
+      if (!action.payload) {
+        state.snackBar = null;
+        return;
+      }
+      const [message, severity] = action.payload;
+      state.snackBar = { message, severity };
     },
 
     setIsLoading: (state, action) => {
-      state.isLoading = action.payload;
+      state.isLoading = action?.payload;
     },
 
     setUserInfo: (state, action) => {

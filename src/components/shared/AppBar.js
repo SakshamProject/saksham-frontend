@@ -13,7 +13,6 @@ import {
   CommonAvatar,
 } from "../../styles";
 import { removeAllCookie } from "../../utils/cookie";
-import { dispatchRemoveAppState } from "../../utils/dispatch";
 import { RightMenu } from "./RightMenu";
 
 const CustomTypography = styled(Typography)(({ theme }) => ({
@@ -28,13 +27,10 @@ const StyledLogo = styled("img")({
 export const AppBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
-  const {
-    name = "",
-    profileImageUrl = "",
-    firstName = "",
-    lastName = "",
-  } = useSelector((state) => state?.userInfo);
-  const role = useSelector((state) => state?.role);
+  const userInfo = useSelector((state) => state?.userInfo);
+  const userName = userInfo?.name;
+  const userImage = userInfo?.profileImageUrl;
+  const userRole = userInfo?.role;
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
 
@@ -43,7 +39,6 @@ export const AppBar = () => {
   const redirect = (routePath) => {
     if (routePath === ROUTE_PATHS.LOGIN) {
       removeAllCookie();
-      dispatchRemoveAppState();
     }
     navigate(routePath);
     handleClose();
@@ -58,18 +53,16 @@ export const AppBar = () => {
       <AppProfile onClick={handleClick}>
         <AppProfileDetails>
           <CustomTypography fontSize={18} fontWeight={500}>
-            {name || !!firstName
-              ? `${firstName} ${lastName || ""}`
-              : "Anonymous"}
+            {userName || "Anonymous"}
           </CustomTypography>
 
           <CustomTypography fontSize={13}>
-            {role?.role || "Unknown"}
+            {userRole || "Unknown"}
           </CustomTypography>
         </AppProfileDetails>
 
         <CommonAvatar
-          src={profileImageUrl || defaultAvatar}
+          src={userImage || defaultAvatar}
           onError={(e) => (e.target.src = defaultAvatar)}
           alt="profile avatar"
         />

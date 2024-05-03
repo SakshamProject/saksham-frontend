@@ -1,9 +1,24 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
-import { useFormik } from "formik";
 import { Box, Grid, Typography } from "@mui/material";
-import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import {
+  getApiService,
+  getByIdApiService,
+  postApiService,
+} from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import { appApi } from "../../../api/config";
+import user from "../../../assets/profile.png";
+import { divyangDetailsColumn } from "../../../constants/globalConstants";
+import {
+  formFields,
+  initialValues,
+} from "../../../constants/serviceMapping/serviceMapping";
+import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { CustomTypography, theme } from "../../../styles";
+import { validationSchema } from "../../../validations/serviceMapping/serviceMapping";
 import {
   AuditLog,
   CustomDatePicker,
@@ -15,21 +30,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { CustomTypography, theme } from "../../../styles";
-import { API_PATHS } from "../../../api/apiPaths";
-import {
-  getApiService,
-  getByIdApiService,
-  postApiService,
-} from "../../../api/api";
-import {
-  initialValues,
-  formFields,
-} from "../../../constants/serviceMapping/serviceMapping";
-import { validationSchema } from "../../../validations/serviceMapping/serviceMapping";
-import { appApi } from "../../../api/config";
-import user from "../../../assets/profile.png";
-import { divyangDetailsColumn } from "../../../constants/globalConstants";
 
 const Form = () => {
   const { state } = useLocation();
@@ -51,7 +51,6 @@ const Form = () => {
   } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: (value) => console.log(value),
   });
 
   const handleOnReset = () => navigate(ROUTE_PATHS.SERVICE_MAPPING_LIST);
@@ -101,9 +100,7 @@ const Form = () => {
     queryKey: ["getAllService", values?.serviceTypeId],
     queryFn: () =>
       allServiceType?.find((item) => item?.id === values?.serviceTypeId),
-    select: ({ data }) => {
-      console.log(data);
-    },
+    select: ({ data }) => {},
     enabled: !!values?.serviceTypeId,
   });
 

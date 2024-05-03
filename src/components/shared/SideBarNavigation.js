@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Tab, Tabs, styled } from "@mui/material";
+import propTypes from "prop-types";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
 import { theme } from "../../styles";
 import { Popover } from "./Popover";
 
