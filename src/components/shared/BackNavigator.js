@@ -1,7 +1,7 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, styled } from "@mui/material";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import propTypes from "prop-types";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 
 const Container = styled("div")(({ theme, disableBack }) => ({
   display: "flex",
@@ -41,7 +41,10 @@ export const BackNavigator = ({
   const [params] = useSearchParams();
   const editId = params.get("editId");
   const isViewMode = location.state?.viewDetails;
-  const mode = editId ? (isViewMode ? "VIEW" : "EDIT") : "NEW";
+  const mode = () => {
+    if (editId) return isViewMode ? "VIEW" : "EDIT";
+    return "NEW";
+  };
 
   const onClick = () => {
     if (handleNavigate) {
@@ -66,7 +69,7 @@ export const BackNavigator = ({
         <CustomHeader>
           {disableModes
             ? `${title}`?.toUpperCase()
-            : `${mode} ${title}`?.toUpperCase()}
+            : `${mode()} ${title}`?.toUpperCase()}
         </CustomHeader>
       )}
     </Container>

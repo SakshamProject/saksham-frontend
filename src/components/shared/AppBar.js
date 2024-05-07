@@ -37,7 +37,7 @@ export const AppBar = () => {
   const handleClose = () => setAnchorEl(null);
 
   const redirect = (routePath) => {
-    if (routePath === ROUTE_PATHS.LOGIN) {
+    if (routePath === ROUTE_PATHS?.LOGIN) {
       removeAllCookie();
     }
     navigate(routePath);

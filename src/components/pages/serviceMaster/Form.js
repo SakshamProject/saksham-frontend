@@ -53,7 +53,7 @@ const Form = () => {
     mutationKey: ["deleteService"],
     mutationFn: (id) => deleteApiService(API_PATHS?.SERVICES, id),
     onSuccess: ({ data }) => {
-      dispatchResponseAction("Service", CODES?.DELETE);
+      dispatchResponseAction("Service", CODES?.DELETED);
       serviceGetById();
       setOpen(false);
     },
@@ -73,7 +73,7 @@ const Form = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Service",
-        tableEditId ? CODES?.UPDATE : CODES?.ADDED
+        tableEditId ? CODES?.UPDATED : CODES?.ADDED
       );
       setFieldValue("name", "");
       setTouched({});
@@ -119,7 +119,7 @@ const Form = () => {
   }, [editId, serviceGetById]);
 
   return (
-    <FormWrapper title="Service" navigateTo={ROUTE_PATHS.SERVICE_MASTER_LIST}>
+    <FormWrapper title="Service" navigateTo={ROUTE_PATHS?.SERVICE_MASTER_LIST}>
       <Grid item xs={6}>
         <SingleAutoComplete
           label={fields?.serviceTypeId?.label}

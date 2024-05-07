@@ -11,13 +11,17 @@ import {
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
 import { CODES } from "../../../../constants/globalConstants";
+import { statusSeed } from "../../../../constants/seeds";
 import {
   fields,
   initialValues,
   transformServices,
 } from "../../../../constants/sevaKendraSetup/master";
+import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
+import { CustomTypography } from "../../../../styles";
 import { formatDate, getValidValues } from "../../../../utils/common";
+import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
   AuditLog,
@@ -31,10 +35,6 @@ import {
   WithCondition,
 } from "../../../shared";
 import StatusFields from "../../../shared/StatusFields";
-import { CustomTypography } from "../../../../styles";
-import { dispatchResponseAction } from "../../../../utils/dispatch";
-import { statusSeed } from "../../../../constants/seeds";
-import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 
 const Form = () => {
   const { state } = useLocation();
@@ -69,9 +69,9 @@ const Form = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Seva Kendra",
-        editId ? CODES?.UPDATE : CODES?.ADDED
+        editId ? CODES?.UPDATED : CODES?.ADDED
       );
-      navigate(ROUTE_PATHS.SEVA_KENDRA_MASTER_LIST);
+      navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST);
     },
   });
 
@@ -95,13 +95,13 @@ const Form = () => {
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
     queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });

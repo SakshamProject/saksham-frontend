@@ -49,7 +49,7 @@ export const columns = [
             {
               label: "View details",
               id: row?.original?.id,
-              path: ROUTE_PATHS.DESIGNATIONS_FORM,
+              path: ROUTE_PATHS?.DESIGNATIONS_FORM,
               view: true,
             },
             {

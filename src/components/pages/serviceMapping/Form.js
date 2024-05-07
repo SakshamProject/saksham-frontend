@@ -53,17 +53,17 @@ const Form = () => {
     validationSchema,
   });
 
-  const handleOnReset = () => navigate(ROUTE_PATHS.SERVICE_MAPPING_LIST);
+  const handleOnReset = () => navigate(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
 
   const { data: allStates } = useQuery({
     queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: allDistricts } = useQuery({
     queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data?.districts,
     enabled: !!values?.stateId,
   });
@@ -72,8 +72,8 @@ const Form = () => {
     queryKey: ["getSevaKendraNameByDistrict", values?.districtId],
     queryFn: () =>
       getByIdApiService(
-        API_PATHS.DISTRICTS,
-        `${values?.districtId}${API_PATHS.SEVAKENDRA}?status=ACTIVE`
+        API_PATHS?.DISTRICTS,
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}?status=ACTIVE`
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -83,8 +83,8 @@ const Form = () => {
     queryKey: ["getSevaKendraUserBySevaKendraName", values?.sevaKendraId],
     queryFn: () =>
       getByIdApiService(
-        API_PATHS.SEVAKENDRA,
-        `${values?.sevaKendraId}${API_PATHS.SEVAKENDRA_USERS}?status=ACTIVE`
+        API_PATHS?.SEVAKENDRA,
+        `${values?.sevaKendraId}${API_PATHS?.SEVAKENDRA_USERS}?status=ACTIVE`
       ),
     select: ({ data }) => data?.data?.map((item) => item?.user),
     enabled: !!values?.sevaKendraId,
@@ -92,7 +92,7 @@ const Form = () => {
 
   const { data: allServiceType } = useQuery({
     queryKey: ["getAllServiceType"],
-    queryFn: () => postApiService(API_PATHS.SERVICES_LIST),
+    queryFn: () => postApiService(API_PATHS?.SERVICES_LIST),
     select: ({ data }) => data?.data,
   });
 
@@ -107,7 +107,7 @@ const Form = () => {
   const { mutate: getDivyang, data: searchedDivyang } = useMutation({
     mutationKey: ["getDivyang"],
     mutationFn: (payload) =>
-      appApi.get(API_PATHS.DIVYANG_DETAILS, { params: payload }),
+      appApi.get(API_PATHS?.DIVYANG_DETAILS, { params: payload }),
   });
 
   const onKeyPress = (e, column) => {

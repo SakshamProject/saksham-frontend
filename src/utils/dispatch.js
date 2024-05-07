@@ -40,9 +40,10 @@ export const dispatchResponseAction = (title, action) => {
   let message = "";
 
   if (action === CODES?.ADDED) message = `${title} Added successfully !`;
-  if (action === CODES?.UPDATE) message = `${title} Updated successfully !`;
-  if (action === CODES?.DELETE) message = `${title} Deleted successfully !`;
+  if (action === CODES?.UPDATED) message = `${title} Updated successfully !`;
+  if (action === CODES?.DELETED) message = `${title} Deleted successfully !`;
   if (action === CODES?.SAVED) message = `${title} Saved successfully !`;
+  if (action === CODES?.CREATED) message = `${title} Created successfully !`;
 
   dispatchSnackbar([message, "success"]);
 };

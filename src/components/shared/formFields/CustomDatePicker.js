@@ -35,7 +35,7 @@ export const CustomDatePicker = ({
         maxDate={maxDate ? dayjs(maxDate) : ""}
         views={views || ["year", "month", "day"]}
         style={style}
-        readOnly={Boolean(isViewMode)}
+        readOnly={isViewMode}
         disabled={disabled}
         closeOnSelect
         className={className}
@@ -50,7 +50,9 @@ export const CustomDatePicker = ({
           textField: {
             size,
             autoComplete,
-            onBlur: (e) => setTouched && setTouched(name, e.type === "blur"),
+            onBlur: (e) => {
+              setTouched && setTouched(name, e?.type === "blur");
+            },
             error: Boolean(customHelperText || (touched && errors)),
             helperText: customHelperText || (touched && errors) || " ",
           },
@@ -70,7 +72,7 @@ CustomDatePicker.propTypes = {
   label: propTypes.string,
   disabled: propTypes.bool,
   style: propTypes.object,
-  isViewMode: propTypes.any,
+  isViewMode: propTypes.bool,
   autoComplete: propTypes.string,
   onChange: propTypes.func,
   setTouched: propTypes.func,

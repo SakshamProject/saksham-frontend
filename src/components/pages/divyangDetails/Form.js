@@ -1,3 +1,5 @@
+import { styled, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import React, { Suspense } from "react";
 import {
   Outlet,
@@ -5,11 +7,9 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { styled, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { BackNavigator, CustomLoader, CustomStepper } from "../../shared";
-import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 
 const FormLayout = styled("div")(({ matches }) => ({
   display: "flex",
@@ -56,7 +56,7 @@ const Form = () => {
     <>
       <BackNavigator
         title={"Divyang"}
-        navigateTo={ROUTE_PATHS.DIVYANG_DETAILS_LIST}
+        navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
       />
       <FormLayout matches={matches}>
         <StepperContainer matches={matches}>

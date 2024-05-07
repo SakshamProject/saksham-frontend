@@ -42,19 +42,19 @@ const Form = () => {
     mutationKey: ["create and update"],
     mutationFn: (payload) => {
       return editId
-        ? updateApiService(API_PATHS.DESIGNATION, editId, payload)
-        : postApiService(API_PATHS.DESIGNATION, payload);
+        ? updateApiService(API_PATHS?.DESIGNATION, editId, payload)
+        : postApiService(API_PATHS?.DESIGNATION, payload);
     },
     onSuccess: () => {
       dispatchResponseAction(
         "Designation",
-        editId ? CODES?.UPDATE : CODES?.ADDED
+        editId ? CODES?.UPDATED : CODES?.ADDED
       );
       handleOnReset();
     },
   });
 
-  const handleOnReset = () => navigate(ROUTE_PATHS.DESIGNATIONS_LIST);
+  const handleOnReset = () => navigate(ROUTE_PATHS?.DESIGNATIONS_LIST);
 
   const handleOnSubmit = (value) => {
     if (value?.featuresId?.length === 0) {
@@ -90,7 +90,7 @@ const Form = () => {
 
   const { data } = useCustomQuery({
     queryKey: ["fetchDesignationById"],
-    queryFn: () => getByIdApiService(API_PATHS.DESIGNATION, editId),
+    queryFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
     enabled: !!editId,
     onSuccess: (data) => {
       setValues({
@@ -109,19 +109,19 @@ const Form = () => {
 
   const { data: accessMenu } = useQuery({
     queryKey: ["getAllAccessList"],
-    queryFn: () => getApiService(API_PATHS.FEATURES),
+    queryFn: () => getApiService(API_PATHS?.FEATURES),
     select: ({ data }) => data?.data,
   });
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
     queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });
@@ -173,7 +173,7 @@ const Form = () => {
   return (
     <FormWrapper
       title="Designations"
-      navigateTo={ROUTE_PATHS.DESIGNATIONS_LIST}
+      navigateTo={ROUTE_PATHS?.DESIGNATIONS_LIST}
     >
       <Grid item xs={6}>
         <SingleAutoComplete

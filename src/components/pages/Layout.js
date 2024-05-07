@@ -19,7 +19,9 @@ export const Layout = () => {
 
       <AppMainContainer>
         <SideBarNavigation
-          menuList={getSideMenus(userInfo?.designation?.features)}
+          menuList={getSideMenus({
+            designations: userInfo?.designation?.features,
+          })}
         />
 
         <Suspense fallback={<CustomLoader />}>

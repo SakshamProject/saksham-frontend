@@ -1,8 +1,8 @@
-import React from "react";
-import { Box, Modal, Typography } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import styled from "@emotion/styled";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Modal, Typography } from "@mui/material";
 import propTypes from "prop-types";
+import React from "react";
 import {
   CancelButton,
   FilterButtonModal,
@@ -10,7 +10,6 @@ import {
   SubmitButton,
   theme,
 } from "../../styles";
-import { CANCEL, DELETE, OKAY } from "../../constants/globalConstants";
 
 const FilterContainerStyle = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -62,7 +61,7 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
               color: theme?.palette?.commonColor?.white,
             }}
           >
-            {title || DELETE}
+            {title || "Delete"}
           </Typography>
           <CloseIcon
             onClick={handleClose}
@@ -83,10 +82,10 @@ export const CustomModal = ({ open, setOpen, title, handle, content }) => {
           </Typography>
         </FilterFormStyle>
         <FilterButtonModal>
-          <CancelButton onClick={handleClose}>{CANCEL}</CancelButton>
+          <CancelButton onClick={handleClose}>Cancel</CancelButton>
 
           <SubmitButton variant="contained" onClick={handle}>
-            {OKAY}
+            Okay
           </SubmitButton>
         </FilterButtonModal>
       </FilterContainerStyle>

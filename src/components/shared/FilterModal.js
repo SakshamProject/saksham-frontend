@@ -9,11 +9,6 @@ import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
 import { CustomSelectField, CustomTextField } from ".";
-import {
-  APPLY,
-  CANCEL,
-  CLEAR_FILTER,
-} from "../../constants/globalConstants.js";
 import { filterQuerySeed } from "../../constants/seeds.js";
 import useTableCustomHooks from "../../hooks/useTableCustomHooks.js";
 import {
@@ -163,14 +158,14 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
               })}
             </FilterFormStyle>
             <FilterButtonModal>
-              <CancelButton onClick={handleClose}>{CANCEL}</CancelButton>
+              <CancelButton onClick={handleClose}>Cancel</CancelButton>
 
               <CancelButton onClick={handleClearFilter}>
-                {CLEAR_FILTER}
+                Clear Filter
               </CancelButton>
 
               <SubmitButton variant="contained" type="submit">
-                {APPLY}
+                Apply
               </SubmitButton>
             </FilterButtonModal>
           </form>

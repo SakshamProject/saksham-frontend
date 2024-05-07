@@ -2,22 +2,18 @@ import * as ReactQuery from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import Root from "./components/Root";
-import {
-  SERVER_ERROR,
-  STRING,
-  ZOD_ERROR,
-} from "./constants/globalConstants.js";
+import { SERVER_ERROR } from "./constants/globalConstants.js";
 import store from "./redux/store";
 import { dispatchSnackbarError } from "./utils/dispatch.js";
 
 const queryClient = new ReactQuery.QueryClient({
   queryCache: new ReactQuery.QueryCache({
     onError: ({ response }) => {
-      if (response?.data?.name === ZOD_ERROR) {
+      if (response?.data?.name === "ZodError") {
         const issue = response?.data?.issues[0];
         console.log("query cache", { issue });
         dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);
-      } else if (typeof response?.data?.error?.message === STRING) {
+      } else if (typeof response?.data?.error?.message === "string") {
         dispatchSnackbarError(response?.data?.error?.message);
       } else {
         dispatchSnackbarError(SERVER_ERROR);
@@ -26,11 +22,11 @@ const queryClient = new ReactQuery.QueryClient({
   }),
   mutationCache: new ReactQuery.MutationCache({
     onError: ({ response }) => {
-      if (response?.data?.name === ZOD_ERROR) {
+      if (response?.data?.name === "ZodError") {
         const issue = response?.data?.issues[0];
         console.log("mutation cache", { issue });
         dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);
-      } else if (typeof response?.data?.error?.message === STRING) {
+      } else if (typeof response?.data?.error?.message === "string") {
         dispatchSnackbarError(response?.data?.error?.message);
       } else {
         dispatchSnackbarError(SERVER_ERROR);

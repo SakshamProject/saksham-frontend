@@ -9,8 +9,11 @@ import {
   listColumns,
   listFields,
 } from "../../../constants/serviceMapping/serviceMapping";
+import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { ListingContainer, SubmitButton } from "../../../styles";
+import { formatDate } from "../../../utils/common";
+import { listValidationSchema } from "../../../validations/serviceMapping/serviceMapping";
 import {
   CustomDatePicker,
   CustomRadioButton,
@@ -18,9 +21,6 @@ import {
   ListTopbar,
   SingleAutoComplete,
 } from "../../shared";
-import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
-import { listValidationSchema } from "../../../validations/serviceMapping/serviceMapping";
-import { formatDate } from "../../../utils/common";
 
 const List = () => {
   const {
@@ -28,7 +28,7 @@ const List = () => {
     onChangePageSize,
     handleTableData,
     tableReRenderActions,
-  } = useTableCustomHooks(ROUTE_PATHS.SERVICE_MAPPING_LIST);
+  } = useTableCustomHooks(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
   const {
     values,
     errors,
@@ -47,7 +47,7 @@ const List = () => {
 
   const { data: allDistricts } = useQuery({
     queryKey: ["getAllDistricts"],
-    queryFn: () => getApiService(API_PATHS.DISTRICTS),
+    queryFn: () => getApiService(API_PATHS?.DISTRICTS),
     select: ({ data }) => data?.data,
   });
 
@@ -64,7 +64,7 @@ const List = () => {
         return { data: {} };
       }
 
-      return postApiService(API_PATHS.SERVICE_MAPPING_LIST, {
+      return postApiService(API_PATHS?.SERVICE_MAPPING_LIST, {
         ...values,
         ...listParams,
       });

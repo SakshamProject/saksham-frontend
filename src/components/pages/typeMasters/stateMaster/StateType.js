@@ -58,7 +58,7 @@ const StateType = () => {
     mutationKey: ["delete", currentForm?.apiPath, currentScreen],
     mutationFn: (id) => deleteApiService(currentForm?.apiPath, id),
     onSuccess: ({ data }) => {
-      dispatchResponseAction(currentForm?.validationLabel, CODES?.DELETE);
+      dispatchResponseAction(currentForm?.validationLabel, CODES?.DELETED);
       refetch();
       setOpen(false);
     },
@@ -92,7 +92,7 @@ const StateType = () => {
     onSuccess: () => {
       dispatchResponseAction(
         currentForm?.validationLabel,
-        tableEditId ? CODES?.UPDATE : CODES?.ADDED
+        tableEditId ? CODES?.UPDATED : CODES?.ADDED
       );
       if (tableEditId) handleReset();
       else {

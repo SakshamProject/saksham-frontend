@@ -69,8 +69,8 @@ const Form = () => {
         ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
         : postApiService(API_PATHS?.SEVAKENDRA_USERS, data),
     onSuccess: () => {
-      dispatchResponseAction("User", editId ? CODES?.UPDATE : CODES?.ADDED);
-      navigate(ROUTE_PATHS.SEVA_KENDRA_USERS_LIST);
+      dispatchResponseAction("User", editId ? CODES?.UPDATED : CODES?.ADDED);
+      navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
     },
   });
 
@@ -95,13 +95,13 @@ const Form = () => {
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
     queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS.STATES, values?.stateId),
+    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });

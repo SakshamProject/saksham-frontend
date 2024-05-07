@@ -55,7 +55,7 @@ export const listColumns = [
             {
               label: "View details",
               id: row?.original?.id,
-              path: ROUTE_PATHS.SERVICE_MAPPING_FORM,
+              path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
               view: true,
             },
             {
@@ -207,8 +207,8 @@ export const initialValues = {
     name: "",
     mobileNumber: "",
     email: "",
-    sendMail: CODES.NO,
+    sendMail: CODES?.NO,
   },
   divyangId: "",
-  isNonSevaKendraFollowUpRequired: CODES.NO,
+  isNonSevaKendraFollowUpRequired: CODES?.NO,
 };

@@ -7,5 +7,5 @@ import { ROUTE_PATHS } from "./routePaths";
 export const ProtectedRoute = () => {
   const token = getCookie(COOKIE_KEYS.TOKEN);
 
-  return token ? <Layout /> : <Navigate to={ROUTE_PATHS.LOGIN} />;
+  return token ? <Layout /> : <Navigate to={ROUTE_PATHS?.LOGIN} />;
 };

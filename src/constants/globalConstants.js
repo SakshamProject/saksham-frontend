@@ -17,22 +17,6 @@ export const AADHAR_CARD_REGEX = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
 export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
 export const PERCENTAGE_REGEX = /\b(?:[1-9]|[1-9][0-9]|100)\b/;
 
-// button labels
-export const NEW = "NEW";
-export const CANCEL = "Cancel";
-export const CLEAR_FILTER = "Clear Filter";
-export const APPLY = "Apply";
-export const SUBMIT = "Submit";
-export const UPDATE = "Update";
-export const CONFIRM = "CONFIRM";
-export const OKAY = "OKAY";
-export const ADD = "Add";
-export const SKIP = "Skip";
-export const DELETE = "Delete";
-
-export const ZOD_ERROR = "ZodError";
-export const STRING = "string";
-
 export const COOKIE_KEYS = {
   TOKEN: "token",
 };
@@ -45,19 +29,22 @@ export const LOCAL_STORAGE_KEYS = {
 export const CODES = {
   ACTIVE: "ACTIVE",
   DEACTIVE: "DEACTIVE",
-  PENDING: "pending",
-  REJECTED: "rejected",
-  APPROVED: "approved",
+
   ADDED: "added",
-  UPDATE: "update",
-  DELETE: "delete",
+  UPDATED: "updated",
+  DELETED: "deleted",
+  SAVED: "saved",
+  CREATED: "created",
+
   YES: "YES",
   NO: "NO",
+
   RURAL: "RURAL",
   URBAN: "URBAN",
+
   MALE: "MALE",
   FEMALE: "FEMALE",
-  SAVED: "Saved",
+
   DASHBOARD: "DASHBOARD",
   SEVAKENDRA_SETUP: "SEVAKENDRA_SETUP",
   SEVAKENDRA_USERS: "SEVAKENDRA_USERS",
@@ -69,6 +56,7 @@ export const CODES = {
 
 // api messages
 export const SERVER_ERROR = "Something went wrong. Please try again!";
+export const LOGIN_SUCCESS = "Logged in successfully";
 
 // msg labels
 export const DELETE_MSG = "Are you sure you want to delete this ";

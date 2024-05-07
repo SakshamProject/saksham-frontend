@@ -1,12 +1,6 @@
 import { Grid } from "@mui/material";
-import React from "react";
 import propTypes from "prop-types";
-import {
-  CANCEL,
-  SKIP,
-  SUBMIT,
-  UPDATE,
-} from "../../constants/globalConstants.js";
+import React from "react";
 import {
   CancelButton,
   StyledButtonContainer,
@@ -35,12 +29,12 @@ export const FormActions = ({
         <StyledButtonContainer>
           {!disableCancel && (
             <CancelButton variant="outlined" onClick={handleOnReset}>
-              {resetLabel || CANCEL}
+              {resetLabel || "Cancel"}
             </CancelButton>
           )}
           {!disableSkip && handleSkip && (
             <CancelButton variant="outlined" onClick={handleSkip}>
-              {skipLabel || SKIP}
+              {skipLabel || "Skip"}
             </CancelButton>
           )}
           {disableSubmit ? (
@@ -52,7 +46,7 @@ export const FormActions = ({
               onClick={handleSubmit}
               sx={submitButtonStyle}
             >
-              {isUpdate ? UPDATE : submitLabel || SUBMIT}
+              {isUpdate ? "Update" : submitLabel || "Submit"}
             </SubmitButton>
           )}
         </StyledButtonContainer>

@@ -1,13 +1,13 @@
 import { Grid } from "@mui/material";
-import { useEffect } from "react";
 import propTypes from "prop-types";
+import { useEffect } from "react";
 import { CODES, statusColumns } from "../../constants/globalConstants";
 import { CustomReactTable } from "./CustomReactTable";
 import { DividerLine } from "./DividerLine";
+import { WithCondition } from "./WithCondition";
 import { CustomDatePicker } from "./formFields/CustomDatePicker";
 import { CustomRadioButton } from "./formFields/CustomRadioButton";
 import { CustomTextField } from "./formFields/CustomTextField";
-import { WithCondition } from "./WithCondition";
 
 const StatusFields = ({
   handleChange,
@@ -28,7 +28,7 @@ const StatusFields = ({
   useEffect(() => {
     if (hide) return;
 
-    if (values?.status === CODES.ACTIVE) {
+    if (values?.status === CODES?.ACTIVE) {
       setFieldValue("description", "");
       setFieldValue("date", new Date());
     }
@@ -57,7 +57,7 @@ const StatusFields = ({
           rowBreak={rowBreak || true}
         />
       </Grid>
-      <WithCondition isValid={values?.status === CODES.DEACTIVE}>
+      <WithCondition isValid={values?.status === CODES?.DEACTIVE}>
         <Grid item xs={12} md={6}>
           <CustomDatePicker
             name="date"

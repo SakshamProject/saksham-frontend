@@ -24,14 +24,14 @@ export const getValidValues = (values, withArray, include = []) => {
         ...((values[key]?.length || withArray) && { [key]: values[key] }),
       };
     }
-
     if (typeof values[key] === "boolean") {
       return { ...validated, [key]: values[key] };
     }
-
-    if (typeof values[key] === "string") {
+    if (typeof values[key] === "string" && !!values[key]) {
       return { ...validated, [key]: values[key]?.trim()?.replace(/\s+/g, " ") };
     }
+    if (typeof values[key] === "object")
+      return { ...validated, [key]: values[key] };
 
     return validated;
   }, {});
@@ -141,15 +141,13 @@ export const getAge = (dob) => {
   if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
     age--;
   }
+
   return age === 0 ? (age + 1)?.toString() : age?.toString();
 };
 
 export const minMaxAge = ({ maxYear = 100, minYear = 18 }) => {
-  const minDate = minYear
-    ? new Date().setFullYear(new Date().getFullYear() - minYear)
-    : null;
-  const maxDate = maxYear
-    ? new Date().setFullYear(new Date().getFullYear() - maxYear)
-    : null;
+  const minDate = new Date().setFullYear(new Date().getFullYear() - minYear);
+  const maxDate = new Date().setFullYear(new Date().getFullYear() - maxYear);
+
   return { min: new Date(minDate), max: new Date(maxDate) };
 };

@@ -49,6 +49,7 @@ export const CustomPasswordField = ({
       value={value || ""}
       style={style}
       onKeyDown={onKeyDown}
+      onPaste={(e) => e?.preventDefault()}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) || " "}
       InputProps={{

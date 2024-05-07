@@ -35,6 +35,9 @@ export const LoginContainer = styled(Box)(({ theme }) => ({
   padding: "3%",
   borderRadius: 8,
   border: `1px solid ${theme.palette?.commonColor?.black}`,
+  [theme.breakpoints.down("md")]: {
+    width: "60%",
+  },
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     border: "none",

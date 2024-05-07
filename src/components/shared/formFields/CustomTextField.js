@@ -24,23 +24,27 @@ export const CustomTextField = ({
   onKeyDown,
 }) => {
   const handleKeyPress = (e) => {
-    if (fieldType === "mobile" && e.keyCode !== 13) {
-      return !/\d/.test(e.key) && e.preventDefault();
+    if (fieldType === "mobile" && (e?.keyCode !== 13 || e?.key !== "Enter")) {
+      return !/\d/.test(e?.key) && e.preventDefault();
     }
     if (fieldType === "alphaNumeric") {
-      return !/[0-9A-Za-z- /:_]/.test(e.key) && e.preventDefault();
+      return !/[0-9A-Za-z- /:_]/.test(e?.key) && e.preventDefault();
     }
     if (fieldType === "alphabets") {
-      return !/[A-Za-z /]/.test(e.key) && e.preventDefault();
+      return !/[A-Za-z /]/.test(e?.key) && e.preventDefault();
     }
     if (fieldType === "email") {
-      return / /g.test(e.key) && e.preventDefault();
+      return / /g.test(e?.key) && e.preventDefault();
     }
     if (fieldType === "decimal") {
-      return !/[0-9.]/.test(e.key) && e.preventDefault();
+      return !/[0-9.]/.test(e?.key) && e.preventDefault();
     }
-    if (type === "number" && e.keyCode !== 13) {
-      return !/\d/.test(e.key) && e.keyCode !== 16 && e.preventDefault();
+    if (type === "number" && (e?.keyCode !== 13 || e?.key !== "Enter")) {
+      return (
+        !/\d/.test(e?.key) &&
+        (e?.keyCode !== 16 || e?.key !== "Shift") &&
+        e.preventDefault()
+      );
     }
   };
 
@@ -57,9 +61,6 @@ export const CustomTextField = ({
       onBlur={onBlur}
       value={value}
       style={style}
-      onKeyDown={(e) => {
-        if (fieldType === "number") return e?.keyCode === 56;
-      }}
       onKeyPress={(e) => (onKeyPress ? onKeyPress(e) : () => {})}
       error={Boolean(customHelperText || (touched && errors))}
       helperText={customHelperText || (touched && errors) || " "}

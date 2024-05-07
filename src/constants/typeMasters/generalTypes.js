@@ -26,12 +26,13 @@ export const GENERALTYPE_INCLUDE = [
 ];
 
 export const generalTypeApiPath = {
-  [GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION]: API_PATHS.EDUCATION_QUALIFICATION,
-  [GENERAL_TYPES?.DISABILITY_TYPE]: API_PATHS.DISABILITY_TYPE,
-  [GENERAL_TYPES?.COMMUNITY_CATEGORY]: API_PATHS.COMMUNITY_CATEGORY,
-  [GENERAL_TYPES?.SERVICE_TYPE]: API_PATHS.SERVICE_TYPES,
-  [GENERAL_TYPES?.STATE]: API_PATHS.STATES,
-  [GENERAL_TYPES?.DISTRICT]: API_PATHS.DISTRICTS,
+  [GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION]:
+    API_PATHS?.EDUCATION_QUALIFICATION,
+  [GENERAL_TYPES?.DISABILITY_TYPE]: API_PATHS?.DISABILITY_TYPE,
+  [GENERAL_TYPES?.COMMUNITY_CATEGORY]: API_PATHS?.COMMUNITY_CATEGORY,
+  [GENERAL_TYPES?.SERVICE_TYPE]: API_PATHS?.SERVICE_TYPES,
+  [GENERAL_TYPES?.STATE]: API_PATHS?.STATES,
+  [GENERAL_TYPES?.DISTRICT]: API_PATHS?.DISTRICTS,
 };
 
 export const getGeneralTypePayload = (value, isPayload = true) => {
@@ -97,14 +98,14 @@ export const generalTypeColumns = [
             {
               label: "View Details",
               id: row?.original?.id,
-              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              path: ROUTE_PATHS?.GENERAL_TYPES_FORM,
               stateProps: { field: value },
               view: true,
             },
             {
               label: "Edit",
               id: row?.original?.id,
-              path: ROUTE_PATHS.GENERAL_TYPES_FORM,
+              path: ROUTE_PATHS?.GENERAL_TYPES_FORM,
               stateProps: { field: value },
             },
           ]}

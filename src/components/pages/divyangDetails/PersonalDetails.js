@@ -268,7 +268,7 @@ const PersonalDetails = () => {
     ],
     queryFn: () =>
       getByIdApiService(
-        API_PATHS.EDUCATION_QUALIFICATION,
+        API_PATHS?.EDUCATION_QUALIFICATION,
         eqValues?.educationQualificationTypeId
       ),
     select: ({ data }) => data?.data?.educationQualification,

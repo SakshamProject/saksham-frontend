@@ -1,24 +1,19 @@
 export const multiPartFormData = (workData, nullables = []) => {
   const form = new FormData();
-
-  const appendFormData = (data, parentKey = "") => {
-    Object.entries(data)?.forEach(([key, value]) => {
-      const newKey = parentKey ? `${parentKey}[${key}]` : key;
-
-      if (typeof value === "object" && value !== null) {
-        appendFormData(value, newKey);
-      } else if (value !== "" || nullables?.includes(newKey)) {
-        form.append(
-          newKey,
-          typeof value === "string"
-            ? value?.trim()?.replace(/\s{2,}/g, " ")
-            : value
-        );
-      }
+  Object.keys(workData)
+    ?.filter((fill) => {
+      return workData?.[fill] !== "" || nullables.some((key) => key === fill);
+    })
+    ?.map((item) => {
+      return form.append(
+        item,
+        typeof workData[item] === "string"
+          ? workData[item]
+              .toString()
+              .replace(/\s{2,}/g, " ")
+              .trim()
+          : workData[item]
+      );
     });
-  };
-
-  appendFormData(workData);
-
   return form;
 };

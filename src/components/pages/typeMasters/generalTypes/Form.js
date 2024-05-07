@@ -51,7 +51,7 @@ const Form = () => {
   const generalType = state?.field;
   const [tableEditId, setTableEditId] = useState("");
   const { tableReRenderActions } = useTableCustomHooks(
-    ROUTE_PATHS.GENERAL_TYPES_FORM
+    ROUTE_PATHS?.GENERAL_TYPES_FORM
   );
   const { searchData } = tableReRenderActions();
   const [open, setOpen] = useState(false);
@@ -66,7 +66,7 @@ const Form = () => {
     onSuccess: () => {
       dispatchResponseAction(
         values?.typeMaster,
-        tableEditId ? CODES?.UPDATE : CODES?.ADDED
+        tableEditId ? CODES?.UPDATED : CODES?.ADDED
       );
       handleReset();
       refetch();
@@ -109,7 +109,7 @@ const Form = () => {
 
   const { data: allGeneralTypes } = useQuery({
     queryKey: ["getAllGeneralTypes"],
-    queryFn: () => getApiService(API_PATHS.GENERAL_MASTER_SEED),
+    queryFn: () => getApiService(API_PATHS?.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
 
@@ -126,9 +126,9 @@ const Form = () => {
 
   const { data: allStates } = useQuery({
     queryKey: ["getAllStates", values?.typeMaster],
-    queryFn: () => getApiService(API_PATHS.STATES),
+    queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
-    enabled: generalTypeApiPath?.[values?.typeMaster] === API_PATHS.DISTRICTS,
+    enabled: generalTypeApiPath?.[values?.typeMaster] === API_PATHS?.DISTRICTS,
   });
 
   const { mutate: onDelete } = useMutation({
@@ -138,7 +138,7 @@ const Form = () => {
       return deleteApiService(apiPath, id);
     },
     onSuccess: () => {
-      dispatchResponseAction(values?.typeMaster, CODES?.DELETE);
+      dispatchResponseAction(values?.typeMaster, CODES?.DELETED);
       refetch();
       setOpen(false);
     },
@@ -177,7 +177,7 @@ const Form = () => {
 
   return (
     <FormWrapper
-      navigateTo={ROUTE_PATHS.GENERAL_TYPES_LIST}
+      navigateTo={ROUTE_PATHS?.GENERAL_TYPES_LIST}
       title="Type Master"
     >
       <WithCondition

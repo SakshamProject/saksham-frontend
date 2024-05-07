@@ -102,7 +102,7 @@ export const validationSchema = (editId) =>
         "deactivationReason",
         "Deactivation reason is required",
         (value, context) =>
-          !(context.parent?.status !== CODES.ACTIVE && !!editId && !value)
+          !(context.parent?.status !== CODES?.ACTIVE && !!editId && !value)
       )
       .max(255, "Deactivation reason cannot have more than 255 characters"),
   });

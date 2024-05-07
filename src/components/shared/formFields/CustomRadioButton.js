@@ -5,8 +5,8 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import propTypes from "prop-types";
 import { styled } from "@mui/system";
+import propTypes from "prop-types";
 import { theme } from "../../../styles";
 
 const RadioBox = styled("div")(({ rowbreak }) => ({
@@ -32,6 +32,7 @@ export const CustomRadioButton = ({
   touched,
   errors,
   customHelperText,
+  isHelperText = true,
 }) => {
   return (
     <FormControl style={{ ...style }}>
@@ -83,9 +84,13 @@ export const CustomRadioButton = ({
           })}
         </RadioGroup>
       </RadioBox>
-      <FormHelperText error>
-        {customHelperText || (touched && errors) || " "}
-      </FormHelperText>
+      {isHelperText ? (
+        <FormHelperText error>
+          {customHelperText || (touched && errors) || " "}
+        </FormHelperText>
+      ) : (
+        <></>
+      )}
     </FormControl>
   );
 };
@@ -107,4 +112,5 @@ CustomRadioButton.propTypes = {
   defaultValue: propTypes.any,
   onBlur: propTypes.func,
   accessor: propTypes.string,
+  isHelperText: propTypes.bool,
 };
