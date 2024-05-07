@@ -6,6 +6,8 @@ export const ROUTE_PATHS = {
   FORGOT_PASSWORD: "/forgetPassword",
   RESET_PASSWORD: "/resetPassword",
 
+  LOGIN_ADMIN: "/admin/login",
+
   SIGNUP: "/signup",
 
   PROFILE: "/profile",
@@ -39,6 +41,12 @@ export const ROUTE_PATHS = {
   STATE_MASTER_MP_CONSTITUENCY: "/typeMasters/stateMaster/mpConstituency",
 
   //divyang details
+  DIVYANG_PROFILE: "/divyang/profile",
+  DIVYANG_SERVICE_LIST: "/divyangService/list",
+  DIVYANG_SERVICE_FORM: "/divyangService/form",
+  DIVYANG_FORM: "/divyang/form",
+  DIVYANG_CHANGE_PASSWORD: "/divyang/changePassword",
+
   DIVYANG_DETAILS_LIST: "/divyangDetails/list",
   DIVYANG_DETAILS_FORM: "/divyangDetails/form",
   DIVYANG_DETAILS_FORM_PERSONAL: "/divyangDetails/form/personal",

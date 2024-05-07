@@ -1,3 +1,4 @@
+import CloseIcon from "@mui/icons-material/Close";
 import {
   Box,
   Grid,
@@ -6,20 +7,15 @@ import {
   styled,
   useMediaQuery,
 } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
-import CloseIcon from "@mui/icons-material/Close";
+import { useNavigate } from "react-router-dom";
 
-import {
-  divayangDetail,
-  divyangDetailsColumn,
-  mapDivyang,
-} from "../../../constants/divyangDetails/divyangDetails";
-import { CommonList, DividerLine, DivyangDetail } from "../../shared";
+import noFile from "../../../assets/nofile.png";
+import { divyangDetailsColumn } from "../../../constants/divyangDetails/divyangDetails";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import noFile from "../../../assets/nofile.png";
+import { CommonList, DividerLine, DivyangDetail } from "../../shared";
 
 const Container = styled(Box)({
   height: 80,
@@ -143,7 +139,7 @@ const List = () => {
 
   return (
     <>
-      {1 === 1 ? (
+      {1 === 2 ? (
         <CommonList
           label={"Divyang Details"}
           listPath={"DIVYANG_DETAILS_LIST"}

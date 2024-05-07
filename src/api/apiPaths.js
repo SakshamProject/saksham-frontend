@@ -2,6 +2,7 @@ export const API_PATHS = {
   // Login
   LOGIN: "/auth/user/login",
   LOGIN_DIVYANG: "/auth/divyang/login",
+  LOGIN_ADMIN: "auth/admin/login",
 
   // Logout
   LOGOUT: "/auth/user/logout",

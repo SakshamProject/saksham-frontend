@@ -20,7 +20,8 @@ export const Layout = () => {
       <AppMainContainer>
         <SideBarNavigation
           menuList={getSideMenus({
-            designations: userInfo?.designation?.features,
+            designations: userInfo?.designations,
+            role: userInfo?.role,
           })}
         />
 
@@ -33,3 +34,5 @@ export const Layout = () => {
     </AppContainerLayout>
   );
 };
+
+

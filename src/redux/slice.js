@@ -4,7 +4,6 @@ const initialState = {
   snackbar: "",
   isLoading: false,
   userInfo: {},
-  seeds: {},
 };
 
 const { reducer, actions } = createSlice({

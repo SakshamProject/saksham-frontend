@@ -12,7 +12,7 @@ export const appApi = axios.create({
 
 appApi.interceptors.request.use(
   (config) => {
-    config.headers["authorization"] = getCookie(COOKIE_KEYS.TOKEN);
+    config.headers["authorization"] = `Breaer ${getCookie(COOKIE_KEYS?.TOKEN)}`;
     dispatchIsLoading(true);
     return config;
   },

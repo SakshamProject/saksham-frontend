@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { initialValues } from "../../../constants/login/forgetPassword";
+import { fields, initialValues } from "../../../constants/login/forgetPassword";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { SubmitButton } from "../../../styles/buttonStyle";
 import {
@@ -32,7 +32,6 @@ const ForgetPassword = () => {
     },
     onSuccess: () => {
       dispatchSnackbarSuccess("Valid user");
-
       navigate(ROUTE_PATHS?.RESET_PASSWORD);
     },
   });
@@ -40,9 +39,17 @@ const ForgetPassword = () => {
   const { values, touched, errors, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues,
-      validationSchema,
-      onSubmit,
+      validationSchema: validationSchema(roleStatus),
+      onSubmit: (value) => console.log({ value }),
     });
+
+  const handleKeyDown = (e) => {
+    if (e?.keyCode === 13 || e?.key === "Enter") {
+      handleSubmit();
+    }
+  };
+
+  console.log({ errors });
 
   return (
     <Box>
@@ -55,34 +62,30 @@ const ForgetPassword = () => {
 
             <Grid item xs={12}>
               <CustomTextField
-                label="User Name"
-                name="userName"
+                label={fields?.userName?.label}
+                name={fields?.userName?.name}
                 value={values?.userName}
                 errors={errors?.userName}
                 touched={touched?.userName}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                onKeyDown={(e) => {
-                  if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
-                }}
+                onKeyDown={handleKeyDown}
               />
             </Grid>
 
             <WithCondition isValid={roleStatus}>
               <Grid item xs={12}>
                 <CustomTextField
-                  label="Contact Number"
-                  name="contactNumber"
-                  fieldType="mobile"
-                  maxLength={10}
+                  label={fields?.contactNumber?.label}
+                  name={fields?.contactNumber?.name}
+                  maxLength={fields?.contactNumber?.maxLength}
+                  type={fields?.contactNumber?.type}
                   value={values?.contactNumber}
                   errors={errors?.contactNumber}
                   touched={touched?.contactNumber}
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  onKeyDown={(e) => {
-                    if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
-                  }}
+                  onKeyDown={handleKeyDown}
                 />
               </Grid>
             </WithCondition>
@@ -90,17 +93,14 @@ const ForgetPassword = () => {
             <WithCondition isValid={!roleStatus}>
               <Grid item xs={12}>
                 <CustomTextField
-                  label="UDID Number"
-                  name="UDIDCardNumber"
+                  label={fields?.UDIDCardNumber?.label}
+                  name={fields?.UDIDCardNumber?.name}
                   value={values?.UDIDCardNumber}
                   errors={errors?.UDIDCardNumber}
                   touched={touched?.UDIDCardNumber}
-                  fieldType="alphaNumeric"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  onKeyDown={(e) => {
-                    if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
-                  }}
+                  onKeyDown={handleKeyDown}
                 />
               </Grid>
             </WithCondition>

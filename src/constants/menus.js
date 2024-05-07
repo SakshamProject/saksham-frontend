@@ -1,18 +1,19 @@
 import { ROUTE_PATHS } from "../routes/routePaths";
 import { CODES } from "./globalConstants";
 
-export const RIGHT_SIDE_MENU = () => [
-  {
-    label: "My Profile",
-    routePath: ROUTE_PATHS?.PROFILE,
-  },
-  {
-    label: "Logout",
-    routePath: ROUTE_PATHS?.LOGIN,
-  },
-];
+export const RIGHT_SIDE_MENU = (role) =>
+  [
+    role === CODES?.ADMIN && {
+      label: "My Profile",
+      routePath: ROUTE_PATHS?.PROFILE,
+    },
+    {
+      label: "Logout",
+      routePath: ROUTE_PATHS?.LOGIN,
+    },
+  ].filter((item) => item);
 
-const SIDE_MENUS = [
+const ADMIN_SIDE_MENUS = [
   {
     label: "Dashboard",
     navigateTo: ROUTE_PATHS?.DASHBOARD,
@@ -75,13 +76,33 @@ const SIDE_MENUS = [
   },
 ];
 
-export const getSideMenus = ({ all = false, designations = [] }) => {
-  if (all) return SIDE_MENUS;
+const DIVYANG_SIDE_MENU = [
+  {
+    label: "My Profile",
+    navigateTo: ROUTE_PATHS?.DIVYANG_PROFILE,
+    value: "divyang",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    label: "My Service",
+    navigateTo: ROUTE_PATHS?.DIVYANG_SERVICE_LIST,
+    value: "divyangService",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+];
 
-  return designations?.reduce((acc, designation) => {
-    const validMenu = SIDE_MENUS?.filter(
-      (menu) => designation?.feature?.name === menu?.key
-    );
-    return [...acc, ...validMenu];
-  }, []);
+export const getSideMenus = ({ role, designations = [] }) => {
+  if (role === CODES?.ADMIN) return ADMIN_SIDE_MENUS;
+
+  if (role === CODES?.DIVYANG) return DIVYANG_SIDE_MENU;
+
+  if (role === CODES?.SEVA_KENDRA && designations?.length > 0)
+    return designations?.reduce((acc, designation) => {
+      const validMenu = ADMIN_SIDE_MENUS?.filter(
+        (menu) => designation?.name === menu?.key
+      );
+      return [...acc, ...validMenu];
+    }, []);
+
+  return [];
 };

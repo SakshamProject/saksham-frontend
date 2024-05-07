@@ -16,9 +16,11 @@ export const RATION_CARD_REGEX = /^([a-zA-Z0-9]){8,12}\s*$/;
 export const AADHAR_CARD_REGEX = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
 export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
 export const PERCENTAGE_REGEX = /\b(?:[1-9]|[1-9][0-9]|100)\b/;
+export const NUMBER_ALPHABET_REGEX = /^[0-9a-zA-Z]+$/;
 
 export const COOKIE_KEYS = {
   TOKEN: "token",
+  USER_INFO: "user",
 };
 
 export const LOCAL_STORAGE_KEYS = {
@@ -29,22 +31,17 @@ export const LOCAL_STORAGE_KEYS = {
 export const CODES = {
   ACTIVE: "ACTIVE",
   DEACTIVE: "DEACTIVE",
-
   ADDED: "added",
   UPDATED: "updated",
   DELETED: "deleted",
   SAVED: "saved",
   CREATED: "created",
-
   YES: "YES",
   NO: "NO",
-
   RURAL: "RURAL",
   URBAN: "URBAN",
-
   MALE: "MALE",
   FEMALE: "FEMALE",
-
   DASHBOARD: "DASHBOARD",
   SEVAKENDRA_SETUP: "SEVAKENDRA_SETUP",
   SEVAKENDRA_USERS: "SEVAKENDRA_USERS",
@@ -52,6 +49,9 @@ export const CODES = {
   DIVYANG_DETAILS: "DIVYANG_DETAILS",
   SERVICE_MASTER: "SERVICE_MASTER",
   SERVICE_MAPPING: "SERVICE_MAPPING",
+  ADMIN: "admin",
+  DIVYANG: "divyang",
+  SEVA_KENDRA: "sevaKendra",
 };
 
 // api messages

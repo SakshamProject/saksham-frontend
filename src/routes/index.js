@@ -15,21 +15,26 @@ export const GENERAL_ROUTES = [
   {
     path: ROUTE_PATHS?.FORGOT_PASSWORD,
     element: ForgetPassword,
-    key: "forget password",
+    key: "forgetPassword",
   },
   {
     path: ROUTE_PATHS?.RESET_PASSWORD,
     element: ResetPassword,
-    key: "reset password",
+    key: "resetPassword",
   },
   {
     path: ROUTE_PATHS?.SIGNUP,
     element: Signup,
     key: "signup",
   },
+  {
+    path: ROUTE_PATHS?.LOGIN_ADMIN,
+    element: Login,
+    key: "adminLogin",
+  },
 ];
 
-const PROTECTED_ROUTES = [
+const ADMIN_ROUTES = [
   {
     path: ROUTE_PATHS?.DASHBOARD,
     element: routeElements?.Dashboard,
@@ -59,6 +64,7 @@ const PROTECTED_ROUTES = [
     element: routeElements?.DesignationsForm,
     key: CODES?.SEVAKENDRA_SETUP,
   },
+
   //seva kendra users
   {
     path: ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST,
@@ -179,13 +185,46 @@ const PROTECTED_ROUTES = [
   },
 ];
 
-export const getRoutes = ({ designations = [], all = false }) => {
-  if (all) return PROTECTED_ROUTES;
+const DIVYANG_ROUTES = [
+  {
+    path: ROUTE_PATHS?.DIVYANG_PROFILE,
+    element: "",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_SERVICE_LIST,
+    element: "",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_SERVICE_FORM,
+    element: "",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_FORM,
+    element: "",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_CHANGE_PASSWORD,
+    element: "",
+    key: CODES?.DIVYANG_DETAILS,
+  },
+];
 
-  return designations?.reduce((acc, designation) => {
-    const validRoutes = PROTECTED_ROUTES?.filter(
-      (route) => designation?.feature?.name === route?.key
-    );
-    return [...acc, ...validRoutes];
-  }, []);
+export const getRoutes = ({ role, designations = [] }) => {
+  if (role === CODES?.ADMIN) return ADMIN_ROUTES;
+
+  if (role === CODES?.DIVYANG) return DIVYANG_ROUTES;
+
+  if (role === CODES?.SEVA_KENDRA && designations?.length > 0)
+    return designations?.reduce((acc, designation) => {
+      const validRoutes = ADMIN_ROUTES?.filter(
+        (route) => designation?.name === route?.key
+      );
+      return [...acc, ...validRoutes];
+    }, []);
+
+  return [];
 };

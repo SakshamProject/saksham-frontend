@@ -16,10 +16,10 @@ const Root = () => {
   const snackbar = useSelector((state) => state?.snackbar);
   const navigate = useNavigate();
   const location = useLocation();
-  const designations = userInfo?.designation?.features;
   const verifyRoutes = [
     ROUTE_PATHS?.FORGOT_PASSWORD,
     ROUTE_PATHS?.RESET_PASSWORD,
+    ROUTE_PATHS?.LAYOUT,
   ];
 
   useEffect(() => {
@@ -27,17 +27,22 @@ const Root = () => {
       navigate(ROUTE_PATHS?.LOGIN);
   }, []); //eslint-disable-line
 
+  console.log(userInfo);
+
   return (
     <ThemeProvider theme={theme}>
       {isLoading ? <CustomLoader /> : null}
 
       <Routes>
         {routeMapping(GENERAL_ROUTES)}
-
         <Route path={ROUTE_PATHS?.LAYOUT} element={<ProtectedRoute />}>
-          {routeMapping(getRoutes({ designations }))}
+          {routeMapping(
+            getRoutes({
+              role: userInfo?.role,
+              designations: userInfo?.designations,
+            })
+          )}
         </Route>
-
         <Route path={ROUTE_PATHS?.NOT_FOUND} element={<NotFound />} />
       </Routes>
 

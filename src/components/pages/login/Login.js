@@ -1,11 +1,14 @@
+import { ArrowBack } from "@mui/icons-material";
 import { Box, Grid, styled } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
+  CODES,
+  COOKIE_KEYS,
   LOCAL_STORAGE_KEYS,
   LOGIN_SUCCESS,
 } from "../../../constants/globalConstants";
@@ -22,6 +25,7 @@ import {
   LoginHeading,
   LoginWrapper,
 } from "../../../styles/login";
+import { BackIcon } from "../../../styles/signup";
 import { getValidValues } from "../../../utils/common";
 import { setCookie } from "../../../utils/cookie";
 import {
@@ -48,36 +52,114 @@ import {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const [roleStatus, setRoleStatus] = useState(false);
-
+  const isAdmin = pathname === ROUTE_PATHS?.LOGIN_ADMIN;
   const localStoreValue = objectDecryption(
-    getLocalStorageItem(LOCAL_STORAGE_KEYS.REMEMBER)
+    getLocalStorageItem(LOCAL_STORAGE_KEYS?.REMEMBER)
   );
 
+  const setRememberMe = (value) => {
+    if (value?.rememberMe)
+      setLocalStorageItem(
+        LOCAL_STORAGE_KEYS?.REMEMBER,
+        objectEncryption({ ...value, roleStatus })
+      );
+    else removeLocalStorage();
+  };
+
+  const RoleButton = styled(CancelButton)(({ theme, roletype }) => ({
+    width: "100%",
+    marginRight: "0 !important",
+    margin: roletype === "divyang" ? "0 8px 0 0" : "0 0 0 16px",
+    ...(((!roleStatus && roletype === "divyang") ||
+      (roleStatus && roletype === "user")) && {
+      backgroundColor: theme.palette?.primary?.main,
+      color: theme.palette?.primary?.contrastText,
+      ":hover": {
+        backgroundColor: theme.palette?.primary?.main,
+        color: theme.palette?.primary?.contrastText,
+      },
+    }),
+  }));
+
+  const getTitle = () => {
+    if (isAdmin) return "Admin Login";
+    return roleStatus ? "User Login" : "Divyang Login";
+  };
+
+  const handleKeyDown = (e) => {
+    if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
+  };
+
+  const handleRole = (status) => {
+    handleReset();
+    setRoleStatus(status);
+    if (status === localStoreValue?.roleStatus && localStoreValue?.rememberMe) {
+      const { roleStatus, ...value } = localStoreValue;
+      setValues({ ...value });
+    }
+  };
+
+  useEffect(() => {
+    if (localStoreValue?.rememberMe) {
+      const { roleStatus, ...value } = localStoreValue;
+      setValues({ ...value });
+      setRoleStatus(roleStatus);
+    }
+  }, []); //eslint-disable-line
+
+  const roleBasedNavigation = (data) => {
+    let routePath = ROUTE_PATHS?.DASHBOARD;
+    if (data?.divyang) routePath = ROUTE_PATHS?.DIVYANG_PROFILE;
+    navigate(routePath);
+  };
+
+  const setUserInfo = (data) => {
+    let userInfo = {};
+
+    if (data?.divyang) {
+      userInfo = {
+        name: `${data?.divyang?.firstName} ${data?.divyang?.lastName}`,
+        id: data?.divyang?.id,
+        role: CODES?.DIVYANG,
+        person: {
+          id: data?.divyang?.person?.id,
+          userName: data?.divyang?.person?.userName,
+        },
+      };
+    } else if (data?.superAdmin) {
+      userInfo = {
+        name: data?.superAdmin,
+        role: CODES?.ADMIN,
+      };
+    }
+    dispatchUserInfo(userInfo);
+    setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
+  };
+
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["login"],
+    mutationKey: ["userLogin"],
     mutationFn: (value) => {
-      const apiPath = roleStatus ? API_PATHS?.LOGIN : API_PATHS?.LOGIN_DIVYANG;
+      let apiPath = "";
+      if (isAdmin) apiPath = API_PATHS?.LOGIN_ADMIN;
+      else apiPath = roleStatus ? API_PATHS?.LOGIN : API_PATHS?.LOGIN_DIVYANG;
       const { rememberMe, ...payload } = value;
       return postApiService(apiPath, getValidValues(payload));
     },
     onSuccess: ({ data }, value) => {
-      console.log("login data", { data });
-      if (value?.rememberMe)
-        setLocalStorageItem(
-          LOCAL_STORAGE_KEYS.REMEMBER,
-          objectEncryption({ ...value, roleStatus })
-        );
-      else removeLocalStorage();
-      setCookie("token", data?.token);
-      dispatchUserInfo(data?.user);
+      setRememberMe(value);
+      roleBasedNavigation(data);
+      setUserInfo(data);
+      setCookie(COOKIE_KEYS?.TOKEN, data?.token);
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
-      navigate(ROUTE_PATHS?.DASHBOARD);
     },
     onError: ({ response }) => {
       if (response?.data?.error?.message)
         dispatchSnackbarError(
-          `${roleStatus ? "User" : "Divyang"} ${response?.data?.error?.message}`
+          `${roleStatus && !isAdmin ? "Seva Kendra" : "Divyang"} ${
+            response?.data?.error?.message
+          }`
         );
     },
   });
@@ -98,64 +180,43 @@ const Login = () => {
     onSubmit,
   });
 
-  const RoleButton = styled(CancelButton)(({ theme, roletype }) => ({
-    width: "100%",
-    marginRight: "0 !important",
-    margin: roletype === "divyang" ? "0 8px 0 0" : "0 0 0 16px",
-    ...(((!roleStatus && roletype === "divyang") ||
-      (roleStatus && roletype === "user")) && {
-      backgroundColor: theme.palette?.primary?.main,
-      color: theme.palette?.primary?.contrastText,
-      ":hover": {
-        backgroundColor: theme.palette?.primary?.main,
-        color: theme.palette?.primary?.contrastText,
-      },
-    }),
-  }));
-
-  const roleHandleClick = (status) => {
-    handleReset();
-    setRoleStatus(status);
-    if (status === localStoreValue?.roleStatus && localStoreValue?.rememberMe) {
-      const { roleStatus, ...value } = localStoreValue;
-      setValues({ ...value });
-    }
-  };
-  useEffect(() => {
-    if (localStoreValue?.rememberMe) {
-      const { roleStatus, ...value } = localStoreValue;
-      setRoleStatus(roleStatus);
-      setValues({ ...value });
-    }
-  }, []); //eslint-disable-line
-
   return (
     <Box>
       <LoginWrapper container>
         <LoginContainer>
           <Grid container gap={2}>
-            <Grid item xs={12}>
-              <LoginHeading>
-                {roleStatus ? "User Login" : "Divyang Login"}
-              </LoginHeading>
+            <Grid item xs={12} sx={{ display: "flex" }}>
+              <WithCondition isValid={isAdmin}>
+                <BackIcon
+                  disableFocusRipple
+                  disableRipple
+                  onClick={() => navigate(ROUTE_PATHS?.LOGIN)}
+                >
+                  <ArrowBack />
+                </BackIcon>
+              </WithCondition>
+
+              <LoginHeading>{getTitle()}</LoginHeading>
             </Grid>
 
-            <StyledButtonContainer
-              sx={{
-                margin: "16px 0",
-                justifyContent: "space-between",
-              }}
-            >
-              <RoleButton
-                onClick={() => roleHandleClick(false)}
-                roletype="divyang"
+            <WithCondition isValid={!isAdmin}>
+              <StyledButtonContainer
+                sx={{
+                  margin: "16px 0",
+                  justifyContent: "space-between",
+                }}
               >
-                Divyang
-              </RoleButton>
-              <RoleButton onClick={() => roleHandleClick(true)} roletype="user">
-                User
-              </RoleButton>
-            </StyledButtonContainer>
+                <RoleButton
+                  onClick={() => handleRole(false)}
+                  roletype="divyang"
+                >
+                  Divyang
+                </RoleButton>
+                <RoleButton onClick={() => handleRole(true)} roletype="user">
+                  User
+                </RoleButton>
+              </StyledButtonContainer>
+            </WithCondition>
 
             <Grid item xs={12}>
               <CustomTextField
@@ -166,9 +227,7 @@ const Login = () => {
                 touched={touched?.userName}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                onKeyDown={(e) => {
-                  if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
-                }}
+                onKeyDown={handleKeyDown}
               />
             </Grid>
 
@@ -182,41 +241,41 @@ const Login = () => {
                 touched={touched?.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                onKeyDown={(e) => {
-                  if (e?.keyCode === 13 || e?.key === "Enter") handleSubmit();
-                }}
+                onKeyDown={handleKeyDown}
               />
             </Grid>
 
-            <StyledButtonContainer
-              sx={{
-                marginTop: "-14px",
-                justifyContent: "space-between",
-                flexWrap: "wrap",
-                rowGap: 1,
-              }}
-            >
-              <Box>
-                <CustomCheckBox
-                  label="Remember me"
-                  name="rememberMe"
-                  checked={values?.rememberMe}
-                  onChange={() =>
-                    setFieldValue("rememberMe", !values?.rememberMe)
-                  }
-                />
-              </Box>
-
-              <ForgetPassword
-                onClick={() =>
-                  navigate(ROUTE_PATHS?.FORGOT_PASSWORD, {
-                    state: { roleStatus },
-                  })
-                }
+            <WithCondition isValid={!isAdmin}>
+              <StyledButtonContainer
+                sx={{
+                  marginTop: "-14px",
+                  justifyContent: "space-between",
+                  flexWrap: "wrap",
+                  rowGap: 1,
+                }}
               >
-                Forget Password
-              </ForgetPassword>
-            </StyledButtonContainer>
+                <Box>
+                  <CustomCheckBox
+                    label="Remember me"
+                    name="rememberMe"
+                    checked={values?.rememberMe}
+                    onChange={() =>
+                      setFieldValue("rememberMe", !values?.rememberMe)
+                    }
+                  />
+                </Box>
+
+                <ForgetPassword
+                  onClick={() =>
+                    navigate(ROUTE_PATHS?.FORGOT_PASSWORD, {
+                      state: { roleStatus },
+                    })
+                  }
+                >
+                  Forget Password
+                </ForgetPassword>
+              </StyledButtonContainer>
+            </WithCondition>
 
             <Grid item xs={12} sx={{ margin: "16px 0", textAlign: "center" }}>
               <SubmitButton
@@ -230,10 +289,18 @@ const Login = () => {
               </SubmitButton>
             </Grid>
 
-            <WithCondition isValid={!roleStatus}>
+            <WithCondition isValid={!isAdmin}>
               <Grid item xs={12} sx={{ textAlign: "center" }}>
-                <ForgetPassword onClick={() => navigate(ROUTE_PATHS?.SIGNUP)}>
-                  Click here to register
+                <ForgetPassword
+                  onClick={() =>
+                    navigate(
+                      roleStatus
+                        ? ROUTE_PATHS?.LOGIN_ADMIN
+                        : ROUTE_PATHS?.SIGNUP
+                    )
+                  }
+                >
+                  {roleStatus ? "Admin login" : "Click here to register"}
                 </ForgetPassword>
               </Grid>
             </WithCondition>
