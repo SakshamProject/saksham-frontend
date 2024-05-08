@@ -15,9 +15,9 @@ import { CustomLoader, UserNotification } from "./shared";
 import NotFound from "./shared/NotFound.js";
 
 const Root = () => {
+  const userInfoSelector = useSelector((state) => state?.userInfo);
   const userInfo =
-    useSelector((state) => state?.userInfo) ||
-    objectDecryption(getCookie(COOKIE_KEYS?.USER_INFO));
+    userInfoSelector || objectDecryption(getCookie(COOKIE_KEYS?.USER_INFO));
   const isLoading = useSelector((state) => state?.isLoading);
   const snackbar = useSelector((state) => state?.snackbar);
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ const Root = () => {
     if (verifyRoutes?.includes(location?.pathname))
       navigate(ROUTE_PATHS?.LOGIN);
 
-    if (userInfo) {
+    if (userInfo && !userInfoSelector) {
       dispatchUserInfo(userInfo);
     }
   }, []); //eslint-disable-line

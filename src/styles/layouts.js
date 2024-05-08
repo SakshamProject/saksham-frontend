@@ -1,4 +1,4 @@
-import { Avatar, Box, Grid, Paper, styled } from "@mui/material";
+import { Avatar, Box, Grid, Paper, Typography, styled } from "@mui/material";
 
 export const AppContainerLayout = styled("div")(({ theme }) => ({
   width: "100%",
@@ -10,32 +10,40 @@ export const AppContainerLayout = styled("div")(({ theme }) => ({
 
 export const AppMainContainer = styled(Box)(() => ({
   display: "flex",
-  height: "calc(100vh - 70px)",
+  height: "calc(100vh - 64px)",
 }));
 
 export const AppBarLayout = styled("div")(({ theme }) => ({
   width: "100%",
-  minHeight: "70px",
+  minHeight: "64px",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
   position: "sticky",
-  // backgroundColor: theme.palette?.primary?.main,
-  color: theme.palette?.commonColor?.black,
-  border: `1px solid ${theme.palette?.primary?.main}`,
+  backgroundColor: theme.palette?.primary?.main,
 }));
 
-export const AppLogo = styled("div")(({ theme }) => ({
+export const AppLogo = styled("div")(() => ({
   height: "100%",
   width: "auto",
   display: "flex",
-  justifyContent: "space-around",
   alignItems: "center",
   cursor: "pointer",
-  gap: "15px",
-  minWidth: "279px",
-  maxWidth: "350px",
-  borderRight: `1px solid ${theme.palette?.primary?.main}`,
+  marginLeft: "24px",
+  columnGap: "15px",
+}));
+
+export const StyledLogo = styled("img")({
+  height: "45px",
+  width: "45px",
+});
+
+export const StyledName = styled(Typography)(({ theme }) => ({
+  color: theme.palette?.primary?.contrastText,
+  fontWeight: 300,
+  fontSize: "30px",
+  fontFamily: "'Lobster', cursive",
+  cursor: "pointer",
 }));
 
 export const CommonAvatar = styled(Avatar)({
@@ -50,13 +58,11 @@ export const AppProfile = styled("div")(({ theme }) => ({
   width: "auto",
   height: "100%",
   cursor: "pointer",
-  marginRight: "15px",
-  paddingLeft: "20px",
-  borderLeft: `1px solid ${theme.palette?.primary?.main}`,
+  marginRight: "24px",
+  gap: "20px",
 }));
 
 export const AppProfileDetails = styled(Box)({
-  marginRight: 20,
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
@@ -66,7 +72,7 @@ export const AppProfileDetails = styled(Box)({
 export const AppMainLayout = styled("div")({
   width: "100%",
   overflow: "auto",
-  height: "calc(100vh - 70px)",
+  height: "calc(100vh - 64px)",
   scrollbarWidth: "none",
 });
 

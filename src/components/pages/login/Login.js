@@ -123,6 +123,7 @@ const Login = () => {
         name: `${data?.divyang?.firstName} ${data?.divyang?.lastName}`,
         id: data?.divyang?.id,
         role: CODES?.DIVYANG,
+        userRole: CODES?.DIVYANG,
         person: {
           id: data?.divyang?.person?.id,
           userName: data?.divyang?.person?.userName,
@@ -132,6 +133,7 @@ const Login = () => {
       userInfo = {
         name: data?.superAdmin,
         role: CODES?.ADMIN,
+        userRole: CODES?.ADMIN,
       };
     }
     dispatchUserInfo(userInfo);

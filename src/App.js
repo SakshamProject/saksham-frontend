@@ -25,12 +25,11 @@ const queryClient = new ReactQuery.QueryClient({
   mutationCache: new ReactQuery.MutationCache({
     onError: ({ response }) => handleError(response),
   }),
-});
-
-queryClient.setDefaultOptions({
-  queries: {
-    refetchOnWindowFocus: false,
-    retry: false,
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
   },
 });
 
