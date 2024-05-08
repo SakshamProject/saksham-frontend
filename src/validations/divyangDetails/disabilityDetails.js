@@ -1,6 +1,6 @@
 import { date, object, string } from "yup";
-import { minMaxAge } from "../../utils/common";
 import { CODES, PERCENTAGE_REGEX } from "../../constants/globalConstants";
+import { minMaxAge } from "../../utils/common";
 
 export const validationSchema = object({
   disabilityType: string().required("Disability Type is required"),
@@ -8,7 +8,10 @@ export const validationSchema = object({
   isDisabilitySinceBirth: string().nullable(),
   disabilitySince: date()
     .typeError("Invalid date")
-    .min(minMaxAge().max, "Disability Since should be less than 100 years old")
+    .min(
+      minMaxAge({})?.max,
+      "Disability Since should be less than 100 years old"
+    )
     .max(new Date(), "Disability Since should be in Past")
     .test(
       "disabilitySince",
@@ -43,7 +46,7 @@ export const validationSchema = object({
   disabilityCard: string().required("Disability Card Authority is required"),
   dateOfIssue: date()
     .typeError("Invalid date")
-    .min(minMaxAge().max, "Date Of Issue should be less than 100 years old")
+    .min(minMaxAge({})?.max, "Date Of Issue should be less than 100 years old")
     .max(new Date(), "Date Of Issue should be in Past")
     .required("Date Of Issue is required"),
   stateCode: string()

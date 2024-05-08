@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   snackbar: "",
   isLoading: false,
-  userInfo: {},
+  userInfo: null,
 };
 
 const { reducer, actions } = createSlice({

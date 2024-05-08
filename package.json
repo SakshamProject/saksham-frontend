@@ -23,6 +23,7 @@
     "custom_react_table7": "^0.4.42",
     "dayjs": "^1.11.10",
     "formik": "^2.4.5",
+    "jwt-decode": "^4.0.0",
     "prop-types": "^15.8.1",
     "query-string": "^8.1.0",
     "react": "^18.2.0",

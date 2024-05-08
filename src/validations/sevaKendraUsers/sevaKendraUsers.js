@@ -36,7 +36,10 @@ export const validationSchema = (editId) =>
       .required("Personal Email Id is required"),
     dateOfBirth: date()
       .typeError("Invalid date")
-      .min(minMaxAge().max, "Date of birth should be less than 100 years old")
+      .min(
+        minMaxAge({})?.max,
+        "Date of birth should be less than 100 years old"
+      )
       .max(new Date(), "Date of birth should be in Past"),
     contactNumber: string()
       .trim()

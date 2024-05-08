@@ -85,7 +85,7 @@ const Login = () => {
 
   const getTitle = () => {
     if (isAdmin) return "Admin Login";
-    return roleStatus ? "User Login" : "Divyang Login";
+    return roleStatus ? "Seva Kendra Login" : "Divyang Login";
   };
 
   const handleKeyDown = (e) => {
@@ -155,9 +155,9 @@ const Login = () => {
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
     },
     onError: ({ response }) => {
-      if (response?.data?.error?.message)
+      if (response?.data?.error?.message && !isAdmin)
         dispatchSnackbarError(
-          `${roleStatus && !isAdmin ? "Seva Kendra" : "Divyang"} ${
+          `${roleStatus ? "Seva Kendra" : "Divyang"} ${
             response?.data?.error?.message
           }`
         );
@@ -185,7 +185,11 @@ const Login = () => {
       <LoginWrapper container>
         <LoginContainer>
           <Grid container gap={2}>
-            <Grid item xs={12} sx={{ display: "flex" }}>
+            <Grid
+              item
+              xs={12}
+              sx={{ display: "flex", marginBottom: isAdmin ? "24px" : 0 }}
+            >
               <WithCondition isValid={isAdmin}>
                 <BackIcon
                   disableFocusRipple
@@ -213,7 +217,7 @@ const Login = () => {
                   Divyang
                 </RoleButton>
                 <RoleButton onClick={() => handleRole(true)} roletype="user">
-                  User
+                  Seva Kendra
                 </RoleButton>
               </StyledButtonContainer>
             </WithCondition>

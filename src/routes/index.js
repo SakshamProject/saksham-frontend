@@ -188,7 +188,7 @@ const ADMIN_ROUTES = [
 const DIVYANG_ROUTES = [
   {
     path: ROUTE_PATHS?.DIVYANG_PROFILE,
-    element: "",
+    element: routeElements?.DivyangDetailsList,
     key: CODES?.DIVYANG_DETAILS,
   },
   {

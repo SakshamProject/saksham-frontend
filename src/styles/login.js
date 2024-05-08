@@ -10,38 +10,27 @@ export const LoginWrapper = styled(Grid)({
   justifyContent: "center",
 });
 
-export const LoginImage = styled("img")({
-  height: "90%",
-  width: "90%",
-});
-
-export const LoginImageContainer = styled(Grid)({
-  width: "100%",
-  height: "99vh",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
+export const LoginContainer = styled(Box)(({ theme }) => ({
+  width: "35%",
+  height: "auto",
+  padding: "2% 3%",
+  borderRadius: 8,
+  border: `1px solid ${theme.palette?.commonColor?.black}`,
+  [theme.breakpoints.down("md")]: {
+    width: "50%",
+    padding: "3%",
+  },
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    border: "none",
+    padding: "6%",
+  },
+}));
 
 export const ForgetPassword = styled("span")(({ theme }) => ({
   color: theme.palette?.commonColor?.blue,
   cursor: "pointer",
   textDecoration: "underline",
-}));
-
-export const LoginContainer = styled(Box)(({ theme }) => ({
-  width: "35%",
-  height: "auto",
-  padding: "3%",
-  borderRadius: 8,
-  border: `1px solid ${theme.palette?.commonColor?.black}`,
-  [theme.breakpoints.down("md")]: {
-    width: "60%",
-  },
-  [theme.breakpoints.down("sm")]: {
-    width: "100%",
-    border: "none",
-  },
 }));
 
 export const LoginHeading = styled(Typography)(({ theme }) => ({

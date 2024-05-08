@@ -6,7 +6,10 @@ export const validationSchema = object({
   isEmployed: string().nullable(),
   unemployedSince: date()
     .typeError("Invalid date")
-    .min(minMaxAge().max, "Unemployed Since should be less than 100 years old")
+    .min(
+      minMaxAge({})?.max,
+      "Unemployed Since should be less than 100 years old"
+    )
     .max(new Date(), "Unemployed Since should be in Past")
     .test(
       "unemployedSince",

@@ -29,6 +29,7 @@ import {
   FormActions,
   FormWrapper,
   SingleAutoComplete,
+  WithCondition,
 } from "../../../shared";
 
 const Form = () => {
@@ -243,20 +244,22 @@ const Form = () => {
         </CustomTypography>
       </Grid>
 
-      <Grid item xs={12}>
-        <CustomCheckBox
-          label={"Select All"}
-          name="selectAll"
-          indeterminate={
-            values?.featuresId?.length !== 0 &&
-            values?.featuresId?.length !== accessMenu?.length
-          }
-          onChange={handleSelectAll}
-          checked={values?.featuresId?.length === accessMenu?.length}
-          isViewMode={isViewMode}
-          labelStyle={{ fontStyle: "italic" }}
-        />
-      </Grid>
+      <WithCondition isValid={accessMenu?.length > 0}>
+        <Grid item xs={12}>
+          <CustomCheckBox
+            label={"Select All"}
+            name="selectAll"
+            indeterminate={
+              values?.featuresId?.length > 0 &&
+              values?.featuresId?.length !== accessMenu?.length
+            }
+            onChange={handleSelectAll}
+            checked={values?.featuresId?.length === accessMenu?.length}
+            isViewMode={isViewMode}
+            labelStyle={{ fontStyle: "italic" }}
+          />
+        </Grid>
+      </WithCondition>
 
       {accessMenu?.map((menu) => (
         <Grid item xs={12} key={menu?.id}>

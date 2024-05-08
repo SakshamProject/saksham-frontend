@@ -82,7 +82,7 @@ const Signup = () => {
         </TitleContainer>
 
         <FormWrapper container rowSpacing={2} columnSpacing={3}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.firstName?.label}
               name={fields?.firstName?.name}
@@ -95,7 +95,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.lastName?.label}
               name={fields?.lastName?.name}
@@ -108,7 +108,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.divyangId?.label}
               name={fields?.divyangId?.name}
@@ -120,7 +120,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <FileUpload
               name={fields?.picture?.name}
               type={fields?.picture?.type}
@@ -137,7 +137,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomRadioButton
               rowBreak
               name={fields?.gender?.name}
@@ -153,7 +153,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomDatePicker
               label={fields?.dateOfBirth?.label}
               name={fields?.dateOfBirth?.name}
@@ -166,7 +166,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.mailId?.label}
               name={fields?.mailId?.name}
@@ -179,7 +179,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.mobileNumber?.label}
               name={fields?.mobileNumber?.name}
@@ -193,7 +193,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.aadharCardNumber?.label}
               name={fields?.aadharCardNumber?.name}
@@ -207,7 +207,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomTextField
               label={fields?.UDIDCardNumber?.label}
               name={fields?.UDIDCardNumber?.name}
@@ -235,7 +235,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomPasswordField
               showEyeIcon
               label={fields?.password?.label}
@@ -247,7 +247,7 @@ const Signup = () => {
               onBlur={handleBlur}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} sm={6} md={6}>
             <CustomPasswordField
               showEyeIcon
               label={fields?.confirmPassword?.label}
@@ -266,7 +266,7 @@ const Signup = () => {
           </StyledButtonContainer>
         </FormWrapper>
 
-        <Box sx={{ height: "16px" }}></Box>
+        <Box sx={{ height: "28px" }}></Box>
       </SignupWrapper>
     </SignupContainer>
   );
