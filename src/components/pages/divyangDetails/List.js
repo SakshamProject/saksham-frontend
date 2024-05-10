@@ -11,7 +11,6 @@ import { useTheme } from "@mui/material/styles";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import noFile from "../../../assets/nofile.png";
 import { divyangDetailsColumn } from "../../../constants/divyangDetails/divyangDetails";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
@@ -472,7 +471,7 @@ const List = () => {
                       </Close>
                     </Box>
                     <img
-                      src={open?.image || noFile}
+                      src={open?.image}
                       alt="img"
                       style={{
                         width: matches

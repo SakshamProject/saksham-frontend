@@ -7,7 +7,6 @@ import store from "./redux/store";
 import { dispatchSnackbarError } from "./utils/dispatch.js";
 
 const handleError = (res) => {
-  console.log({ response: res?.data });
   if (res?.data?.name === "ZodError") {
     const issue = res?.data?.issues[0];
     dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);

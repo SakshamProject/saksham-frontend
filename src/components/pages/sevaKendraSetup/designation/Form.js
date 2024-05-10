@@ -265,7 +265,7 @@ const Form = () => {
         <Grid item xs={12} key={menu?.id}>
           <CustomCheckBox
             name={menu?.id}
-            label={menu?.name}
+            label={menu?.name?.split("_")?.join(" ")}
             style={{ marginLeft: "18px" }}
             onChange={() => checkItem(menu?.id, fields.featuresId.name)}
             checked={checkExistence(menu?.id)}

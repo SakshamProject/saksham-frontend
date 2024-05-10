@@ -34,7 +34,7 @@ export const GENERAL_ROUTES = [
   },
 ];
 
-const ADMIN_ROUTES = [
+export const ADMIN_ROUTES = [
   {
     path: ROUTE_PATHS?.DASHBOARD,
     element: routeElements?.Dashboard,
@@ -185,10 +185,10 @@ const ADMIN_ROUTES = [
   },
 ];
 
-const DIVYANG_ROUTES = [
+export const DIVYANG_ROUTES = [
   {
     path: ROUTE_PATHS?.DIVYANG_PROFILE,
-    element: routeElements?.DivyangDetailsList,
+    element: routeElements?.MyProfile,
     key: CODES?.DIVYANG_DETAILS,
   },
   {

@@ -9,7 +9,7 @@ import { Popover } from "./Popover";
 export const CustomTabs = styled(Tabs)(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
-  border: `1px solid ${theme?.palette?.primary?.main}`,
+  borderRight: `1px solid ${theme?.palette?.primary?.main}`,
   borderTop: "none",
   paddingTop: 10,
   paddingBottom: "auto",

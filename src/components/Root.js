@@ -9,7 +9,6 @@ import { routeMapping } from "../routes/routeMapping.js";
 import { ROUTE_PATHS } from "../routes/routePaths.js";
 import { theme } from "../styles/theme";
 import { getCookie } from "../utils/cookie.js";
-import { dispatchUserInfo } from "../utils/dispatch.js";
 import { objectDecryption } from "../utils/encryptionAndDecryption.js";
 import { CustomLoader, UserNotification } from "./shared";
 import NotFound from "./shared/NotFound.js";
@@ -21,20 +20,29 @@ const Root = () => {
   const isLoading = useSelector((state) => state?.isLoading);
   const snackbar = useSelector((state) => state?.snackbar);
   const navigate = useNavigate();
-  const location = useLocation();
-  const verifyRoutes = [
-    ROUTE_PATHS?.FORGOT_PASSWORD,
-    ROUTE_PATHS?.RESET_PASSWORD,
-    ROUTE_PATHS?.LAYOUT,
-  ];
+  const { pathname } = useLocation();
+  const token = getCookie(COOKIE_KEYS?.TOKEN);
 
   useEffect(() => {
-    if (verifyRoutes?.includes(location?.pathname))
+    if (
+      [
+        ROUTE_PATHS?.RESET_PASSWORD,
+        ROUTE_PATHS?.LAYOUT,
+        ROUTE_PATHS?.FORGOT_PASSWORD,
+      ].includes(pathname)
+    ) {
       navigate(ROUTE_PATHS?.LOGIN);
-
-    if (userInfo && !userInfoSelector) {
-      dispatchUserInfo(userInfo);
     }
+
+    // if (!userInfo || !token) {
+    //   navigate(ROUTE_PATHS?.LOGIN);
+    //   removeAllCookie();
+    // }
+    // if (token && userInfo && !userInfoSelector) {
+    //   dispatchUserInfo(userInfo);
+
+    //   // navigate(ROUTE_PATHS?.);
+    // }
   }, []); //eslint-disable-line
 
   return (

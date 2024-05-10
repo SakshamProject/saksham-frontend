@@ -39,9 +39,9 @@ export const LoginHeading = styled(Typography)(({ theme }) => ({
   fontWeight: "500",
   textTransform: "capitalize",
   letterSpacing: "0.00938em",
-  display: "flex",
-  alignItems: "center",
-  gap: "27%",
-  justifyContent: "center",
+  textAlign: "center",
   color: theme.palette?.primary?.main,
+  [theme.breakpoints.down("md")]: {
+    fontSize: "26px",
+  },
 }));

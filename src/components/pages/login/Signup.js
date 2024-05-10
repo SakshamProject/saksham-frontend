@@ -37,7 +37,7 @@ import {
 const Signup = () => {
   const navigate = useNavigate();
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.LOGIN);
+  const handleOnReset = () => navigate(ROUTE_PATHS?.LOGIN, { replace: true });
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues({
@@ -52,7 +52,7 @@ const Signup = () => {
     mutationFn: (data) => postApiService(API_PATHS?.SIGNUP, data),
     onSuccess: () => {
       dispatchResponseAction("Divyang", CODES?.CREATED);
-      navigate(ROUTE_PATHS?.LOGIN);
+      handleOnReset();
     },
   });
 
@@ -75,7 +75,7 @@ const Signup = () => {
     <SignupContainer>
       <SignupWrapper>
         <TitleContainer>
-          <BackIcon onClick={() => navigate(ROUTE_PATHS?.LOGIN)}>
+          <BackIcon onClick={() => handleOnReset()}>
             <ArrowBack />
           </BackIcon>
           <Title>Sign Up</Title>

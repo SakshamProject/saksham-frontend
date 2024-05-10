@@ -46,6 +46,7 @@ const Form = () => {
   const handleOnSubmit = (values) => {
     const payload = getValidValues({
       ...values,
+      userName: values?.loginId,
       status: values?.status,
       date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
       dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
@@ -121,7 +122,7 @@ const Form = () => {
     queryKey: ["designationsListBySevaKendra", values?.sevaKendraId],
     queryFn: () =>
       getByIdApiService(
-        API_PATHS?.SEVAKENDRA,
+        `/api${API_PATHS?.SEVAKENDRA}`,
         API_PATHS?.ACTIVE(`${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`)
       ),
     select: ({ data }) => data?.data,

@@ -8,9 +8,12 @@ export const AppContainerLayout = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette?.commonColor?.white,
 }));
 
-export const AppMainContainer = styled(Box)(() => ({
+export const AppMainContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   height: "calc(100vh - 64px)",
+  [theme.breakpoints.down("md")]: {
+    height: "calc(100vh - 56px)",
+  },
 }));
 
 export const AppBarLayout = styled("div")(({ theme }) => ({
@@ -21,9 +24,12 @@ export const AppBarLayout = styled("div")(({ theme }) => ({
   alignItems: "center",
   position: "sticky",
   backgroundColor: theme.palette?.primary?.main,
+  [theme.breakpoints.down("md")]: {
+    minHeight: "56px",
+  },
 }));
 
-export const AppLogo = styled("div")(() => ({
+export const AppLogo = styled("div")(({ theme }) => ({
   height: "100%",
   width: "auto",
   display: "flex",
@@ -31,12 +37,19 @@ export const AppLogo = styled("div")(() => ({
   cursor: "pointer",
   marginLeft: "24px",
   columnGap: "15px",
+  [theme.breakpoints.down("md")]: {
+    marginLeft: "8px",
+  },
 }));
 
-export const StyledLogo = styled("img")({
+export const StyledLogo = styled("img")(({ theme }) => ({
   height: "45px",
   width: "45px",
-});
+  [theme.breakpoints.down("md")]: {
+    height: "35px",
+    width: "35px",
+  },
+}));
 
 export const StyledName = styled(Typography)(({ theme }) => ({
   color: theme.palette?.primary?.contrastText,
@@ -44,6 +57,9 @@ export const StyledName = styled(Typography)(({ theme }) => ({
   fontSize: "30px",
   fontFamily: "'Lobster', cursive",
   cursor: "pointer",
+  [theme.breakpoints.down("md")]: {
+    fontSize: "26px",
+  },
 }));
 
 export const CommonAvatar = styled(Avatar)({
@@ -69,12 +85,15 @@ export const AppProfileDetails = styled(Box)({
   flexDirection: "column",
 });
 
-export const AppMainLayout = styled("div")({
+export const AppMainLayout = styled("div")(({ theme }) => ({
   width: "100%",
   overflow: "auto",
   height: "calc(100vh - 64px)",
   scrollbarWidth: "none",
-});
+  [theme.breakpoints.down("md")]: {
+    height: "calc(100vh - 56px)",
+  },
+}));
 
 export const FormContainer = styled(Box)({
   width: "100%",

@@ -6,17 +6,17 @@ export const initialValues = {
 
 export const fields = {
   userName: {
-    label: "User Name",
+    label: "User Name *",
     name: "userName",
   },
   contactNumber: {
-    label: "Contact Number",
+    label: "Contact Number *",
     name: "contactNumber",
     type: "number",
     maxLength: 10,
   },
   UDIDCardNumber: {
-    label: "UDID Number",
+    label: "UDID Number *",
     name: "UDIDCardNumber",
   },
 };
