@@ -79,14 +79,14 @@ const ADMIN_SIDE_MENUS = [
 const DIVYANG_SIDE_MENU = [
   {
     label: "My Profile",
-    navigateTo: ROUTE_PATHS?.DIVYANG_PROFILE,
-    value: "divyang",
+    value: "myProfile",
+    navigateTo: ROUTE_PATHS?.MY_PROFILE,
     key: CODES?.DIVYANG_DETAILS,
   },
   {
-    label: "My Service",
-    navigateTo: ROUTE_PATHS?.DIVYANG_SERVICE_LIST,
-    value: "divyangService",
+    label: "My Services",
+    value: "myServices",
+    navigateTo: ROUTE_PATHS?.MY_SERVICES_LIST,
     key: CODES?.DIVYANG_DETAILS,
   },
 ];

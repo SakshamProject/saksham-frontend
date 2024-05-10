@@ -185,30 +185,30 @@ export const ADMIN_ROUTES = [
   },
 ];
 
-export const DIVYANG_ROUTES = [
+const DIVYANG_ROUTES = [
   {
-    path: ROUTE_PATHS?.DIVYANG_PROFILE,
+    path: ROUTE_PATHS?.MY_PROFILE,
     element: routeElements?.MyProfile,
     key: CODES?.DIVYANG_DETAILS,
   },
   {
-    path: ROUTE_PATHS?.DIVYANG_SERVICE_LIST,
+    path: ROUTE_PATHS?.MY_SERVICES_LIST,
+    element: routeElements?.MyServicesList,
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.MY_SERVICES_FORM,
+    element: routeElements?.MyServicesForm,
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.EDIT_PROFILE,
     element: "",
     key: CODES?.DIVYANG_DETAILS,
   },
   {
-    path: ROUTE_PATHS?.DIVYANG_SERVICE_FORM,
-    element: "",
-    key: CODES?.DIVYANG_DETAILS,
-  },
-  {
-    path: ROUTE_PATHS?.DIVYANG_FORM,
-    element: "",
-    key: CODES?.DIVYANG_DETAILS,
-  },
-  {
-    path: ROUTE_PATHS?.DIVYANG_CHANGE_PASSWORD,
-    element: "",
+    path: ROUTE_PATHS?.CHANGE_PASSWORD,
+    element: routeElements?.ChangePassword,
     key: CODES?.DIVYANG_DETAILS,
   },
 ];

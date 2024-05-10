@@ -88,3 +88,12 @@ export const ServiceMappingForm = lazy(() =>
 export const MyProfile = lazy(() =>
   import("../components/pages/divyang/MyProfile")
 );
+export const MyServicesList = lazy(() =>
+  import("../components/pages/divyang/myServices/List")
+);
+export const MyServicesForm = lazy(() =>
+  import("../components/pages/divyang/myServices/Form")
+);
+export const ChangePassword = lazy(() =>
+  import("../components/pages/divyang/ChangePassword")
+);

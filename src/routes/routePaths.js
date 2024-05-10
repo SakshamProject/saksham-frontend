@@ -40,13 +40,6 @@ export const ROUTE_PATHS = {
   STATE_MASTER_MLA_CONSTITUENCY: "/typeMasters/stateMaster/mlaConstituency",
   STATE_MASTER_MP_CONSTITUENCY: "/typeMasters/stateMaster/mpConstituency",
 
-  //divyang details
-  DIVYANG_PROFILE: "/divyang/profile",
-  DIVYANG_SERVICE_LIST: "/divyangService/list",
-  DIVYANG_SERVICE_FORM: "/divyangService/form",
-  DIVYANG_FORM: "/divyang/form",
-  DIVYANG_CHANGE_PASSWORD: "/divyang/changePassword",
-
   DIVYANG_DETAILS_LIST: "/divyangDetails/list",
   DIVYANG_DETAILS_FORM: "/divyangDetails/form",
   DIVYANG_DETAILS_FORM_PERSONAL: "/divyangDetails/form/personal",
@@ -62,4 +55,10 @@ export const ROUTE_PATHS = {
   //service mapping
   SERVICE_MAPPING_LIST: "/serviceMapping/list",
   SERVICE_MAPPING_FORM: "/serviceMapping/form",
+
+  MY_PROFILE: "/myProfile",
+  EDIT_PROFILE: "/editProfile",
+  MY_SERVICES_LIST: "/myServices/list",
+  MY_SERVICES_FORM: "/myServices/form",
+  CHANGE_PASSWORD: "/changePassword",
 };

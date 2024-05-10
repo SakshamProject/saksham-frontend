@@ -7,6 +7,7 @@ import {
 } from "@mui/icons-material";
 import {
   Box,
+  Divider,
   Drawer,
   List,
   ListItem,
@@ -15,6 +16,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import propTypes from "prop-types";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -54,11 +56,13 @@ const StyledDrawer = styled(Drawer)(({ theme }) => ({
   },
 }));
 
+const DrawerProfileContainer = styled(Box)({});
+
 export const AppBar = () => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const userInfo = useSelector((state) => state?.userInfo);
-  const { isTablets } = useResponsive();
+  const { isTablets, theme } = useResponsive();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const handleClick = (event) => setAnchorEl(event.currentTarget);
@@ -90,14 +94,10 @@ export const AppBar = () => {
       <WithCondition isValid={!isTablets}>
         <AppProfile onClick={handleClick}>
           <AppProfileDetails>
-            <CustomTypography>{userInfo?.name || "Anonymous"}</CustomTypography>
-
-            <CustomTypography sx={{ fontSize: "12px" }}>
-              {userInfo?.userRole || "Unknown"}
-            </CustomTypography>
+            <UserDetails userInfo={userInfo} />
           </AppProfileDetails>
 
-          <UserProfile userInfo={userInfo} />
+          <UserProfile userInfo={userInfo} placement={"left"} />
         </AppProfile>
 
         <RightMenu
@@ -109,25 +109,26 @@ export const AppBar = () => {
       </WithCondition>
 
       <StyledDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        {/* <Box sx={{ textAlign: "end" }}>
-          <StyledIconButton
-            disableFocusRipple
-            disableRipple
-            onClick={() => setDrawerOpen(false)}
-          >
-            <Close />
-          </StyledIconButton>
-        </Box> */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            flexDirection: "column",
+            rowGap: "8px",
+            margin: "24px 0",
+          }}
+        >
+          <UserProfile userInfo={userInfo} placement={"right"} />
 
-        <Box>
-          <UserProfile userInfo={userInfo} />
-
-          <CustomTypography>{userInfo?.name || "Anonymous"}</CustomTypography>
-
-          <CustomTypography sx={{ fontSize: "12px" }}>
-            {userInfo?.userRole || "Unknown"}
-          </CustomTypography>
+          <Box sx={{ textAlign: "center" }}>
+            <UserDetails
+              userInfo={userInfo}
+              color={theme.palette?.commonColor?.black}
+            />
+          </Box>
         </Box>
+
+        <Divider />
 
         <List component="nav" disablePadding>
           <ListItem>
@@ -181,12 +182,36 @@ export const AppBar = () => {
   );
 };
 
-const UserProfile = ({ userInfo }) => (
-  <CustomTooltip title={"profile"} placement={"left"}>
+const UserProfile = ({ userInfo, style, placement }) => (
+  <CustomTooltip title={"profile"} placement={placement}>
     <CommonAvatar
+      style={style}
       src={userInfo?.profileImg || defaultAvatar}
       onError={(e) => (e.target.src = defaultAvatar)}
       alt="profile"
     />
   </CustomTooltip>
 );
+
+const UserDetails = ({ userInfo, color }) => (
+  <>
+    <CustomTypography sx={{ color }}>
+      {userInfo?.person?.name || userInfo?.name || "Anonymous"}
+    </CustomTypography>
+
+    <CustomTypography sx={{ fontSize: "12px", color }}>
+      {userInfo?.designation?.name || userInfo?.role || "Unknown"}
+    </CustomTypography>
+  </>
+);
+
+UserProfile.propTypes = {
+  userInfo: propTypes.any,
+  placement: propTypes.string,
+  style: propTypes.object,
+};
+
+UserDetails.propTypes = {
+  userInfo: propTypes.any,
+  color: propTypes.string,
+};

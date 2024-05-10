@@ -9,6 +9,7 @@ import { routeMapping } from "../routes/routeMapping.js";
 import { ROUTE_PATHS } from "../routes/routePaths.js";
 import { theme } from "../styles/theme";
 import { getCookie } from "../utils/cookie.js";
+import { dispatchUserInfo } from "../utils/dispatch.js";
 import { objectDecryption } from "../utils/encryptionAndDecryption.js";
 import { CustomLoader, UserNotification } from "./shared";
 import NotFound from "./shared/NotFound.js";
@@ -25,24 +26,14 @@ const Root = () => {
 
   useEffect(() => {
     if (
-      [
-        ROUTE_PATHS?.RESET_PASSWORD,
-        ROUTE_PATHS?.LAYOUT,
-        ROUTE_PATHS?.FORGOT_PASSWORD,
-      ].includes(pathname)
+      [ROUTE_PATHS?.RESET_PASSWORD, ROUTE_PATHS?.FORGOT_PASSWORD].includes(
+        pathname
+      )
     ) {
       navigate(ROUTE_PATHS?.LOGIN);
+    } else if (token && userInfo && !userInfoSelector) {
+      dispatchUserInfo(userInfo);
     }
-
-    // if (!userInfo || !token) {
-    //   navigate(ROUTE_PATHS?.LOGIN);
-    //   removeAllCookie();
-    // }
-    // if (token && userInfo && !userInfoSelector) {
-    //   dispatchUserInfo(userInfo);
-
-    //   // navigate(ROUTE_PATHS?.);
-    // }
   }, []); //eslint-disable-line
 
   return (
@@ -56,7 +47,7 @@ const Root = () => {
           {routeMapping(
             getRoutes({
               role: userInfo?.role,
-              designations: userInfo?.designations,
+              designations: userInfo?.designation?.designations,
             })
           )}
         </Route>

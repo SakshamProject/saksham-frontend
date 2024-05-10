@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   CustomTypography,
+  ListingContainer,
   StyledFormContainer,
   SubmitButton,
   theme,
@@ -141,32 +142,12 @@ const MyProfile = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <>
-      {/* <Container>
-        <ContainerAlign>
-          <Title variant="h6"></Title>
-
-          <IconsContainer>
-            <NewButton
-              onClick={() =>
-                navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL)
-              }
-            >
-              Edit Profile
-            </NewButton>
-            <NewButton
-              onClick={() =>
-                navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL)
-              }
-            >
-              Change Password
-            </NewButton>
-          </IconsContainer>
-        </ContainerAlign>
-      </Container> */}
-
+    <ListingContainer sx={{ maxHeight: "100vh" }}>
       <ListTopbar
         label={"My Profile"}
+        disableFilter
+        disableNewForm
+        disableSearchField
         additionalComponent={
           <>
             <SubmitButton
@@ -178,9 +159,7 @@ const MyProfile = () => {
             </SubmitButton>
 
             <SubmitButton
-              onClick={() =>
-                navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL)
-              }
+              onClick={() => navigate(ROUTE_PATHS?.CHANGE_PASSWORD)}
             >
               Change Password
             </SubmitButton>
@@ -523,7 +502,7 @@ const MyProfile = () => {
           )}
         </StyledFormContainer>
       </Grid>
-    </>
+    </ListingContainer>
   );
 };
 

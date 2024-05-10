@@ -13,7 +13,6 @@ import {
   LOGIN_SUCCESS,
 } from "../../../constants/globalConstants";
 import { fields, initialValues } from "../../../constants/login/login";
-import { ADMIN_ROUTES, DIVYANG_ROUTES } from "../../../routes";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   CancelButton,
@@ -101,20 +100,6 @@ const Login = () => {
     }
   };
 
-  const roleBasedNavigation = (data) => {
-    if (data?.user) {
-      const userPage = ADMIN_ROUTES?.find(
-        (item) =>
-          item?.key === data?.user?.designation?.features[0]?.feature?.name
-      );
-      navigate(userPage?.path);
-    } else if (data?.divyang) {
-      navigate(ROUTE_PATHS?.DIVYANG_PROFILE);
-    } else {
-      navigate(ROUTE_PATHS?.DASHBOARD);
-    }
-  };
-
   const setUserInfo = (data) => {
     let userInfo = {};
 
@@ -130,6 +115,7 @@ const Login = () => {
       userInfo = {
         userId: data?.user?.id,
         serviceMapping,
+        role: CODES?.SEVA_KENDRA,
         designation: {
           id: data?.user?.designation?.id,
           name: data?.user?.designation?.name,
@@ -143,9 +129,9 @@ const Login = () => {
     } else if (data?.divyang) {
       userInfo = {
         userId: data?.divyang?.id,
+        role: CODES?.DIVYANG,
         designation: {
           name: CODES?.DIVYANG,
-          designations: DIVYANG_ROUTES,
         },
         person: {
           id: data?.divyang?.person?.id,
@@ -155,9 +141,9 @@ const Login = () => {
     } else {
       userInfo = {
         name: data?.superAdmin,
+        role: CODES?.ADMIN,
         designation: {
           name: CODES?.ADMIN,
-          designations: ADMIN_ROUTES,
         },
       };
     }
@@ -181,8 +167,8 @@ const Login = () => {
     },
     onSuccess: ({ data }, value) => {
       setRememberMe(value);
-      roleBasedNavigation(data);
       setUserInfo(data);
+      navigate(ROUTE_PATHS?.LAYOUT);
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
     },
     onError: ({ response }) => {
