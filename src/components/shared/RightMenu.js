@@ -1,8 +1,6 @@
 import { Popover as MuiPopper, styled } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import propTypes from "prop-types";
-import { useSelector } from "react-redux";
-import { RIGHT_SIDE_MENU } from "../../constants/menus";
 
 const PopoverComponent = styled(MuiPopper)({
   ".MuiPaper-root": {
@@ -18,9 +16,13 @@ const Titles = styled(Typography)(({ theme }) => ({
   color: `${theme.palette?.commonColor?.black} !important`,
 }));
 
-export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
-  const userInfo = useSelector((state) => state?.userInfo);
-
+export const RightMenu = ({
+  open,
+  anchorEl,
+  handleClose,
+  redirect,
+  menuList,
+}) => {
   return (
     <PopoverComponent
       open={open}
@@ -29,7 +31,7 @@ export const RightMenu = ({ open, anchorEl, handleClose, redirect }) => {
       anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
-      {RIGHT_SIDE_MENU(userInfo?.role)?.map(({ label, routePath }, key) => (
+      {menuList?.map(({ label, routePath }, key) => (
         <Titles key={key + label} onClick={() => redirect(routePath)}>
           {label}
         </Titles>
@@ -43,4 +45,5 @@ RightMenu.propTypes = {
   redirect: propTypes.func,
   open: propTypes.any,
   handleClose: propTypes.func,
+  menuList: propTypes.array,
 };
