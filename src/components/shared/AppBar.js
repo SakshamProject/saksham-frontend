@@ -1,6 +1,6 @@
 import { Menu } from "@mui/icons-material";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postApiService } from "../../api/api";
@@ -60,6 +60,12 @@ export const AppBar = () => {
     handleClose();
     setDrawerOpen(false);
   };
+
+  useEffect(() => {
+    if (!isTablets) {
+      setDrawerOpen(false);
+    }
+  }, [isTablets]);
 
   return (
     <AppBarLayout>

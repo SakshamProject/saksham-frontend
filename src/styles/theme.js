@@ -35,8 +35,9 @@ export const theme = createTheme({
     },
 
     scrollbarColor: {
-      thumb: "#A9A9A9",
+      thumb: "#888888",
       track: "#D3D3D3",
+      hover: "#555555",
     },
 
     shadowColor: {

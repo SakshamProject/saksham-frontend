@@ -13,7 +13,7 @@ import { CODES } from "./globalConstants";
 
 export const RIGHT_SIDE_MENU = (role, isMobile = false) =>
   [
-    (role === CODES?.ADMIN || isMobile) && {
+    role === CODES?.ADMIN && {
       label: "My Profile",
       routePath: ROUTE_PATHS?.PROFILE,
       navigateTo: ROUTE_PATHS?.PROFILE,
@@ -44,10 +44,12 @@ const ADMIN_SIDE_MENUS = [
       {
         name: "Seva Kendra Master",
         navigateTo: ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST,
+        key: "sevaKendraMaster",
       },
       {
         name: "Designations",
         navigateTo: ROUTE_PATHS?.DESIGNATIONS_LIST,
+        key: "designations",
       },
     ],
   },
@@ -67,10 +69,12 @@ const ADMIN_SIDE_MENUS = [
       {
         name: "General Types",
         navigateTo: ROUTE_PATHS?.GENERAL_TYPES_LIST,
+        key: "generalTypes",
       },
       {
         name: "State Master",
         navigateTo: ROUTE_PATHS?.STATE_MASTER_TALUK,
+        key: "stateMaster",
       },
     ],
   },
@@ -117,7 +121,7 @@ const DIVYANG_SIDE_MENU = [
 export const getSideMenus = ({ role, designations = [], isMobile = false }) => {
   if (role === CODES?.ADMIN)
     return isMobile
-      ? [...RIGHT_SIDE_MENU("", isMobile), ...ADMIN_SIDE_MENUS]
+      ? [...RIGHT_SIDE_MENU(role, isMobile), ...ADMIN_SIDE_MENUS]
       : ADMIN_SIDE_MENUS;
 
   if (role === CODES?.DIVYANG) return DIVYANG_SIDE_MENU;
