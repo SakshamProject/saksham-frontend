@@ -1,7 +1,7 @@
-import { useMediaQuery, useTheme } from "@mui/material";
+import { useMediaQuery } from "@mui/material";
+import { theme } from "../styles/theme";
 
 const useResponsive = () => {
-  const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablets = useMediaQuery(theme.breakpoints.down("md"));
 

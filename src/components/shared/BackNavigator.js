@@ -2,26 +2,30 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IconButton, styled } from "@mui/material";
 import propTypes from "prop-types";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import CustomTooltip from "./CustomTooltip";
 
-const Container = styled("div")(({ theme, disableBack }) => ({
+const Container = styled("div")(({ theme, disableback }) => ({
   display: "flex",
   alignItems: "center",
-  minHeight: 75,
-  marginBottom: 16,
+  minHeight: 64,
   backgroundColor: theme.palette?.commonColor?.white,
-  marginLeft: disableBack ? 16 : "5%",
+  marginLeft: disableback ? 16 : "5%",
   position: "sticky",
+  [theme.breakpoints.down("md")]: {
+    margin: "0 16px 0 8px",
+  },
 }));
 
-const CustomHeader = styled("div")(({ theme }) => {
-  return {
-    fontSize: 22,
-    marginLeft: 15,
-    userSelect: "none",
-    color: theme?.palette?.commonColor?.black,
-    fontWeight: "600",
-  };
-});
+const CustomHeader = styled("div")(({ theme }) => ({
+  fontSize: 22,
+  marginLeft: 15,
+  userSelect: "none",
+  color: theme?.palette?.commonColor?.black,
+  fontWeight: "600",
+  [theme.breakpoints.down("md")]: {
+    fontSize: 18,
+  },
+}));
 
 const BackIcon = styled(IconButton)(({ theme }) => ({
   color: theme?.palette?.commonColor?.black,
@@ -55,13 +59,15 @@ export const BackNavigator = ({
   };
 
   return (
-    <Container disableBack={disableBack}>
+    <Container disableback={disableBack}>
       {disableBack ? (
         <></>
       ) : (
-        <BackIcon onClick={onClick}>
-          <ArrowBackIcon />
-        </BackIcon>
+        <CustomTooltip title={"Back"}>
+          <BackIcon onClick={onClick}>
+            <ArrowBackIcon />
+          </BackIcon>
+        </CustomTooltip>
       )}
       {customTitle ? (
         <CustomHeader>{customTitle}</CustomHeader>

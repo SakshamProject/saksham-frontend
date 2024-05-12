@@ -21,7 +21,7 @@ const CustomSpinner = styled(CircularProgress)(({ theme }) => ({
 export const CustomLoader = () => {
   return (
     <Container>
-      <CustomSpinner />
+      <CustomSpinner  />
     </Container>
   );
 };

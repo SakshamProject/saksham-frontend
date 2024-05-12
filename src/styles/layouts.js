@@ -1,4 +1,5 @@
 import { Avatar, Box, Grid, Paper, Typography, styled } from "@mui/material";
+import { scrollbarStyle } from "./scrollbarStyle";
 
 export const AppContainerLayout = styled("div")(({ theme }) => ({
   width: "100%",
@@ -89,7 +90,7 @@ export const AppMainLayout = styled("div")(({ theme }) => ({
   width: "100%",
   overflow: "auto",
   height: "calc(100vh - 64px)",
-  scrollbarWidth: "none",
+  ...scrollbarStyle(true),
   [theme.breakpoints.down("md")]: {
     height: "calc(100vh - 56px)",
   },
@@ -99,32 +100,34 @@ export const FormContainer = styled(Box)({
   width: "100%",
   maxHeight: "100%",
   overflow: "auto",
-  scrollbarWidth: "none",
+  ...scrollbarStyle(true),
 });
 
 export const FormLayout = styled(Box)(() => ({
-  maxHeight: "calc(100% - 92px)",
+  maxHeight: "calc(100% - 64px)",
   width: "100%",
   display: "flex",
   justifyContent: "center",
   overflow: "auto",
-  scrollbarWidth: "none",
+  ...scrollbarStyle(true),
 }));
 
-export const StyledFormContainer = styled(Paper)(({ theme, width }) => {
-  return {
-    width: width || "60%",
-    margin: "0px auto 30px",
-    padding: "40px",
-    height: "fit-content",
-    borderRadius: 10,
-    border: `1px solid ${theme?.palette?.primary.main}`,
-    boxSizing: "border-box",
-    boxShadow: "none",
-    // minWidth: "500px",
-    backgroundColor: theme.palette?.commonColor?.white,
-  };
-});
+export const StyledFormContainer = styled(Paper)(({ theme, width }) => ({
+  width: width || "60%",
+  margin: "0px auto 30px",
+  padding: "40px",
+  height: "fit-content",
+  borderRadius: 10,
+  boxSizing: "border-box",
+  boxShadow: "none",
+  border: `1px solid ${theme?.palette?.primary.main}`,
+  backgroundColor: theme.palette?.commonColor?.white,
+  [theme.breakpoints.down("sm")]: {
+    width: "90%",
+    border: "none",
+    padding: 0,
+  },
+}));
 
 export const FileDownloadLayout = styled(Grid)({
   display: "flex",

@@ -23,7 +23,7 @@ export const API_PATHS = {
   REST_PASSWORD_DIVYANG: "/divyangdetails/resetpassword",
 
   // Setup master
-  SEVAKENDRA: "/sevakendras",
+  SEVAKENDRA: "api/sevakendras",
   SEVAKENDRA_LIST: "/api/sevakendras/list",
 
   // Designation

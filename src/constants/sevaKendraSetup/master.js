@@ -27,7 +27,6 @@ export const fields = {
   name: {
     label: "Seva Kendra Name *",
     name: "name",
-    type: "alphaNumeric",
   },
   stateId: {
     label: "State *",
@@ -40,48 +39,53 @@ export const fields = {
   address: {
     label: "Address *",
     name: "address",
-    type: "alphaNumeric",
   },
   landLineNumber: {
     label: "Landline Number *",
     name: "landLineNumber",
-    type: "mobile",
+    fieldType: "mobile",
+    maxLength: 10,
   },
   mobileNumber: {
     label: "Mobile No *",
     name: "mobileNumber",
-    type: "mobile",
+    fieldType: "mobile",
+    maxLength: 10,
   },
   startDate: {
     label: "Seva Kendra Start Date *",
     name: "startDate",
+    minDate: new Date(),
   },
   contactPerson: {
     name: {
       label: "Contact Person Name *",
       name: "contactPerson.name",
-      type: "alphabets",
     },
     email: {
-      label: "Email Id *",
+      label: "Email",
       name: "contactPerson.email",
-      type: "email",
+      fieldType: "email",
     },
     phoneNumber1: {
-      label: "Primary Number *",
+      label: "Primary Contact Number *",
       name: "contactPerson.phoneNumber1",
-      type: "mobile",
+      fieldType: "mobile",
+      maxLength: 10,
     },
     phoneNumber2: {
-      label: "Secondary Number *",
+      label: "Secondary Contact Number",
       name: "contactPerson.phoneNumber2",
-      type: "mobile",
+      fieldType: "mobile",
+      maxLength: 10,
     },
   },
   servicesBySevaKendra: {
     label: "Service Types *",
     name: "servicesBySevaKendra",
     accessor: "service.name",
+    getOptionLabel: (option) =>
+      `${option?.name} - ${option?.serviceType?.name} `,
   },
 };
 
@@ -140,4 +144,4 @@ export const sevakendraColumn = [
 ];
 
 export const transformServices = (services) =>
-  services?.map(({ id }) => ({ serviceId: id }));
+  services?.map((service) => ({ serviceId: service?.id }));

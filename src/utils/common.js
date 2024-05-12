@@ -30,8 +30,10 @@ export const getValidValues = (values, withArray, include = []) => {
     if (typeof values[key] === "string" && !!values[key]) {
       return { ...validated, [key]: values[key]?.trim()?.replace(/\s+/g, " ") };
     }
-    if (typeof values[key] === "object")
-      return { ...validated, [key]: values[key] };
+    if (typeof values[key] === "object") {
+      const validObjectData = getValidValues(values[key]);
+      return { ...validated, [key]: validObjectData };
+    }
 
     return validated;
   }, {});

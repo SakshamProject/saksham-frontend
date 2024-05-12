@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   getApiService,
@@ -38,7 +38,7 @@ import StatusFields from "../../../shared/StatusFields";
 
 const Form = () => {
   const { state } = useLocation();
-  const isViewMode = state?.viewDetails;
+  const isViewMode = state?.viewDetails || false;
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const editId = params.get("editId");
@@ -46,22 +46,21 @@ const Form = () => {
   const handleOnSubmit = (values) => {
     const payload = getValidValues({
       ...values,
-      contactPerson: getValidValues(values?.contactPerson),
       startDate: formatDate({ date: values?.startDate, format: "iso" }),
       servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
       services: transformServices(values?.servicesBySevaKendra),
-      auditLog: getValidValues({
+      currentStatus: values?.status,
+      auditLog: {
         date: formatDate({ date: values?.date, format: "iso" }),
         status: values?.status,
         description: values?.description,
-      }),
-      currentStatus: values?.status,
+      },
     });
     onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["create and update"],
+    mutationKey: ["createAndUpdate"],
     mutationFn: (data) =>
       editId
         ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
@@ -77,7 +76,7 @@ const Form = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: validationSchema(editId),
+    validationSchema,
     onSubmit: handleOnSubmit,
   });
 
@@ -100,7 +99,7 @@ const Form = () => {
   });
 
   const { data: districtList } = useQuery({
-    queryKey: ["getAllDistrictByState", values?.stateId],
+    queryKey: ["getAllDistrictsByState", values?.stateId],
     queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
@@ -113,7 +112,7 @@ const Form = () => {
   });
 
   const { data } = useCustomQuery({
-    queryKey: ["sevaKendraGetById"],
+    queryKey: ["sevaKendraGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
     enabled: !!editId,
     onSuccess: (data) => {
@@ -137,10 +136,6 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  useEffect(() => {
-    if (!editId) setFieldValue(fields?.startDate?.name, new Date());
-  }, []); // eslint-disable-line
-
   return (
     <FormWrapper
       title="Seva Kendra"
@@ -150,47 +145,49 @@ const Form = () => {
         <CustomTextField
           label={fields?.name?.label}
           name={fields?.name?.name}
+          isViewMode={isViewMode}
           value={values?.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.name}
           touched={touched?.name}
-          isViewMode={isViewMode}
-          fieldType={fields?.name?.type}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SingleAutoComplete
           label={fields?.stateId?.label}
           name={fields?.stateId?.name}
-          value={values?.stateId}
-          onChange={(_, value) => {
-            setFieldValue(fields?.stateId?.name, value);
-            setFieldValue(fields?.districtId?.name, "");
-            setFieldTouched(fields?.districtId?.name, false);
-          }}
-          onBlur={handleBlur}
-          errors={errors?.stateId}
-          touched={touched?.stateId}
           inputValues={stateList || []}
           isViewMode={isViewMode}
+          value={values?.stateId}
+          errors={errors?.stateId}
+          touched={touched?.stateId}
+          onBlur={handleBlur}
+          onChange={(_, value) => {
+            setValues({
+              ...values,
+              [fields?.stateId?.name]: value,
+              [fields?.districtId?.name]: "",
+            });
+            setFieldTouched(fields?.districtId?.name, false);
+          }}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SingleAutoComplete
           label={fields?.districtId?.label}
           name={fields?.districtId?.name}
+          inputValues={districtList?.districts || []}
+          isViewMode={isViewMode}
           value={values?.districtId}
+          errors={errors?.districtId}
+          touched={touched?.districtId}
           onChange={(_, value) => {
             setFieldValue(fields?.districtId?.name, value);
           }}
           onBlur={handleBlur}
-          errors={errors?.districtId}
-          touched={touched?.districtId}
-          inputValues={districtList?.districts || []}
-          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -198,58 +195,57 @@ const Form = () => {
         <CustomTextField
           label={fields?.address?.label}
           name={fields?.address?.name}
+          isViewMode={isViewMode}
           value={values?.address}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.address}
           touched={touched?.address}
-          isViewMode={isViewMode}
-          type={fields?.address?.type}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.landLineNumber?.label}
           name={fields?.landLineNumber?.name}
+          fieldType={fields?.landLineNumber?.fieldType}
+          maxLength={fields?.landLineNumber?.maxLength}
+          isViewMode={isViewMode}
           value={values?.landLineNumber}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.landLineNumber}
           touched={touched?.landLineNumber}
-          isViewMode={isViewMode}
-          fieldType={fields?.landLineNumber?.type}
-          maxLength={10}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.mobileNumber?.label}
           name={fields?.mobileNumber?.name}
+          fieldType={fields?.mobileNumber?.fieldType}
+          maxLength={fields?.mobileNumber?.maxLength}
+          isViewMode={isViewMode}
           value={values?.mobileNumber}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.mobileNumber}
           touched={touched?.mobileNumber}
-          isViewMode={isViewMode}
-          fieldType={fields?.mobileNumber?.type}
-          maxLength={10}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomDatePicker
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
+          minDate={fields?.startDate?.minDate}
+          isViewMode={isViewMode}
           value={values?.startDate}
-          onChange={setFieldValue}
-          isViewMode={isViewMode || editId}
-          minDate={new Date()}
-          onBlur={handleBlur}
-          setTouched={setFieldTouched}
           errors={errors?.startDate}
           touched={touched?.startDate}
+          onChange={setFieldValue}
+          onBlur={handleBlur}
+          setTouched={setFieldTouched}
         />
       </Grid>
 
@@ -257,61 +253,60 @@ const Form = () => {
         <DividerLine gap={"6px 0 24px"} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.contactPerson?.name?.label}
           name={fields?.contactPerson?.name?.name}
+          isViewMode={isViewMode}
           value={values?.contactPerson?.name}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.contactPerson?.name}
           touched={touched?.contactPerson?.name}
-          isViewMode={isViewMode}
-          fieldType={fields?.contactPerson?.name?.type}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.contactPerson?.email?.label}
           name={fields?.contactPerson?.email?.name}
+          fieldType={fields?.contactPerson?.email?.fieldType}
+          isViewMode={isViewMode}
           value={values?.contactPerson?.email}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.contactPerson?.email}
           touched={touched?.contactPerson?.email}
-          isViewMode={isViewMode}
-          fieldType={fields?.contactPerson?.email?.type}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.contactPerson?.phoneNumber1?.label}
           name={fields?.contactPerson?.phoneNumber1?.name}
+          fieldType={fields?.contactPerson?.phoneNumber1?.fieldType}
+          maxLength={fields?.contactPerson?.phoneNumber1?.maxLength}
+          isViewMode={isViewMode}
           value={values?.contactPerson?.phoneNumber1}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.contactPerson?.phoneNumber1}
           touched={touched?.contactPerson?.phoneNumber1}
-          isViewMode={isViewMode}
-          fieldType={fields?.contactPerson?.phoneNumber1?.type}
-          maxLength={10}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.contactPerson?.phoneNumber2?.label}
           name={fields?.contactPerson?.phoneNumber2?.name}
+          fieldType={fields?.contactPerson?.phoneNumber2?.fieldType}
+          maxLength={fields?.contactPerson?.phoneNumber2?.maxLength}
+          isViewMode={isViewMode}
           value={values?.contactPerson?.phoneNumber2}
-          onChange={handleChange}
-          onBlur={handleBlur}
           errors={errors?.contactPerson?.phoneNumber2}
           touched={touched?.contactPerson?.phoneNumber2}
-          isViewMode={isViewMode}
-          fieldType={fields?.contactPerson?.phoneNumber2?.type}
-          maxLength={10}
+          onChange={handleChange}
+          onBlur={handleBlur}
         />
       </Grid>
 
@@ -329,18 +324,16 @@ const Form = () => {
         <CustomAutoComplete
           label={fields?.servicesBySevaKendra?.label}
           name={fields?.servicesBySevaKendra?.name}
-          value={values?.servicesBySevaKendra}
+          getOptionLabel={fields?.servicesBySevaKendra?.getOptionLabel}
+          inputValues={serviceTypeList || []}
+          isViewMode={isViewMode}
+          value={values?.servicesBySevaKendra || []}
+          touched={touched?.servicesBySevaKendra}
+          errors={errors?.servicesBySevaKendra}
           onChange={(_, value) => {
             setFieldValue(fields?.servicesBySevaKendra?.name, [...value]);
           }}
           onBlur={handleBlur}
-          touched={touched?.servicesBySevaKendra}
-          error={errors?.servicesBySevaKendra}
-          isViewMode={isViewMode}
-          inputValues={serviceTypeList || []}
-          getOptionLabel={(option) =>
-            `${option?.name} - ${option?.serviceType?.name} `
-          }
         />
       </Grid>
 

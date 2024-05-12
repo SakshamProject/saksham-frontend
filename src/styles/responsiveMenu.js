@@ -1,5 +1,5 @@
 import { Box, Drawer, ListItem, styled } from "@mui/material";
-import { scrollbarStyle } from "../../styles/scrollbarStyle";
+import { scrollbarStyle } from "../styles/scrollbarStyle";
 
 export const StyledDrawer = styled(Drawer)(({ theme }) => ({
   position: "relative",
