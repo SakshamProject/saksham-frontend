@@ -107,7 +107,7 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
           <StyledIconButton sx={{ padding: 0, marginRight: "32px" }}>
             <Logout />
           </StyledIconButton>
-          Logout
+          <span style={{ cursor: "pointer" }}>Logout</span>
         </LogoutContainer>
       </ListWrapper>
     </StyledDrawer>

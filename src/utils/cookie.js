@@ -7,7 +7,15 @@ export const getCookie = (name) => {
 };
 
 export const setCookie = (name, value) => {
-  cookies.set(name, value, { path: "/" });
+  const currentDate = new Date();
+  const expirationDate = new Date(
+    currentDate.getTime() + 7 * 24 * 60 * 60 * 1000
+  );
+
+  cookies.set(name, value, {
+    path: "/",
+    expires: expirationDate,
+  });
 };
 
 export const removeCookie = (name) => {
