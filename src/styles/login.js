@@ -1,6 +1,6 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
 
-export const LoginWrapper = styled(Grid)({
+export const LoginWrapper = styled(Grid)(({ theme }) => ({
   height: "100vh",
   width: "100vw",
   padding: 0,
@@ -8,13 +8,18 @@ export const LoginWrapper = styled(Grid)({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-});
+  overflow: "auto",
+  [theme.breakpoints.down("sm")]: {
+    height: "calc(100vh - 56px)",
+  },
+}));
 
 export const LoginContainer = styled(Box)(({ theme }) => ({
   width: "35%",
   height: "auto",
   padding: "2% 3%",
   borderRadius: 8,
+  margin: "3% 0",
   border: `1px solid ${theme.palette?.commonColor?.black}`,
   [theme.breakpoints.down("md")]: {
     width: "50%",
@@ -23,7 +28,7 @@ export const LoginContainer = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     width: "100%",
     border: "none",
-    padding: "6%",
+    padding: "3%",
   },
 }));
 

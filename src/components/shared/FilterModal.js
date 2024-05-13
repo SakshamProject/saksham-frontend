@@ -20,6 +20,7 @@ import {
   FilterTitle,
   SubmitButton,
 } from "../../styles";
+import CustomTooltip from "./CustomTooltip.js";
 
 export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
   const navigate = useNavigate();
@@ -86,9 +87,11 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
 
   return (
     <>
-      <FilterIconButton onClick={handleOpen}>
-        <FilterListIcon sx={{ fontSize: 24 }} />
-      </FilterIconButton>
+      <CustomTooltip title={"Filter"}>
+        <FilterIconButton onClick={handleOpen}>
+          <FilterListIcon sx={{ fontSize: 24 }} />
+        </FilterIconButton>
+      </CustomTooltip>
 
       <Modal
         open={open}

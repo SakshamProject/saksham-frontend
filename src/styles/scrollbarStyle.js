@@ -24,7 +24,8 @@ export const scrollbarStyle = (disable = false) => {
         }
       : {
           "&::-webkit-scrollbar": {
-            width: "8px",
+            width: "6px",
+            height: "6px",
           },
           "&::-webkit-scrollbar-track": {
             background: theme.palette?.scrollbarColor?.track,

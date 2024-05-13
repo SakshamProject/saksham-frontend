@@ -1,9 +1,10 @@
 import { useTheme } from "@mui/material";
 import Table from "custom_react_table7";
+import propTypes from "prop-types";
 import { Fragment } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
 import { ListingContainer } from "../../styles";
+import { scrollbarStyle } from "../../styles/scrollbarStyle";
 import { parseQueryParams } from "../../utils/queryParams";
 
 export const CustomReactTable = ({
@@ -65,8 +66,7 @@ export const CustomReactTable = ({
   const tableStyle = {
     table: {
       maxHeight: maxHeight || "calc(100vh - 280px)",
-      scrollbarWidth: "thin",
-      scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
+      ...scrollbarStyle(),
     },
     mainContainer: {
       maxWidth: "100%",

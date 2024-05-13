@@ -1,3 +1,4 @@
+import { Box } from "@mui/material";
 import { Suspense, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
@@ -22,7 +23,7 @@ export const Layout = () => {
     objectDecryption(getCookie(COOKIE_KEYS?.USER_INFO));
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { isTablets } = useResponsive();
+  const { isTablets, isMobile } = useResponsive();
 
   useEffect(() => {
     if (pathname === ROUTE_PATHS?.LAYOUT) {
@@ -44,6 +45,10 @@ export const Layout = () => {
   return (
     <AppContainerLayout>
       <AppBar />
+
+      <WithCondition isValid={isMobile}>
+        <Box sx={{ height: "56px" }}></Box>
+      </WithCondition>
 
       <AppMainContainer>
         <WithCondition isValid={!isTablets}>

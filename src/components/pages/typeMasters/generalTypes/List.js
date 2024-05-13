@@ -15,6 +15,7 @@ const List = () => {
       disablePagination
       disableColumnHiding
       manualSort
+      disableNewForm
     />
   );
 };

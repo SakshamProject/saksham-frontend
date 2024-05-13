@@ -1,11 +1,14 @@
 import { Box, Grid, IconButton, styled } from "@mui/material";
 
-export const SignupContainer = styled("div")(() => ({
+export const SignupContainer = styled("div")(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   height: "100vh",
   overflow: "auto",
   scrollbarWidth: "none",
+  [theme.breakpoints.down("sm")]: {
+    height: "calc(100vh - 56px)",
+  },
 }));
 
 export const SignupWrapper = styled(Box)(({ theme }) => ({

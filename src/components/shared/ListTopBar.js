@@ -1,39 +1,55 @@
 import { Add, Download } from "@mui/icons-material";
 import { Box, Typography, styled } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
+import useResponsive from "../../hooks/useResponsive";
 import { NewButton } from "../../styles";
+import CustomTooltip from "./CustomTooltip";
 import { CustomSearchField, FilterModal, WithCondition } from "./index";
 
-const Container = styled(Box)({
+const Container = styled(Box)(({ theme }) => ({
   height: 80,
-  width: "89.8%",
+  width: "100%",
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  flexDirection: "column",
-  marginLeft: "5%",
-});
+  [theme.breakpoints.down("sm")]: {
+    marginBottom: 24,
+  },
+}));
 
-const ContainerAlign = styled(Box)({
+const ContainerAlign = styled(Box)(({ theme }) => ({
   width: "100%",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-});
+  [theme.breakpoints.down("sm")]: {
+    flexDirection: "column",
+    rowGap: "8px",
+    marginTop: "16px",
+    alignItems: "flex-start",
+  },
+}));
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme?.palette?.commonColor?.black,
   textTransform: "uppercase",
   fontWeight: "600",
   fontSize: "1.3rem",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.2rem",
+  },
 }));
 
-const IconsContainer = styled(Box)({
+const IconsContainer = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-});
+  [theme.breakpoints.down("sm")]: {
+    width: "100%",
+    justifyContent: "space-between",
+  },
+}));
 
 export const ListTopbar = ({
   label,
@@ -51,6 +67,7 @@ export const ListTopbar = ({
   placeholder,
 }) => {
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
 
   return (
     <Container sx={style}>
@@ -64,18 +81,22 @@ export const ListTopbar = ({
 
           {additionalComponent || <></>}
 
-          <WithCondition isValid={!disableFilter}>
-            <FilterModal
-              listPath={listPath}
-              filterFields={filterFields}
-              filterFieldInitial={filterFieldInitial}
-            />
+          <WithCondition isValid={!disableFilter && !isMobile}>
+      
+              <FilterModal
+                listPath={listPath}
+                filterFields={filterFields}
+                filterFieldInitial={filterFieldInitial}
+              />
+         
           </WithCondition>
 
           <WithCondition isValid={!disableNewForm && newFormPath}>
-            <NewButton onClick={() => navigate(newFormPath)}>
-              {newButtonLabel || <Add />}
-            </NewButton>
+            <CustomTooltip title={"New"}>
+              <NewButton onClick={() => navigate(newFormPath)}>
+                {newButtonLabel || <Add />}
+              </NewButton>
+            </CustomTooltip>
           </WithCondition>
 
           <WithCondition isValid={!!onDownload}>
