@@ -7,7 +7,7 @@ const List = () => {
       label={"Seva Kendra Master"}
       listPath={"SEVA_KENDRA_MASTER_LIST"}
       formPath={"SEVA_KENDRA_MASTER_FORM"}
-      apiPath={"SEVAKENDRA_LIST"}
+      apiPath={"SEVAKENDRAS_LIST"}
       columns={sevakendraColumn}
     />
   );

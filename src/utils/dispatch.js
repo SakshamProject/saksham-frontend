@@ -2,7 +2,6 @@ import { CODES } from "../constants/globalConstants";
 import {
   removeGlobalStates,
   setIsLoading,
-  setSeeds,
   setSnackbar,
   setUserInfo,
 } from "../redux/slice";
@@ -22,10 +21,6 @@ export const dispatchUserInfo = (userInfo) => {
 
 export const dispatchRemoveGlobalStates = () => {
   store.dispatch(removeGlobalStates());
-};
-
-export const dispatchSeeds = (payload) => {
-  store.dispatch(setSeeds(payload));
 };
 
 export const dispatchSnackbarSuccess = (message) => {

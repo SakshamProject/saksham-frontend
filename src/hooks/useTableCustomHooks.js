@@ -1,7 +1,6 @@
 import queryString from "query-string";
 import { useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { createQueryParams } from "../utils/queryParams";
 
 const useTableCustomHooks = (path) => {

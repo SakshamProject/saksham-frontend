@@ -63,8 +63,8 @@ const Form = () => {
     mutationKey: ["createAndUpdate"],
     mutationFn: (data) =>
       editId
-        ? updateApiService(API_PATHS?.SEVAKENDRA, editId, data)
-        : postApiService(API_PATHS?.SEVAKENDRA, data),
+        ? updateApiService(API_PATHS?.SEVAKENDRAS, editId, data)
+        : postApiService(API_PATHS?.SEVAKENDRAS, data),
     onSuccess: () => {
       dispatchResponseAction(
         "Seva Kendra",

@@ -30,7 +30,7 @@ import { WithCondition } from "./WithCondition";
 export const AppBar = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
-  const { isTablets } = useResponsive();
+  const { isTablets, theme } = useResponsive();
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -72,7 +72,10 @@ export const AppBar = () => {
       <AppLogo>
         <WithCondition isValid={isTablets}>
           <CustomTooltip title={"Menu"}>
-            <StyledIconButton onClick={() => setDrawerOpen(true)}>
+            <StyledIconButton
+              sx={{ color: theme.palette?.primary?.contrastText }}
+              onClick={() => setDrawerOpen(true)}
+            >
               <Menu />
             </StyledIconButton>
           </CustomTooltip>

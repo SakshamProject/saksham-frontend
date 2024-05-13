@@ -8,14 +8,14 @@ import { dispatchIsLoading } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
-    process.env.NODE_ENV === "development"
-      ? process.env.REACT_APP_DEV_MODE
-      : process.env.REACT_APP_PRO_MODE,
+    process.env?.NODE_ENV === "development"
+      ? process.env?.REACT_APP_DEV_MODE
+      : process.env?.REACT_APP_PRO_MODE,
 });
 
 appApi.interceptors.request.use(
   (config) => {
-    config.headers["authorization"] = getCookie(COOKIE_KEYS?.TOKEN);
+    config.headers["authorization"] = `${getCookie(COOKIE_KEYS?.TOKEN)}`;
     dispatchIsLoading(true);
     return config;
   },

@@ -27,13 +27,8 @@ const { reducer, actions } = createSlice({
       state.userInfo = action?.payload;
     },
 
-    setSeeds: (state, action) => {
-      state.seeds = { ...state.seeds, ...action.payload };
-    },
-
     removeGlobalStates: (state) => {
       state.isLoading = initialState?.isLoading;
-      state.seeds = initialState?.seeds;
       state.snackbar = initialState?.snackbar;
       state.userInfo = initialState?.userInfo;
     },
@@ -42,10 +37,5 @@ const { reducer, actions } = createSlice({
 
 export default reducer;
 
-export const {
-  setIsLoading,
-  setSnackbar,
-  setSeeds,
-  setUserInfo,
-  removeGlobalStates,
-} = actions;
+export const { setIsLoading, setSnackbar, setUserInfo, removeGlobalStates } =
+  actions;
