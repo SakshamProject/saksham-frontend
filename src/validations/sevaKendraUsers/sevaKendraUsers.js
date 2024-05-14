@@ -56,7 +56,7 @@ export const validationSchema = (editId) =>
         (value) => !(value && !/^\d+$/.test(value))
       )
       .length(10, "Contact Number should be 10 digits"),
-    whatsAppNumber: string()
+    whatsappNumber: string()
       .trim()
       .test(
         "isZero",
@@ -70,7 +70,7 @@ export const validationSchema = (editId) =>
       )
       .length(10, "Contact Number should be 10 digits")
       .nullable(),
-    loginId: string()
+    userName: string()
       .trim()
       .min(3, "Login Id must be at least 3 characters long")
       .max(255, "Login Id cannot have more than 255 characters")

@@ -59,7 +59,7 @@ export const SERVER_ERROR = "Something went wrong. Please try again!";
 export const LOGIN_SUCCESS = "Logged in successfully";
 export const VALID_SEVA_KENDRA = "Valid seva kendra user !";
 export const VALID_DIVYANG = "Valid divyang user !";
-export const PASSWORD_SUCCESS = "Password updated successfully !"
+export const PASSWORD_SUCCESS = "Password updated successfully !";
 
 // msg labels
 export const DELETE_MSG = "Are you sure you want to delete this ";
@@ -69,7 +69,7 @@ export const statusColumns = [
   {
     Header: "Status",
     width: 160,
-    accessor: "createdAt",
+    sticky: "left",
     Cell: (props) => (
       <OptionsContainer>{props?.row?.original?.status || ""}</OptionsContainer>
     ),

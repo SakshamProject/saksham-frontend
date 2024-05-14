@@ -19,7 +19,7 @@ import {
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
-import { formatDate } from "../../../utils/common";
+import { formatDate, getNeededValues } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
@@ -40,26 +40,32 @@ import StatusFields from "../../shared/StatusFields";
 const Form = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
-  const isViewMode = state?.viewDetails;
+  const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
 
-  const handleOnSubmit = (values) => {
-    const payload = multiPartFormData({
-      ...values,
-      userName: values?.loginId,
-      status: values?.status,
-      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
-      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-      effectiveDate: editId
-        ? values?.effectiveDate || ""
-        : formatDate({ date: new Date(), format: "iso" }),
-      auditlog: {
-        status: values?.status,
-        date: formatDate({ date: values?.date, format: "iso" }),
-        description: values?.description,
+  const handleOnSubmit = (value) => {
+    const { auditLog, ...remaining } = value;
+    const payload = multiPartFormData(
+      {
+        ...remaining,
+        dateOfBirth: formatDate({
+          date: remaining?.dateOfBirth,
+          format: "iso",
+        }),
+        currentStatus: remaining?.status,
+        effectiveDate: formatDate({
+          date: remaining?.date,
+          format: "iso",
+        }),
+        auditlog: {
+          status: remaining?.status,
+          date: formatDate({ date: remaining?.date, format: "iso" }),
+          description: remaining?.description,
+        },
       },
-      currentStatus: values?.status,
-    });
+      [],
+      ["profilePhoto"]
+    );
     onSubmit(payload);
   };
 
@@ -131,22 +137,29 @@ const Form = () => {
     queryKey: ["sevaKendraUsersGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
     enabled: !!editId,
-    onSuccess: (data) => {
-      setValues({
-        ...data,
-        ...data?.person,
-        stateId: data?.designation?.sevaKendra?.district?.state?.id,
-        districtId: data?.designation?.sevaKendra?.district?.id,
-        sevaKendraId: data?.designation?.sevaKendra?.id,
-        designationId: data?.designation?.id,
-        status: data?.status,
-        loginId: data?.person?.name,
-        date:
-          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
-        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
-      });
+    onSuccess: ({ data }) => {
+      console.log({ data });
+      setValues(
+        getNeededValues(
+          {
+            ...data?.data,
+            ...data?.data?.person,
+            stateId: data?.data?.designation?.sevaKendra?.district?.state?.id,
+            districtId: data?.data?.designation?.sevaKendra?.district?.id,
+            sevaKendraId: data?.data?.designation?.sevaKendra?.id,
+            designationId: data?.data?.designation?.id,
+            date: data?.data?.effectiveFromDate,
+            profilePhoto: data?.file?.profilePhoto?.url,
+          },
+          {
+            ...initialValues,
+            auditLog: "",
+            personId: "",
+            profilePhotoFileName: "",
+          }
+        )
+      );
     },
-    select: ({ data }) => data?.data,
   });
 
   return (
@@ -242,8 +255,7 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.userId}
           touched={touched?.userId}
-          isViewMode={isViewMode || editId}
-          type={fields?.userId?.type}
+          isViewMode={isViewMode || !!editId}
         />
       </Grid>
 
@@ -251,17 +263,17 @@ const Form = () => {
         <FileUpload
           type={"image"}
           accept={"image/*"}
-          setFieldValue={setFieldValue}
           name={fields?.profilePhoto?.name}
-          label={values?.profilePhotoFileName}
           defaultLabel={fields?.profilePhoto?.label}
+          label={values?.profilePhotoFileName}
           value={values?.profilePhoto}
           error={errors?.profilePhoto}
           touched={touched?.profilePhoto}
           onChange={(e) =>
             setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0])
           }
-          isViewMode={isViewMode}
+          setFieldValue={setFieldValue}
+          disabled={isViewMode}
         />
       </Grid>
 
@@ -275,7 +287,6 @@ const Form = () => {
           errors={errors?.firstName}
           touched={touched?.firstName}
           isViewMode={isViewMode}
-          type={fields?.firstName?.type}
         />
       </Grid>
 
@@ -289,7 +300,6 @@ const Form = () => {
           errors={errors?.lastName}
           touched={touched?.lastName}
           isViewMode={isViewMode}
-          type={fields?.lastName?.type}
         />
       </Grid>
 
@@ -299,7 +309,7 @@ const Form = () => {
           label={fields?.gender?.label}
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values?.gender || ""}
+          value={values?.gender}
           touched={touched?.gender}
           errors={errors?.gender}
           isViewMode={isViewMode}
@@ -351,13 +361,13 @@ const Form = () => {
         <CustomTextField
           label={fields?.email?.label}
           name={fields?.email?.name}
+          fieldType={fields?.email?.fieldType}
           value={values?.email}
           onChange={handleChange}
           onBlur={handleBlur}
           errors={errors?.email}
           touched={touched?.email}
           isViewMode={isViewMode}
-          fieldType={fields?.email?.type}
         />
       </Grid>
 
@@ -365,28 +375,28 @@ const Form = () => {
         <CustomTextField
           label={fields?.contactNumber?.label}
           name={fields?.contactNumber?.name}
+          fieldType={fields?.contactNumber?.fieldType}
           value={values?.contactNumber}
           onChange={handleChange}
           onBlur={handleBlur}
           errors={errors?.contactNumber}
           touched={touched?.contactNumber}
           isViewMode={isViewMode}
-          fieldType={fields?.contactNumber?.type}
           maxLength={10}
         />
       </Grid>
 
       <Grid item xs={12} sm={6}>
         <CustomTextField
-          label={fields?.whatsAppNumber?.label}
-          name={fields?.whatsAppNumber?.name}
-          value={values?.whatsAppNumber}
+          label={fields?.whatsappNumber?.label}
+          name={fields?.whatsappNumber?.name}
+          fieldType={fields?.whatsappNumber?.fieldType}
+          value={values?.whatsappNumber}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.whatsAppNumber}
-          touched={touched?.whatsAppNumber}
+          errors={errors?.whatsappNumber}
+          touched={touched?.whatsappNumber}
           isViewMode={isViewMode}
-          fieldType={fields?.whatsAppNumber?.type}
           maxLength={10}
         />
       </Grid>
@@ -397,16 +407,14 @@ const Form = () => {
 
       <Grid item xs={12}>
         <CustomTextField
-          label={fields?.loginId?.label}
-          name={fields?.loginId?.name}
-          value={values?.loginId}
+          label={fields?.userName?.label}
+          name={fields?.userName?.name}
+          value={values?.userName}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.loginId}
-          touched={touched?.loginId}
-          isViewMode={isViewMode || editId}
-          fieldType={fields?.loginId?.type}
-          maxLength={10}
+          errors={errors?.userName}
+          touched={touched?.userName}
+          isViewMode={isViewMode || !!editId}
         />
       </Grid>
 
@@ -449,7 +457,7 @@ const Form = () => {
           setFieldValue={setFieldValue}
           statusSeeds={statusSeed}
           isViewMode={isViewMode}
-          statusHistory={values?.userAuditLog}
+          statusHistory={values?.auditLog}
           disableListLayout
         />
       </WithCondition>

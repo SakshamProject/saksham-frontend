@@ -16,12 +16,12 @@ export const initialValues = {
   designationId: "",
   email: "",
   contactNumber: "",
-  whatsAppNumber: "",
-  loginId: "",
+  whatsappNumber: "",
+  userName: "",
   password: "",
   confirmPassword: "",
   status: CODES?.ACTIVE,
-  date: "",
+  date: new Date(),
   description: "",
 };
 
@@ -43,18 +43,16 @@ export const fields = {
     name: "userId",
   },
   profilePhoto: {
-    label: "Upload picture",
+    label: "Upload Picture",
     name: "profilePhoto",
   },
   firstName: {
     label: "First Name *",
     name: "firstName",
-    type: "alphabets",
   },
   lastName: {
     label: "Last Name *",
     name: "lastName",
-    type: "alphabets",
   },
   gender: {
     label: "Gender",
@@ -71,21 +69,21 @@ export const fields = {
   email: {
     label: "Personal Mail Id *",
     name: "email",
-    type: "email",
+    fieldType: "email",
   },
   contactNumber: {
     label: "Personal Contact No *",
     name: "contactNumber",
-    type: "mobile",
+    fieldType: "mobile",
   },
-  whatsAppNumber: {
+  whatsappNumber: {
     label: "WhatsApp Number",
-    name: "whatsAppNumber",
-    type: "mobile",
+    name: "whatsappNumber",
+    fieldType: "mobile",
   },
-  loginId: {
+  userName: {
     label: "Login Id *",
-    name: "loginId",
+    name: "userName",
   },
   password: {
     label: "Password *",
