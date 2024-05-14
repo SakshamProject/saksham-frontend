@@ -65,7 +65,7 @@ export const CustomReactTable = ({
 
   const tableStyle = {
     table: {
-      maxHeight: maxHeight || "calc(100vh - 280px)",
+      maxHeight: maxHeight || "calc(100vh - 240px)",
       ...scrollbarStyle(),
     },
     mainContainer: {

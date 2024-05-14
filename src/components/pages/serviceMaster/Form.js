@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   deleteApiService,
   getApiService,
@@ -17,6 +17,7 @@ import {
   initialValues,
   serviceNameColumns,
 } from "../../../constants/serviceMaster/serviceMaster";
+import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { findNameById, getValidValues } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
@@ -31,14 +32,15 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import ResponsiveList from "../../shared/ResponsiveList";
 
 const Form = () => {
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
-  const isViewMode = state?.viewDetails;
+  const editId = state?.editId;
+  const isViewMode = state?.viewDetails || false;
   const [tableEditId, setTableEditId] = useState("");
   const [open, setOpen] = useState(false);
+  const { isMobile } = useResponsive();
 
   const handleEditList = (id) => {
     setFieldValue("name", dataList?.data?.data?.service[id]?.name);
@@ -52,7 +54,7 @@ const Form = () => {
   const { mutate: onDelete } = useMutation({
     mutationKey: ["deleteService"],
     mutationFn: (id) => deleteApiService(API_PATHS?.SERVICES, id),
-    onSuccess: ({ data }) => {
+    onSuccess: () => {
       dispatchResponseAction("Service", CODES?.DELETED);
       serviceGetById();
       setOpen(false);
@@ -120,7 +122,7 @@ const Form = () => {
 
   return (
     <FormWrapper title="Service" navigateTo={ROUTE_PATHS?.SERVICE_MASTER_LIST}>
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <SingleAutoComplete
           label={fields?.serviceTypeId?.label}
           name={fields?.serviceTypeId?.name}
@@ -133,9 +135,11 @@ const Form = () => {
           inputValues={serviceTypeList || []}
         />
       </Grid>
+
       <Grid item xs={12}>
         <DividerLine gap={"6px 0 24px"} />
       </Grid>
+
       <WithCondition isValid={!isViewMode}>
         <Grid item xs={12}>
           <CustomTextField
@@ -163,33 +167,37 @@ const Form = () => {
           submitLabel="Add"
         />
       </WithCondition>
+
       <Grid item xs={12} mt={4} mb={2}>
-        <CustomReactTable
-          columnData={
-            serviceNameColumns({
+        <WithCondition isValid={!isMobile}>
+          <CustomReactTable
+            columnData={
+              serviceNameColumns({
+                tableEditId,
+                handleDeleteList,
+                handleEditList,
+                isViewMode,
+              }) || []
+            }
+            rawData={dataList?.data?.data?.service || []}
+            manualSort
+            disablePagination
+            disableLayout
+          />
+        </WithCondition>
+
+        <WithCondition isValid={isMobile}>
+          <ResponsiveList
+            columnData={serviceNameColumns({
               tableEditId,
               handleDeleteList,
               handleEditList,
               isViewMode,
-            }) || []
-          }
-          rawData={dataList?.data?.data?.service || []}
-          manualSort
-          disablePagination
-          disableLayout
-          style={{
-            tableHead: {
-              ".tr .th:first-child": {
-                boxShadow: "none !important",
-              },
-            },
-            tr: {
-              "div:nth-child(3)": {
-                flex: 1,
-              },
-            },
-          }}
-        />
+            })}
+            rawData={dataList?.data?.data?.service}
+            disablePagination
+          />
+        </WithCondition>
       </Grid>
 
       <CustomModal

@@ -1,18 +1,24 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { IconButton, styled } from "@mui/material";
+import { Box, IconButton, styled } from "@mui/material";
 import propTypes from "prop-types";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import useResponsive from "../../hooks/useResponsive";
 import CustomTooltip from "./CustomTooltip";
+import { WithCondition } from "./WithCondition";
 
 const Container = styled("div")(({ theme, disableback }) => ({
   display: "flex",
   alignItems: "center",
   minHeight: 64,
   backgroundColor: theme.palette?.commonColor?.white,
-  marginLeft: disableback ? 16 : "5%",
+  marginLeft: disableback ? 16 : "0",
   position: "sticky",
-  [theme.breakpoints.down("md")]: {
-    margin: "0 16px 0 8px",
+  marginBottom: "16px",
+  [theme.breakpoints.down("sm")]: {
+    position: "fixed",
+    backgroundColor: theme.palette?.commonColor?.white,
+    width: "100%",
+    zIndex: 10,
   },
 }));
 
@@ -41,10 +47,10 @@ export const BackNavigator = ({
   disableBack,
 }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
-  const isViewMode = location.state?.viewDetails;
+  const { state } = useLocation();
+  const { isMobile } = useResponsive();
+  const editId = state?.editId;
+  const isViewMode = state?.viewDetails;
   const mode = () => {
     if (editId) return isViewMode ? "VIEW" : "EDIT";
     return "NEW";
@@ -59,26 +65,32 @@ export const BackNavigator = ({
   };
 
   return (
-    <Container disableback={disableBack}>
-      {disableBack ? (
-        <></>
-      ) : (
-        <CustomTooltip title={"Back"}>
-          <BackIcon onClick={onClick}>
-            <ArrowBackIcon />
-          </BackIcon>
-        </CustomTooltip>
-      )}
-      {customTitle ? (
-        <CustomHeader>{customTitle}</CustomHeader>
-      ) : (
-        <CustomHeader>
-          {disableModes
-            ? `${title}`?.toUpperCase()
-            : `${mode()} ${title}`?.toUpperCase()}
-        </CustomHeader>
-      )}
-    </Container>
+    <>
+      <Container disableback={disableBack}>
+        {disableBack ? (
+          <></>
+        ) : (
+          <CustomTooltip title={"Back"}>
+            <BackIcon onClick={onClick}>
+              <ArrowBackIcon />
+            </BackIcon>
+          </CustomTooltip>
+        )}
+        {customTitle ? (
+          <CustomHeader>{customTitle}</CustomHeader>
+        ) : (
+          <CustomHeader>
+            {disableModes
+              ? `${title}`?.toUpperCase()
+              : `${mode()} ${title}`?.toUpperCase()}
+          </CustomHeader>
+        )}
+      </Container>
+
+      <WithCondition isValid={isMobile}>
+        <Box sx={{ height: 64 }}></Box>
+      </WithCondition>
+    </>
   );
 };
 

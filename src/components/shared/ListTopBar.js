@@ -14,7 +14,9 @@ const Container = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   [theme.breakpoints.down("sm")]: {
-    marginBottom: 24,
+    position: "fixed",
+    background: theme.palette?.commonColor?.white,
+    zIndex: 100,
   },
 }));
 
@@ -46,7 +48,6 @@ const IconsContainer = styled(Box)(({ theme }) => ({
   justifyContent: "center",
   alignItems: "center",
   [theme.breakpoints.down("sm")]: {
-    width: "100%",
     justifyContent: "space-between",
   },
 }));
@@ -70,43 +71,47 @@ export const ListTopbar = ({
   const { isMobile } = useResponsive();
 
   return (
-    <Container sx={style}>
-      <ContainerAlign>
-        <Title variant="h6">{label}</Title>
+    <>
+      <Container sx={style}>
+        <ContainerAlign>
+          <Title variant="h6">{label}</Title>
 
-        <IconsContainer>
-          <WithCondition isValid={!disableSearchField}>
-            <CustomSearchField placeholder={placeholder} />
-          </WithCondition>
+          <IconsContainer>
+            <WithCondition isValid={!disableSearchField}>
+              <CustomSearchField placeholder={placeholder} />
+            </WithCondition>
 
-          {additionalComponent || <></>}
+            {additionalComponent || <></>}
 
-          <WithCondition isValid={!disableFilter && !isMobile}>
-      
+            <WithCondition isValid={!disableFilter && !isMobile}>
               <FilterModal
                 listPath={listPath}
                 filterFields={filterFields}
                 filterFieldInitial={filterFieldInitial}
               />
-         
-          </WithCondition>
+            </WithCondition>
 
-          <WithCondition isValid={!disableNewForm && newFormPath}>
-            <CustomTooltip title={"New"}>
-              <NewButton onClick={() => navigate(newFormPath)}>
-                {newButtonLabel || <Add />}
+            <WithCondition isValid={!disableNewForm && newFormPath}>
+              <CustomTooltip title={"New"}>
+                <NewButton onClick={() => navigate(newFormPath)}>
+                  {newButtonLabel || <Add />}
+                </NewButton>
+              </CustomTooltip>
+            </WithCondition>
+
+            <WithCondition isValid={!!onDownload}>
+              <NewButton onClick={onDownload}>
+                <Download />
               </NewButton>
-            </CustomTooltip>
-          </WithCondition>
+            </WithCondition>
+          </IconsContainer>
+        </ContainerAlign>
+      </Container>
 
-          <WithCondition isValid={!!onDownload}>
-            <NewButton onClick={onDownload}>
-              <Download />
-            </NewButton>
-          </WithCondition>
-        </IconsContainer>
-      </ContainerAlign>
-    </Container>
+      <WithCondition isValid={isMobile}>
+        <Box sx={{ height: 110, width: "100%" }}></Box>
+      </WithCondition>
+    </>
   );
 };
 

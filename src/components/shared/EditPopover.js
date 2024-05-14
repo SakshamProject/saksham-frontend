@@ -1,8 +1,15 @@
 import { MoreHorizTwoTone } from "@mui/icons-material";
-import { IconButton, Popover as MuiPopper, styled, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  Popover as MuiPopper,
+  styled,
+  Typography,
+} from "@mui/material";
+import propTypes from "prop-types";
 import { useState } from "react";
 import { createSearchParams, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
+import CustomTooltip from "./CustomTooltip";
 
 const PopoverComponent = styled(MuiPopper)({
   ".MuiPaper-root": {
@@ -27,30 +34,36 @@ export const EditPopover = ({ inputValues, disable }) => {
 
   const handleClose = () => setAnchorEl(null);
 
-  const handleNavigate = (id, path, view, search, stateProps) => {
-    if (path)
+  const handleNavigate = (id, path, view, search, stateProps, onClick) => {
+    if (onClick) onClick();
+    else if (path)
       navigate(
         {
           pathname: path,
           search: `?${createSearchParams({
-            editId: id,
+            // editId: id,
             ...search,
           })}`,
         },
-        { state: { viewDetails: Boolean(view), ...stateProps } }
+        { state: { viewDetails: Boolean(view), editId: id, ...stateProps } }
       );
     setAnchorEl(null);
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "end" }}>
-      <IconButton
-        aria-describedby={id}
-        onClick={handleClick}
-        disabled={disable}
-      >
-        <MoreHorizTwoTone />
-      </IconButton>
+    <Box sx={{ display: "flex", justifyContent: "end" }}>
+      <CustomTooltip title={"More actions"}>
+        <span>
+          <IconButton
+            aria-describedby={id}
+            onClick={handleClick}
+            disabled={disable}
+          >
+            <MoreHorizTwoTone />
+          </IconButton>
+        </span>
+      </CustomTooltip>
+
       {open ? (
         <PopoverComponent
           id={id}
@@ -78,6 +91,7 @@ export const EditPopover = ({ inputValues, disable }) => {
                 view,
                 search,
                 stateProps = {},
+                onClick,
               },
               index
             ) =>
@@ -90,7 +104,14 @@ export const EditPopover = ({ inputValues, disable }) => {
                     onClick={() =>
                       customNavigation
                         ? customNavigation(id)
-                        : handleNavigate(id, path, view, search, stateProps)
+                        : handleNavigate(
+                            id,
+                            path,
+                            view,
+                            search,
+                            stateProps,
+                            onClick
+                          )
                     }
                   >
                     {label}
@@ -104,7 +125,7 @@ export const EditPopover = ({ inputValues, disable }) => {
       ) : (
         <></>
       )}
-    </div>
+    </Box>
   );
 };
 

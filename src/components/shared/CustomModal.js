@@ -10,6 +10,7 @@ import {
   SubmitButton,
   theme,
 } from "../../styles";
+import { scrollbarStyle } from "../../styles/scrollbarStyle";
 
 const FilterContainerStyle = styled(Box)(({ theme }) => ({
   position: "absolute",
@@ -21,6 +22,9 @@ const FilterContainerStyle = styled(Box)(({ theme }) => ({
   backgroundColor: theme.palette?.commonColor?.white,
   boxShadow: 24,
   outline: 0,
+  [theme.breakpoints.down("sm")]: {
+    width: "90%",
+  },
 }));
 
 const FilterFormStyle = styled(Box)(({ theme }) => ({
@@ -29,8 +33,7 @@ const FilterFormStyle = styled(Box)(({ theme }) => ({
   overflowX: "hidden",
   margin: 0,
   padding: "14px 20px",
-  scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
+  ...scrollbarStyle(),
 }));
 
 export const CustomModal = ({ open, setOpen, title, handle, content }) => {

@@ -30,7 +30,7 @@ export const fields = {
 
 export const serviceMasterColumn = [
   {
-    Header: "Service type",
+    Header: "Service Type",
     accessor: "name",
     filterAccessor: "serviceTypeName",
     width: 300,
@@ -55,6 +55,19 @@ export const serviceMasterColumn = [
         />
       </OptionsContainer>
     ),
+    inputValues: ({ row }) => [
+      {
+        label: "View details",
+        id: row?.id,
+        path: ROUTE_PATHS?.SERVICE_MASTER_FORM,
+        view: true,
+      },
+      {
+        label: "Edit",
+        id: row?.id,
+        path: ROUTE_PATHS?.SERVICE_MASTER_FORM,
+      },
+    ],
   },
   {
     Header: "Service Provided",
@@ -62,6 +75,7 @@ export const serviceMasterColumn = [
     filterAccessor: "serviceName",
     disableSortBy: true,
     width: 420,
+    responsiveCell: ({ value }) => value?.map((item) => item?.name)?.join(", "),
     Cell: (props) => (
       <CustomCell
         value={props?.row?.original?.service
@@ -110,5 +124,16 @@ export const serviceNameColumns = ({
         </OptionsContainerChild>
       );
     },
+    inputValues: ({ index }) => [
+      {
+        label: "Edit",
+        onClick: () => handleEditList(index),
+      },
+      {
+        label: "Delete",
+        onClick: () => handleDeleteList(index),
+      },
+    ],
+    disable: !!tableEditId || !!isViewMode,
   },
 ];

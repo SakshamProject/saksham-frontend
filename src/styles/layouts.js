@@ -119,6 +119,7 @@ export const FormLayout = styled(Box)(() => ({
   display: "flex",
   justifyContent: "center",
   overflow: "auto",
+  padding: "8px 0",
   ...scrollbarStyle(true),
 }));
 
@@ -132,8 +133,11 @@ export const StyledFormContainer = styled(Paper)(({ theme, width }) => ({
   boxShadow: "none",
   border: `1px solid ${theme?.palette?.primary.main}`,
   backgroundColor: theme.palette?.commonColor?.white,
+  [theme.breakpoints.down("md")]: {
+    width: "80%",
+  },
   [theme.breakpoints.down("sm")]: {
-    width: "90%",
+    width: "100%",
     border: "none",
     padding: 0,
   },
