@@ -76,6 +76,10 @@ const ResponsiveList = ({
                               ? card?.inputValues({
                                   row: cardItem,
                                   index: rawDataKey,
+                                  value: accessProperty(
+                                    cardItem,
+                                    card?.accessor
+                                  ),
                                 })
                               : []
                           }

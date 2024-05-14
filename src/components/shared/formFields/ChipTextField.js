@@ -107,7 +107,7 @@ export const ChipTextField = ({
           >
             {chipValue?.map((chip, key) => (
               <Chip
-                key={key + chip?.name}
+                key={key}
                 label={chip?.[chipAccessor] || chip?.name || chip || ""}
                 variant={chipVariant || ""}
                 onDelete={handleDelete(chip)}
@@ -129,7 +129,7 @@ ChipTextField.propTypes = {
   onBlur: propTypes.func,
   onKeyPress: propTypes.func,
   onKeyDown: propTypes.func,
-  value: propTypes.object,
+  value: propTypes.oneOfType([propTypes.string, propTypes.object]),
   style: propTypes.object,
   chipValue: propTypes.array,
   variant: propTypes.string,

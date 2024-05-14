@@ -6,12 +6,11 @@ import useResponsive from "../../hooks/useResponsive";
 import CustomTooltip from "./CustomTooltip";
 import { WithCondition } from "./WithCondition";
 
-const Container = styled("div")(({ theme, disableback }) => ({
+const Container = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   minHeight: 64,
   backgroundColor: theme.palette?.commonColor?.white,
-  marginLeft: disableback ? 16 : "0",
   position: "sticky",
   marginBottom: "16px",
   [theme.breakpoints.down("sm")]: {
@@ -24,7 +23,6 @@ const Container = styled("div")(({ theme, disableback }) => ({
 
 const CustomHeader = styled("div")(({ theme }) => ({
   fontSize: 22,
-  marginLeft: 15,
   userSelect: "none",
   color: theme?.palette?.commonColor?.black,
   fontWeight: "600",
@@ -36,6 +34,7 @@ const CustomHeader = styled("div")(({ theme }) => ({
 const BackIcon = styled(IconButton)(({ theme }) => ({
   color: theme?.palette?.commonColor?.black,
   fontSize: 24,
+  marginRight: "16px",
 }));
 
 export const BackNavigator = ({

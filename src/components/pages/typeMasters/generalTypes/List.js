@@ -9,6 +9,7 @@ const List = () => {
       formPath={"GENERAL_TYPES_FORM"}
       apiPath={"GENERAL_MASTER_SEED"}
       columns={generalTypeColumns}
+      maxHeight={"calc(100vh - 200px)"}
       isGetApi
       disableFilters
       disableSearchField

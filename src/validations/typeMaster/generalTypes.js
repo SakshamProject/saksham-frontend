@@ -18,7 +18,12 @@ export const validationSchema = object({
   ),
   chip: string()
     .max(255, "Sub type name cannot have more than 255 characters")
-    .test("isRequired", "Sub type name is required88", (value, context) => {
+    .test(
+      "isLength",
+      "Sub type name must be at least 3 characters long",
+      (value) => !(value?.length < 3)
+    )
+    .test("isRequired", "Sub type name is required", (value, context) => {
       if (
         context?.parent?.typeMaster === GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION
       ) {
@@ -29,10 +34,5 @@ export const validationSchema = object({
         !value &&
         context?.parent?.chips?.length < 1
       );
-    })
-    .test(
-      "isLength",
-      "Sub type name must be at least 3 characters long",
-      (value) => !(value?.length < 3)
-    ),
+    }),
 });

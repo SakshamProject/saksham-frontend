@@ -26,6 +26,7 @@ export const CommonList = ({
   manualSort,
   rawDataAccessor,
   disableNewForm,
+  maxHeight,
 }) => {
   const { isMobile } = useResponsive();
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
@@ -82,6 +83,7 @@ export const CommonList = ({
           disablePagination={disablePagination}
           disableColumnHiding={disableColumnHiding}
           manualSort={manualSort}
+          maxHeight={maxHeight}
         />
       </WithCondition>
 

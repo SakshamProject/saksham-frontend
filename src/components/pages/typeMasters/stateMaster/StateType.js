@@ -17,8 +17,8 @@ import {
   formDetails,
   initialValues as initialValue,
   stateMasterColumns,
-  tableStyles,
 } from "../../../../constants/typeMasters/stateMaster";
+import useResponsive from "../../../../hooks/useResponsive";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { StyledFormContainer } from "../../../../styles";
 import { findNameById, getValidValues } from "../../../../utils/common";
@@ -32,7 +32,9 @@ import {
   FormActions,
   ListTopbar,
   SingleAutoComplete,
+  WithCondition,
 } from "../../../shared";
+import ResponsiveList from "../../../shared/ResponsiveList";
 
 const StateType = () => {
   const { pathname } = useLocation();
@@ -42,6 +44,7 @@ const StateType = () => {
   const { tableReRenderActions } = useTableCustomHooks(currentForm?.routePath);
   const { searchData } = tableReRenderActions();
   const [open, setOpen] = useState(false);
+  const { isMobile } = useResponsive();
 
   const handleEditList = (id) => {
     handleReset();
@@ -159,10 +162,10 @@ const StateType = () => {
   }, [pathname]); //eslint-disable-line
 
   return (
-    <Grid container direction={"column"} width={"100%"}>
-      <StyledFormContainer width="100%">
+    <Grid container direction={"column"}>
+      <StyledFormContainer sx={{ width: "100% !important" }}>
         <Grid container columnSpacing={3}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <SingleAutoComplete
               label={fields?.stateId?.label}
               name={fields?.stateId?.name}
@@ -180,7 +183,7 @@ const StateType = () => {
             />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <SingleAutoComplete
               label={fields?.districtId?.label}
               name={fields?.districtId?.name}
@@ -196,9 +199,11 @@ const StateType = () => {
             />
           </Grid>
         </Grid>
+
         <Grid item xs={12}>
           <DividerLine gap={"6px 0 24px"} />
         </Grid>
+
         <Grid item xs={12}>
           <CustomTextField
             label={currentForm?.label}
@@ -224,34 +229,54 @@ const StateType = () => {
         />
       </StyledFormContainer>
 
-      <Grid item xs={12} mb={6}>
-        <ListTopbar
-          disableFilter
-          disableNewForm
-          style={{
-            width: "100%",
-            marginLeft: 0,
-            ".searchField": { margin: 0 },
-          }}
-          placeholder={`Search ${currentForm?.validationLabel}`}
-        />
-        <CustomReactTable
-          columnData={
-            stateMasterColumns({
-              currentForm,
-              tableEditId,
-              handleDeleteList,
-              handleEditList,
-            }) || []
+      <WithCondition isValid={!isMobile}>
+        <Grid item xs={12} sx={{ width: "100%" }}>
+          <ListTopbar
+            disableFilter
+            disableNewForm
+            style={{
+              width: "100%",
+              marginLeft: 0,
+              ".searchField": { margin: 0 },
+            }}
+            placeholder={`Search ${currentForm?.validationLabel}`}
+          />
+        </Grid>
+      </WithCondition>
+
+      <Grid item xs={12} sx={{ width: "100%" }}>
+        <WithCondition
+          isValid={!isMobile}
+          nullComponent={
+            <ResponsiveList
+              columnData={stateMasterColumns({
+                currentForm,
+                tableEditId,
+                handleDeleteList,
+                handleEditList,
+              })}
+              rawData={dataList?.data}
+              disablePagination
+            />
           }
-          rawData={dataList?.data || []}
-          isLoading={isLoading}
-          manualSort
-          disablePagination
-          disableLayout
-          count={dataList?.total}
-          style={tableStyles}
-        />
+        >
+          <CustomReactTable
+            columnData={
+              stateMasterColumns({
+                currentForm,
+                tableEditId,
+                handleDeleteList,
+                handleEditList,
+              }) || []
+            }
+            rawData={dataList?.data || []}
+            isLoading={isLoading}
+            manualSort
+            disablePagination
+            disableLayout
+            count={dataList?.total}
+          />
+        </WithCondition>
       </Grid>
 
       <CustomModal

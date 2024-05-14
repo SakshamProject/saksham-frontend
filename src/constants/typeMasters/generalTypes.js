@@ -112,6 +112,21 @@ export const generalTypeColumns = [
         />
       </OptionsContainer>
     ),
+    inputValues: ({ row, value }) => [
+      {
+        label: "View Details",
+        id: row?.id,
+        path: ROUTE_PATHS?.GENERAL_TYPES_FORM,
+        stateProps: { field: value },
+        view: true,
+      },
+      {
+        label: "Edit",
+        id: row?.id,
+        path: ROUTE_PATHS?.GENERAL_TYPES_FORM,
+        stateProps: { field: value },
+      },
+    ],
   },
 ];
 
@@ -160,6 +175,17 @@ export const generalColumns = ({
           </OptionsContainerChild>
         );
       },
+      inputValues: ({ row }) => [
+        {
+          label: "Edit",
+          onClick: () => handleEdit(row?.id),
+        },
+        {
+          label: "Delete",
+          onClick: () => handleDelete(row?.id),
+        },
+      ],
+      disable: !!tableEditId || !!isViewMode,
     },
   ].filter((item) => item);
 

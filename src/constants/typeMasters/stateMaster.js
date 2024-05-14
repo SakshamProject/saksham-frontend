@@ -163,6 +163,17 @@ export const stateMasterColumns = ({
         </OptionsContainerChild>
       );
     },
+    inputValues: ({ index }) => [
+      {
+        label: "Edit",
+        onClick: () => handleEditList(index),
+      },
+      {
+        label: "Delete",
+        onClick: () => handleDeleteList(index),
+      },
+    ],
+    disable: !!tableEditId,
   },
 ];
 

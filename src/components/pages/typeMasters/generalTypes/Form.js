@@ -2,7 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useCallback, useEffect, useState } from "react";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   deleteApiService,
   getApiService,
@@ -21,6 +21,7 @@ import {
   getGeneralTypePayload,
   initialValues,
 } from "../../../../constants/typeMasters/generalTypes";
+import useResponsive from "../../../../hooks/useResponsive";
 import useTableCustomHooks from "../../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
@@ -41,12 +42,12 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
+import ResponsiveList from "../../../shared/ResponsiveList";
 import { ChipTextField } from "../../../shared/formFields/ChipTextField";
 
 const Form = () => {
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
   const { state } = useLocation();
+  const editId = state?.editId;
   const isViewMode = state?.viewDetails;
   const generalType = state?.field;
   const [tableEditId, setTableEditId] = useState("");
@@ -55,6 +56,7 @@ const Form = () => {
   );
   const { searchData } = tableReRenderActions();
   const [open, setOpen] = useState(false);
+  const { isMobile } = useResponsive();
 
   const { mutate } = useMutation({
     mutationKey: ["createAndUpdate"],
@@ -212,7 +214,7 @@ const Form = () => {
 
       <WithCondition isValid={!isViewMode}>
         <WithCondition isValid={values?.typeMaster === GENERAL_TYPES.DISTRICT}>
-          <Grid item xs={6}>
+          <Grid item xs={12} sm={12} md={6}>
             <SingleAutoComplete
               label={fields?.stateId?.label}
               name={fields?.stateId?.name}
@@ -254,11 +256,11 @@ const Form = () => {
               touched={touched?.chip || touched?.chips}
               onBlur={handleBlur}
               customOnChange={({ value }) => setFieldValue("chip", value)}
-              handleKeyPress={(chips) => setFieldValue("chips", chips)}
+              onKeyPress={(chips) => setFieldValue("chips", chips)}
               isViewMode={isViewMode}
               chipAccessor={tableEditId ? "name" : ""}
             />
-            <Typography fontStyle={"italic"} fontSize={"13px"}>
+            <Typography fontStyle={"italic"} fontSize={"14px"}>
               <b>Note :</b> Press enter to add Sub types
             </Typography>
           </Grid>
@@ -273,34 +275,55 @@ const Form = () => {
         isViewMode={isViewMode}
       />
 
-      <ListTopbar
-        disableNewForm
-        disableFilter
-        placeholder={values?.typeMaster}
-        style={{ width: "100%", ".searchField": { margin: 0 } }}
-      />
+      <WithCondition isValid={!isMobile}>
+        <ListTopbar
+          disableNewForm
+          disableFilter
+          placeholder={values?.typeMaster}
+        />
+      </WithCondition>
 
       <Grid item xs={12}>
-        <CustomReactTable
-          columnData={
-            generalColumns({
-              handleDelete,
-              tableEditId,
-              handleEdit,
-              isViewMode,
-              type: values?.typeMaster,
-            }) || []
+        <WithCondition
+          isValid={!isMobile}
+          nullComponent={
+            <ResponsiveList
+              columnData={generalColumns({
+                handleDelete,
+                tableEditId,
+                handleEdit,
+                isViewMode,
+                type: values?.typeMaster,
+              })}
+              rawData={
+                generalTypeList?.data?.educationQualificationType ||
+                generalTypeList?.data
+              }
+              disablePagination
+            />
           }
-          rawData={
-            generalTypeList?.data?.educationQualificationType ||
-            generalTypeList?.data ||
-            []
-          }
-          disablePagination
-          disableSort
-          disableColumnHiding
-          disableLayout
-        />
+        >
+          <CustomReactTable
+            columnData={
+              generalColumns({
+                handleDelete,
+                tableEditId,
+                handleEdit,
+                isViewMode,
+                type: values?.typeMaster,
+              }) || []
+            }
+            rawData={
+              generalTypeList?.data?.educationQualificationType ||
+              generalTypeList?.data ||
+              []
+            }
+            disablePagination
+            disableSort
+            disableColumnHiding
+            disableLayout
+          />
+        </WithCondition>
       </Grid>
 
       <CustomModal
