@@ -61,6 +61,19 @@ export const columns = [
         />
       </OptionsContainer>
     ),
+    inputValues: ({ row }) => [
+      {
+        label: "View details",
+        id: row?.id,
+        path: ROUTE_PATHS?.DESIGNATIONS_FORM,
+        view: true,
+      },
+      {
+        label: "Edit",
+        id: row?.id,
+        path: ROUTE_PATHS?.DESIGNATIONS_FORM,
+      },
+    ],
   },
   {
     Header: "Seva Kendra Name",

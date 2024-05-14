@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
   getByIdApiService,
@@ -38,22 +38,21 @@ import StatusFields from "../../../shared/StatusFields";
 
 const Form = () => {
   const { state } = useLocation();
-  const isViewMode = state?.viewDetails || false;
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
+  const isViewMode = state?.viewDetails || false;
+  const editId = state?.editId;
 
-  const handleOnSubmit = (values) => {
+  const handleOnSubmit = (value) => {
     const payload = getValidValues({
-      ...values,
-      startDate: formatDate({ date: values?.startDate, format: "iso" }),
-      servicesBySevaKendra: transformServices(values?.servicesBySevaKendra),
-      services: transformServices(values?.servicesBySevaKendra),
-      currentStatus: values?.status,
+      ...value,
+      startDate: formatDate({ date: value?.startDate, format: "iso" }),
+      servicesBySevaKendra: transformServices(value?.servicesBySevaKendra),
+      services: transformServices(value?.servicesBySevaKendra),
+      currentStatus: value?.status,
       auditLog: {
-        date: formatDate({ date: values?.date, format: "iso" }),
-        status: values?.status,
-        description: values?.description,
+        date: formatDate({ date: value?.date, format: "iso" }),
+        status: value?.status,
+        description: value?.description,
       },
     });
     onSubmit(payload);
@@ -113,12 +112,13 @@ const Form = () => {
 
   const { data } = useCustomQuery({
     queryKey: ["sevaKendraGetById", editId],
-    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA, editId),
+    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
     enabled: !!editId,
     onSuccess: (data) => {
       setValues({
         ...data,
         stateId: data?.district?.state?.id,
+        status: data?.status,
         servicesBySevaKendra: data?.services?.map(({ service }) => ({
           id: service.id,
           name: service.name,
@@ -127,7 +127,6 @@ const Form = () => {
             name: service.serviceType.name,
           },
         })),
-        status: data?.status,
         date:
           data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
         description: data?.status === CODES?.ACTIVE ? "" : data?.description,
@@ -238,7 +237,7 @@ const Form = () => {
         <CustomDatePicker
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
-          minDate={fields?.startDate?.minDate}
+          // minDate={fields?.startDate?.minDate}
           isViewMode={isViewMode}
           value={values?.startDate}
           errors={errors?.startDate}
@@ -337,7 +336,7 @@ const Form = () => {
         />
       </Grid>
 
-      <WithCondition isValid={editId}>
+      <WithCondition isValid={!!editId}>
         <StatusFields
           setFieldTouched={setFieldTouched}
           handleBlur={handleBlur}
@@ -355,7 +354,9 @@ const Form = () => {
       </WithCondition>
 
       <FormActions
-        handleSubmit={handleSubmit}
+        handleSubmit={() => {
+          handleSubmit();
+        }}
         handleOnReset={() => {
           navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST);
         }}
@@ -363,17 +364,19 @@ const Form = () => {
         isViewMode={isViewMode}
       />
 
-      <AuditLog
-        hide={!editId}
-        auditLog={{
-          createdAt: data?.createdAt,
-          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
-          updatedAt: data?.updatedAt,
-          updatedBy: data?.updatedBy
-            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
-            : "",
-        }}
-      />
+      <Grid item xs={12}>
+        <AuditLog
+          hide={!editId}
+          auditLog={{
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+            createdBy:
+              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+            updatedBy:
+              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+          }}
+        />
+      </Grid>
     </FormWrapper>
   );
 };

@@ -40,7 +40,8 @@ export const validationSchema = (editId) =>
         minMaxAge({})?.max,
         "Date of birth should be less than 100 years old"
       )
-      .max(new Date(), "Date of birth should be in Past"),
+      .max(new Date(), "Date of birth should be in Past")
+      .nullable(),
     contactNumber: string()
       .trim()
       .required("Contact Number is required")

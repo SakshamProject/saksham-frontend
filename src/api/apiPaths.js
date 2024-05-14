@@ -13,7 +13,6 @@ export const API_PATHS = {
   SEVAKENDRAS: "/api/sevakendras",
   SEVAKENDRAS_LIST: "/api/sevakendras/list",
   DESIGNATION: "/api/designation",
-  DESIGNATIONS: "/api/designations",
   DESIGNATION_LIST: "/api/designation/list",
   FEATURES: "/api/designation/features",
   SEVAKENDRA_USERS_LIST: "/api/users/list",
@@ -35,6 +34,7 @@ export const API_PATHS = {
   SERVICE_MAPPING_LIST: "/api/servicemapping/list",
 
   SEVAKENDRA: "/sevakendras",
+  DESIGNATIONS: "/designations",
   TALUK: "/taluks",
   MUNICIPALITY: "/municipalities",
   CORPORATION: "/corporations",

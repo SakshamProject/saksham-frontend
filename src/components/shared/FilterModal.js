@@ -114,7 +114,10 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
             >
               Filter
             </Typography>
-            <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
+
+            <CustomTooltip title={"Close"}>
+              <CloseIcon onClick={handleClose} style={{ cursor: "pointer" }} />
+            </CustomTooltip>
           </FilterTitle>
 
           <form onSubmit={formik.handleSubmit}>

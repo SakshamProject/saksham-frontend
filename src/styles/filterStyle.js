@@ -1,4 +1,5 @@
 import { Box, IconButton, Modal, styled } from "@mui/material";
+import { scrollbarStyle } from "./scrollbarStyle";
 
 export const FilterModalLayout = styled(Modal)(() => ({
   position: "absolute",
@@ -30,8 +31,7 @@ export const FilterFormStyle = styled(Box)(({ theme }) => ({
   overflowX: "hidden",
   margin: 0,
   padding: 0,
-  scrollbarWidth: "thin",
-  scrollbarColor: `${theme?.palette?.scrollbarColor?.thumb} ${theme?.palette?.scrollbarColor?.track}`,
+  ...scrollbarStyle(),
 }));
 
 export const FilterTitle = styled(Box)(({ theme }) => ({

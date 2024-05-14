@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
   getByIdApiService,
@@ -19,8 +19,9 @@ import {
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
-import { formatDate, getValidValues } from "../../../utils/common";
+import { formatDate } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
   AuditLog,
@@ -38,13 +39,12 @@ import StatusFields from "../../shared/StatusFields";
 
 const Form = () => {
   const { state } = useLocation();
-  const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
+  const isViewMode = state?.viewDetails;
+  const editId = state?.editId;
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues({
+    const payload = multiPartFormData({
       ...values,
       userName: values?.loginId,
       status: values?.status,
@@ -53,18 +53,18 @@ const Form = () => {
       effectiveDate: editId
         ? values?.effectiveDate || ""
         : formatDate({ date: new Date(), format: "iso" }),
-      auditlog: getValidValues({
+      auditlog: {
         status: values?.status,
         date: formatDate({ date: values?.date, format: "iso" }),
         description: values?.description,
-      }),
+      },
       currentStatus: values?.status,
     });
     onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["create and update"],
+    mutationKey: ["createAndUpdate"],
     mutationFn: (data) =>
       editId
         ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
@@ -73,12 +73,6 @@ const Form = () => {
       dispatchResponseAction("User", editId ? CODES?.UPDATED : CODES?.ADDED);
       navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
     },
-  });
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema(editId),
-    onSubmit: handleOnSubmit,
   });
 
   const {
@@ -92,7 +86,11 @@ const Form = () => {
     setFieldTouched,
     setValues,
     setTouched,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema: validationSchema(editId),
+    onSubmit: handleOnSubmit,
+  });
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
@@ -122,7 +120,7 @@ const Form = () => {
     queryKey: ["designationsListBySevaKendra", values?.sevaKendraId],
     queryFn: () =>
       getByIdApiService(
-        `/api${API_PATHS?.SEVAKENDRA}`,
+        API_PATHS?.SEVAKENDRAS,
         API_PATHS?.ACTIVE(`${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`)
       ),
     select: ({ data }) => data?.data,
@@ -130,7 +128,7 @@ const Form = () => {
   });
 
   const { data } = useCustomQuery({
-    queryKey: ["sevaKendraUsersGetById"],
+    queryKey: ["sevaKendraUsersGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
     enabled: !!editId,
     onSuccess: (data) => {
@@ -142,6 +140,7 @@ const Form = () => {
         sevaKendraId: data?.designation?.sevaKendra?.id,
         designationId: data?.designation?.id,
         status: data?.status,
+        loginId: data?.person?.name,
         date:
           data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
         description: data?.status === CODES?.ACTIVE ? "" : data?.description,
@@ -155,7 +154,7 @@ const Form = () => {
       title="Seva Kendra User"
       navigateTo={ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST}
     >
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SingleAutoComplete
           label={fields?.stateId?.label}
           name={fields?.stateId?.name}
@@ -179,10 +178,11 @@ const Form = () => {
           errors={errors?.stateId}
           touched={touched?.stateId}
           inputValues={stateList || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SingleAutoComplete
           label={fields?.districtId?.label}
           name={fields?.districtId?.name}
@@ -204,6 +204,7 @@ const Form = () => {
           errors={errors?.districtId}
           touched={touched?.districtId}
           inputValues={districtList?.districts || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -224,6 +225,7 @@ const Form = () => {
           errors={errors?.sevaKendraId}
           touched={touched?.sevaKendraId}
           inputValues={sevaKendraList || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -231,7 +233,7 @@ const Form = () => {
         <DividerLine gap={"8px 0 24px"} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.userId?.label}
           name={fields?.userId?.name}
@@ -245,24 +247,25 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <FileUpload
           type={"image"}
           accept={"image/*"}
           setFieldValue={setFieldValue}
-          name={fields?.picture?.name}
-          label={fields?.picture?.label}
-          defaultLabel={fields?.picture?.label}
-          value={values?.picture}
-          error={errors?.picture}
-          touched={touched?.picture}
+          name={fields?.profilePhoto?.name}
+          label={values?.profilePhotoFileName}
+          defaultLabel={fields?.profilePhoto?.label}
+          value={values?.profilePhoto}
+          error={errors?.profilePhoto}
+          touched={touched?.profilePhoto}
           onChange={(e) =>
-            setFieldValue(fields?.picture?.name, e?.target?.files[0])
+            setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0])
           }
+          isViewMode={isViewMode}
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.firstName?.label}
           name={fields?.firstName?.name}
@@ -276,7 +279,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.lastName?.label}
           name={fields?.lastName?.name}
@@ -309,7 +312,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomDatePicker
           label={fields?.dateOfBirth?.label}
           name={fields?.dateOfBirth?.name}
@@ -324,7 +327,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <SingleAutoComplete
           label={fields?.designationId?.label}
           name={fields?.designationId?.name}
@@ -336,6 +339,7 @@ const Form = () => {
           errors={errors?.designationId}
           touched={touched?.designationId}
           inputValues={designationsList || []}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -343,7 +347,7 @@ const Form = () => {
         <DividerLine gap={"8px 0 24px"} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.email?.label}
           name={fields?.email?.name}
@@ -357,7 +361,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.contactNumber?.label}
           name={fields?.contactNumber?.name}
@@ -372,7 +376,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={6}>
         <CustomTextField
           label={fields?.whatsAppNumber?.label}
           name={fields?.whatsAppNumber?.name}
@@ -391,7 +395,7 @@ const Form = () => {
         <DividerLine gap={"8px 0 24px"} />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <CustomTextField
           label={fields?.loginId?.label}
           name={fields?.loginId?.name}
@@ -407,7 +411,7 @@ const Form = () => {
       </Grid>
 
       <WithCondition isValid={!editId}>
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <CustomTextField
             label={fields?.password?.label}
             name={fields?.password?.name}
@@ -420,7 +424,7 @@ const Form = () => {
           />
         </Grid>
 
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6}>
           <CustomTextField
             label={fields?.confirmPassword?.label}
             name={fields?.confirmPassword?.name}
@@ -434,7 +438,7 @@ const Form = () => {
         </Grid>
       </WithCondition>
 
-      <WithCondition isValid={editId}>
+      <WithCondition isValid={!!editId}>
         <StatusFields
           setFieldTouched={setFieldTouched}
           handleBlur={handleBlur}
@@ -458,17 +462,20 @@ const Form = () => {
         isUpdate={!!editId}
         isViewMode={isViewMode}
       />
-      <AuditLog
-        hide={!editId}
-        auditLog={{
-          createdAt: data?.createdAt,
-          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
-          updatedAt: data?.updatedAt,
-          updatedBy: data?.updatedBy
-            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
-            : "",
-        }}
-      />
+
+      <Grid item xs={12}>
+        <AuditLog
+          hide={!editId}
+          auditLog={{
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+            createdBy:
+              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+            updatedBy:
+              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+          }}
+        />
+      </Grid>
     </FormWrapper>
   );
 };

@@ -8,7 +8,7 @@ export const initialValues = {
   districtId: "",
   sevaKendraId: "",
   userId: "",
-  picture: "",
+  profilePhoto: "",
   firstName: "",
   lastName: "",
   gender: CODES?.MALE,
@@ -21,7 +21,7 @@ export const initialValues = {
   password: "",
   confirmPassword: "",
   status: CODES?.ACTIVE,
-  date: new Date(),
+  date: "",
   description: "",
 };
 
@@ -42,9 +42,9 @@ export const fields = {
     label: "User ID *",
     name: "userId",
   },
-  picture: {
+  profilePhoto: {
     label: "Upload picture",
-    name: "picture",
+    name: "profilePhoto",
   },
   firstName: {
     label: "First Name *",
@@ -61,7 +61,7 @@ export const fields = {
     name: "gender",
   },
   dateOfBirth: {
-    label: "Date of Birth *",
+    label: "Date of Birth",
     name: "dateOfBirth",
   },
   designationId: {
@@ -79,7 +79,7 @@ export const fields = {
     type: "mobile",
   },
   whatsAppNumber: {
-    label: "WhatsApp Number *",
+    label: "WhatsApp Number",
     name: "whatsAppNumber",
     type: "mobile",
   },
@@ -124,6 +124,19 @@ export const sevakendraUsersColumn = [
         />
       </OptionsContainer>
     ),
+    inputValues: ({ row }) => [
+      {
+        label: "View details",
+        id: row?.id,
+        path: ROUTE_PATHS?.SEVA_KENDRA_USERS_FORM,
+        view: true,
+      },
+      {
+        label: "Edit",
+        id: row?.id,
+        path: ROUTE_PATHS?.SEVA_KENDRA_USERS_FORM,
+      },
+    ],
   },
   {
     Header: "State",

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { Grid, Typography, useMediaQuery } from "@mui/material";
-import React from "react";
-import propTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
+import propTypes from "prop-types";
+import React from "react";
 import { formatDate } from "../../utils/common";
 
 const Title = styled(Typography)(({ theme }) => ({
@@ -44,12 +44,7 @@ export const AuditLog = ({ auditLog, style, hide }) => {
   if (hide) return null;
 
   return (
-    <Grid
-      container
-      rowSpacing={2}
-      columnSpacing={3}
-      sx={{ padding: "10px 5px 0px 20px", ...style }}
-    >
+    <Grid container rowSpacing={2} columnSpacing={3} sx={{ ...style }}>
       <Grid item xs={12}>
         <Title>AUDIT LOG</Title>
       </Grid>

@@ -276,7 +276,7 @@ const PersonalDetails = () => {
   });
 
   const { data } = useCustomQuery({
-    queryKey: ["divyangGetById"],
+    queryKey: ["divyangGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
     onSuccess: (data) => {

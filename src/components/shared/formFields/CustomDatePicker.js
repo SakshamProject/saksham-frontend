@@ -65,7 +65,7 @@ export const CustomDatePicker = ({
 CustomDatePicker.propTypes = {
   customOnChange: propTypes.func,
   value: propTypes.any,
-  touched: propTypes.bool,
+  touched: propTypes.any,
   errors: propTypes.string,
   customHelperText: propTypes.string,
   name: propTypes.string,

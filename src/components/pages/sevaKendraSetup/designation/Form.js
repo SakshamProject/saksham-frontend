@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
   getByIdApiService,
@@ -34,8 +34,7 @@ import {
 
 const Form = () => {
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
+  const editId = state?.editId;
   const isViewMode = state?.viewDetails;
   const navigate = useNavigate();
 
@@ -90,7 +89,7 @@ const Form = () => {
   } = formik;
 
   const { data } = useCustomQuery({
-    queryKey: ["fetchDesignationById"],
+    queryKey: ["fetchDesignationById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
     enabled: !!editId,
     onSuccess: (data) => {
@@ -101,7 +100,7 @@ const Form = () => {
         designation: data?.name,
         featuresId: data?.features?.map((item) => item?.feature),
         auditLog: {
-          ...data?.designationAuditLog[0],
+          ...data?.auditLog[0],
         },
       });
     },
@@ -176,7 +175,7 @@ const Form = () => {
       title="Designations"
       navigateTo={ROUTE_PATHS?.DESIGNATIONS_LIST}
     >
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <SingleAutoComplete
           label={fields?.stateId?.label}
           name={fields?.stateId?.name}
@@ -192,7 +191,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <SingleAutoComplete
           label={fields?.districtId?.label}
           name={fields?.districtId?.name}
@@ -224,7 +223,7 @@ const Form = () => {
         />
       </Grid>
 
-      <Grid item xs={6}>
+      <Grid item xs={12} sm={12} md={6}>
         <CustomTextField
           label={fields?.designation?.label}
           name={fields?.designation?.name}
@@ -281,17 +280,19 @@ const Form = () => {
         isUpdate={!!editId}
       />
 
-      <AuditLog
-        hide={!editId}
-        auditLog={{
-          createdAt: data?.createdAt,
-          createdBy: `${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`,
-          updatedAt: data?.updatedAt,
-          updatedBy: data?.updatedBy
-            ? `${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`
-            : "",
-        }}
-      />
+      <Grid item xs={12}>
+        <AuditLog
+          hide={!editId}
+          auditLog={{
+            createdAt: data?.createdAt,
+            updatedAt: data?.updatedAt,
+            createdBy:
+              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+            updatedBy:
+              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+          }}
+        />
+      </Grid>
     </FormWrapper>
   );
 };

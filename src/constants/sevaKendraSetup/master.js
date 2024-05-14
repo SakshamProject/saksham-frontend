@@ -116,6 +116,19 @@ export const sevakendraColumn = [
         />
       </OptionsContainer>
     ),
+    inputValues: ({ row }) => [
+      {
+        label: "View details",
+        id: row?.id,
+        path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
+        view: true,
+      },
+      {
+        label: "Edit",
+        id: row?.id,
+        path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
+      },
+    ],
   },
   {
     Header: "State",

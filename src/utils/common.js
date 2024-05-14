@@ -30,11 +30,12 @@ export const getValidValues = (values, withArray, include = []) => {
     if (typeof values[key] === "string" && !!values[key]) {
       return { ...validated, [key]: values[key]?.trim()?.replace(/\s+/g, " ") };
     }
-    if (typeof values[key] === "object") {
-      const validObjectData = getValidValues(values[key]);
-      return { ...validated, [key]: validObjectData };
+    if (typeof values[key] === "object" && values[key] !== null) {
+      const nestedValidData = getValidValues(values[key], withArray, include);
+      if (Object.keys(nestedValidData).length > 0) {
+        return { ...validated, [key]: nestedValidData };
+      }
     }
-
     return validated;
   }, {});
 

@@ -87,7 +87,7 @@ CustomAutoComplete.propTypes = {
   readOnly: propTypes.bool,
   name: propTypes.string,
   errors: propTypes.string,
-  touched: propTypes.bool,
+  touched: propTypes.any,
   getOptionLabel: propTypes.func,
   accessor: propTypes.string,
   labelAccessor: propTypes.string,

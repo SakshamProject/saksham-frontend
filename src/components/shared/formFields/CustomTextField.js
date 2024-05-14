@@ -59,7 +59,7 @@ export const CustomTextField = ({
       autoComplete={autoComplete ? "on" : "off"}
       onChange={onChange}
       onBlur={onBlur}
-      value={value}
+      value={value || ""}
       style={style}
       onKeyPress={(e) => (onKeyPress ? onKeyPress(e) : () => {})}
       error={Boolean(customHelperText || (touched && errors))}

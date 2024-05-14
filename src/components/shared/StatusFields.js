@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import propTypes from "prop-types";
 import { useEffect } from "react";
 import { CODES, statusColumns } from "../../constants/globalConstants";
+import useResponsive from "../../hooks/useResponsive";
 import { CustomReactTable } from "./CustomReactTable";
 import { DividerLine } from "./DividerLine";
 import { WithCondition } from "./WithCondition";
@@ -25,6 +26,8 @@ const StatusFields = ({
   hide,
   gap,
 }) => {
+  const { isMobile } = useResponsive();
+
   useEffect(() => {
     if (hide) return;
 
@@ -57,6 +60,7 @@ const StatusFields = ({
           rowBreak={rowBreak || true}
         />
       </Grid>
+
       <WithCondition isValid={values?.status === CODES?.DEACTIVE}>
         <Grid item xs={12} md={6}>
           <CustomDatePicker
@@ -65,13 +69,14 @@ const StatusFields = ({
             value={values?.date}
             onChange={setFieldValue}
             isViewMode={isViewMode}
-            minDate={new Date()}
+            // minDate={new Date()}
             errors={errors?.date}
             onBlur={handleBlur}
             setTouched={setFieldTouched}
             touched={touched?.date}
           />
         </Grid>
+
         <Grid item xs={12}>
           <CustomTextField
             name="description"
@@ -85,7 +90,10 @@ const StatusFields = ({
           />
         </Grid>
       </WithCondition>
-      <WithCondition isValid={values?.statusHistory || statusHistory}>
+
+      <WithCondition
+        isValid={(values?.statusHistory || statusHistory) && !isMobile}
+      >
         <Grid item xs={12}>
           <CustomReactTable
             columnData={statusColumns}
@@ -108,7 +116,7 @@ StatusFields.propTypes = {
   handleChange: propTypes.func,
   handleBlur: propTypes.func,
   values: propTypes.object,
-  touched: propTypes.bool,
+  touched: propTypes.object,
   errors: propTypes.object,
   isViewMode: propTypes.bool,
   setFieldValue: propTypes.func,
