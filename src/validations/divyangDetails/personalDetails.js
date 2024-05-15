@@ -4,7 +4,6 @@ import {
   EMAIL_REGEX,
   LOWER_CASE,
   NUMBER,
-  SPECIAL_CHARACTER,
   UPPER_CASE,
 } from "../../constants/globalConstants";
 import { minMaxAge } from "../../utils/common";
@@ -26,11 +25,7 @@ export const validationSchema = (editId) =>
       .min(3, "Divyang ID must be at least 3 characters long")
       .max(255, "Divyang ID cannot have more than 255 characters")
       .required("Divyang ID is required"),
-    bloodGroup: string()
-      .trim()
-      // .min(3, "Blood Group must be at least 3 characters long")
-      .max(255, "Blood Group cannot have more than 255 characters")
-      .required("Blood Group is required"),
+    bloodGroup: string().trim().required("Blood Group is required"),
     dateOfBirth: date()
       .typeError("Invalid date")
       .min(
@@ -68,7 +63,6 @@ export const validationSchema = (editId) =>
       .min(3, "Mother Name must be at least 3 characters long")
       .max(255, "Mother Name cannot have more than 255 characters")
       .required("Mother Name is required"),
-    isMarried: string().nullable(),
     spouseName: string()
       .trim()
       .nullable()
@@ -132,10 +126,6 @@ export const validationSchema = (editId) =>
         "Password must contain at least one lowercase letter"
       )
       .matches(NUMBER, "Password must contain at least one number")
-      .matches(
-        SPECIAL_CHARACTER,
-        "Password must contain at least one special character"
-      )
       .min(7, "Password must be at least 7 characters long")
       .max(24, "Password cannot have more than 24 characters"),
     confirmPassword: string()

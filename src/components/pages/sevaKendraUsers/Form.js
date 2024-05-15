@@ -138,7 +138,6 @@ const Form = () => {
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
     enabled: !!editId,
     onSuccess: ({ data }) => {
-      console.log({ data });
       setValues(
         getNeededValues(
           {

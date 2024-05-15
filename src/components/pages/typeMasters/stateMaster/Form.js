@@ -33,7 +33,7 @@ const FormContainer = styled("div")({
   justifyContent: "center",
   alignItems: "start",
   width: "100%",
-  padding: "8px 0",
+  padding: "0 0 8px 0",
   ...scrollbarStyle(true),
 });
 

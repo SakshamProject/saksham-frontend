@@ -30,7 +30,7 @@ export const SingleAutoComplete = ({
       className={className}
       label={label}
       name={name}
-      readOnly={readOnly || isViewMode}
+      readOnly={!!readOnly || isViewMode}
       fullWidth
       options={inputValues || []}
       value={
@@ -68,7 +68,7 @@ export const SingleAutoComplete = ({
             error={errors && touched}
             helperText={customHelperText || (touched && errors) || " "}
             fullWidth
-            readOnly={readOnly || isViewMode}
+            readOnly={!!readOnly || isViewMode}
           />
         );
       }}

@@ -10,7 +10,6 @@ export const initialValues = {
   gender: CODES?.MALE,
   bloodGroup: "",
   dateOfBirth: "",
-  age: "",
   mailId: "",
   mobileNumber: "",
   fatherName: "",
@@ -29,6 +28,7 @@ export const initialValues = {
   status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
+  UDIDCardNumber: "",
 };
 
 export const eqInitialValues = {
@@ -40,7 +40,6 @@ export const fields = {
   firstName: {
     label: "Divyang First Name *",
     name: "firstName",
-    type: "alphabets",
   },
   lastName: {
     label: "Divyang Last Name *",
@@ -66,29 +65,23 @@ export const fields = {
     label: "Date of Birth *",
     name: "dateOfBirth",
   },
-  age: {
-    label: "Age",
-    name: "age",
-  },
   mailId: {
     label: "Mail ID *",
     name: "mailId",
-    type: "email",
+    fieldType: "email",
   },
   mobileNumber: {
     label: "Mobile Number *",
     name: "mobileNumber",
-    type: "mobile",
+    fieldType: "mobile",
   },
   fatherName: {
     label: "Father Name *",
     name: "fatherName",
-    type: "alphabets",
   },
   motherName: {
     label: "Mother Name *",
     name: "motherName",
-    type: "alphabets",
   },
   isMarried: {
     label: "Married",
@@ -97,12 +90,11 @@ export const fields = {
   spouseName: {
     label: "Spouse Name",
     name: "spouseName",
-    type: "alphabets",
   },
   spouseNumber: {
     label: "Spouse Mobile No",
     name: "spouseNumber",
-    type: "mobile",
+    fieldType: "mobile",
   },
   educationQualifications: {
     name: "educationQualifications",
@@ -118,7 +110,6 @@ export const fields = {
   religion: {
     label: "Religion *",
     name: "religion",
-    type: "alphabets",
   },
   communityCategoryId: {
     label: "Community Category *",
@@ -127,7 +118,6 @@ export const fields = {
   community: {
     label: "Community *",
     name: "community",
-    type: "alphabets",
   },
   extraCurricularActivity: {
     label: "Extra Curricular Activity, If any",
@@ -144,6 +134,10 @@ export const fields = {
   confirmPassword: {
     label: "Confirm Password *",
     name: "confirmPassword",
+  },
+  UDIDCardNumber: {
+    label: "UDID Card No *",
+    name: "UDIDCardNumber",
   },
 };
 

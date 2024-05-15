@@ -1,9 +1,8 @@
 import { Grid } from "@mui/material";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
   getByIdApiService,
@@ -25,25 +24,21 @@ import {
   yesNoSeed,
 } from "../../../constants/seeds";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { StyledFormContainer, theme } from "../../../styles";
-import {
-  formatDate,
-  getAge,
-  getSeedNameById,
-  getValidValues,
-} from "../../../utils/common";
+import { StyledFormContainer } from "../../../styles";
+import { formatDate, getSeedNameById } from "../../../utils/common";
 import {
   dispatchResponseAction,
   dispatchSnackbarError,
 } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import {
   eqValidationSchema,
   validationSchema,
 } from "../../../validations/divyangDetails/personalDetails";
 import {
   CustomDatePicker,
-  CustomPasswordField,
   CustomRadioButton,
   CustomReactTable,
   CustomTextField,
@@ -59,10 +54,10 @@ import StatusFields from "../../shared/StatusFields";
 const PersonalDetails = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const isViewMode = state?.viewDetails;
-  const editId = params.get("editId");
+  const isViewMode = state?.viewDetails || false;
+  const editId = state?.editId;
   const [tableEditId, setTableEditId] = useState("");
+  const { theme } = useResponsive();
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
@@ -71,40 +66,41 @@ const PersonalDetails = () => {
       dispatchSnackbarError("At least Add One Education Qualification");
       return;
     }
-    const payload = getValidValues({
-      ...values,
-      status: values?.status,
-      age: Number(values?.age),
-      isMarried: values?.isMarried === CODES?.YES,
-      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
-      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-      effectiveDate: editId
-        ? values?.effectiveDate || ""
-        : formatDate({ date: new Date(), format: "iso" }),
-      auditLog: getValidValues({
-        status: values?.status,
-        date: formatDate({ date: values?.date, format: "iso" }),
-        description: values?.description,
-      }),
-      currentStatus: values?.status,
-      educationQualifications: values?.educationQualifications?.map(
-        (value) => ({
-          educationQualificationTypeId: value?.educationQualificationTypeId?.id,
-          ...(value?.educationQualificationId && {
-            educationQualificationId: value?.educationQualificationId?.id,
-          }),
-        })
-      ),
-    });
-    onSubmit({
-      personalDetails: payload,
-      pageNumber: 1,
-      auditLog: getValidValues({
-        status: values?.status,
-        date: formatDate({ date: values?.date, format: "iso" }),
-        description: values?.description,
-      }),
-    });
+    console.log({ values });
+    const payload = multiPartFormData(
+      {
+        personalDetails: {
+          ...values,
+          isMarried: values?.isMarried === CODES?.YES,
+          date: formatDate({ date: values?.date, format: "iso" }),
+          dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+          effectiveDate: editId
+            ? values?.effectiveDate || ""
+            : formatDate({ date: new Date(), format: "iso" }),
+          currentStatus: values?.status,
+          educationQualifications: values?.educationQualifications?.map(
+            (value) => ({
+              educationQualificationTypeId:
+                value?.educationQualificationTypeId?.id,
+              ...(value?.educationQualificationId && {
+                educationQualificationId: value?.educationQualificationId?.id,
+              }),
+            })
+          ),
+        },
+        picture: values?.picture,
+        pageNumber: 1,
+        auditLog: {
+          status: values?.status,
+          date: formatDate({ date: values?.date, format: "iso" }),
+          description: values?.description,
+        },
+      },
+      [],
+      ["picture"]
+    );
+
+    onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
@@ -275,7 +271,7 @@ const PersonalDetails = () => {
     enabled: !!eqValues?.educationQualificationTypeId,
   });
 
-  const { data } = useCustomQuery({
+  useCustomQuery({
     queryKey: ["divyangGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
@@ -283,10 +279,8 @@ const PersonalDetails = () => {
       setValues({
         ...initialValues,
         ...data,
-        status: data?.status,
-        date:
-          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
-        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
+        UDIDCardNumber: data?.udidCardNumber,
+        date: data?.effectiveFromDate,
         isMarried: data?.isMarried ? CODES?.YES : CODES?.NO,
         userName: data?.person?.userName,
         educationQualifications: data?.educationQualifications.map((value) => ({
@@ -320,37 +314,38 @@ const PersonalDetails = () => {
   };
 
   useEffect(() => {
-    if (values?.dateOfBirth)
-      setFieldValue(fields?.age?.name, getAge(values?.dateOfBirth));
-    else setFieldValue(fields?.age?.name, "");
-  }, [values?.dateOfBirth]);
-
-  useEffect(() => {
     if (values?.isMarried === CODES?.NO) {
       setFieldValue(fields?.spouseName?.name, "");
       setFieldValue(fields?.spouseNumber?.name, "");
       setFieldTouched(fields?.spouseName?.name, false);
       setFieldTouched(fields?.spouseNumber?.name, false);
     }
-  }, [values?.isMarried]);
+  }, [values?.isMarried]); //eslint-disable-line
 
   return (
-    <Grid container direction={"column"} width={"100%"}>
-      <StyledFormContainer width="100%">
-        <Grid container columnSpacing={3} rowSpacing={1}>
+    <Grid container direction={"column"}>
+      <StyledFormContainer
+        sx={{
+          width: "100% !important",
+          [theme.breakpoints.down("sm")]: {
+            paddingTop: "8px !important",
+          },
+        }}
+      >
+        <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.firstName?.label}
               name={fields?.firstName?.name}
-              value={values?.firstName}
               onChange={handleChange}
               onBlur={handleBlur}
+              value={values?.firstName}
               errors={errors?.firstName}
               touched={touched?.firstName}
               isViewMode={isViewMode}
-              fieldType={fields?.firstName?.type}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.lastName?.label}
@@ -361,9 +356,9 @@ const PersonalDetails = () => {
               errors={errors?.lastName}
               touched={touched?.lastName}
               isViewMode={isViewMode}
-              fieldType={fields?.lastName?.type}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.divyangId?.label}
@@ -374,32 +369,34 @@ const PersonalDetails = () => {
               errors={errors?.divyangId}
               touched={touched?.divyangId}
               isViewMode={isViewMode}
-              fieldType={fields?.divyangId?.type}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <FileUpload
               type={"image"}
               accept={"image/*"}
               setFieldValue={setFieldValue}
               name={fields?.picture?.name}
-              label={fields?.picture?.label}
               defaultLabel={fields?.picture?.label}
-              value={values?.picture}
+              label={values?.pictureFileName || ""}
+              value={values?.picture || ""}
               error={errors?.picture}
               touched={touched?.picture}
               onChange={(e) =>
                 setFieldValue(fields?.picture?.name, e?.target?.files[0])
               }
+              disabled={isViewMode}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomRadioButton
               name={fields?.gender?.name}
               label={fields?.gender?.label}
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values?.gender || ""}
+              value={values?.gender}
               touched={touched?.gender}
               errors={errors?.gender}
               isViewMode={isViewMode}
@@ -411,6 +408,7 @@ const PersonalDetails = () => {
               }}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
               label={fields?.bloodGroup?.label}
@@ -422,9 +420,10 @@ const PersonalDetails = () => {
               onBlur={handleBlur}
               errors={errors?.bloodGroup}
               touched={touched?.bloodGroup}
-              inputValues={bloodGroup || []}
+              inputValues={bloodGroup}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomDatePicker
               label={fields?.dateOfBirth?.label}
@@ -439,19 +438,7 @@ const PersonalDetails = () => {
               touched={touched?.dateOfBirth}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
-            <CustomTextField
-              label={fields?.age?.label}
-              name={fields?.age?.name}
-              value={values?.age}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              errors={errors?.age}
-              touched={touched?.age}
-              isViewMode
-              fieldType={fields?.age?.type}
-            />
-          </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mailId?.label}
@@ -462,9 +449,10 @@ const PersonalDetails = () => {
               errors={errors?.mailId}
               touched={touched?.mailId}
               isViewMode={isViewMode}
-              fieldType={fields?.mailId?.type}
+              fieldType={fields?.mailId?.fieldType}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mobileNumber?.label}
@@ -475,13 +463,28 @@ const PersonalDetails = () => {
               errors={errors?.mobileNumber}
               touched={touched?.mobileNumber}
               isViewMode={isViewMode}
-              fieldType={fields?.mobileNumber?.type}
+              fieldType={fields?.mobileNumber?.fieldType}
               maxLength={10}
             />
           </Grid>
+
+          <Grid item xs={12} md={6}>
+            <CustomTextField
+              label={fields?.UDIDCardNumber?.label}
+              name={fields?.UDIDCardNumber?.name}
+              value={values?.UDIDCardNumber}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              errors={errors?.UDIDCardNumber}
+              touched={touched?.UDIDCardNumber}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.fatherName?.label}
@@ -492,9 +495,9 @@ const PersonalDetails = () => {
               errors={errors?.fatherName}
               touched={touched?.fatherName}
               isViewMode={isViewMode}
-              fieldType={fields?.fatherName?.type}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.motherName?.label}
@@ -505,12 +508,13 @@ const PersonalDetails = () => {
               errors={errors?.motherName}
               touched={touched?.motherName}
               isViewMode={isViewMode}
-              fieldType={fields?.motherName?.type}
             />
           </Grid>
+
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
+
           <Grid item xs={12}>
             <CustomRadioButton
               name={fields?.isMarried?.name}
@@ -529,6 +533,7 @@ const PersonalDetails = () => {
               }}
             />
           </Grid>
+
           <WithCondition isValid={values?.isMarried === CODES?.YES}>
             <Grid item xs={12} md={6}>
               <CustomTextField
@@ -540,7 +545,6 @@ const PersonalDetails = () => {
                 errors={errors?.spouseName}
                 touched={touched?.spouseName}
                 isViewMode={isViewMode}
-                fieldType={fields?.spouseName?.type}
               />
             </Grid>
 
@@ -554,14 +558,16 @@ const PersonalDetails = () => {
                 errors={errors?.spouseNumber}
                 touched={touched?.spouseNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.spouseNumber?.type}
+                fieldType={fields?.spouseNumber?.fieldType}
                 maxLength={10}
               />
             </Grid>
           </WithCondition>
+
           <Grid item xs={12}>
             <DividerLine gap={"8px 0 24px"} />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
               label={fields?.educationQualificationTypeId?.label}
@@ -626,28 +632,30 @@ const PersonalDetails = () => {
             submitLabel="Add"
           />
 
-          <Grid item xs={12} my={4}>
-            <CustomReactTable
-              columnData={
-                eqColumns({
-                  tableEditId,
-                  handleDeleteList,
-                  handleEditList,
-                }) || []
-              }
-              rawData={values?.educationQualifications || []}
-              manualSort
-              disablePagination
-              disableLayout
-              count={values?.educationQualifications?.length}
-            />
+          <WithCondition isValid={values?.educationQualifications?.length > 0}>
+            <Grid item xs={12} my={4}>
+              <CustomReactTable
+                columnData={
+                  eqColumns({
+                    tableEditId,
+                    handleDeleteList,
+                    handleEditList,
+                  }) || []
+                }
+                rawData={values?.educationQualifications || []}
+                manualSort
+                disablePagination
+                disableLayout
+                count={values?.educationQualifications?.length}
+              />
+            </Grid>
+          </WithCondition>
+
+          <Grid item xs={12}>
+            <DividerLine gap={"10px 0 24px"} />
           </Grid>
 
           <Grid item xs={12}>
-            <DividerLine gap={"8px 0 24px"} />
-          </Grid>
-
-          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.religion?.label}
               name={fields?.religion?.name}
@@ -660,7 +668,7 @@ const PersonalDetails = () => {
               fieldType={fields?.religion?.type}
             />
           </Grid>
-          <Grid item xs={12} md={6} />
+
           <Grid item xs={12} md={6}>
             <SingleAutoComplete
               label={fields?.communityCategoryId?.label}
@@ -676,6 +684,7 @@ const PersonalDetails = () => {
               isViewMode={isViewMode}
             />
           </Grid>
+
           <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.community?.label}
@@ -689,9 +698,11 @@ const PersonalDetails = () => {
               fieldType={fields?.community?.type}
             />
           </Grid>
+
           <Grid item xs={12}>
             <DividerLine gap={"8px 0 24px"} />
           </Grid>
+
           <Grid item xs={12}>
             <CustomTextarea
               minRows={3}
@@ -705,52 +716,53 @@ const PersonalDetails = () => {
               isViewMode={isViewMode}
             />
           </Grid>
+
           <Grid item xs={12}>
             <DividerLine gap={"6px 0 24px"} />
           </Grid>
+
           <Grid item xs={12}>
             <CustomTextField
               label={fields?.userName?.label}
               name={fields?.userName?.name}
-              value={values.userName}
+              value={values?.userName}
               onChange={handleChange}
               onBlur={handleBlur}
-              isViewMode={isViewMode || editId}
-              errors={errors.userName}
-              touched={touched.userName}
+              isViewMode={isViewMode || !!editId}
+              errors={errors?.userName}
+              touched={touched?.userName}
             />
           </Grid>
 
           <WithCondition isValid={!editId}>
             <Grid item xs={12} md={6}>
-              <CustomPasswordField
+              <CustomTextField
                 label={fields?.password?.label}
                 name={fields?.password?.name}
-                showEyeIcon
-                value={values.password}
+                value={values?.password}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                errors={errors.password}
+                errors={errors?.password}
                 isViewMode={isViewMode}
-                touched={touched.password}
+                touched={touched?.password}
               />
             </Grid>
+
             <Grid item xs={12} md={6}>
-              <CustomPasswordField
+              <CustomTextField
                 label={fields?.confirmPassword?.label}
                 name={fields?.confirmPassword?.name}
-                showEyeIcon
-                value={values.confirmPassword}
+                value={values?.confirmPassword}
                 onChange={handleChange}
                 isViewMode={isViewMode}
                 onBlur={handleBlur}
-                errors={errors.confirmPassword}
-                touched={touched.confirmPassword}
+                errors={errors?.confirmPassword}
+                touched={touched?.confirmPassword}
               />
             </Grid>
           </WithCondition>
 
-          <WithCondition isValid={editId}>
+          <WithCondition isValid={!!editId}>
             <StatusFields
               setFieldTouched={setFieldTouched}
               handleBlur={handleBlur}
@@ -761,10 +773,11 @@ const PersonalDetails = () => {
               setFieldValue={setFieldValue}
               statusSeeds={statusSeed}
               isViewMode={isViewMode}
-              // statusHistory={values?.userAuditLog}
+              statusHistory={values?.auditLog}
               disableListLayout
             />
           </WithCondition>
+
           <FormActions
             handleSubmit={handleSubmit}
             handleOnReset={handleOnReset}

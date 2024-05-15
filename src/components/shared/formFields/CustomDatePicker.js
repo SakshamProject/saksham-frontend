@@ -49,7 +49,7 @@ export const CustomDatePicker = ({
         slotProps={{
           textField: {
             size,
-            autoComplete,
+            autoComplete: "off",
             onBlur: (e) => {
               setTouched && setTouched(name, e?.type === "blur");
             },
