@@ -134,3 +134,18 @@ export const authorities = [
     name: "Private Doctor",
   },
 ];
+
+export const services = [
+  {
+    id: "SEVAKENDRA",
+    name: "Sevakendra",
+  },
+  {
+    id: "VOLUNTEER",
+    name: "Volunteer",
+  },
+  {
+    id: "WHATSAPP",
+    name: "Whatsapp",
+  },
+];

@@ -1,6 +1,7 @@
-import { EditPopover } from "../../components/shared";
+import { CustomCell, EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer, theme } from "../../styles";
+import { formatDate } from "../../utils/common";
 import { CODES } from "../globalConstants";
 import { serviceStatus, yesNoSeed } from "../seeds";
 
@@ -42,9 +43,9 @@ export const listFields = {
 
 export const listColumns = [
   {
-    Header: "Seva Kendra State",
-    // accessor: "name",
-    // filterAccessor: "designations",
+    Header: "Service Name",
+    accessor: "service.name",
+    filterAccessor: "serviceName",
     width: 300,
     sticky: "left",
     Cell: ({ row, value }) => (
@@ -67,41 +68,81 @@ export const listColumns = [
         />
       </OptionsContainer>
     ),
-  },
-  {
-    Header: "District",
-    // accessor: "sevaKendra.name",
-    // filterAccessor: "sevaKendraName",
-    width: 300,
+    inputValues: ({ row }) => [
+      {
+        label: "View details",
+        id: row?.id,
+        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
+        view: true,
+      },
+      {
+        label: "Update Status",
+        id: row?.id,
+        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
+      },
+    ],
   },
   {
     Header: "Seva Kendra",
-    // accessor: "sevaKendra.district.state.name",
-    // filterAccessor: "sevaKendraState",
+    accessor: "user.designation.sevaKendra.name",
+    filterAccessor: "sevaKendraName",
+    Cell: ({ row }) => (
+      <CustomCell value={row?.original?.user?.designation?.sevaKendra?.name} />
+    ),
     width: 300,
   },
   {
     Header: "Divyang",
-    // accessor: "sevaKendra.district.name",
-    // filterAccessor: "sevaKendraDistrict",
+    accessor: "divyang.firstName",
+    filterAccessor: "divyangName",
     width: 300,
   },
   {
-    Header: "Service Name",
-    // accessor: "sevaKendra.district.state.name",
-    // filterAccessor: "sevaKendraState",
+    Header: "District",
+    accessor: "user.designation.sevaKendra.district.name",
+    filterAccessor: "district",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={row?.original?.user?.designation?.sevaKendra?.district?.name}
+      />
+    ),
+    width: 300,
+  },
+  {
+    Header: "State",
+    accessor: "user.designation.sevaKendra.district.state.name",
+    filterAccessor: "state",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={
+          row?.original?.user?.designation?.sevaKendra?.district?.state?.name
+        }
+      />
+    ),
     width: 300,
   },
   {
     Header: "Service Date",
-    // accessor: "sevaKendra.district.name",
-    // filterAccessor: "sevaKendraDistrict",
+    filterAccessor: "serviceDate",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={formatDate({
+          date: row?.original?.dateOfService,
+          format: "DD-MM-YYYY",
+        })}
+      />
+    ),
+    responsiveCell: ({ row }) =>
+      formatDate({
+        date: row?.dateOfService,
+        format: "DD-MM-YYYY",
+      }),
     width: 200,
   },
   {
     Header: "Service Status",
-    // accessor: "sevaKendra.district.name",
-    // filterAccessor: "sevaKendraDistrict",
+    accessor: "isCompleted",
+    filterAccessor: "serviceStatus",
     width: 180,
   },
 ];

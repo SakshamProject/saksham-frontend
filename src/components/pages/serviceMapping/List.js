@@ -20,9 +20,14 @@ import {
   CustomReactTable,
   ListTopbar,
   SingleAutoComplete,
+  WithCondition,
 } from "../../shared";
+import useResponsive from "../../../hooks/useResponsive";
+import ResponsiveList from "../../shared/ResponsiveList";
 
 const List = () => {
+  const { isMobile } = useResponsive();
+
   const {
     onPageNumberChange,
     onChangePageSize,
@@ -61,19 +66,34 @@ const List = () => {
           !!values?.endDate &&
           values?.startDate >= values?.endDate)
       ) {
-        return { data: {} };
+        return { data };
       }
 
-      return postApiService(API_PATHS?.SERVICE_MAPPING_LIST, {
-        ...values,
-        ...listParams,
-      });
+      return postApiService(
+        API_PATHS?.SERVICE_MAPPING_LIST,
+        {
+          ...values,
+          ...listParams,
+        },
+        {
+          ...(values?.startDate && {
+            startDate: formatDate({ date: values?.startDate, format: "iso" }),
+          }),
+          ...(values?.endDate && {
+            endDate: formatDate({ date: values?.endDate, format: "iso" }),
+          }),
+          ...(values?.serviceStatus && {
+            serviceStatus: values?.serviceStatus,
+          }),
+          ...(values?.districtId && { districtId: values?.districtId }),
+        }
+      );
     },
     select: ({ data }) => data,
   });
 
   return (
-    <ListingContainer sx={{ maxHeight: "100vh" }}>
+    <ListingContainer sx={{ maxHeight: "100vh", scrollbarWidth: "none" }}>
       <ListTopbar
         label="Service Mapping"
         listPath={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
@@ -91,88 +111,104 @@ const List = () => {
         inputValues={listFields?.serviceStatus?.inputValues}
         value={values?.serviceStatus}
         onChange={handleChange}
+        style={{}}
       />
 
       <Grid container columnGap={2}>
-        <Grid item xs={3}>
-          <SingleAutoComplete
-            label={listFields?.districtId?.label}
-            name={listFields?.districtId?.name}
-            size={listFields?.districtId?.size}
-            getOptionLabel={listFields?.districtId?.getOptionLabel}
-            value={values?.districtId}
-            errors={errors?.districtId}
-            touched={touched?.districtId}
-            inputValues={allDistricts || []}
-            onChange={setFieldValue}
-          />
-        </Grid>
+        <WithCondition isValid={!isMobile}>
+          <Grid item xs={3}>
+            <SingleAutoComplete
+              label={listFields?.districtId?.label}
+              name={listFields?.districtId?.name}
+              size={listFields?.districtId?.size}
+              getOptionLabel={listFields?.districtId?.getOptionLabel}
+              value={values?.districtId}
+              errors={errors?.districtId}
+              touched={touched?.districtId}
+              inputValues={allDistricts || []}
+              onChange={setFieldValue}
+            />
+          </Grid>
 
-        <Grid item xs={3}>
-          <CustomDatePicker
-            name={listFields?.startDate?.name}
-            label={listFields?.startDate?.label}
-            size={listFields?.startDate?.size}
-            maxDate={listFields?.startDate?.maxDate}
-            value={values?.startDate}
-            errors={errors?.startDate}
-            touched={touched?.startDate}
-            setTouched={setFieldTouched}
-            customOnChange={(val) => {
-              setFieldTouched(listFields?.endDate?.name, true);
-              setFieldValue(
-                listFields?.startDate?.name,
-                formatDate({ date: val?.$d, format: "iso" })
-              );
-            }}
-          />
-        </Grid>
+          <Grid item xs={3}>
+            <CustomDatePicker
+              name={listFields?.startDate?.name}
+              label={listFields?.startDate?.label}
+              size={listFields?.startDate?.size}
+              // maxDate={listFields?.startDate?.maxDate}
+              value={values?.startDate}
+              errors={errors?.startDate}
+              touched={touched?.startDate}
+              setTouched={setFieldTouched}
+              customOnChange={(val) => {
+                setFieldTouched(listFields?.endDate?.name, true);
+                setFieldValue(
+                  listFields?.startDate?.name,
+                  formatDate({ date: val?.$d, format: "iso" })
+                );
+              }}
+            />
+          </Grid>
 
-        <Grid item xs={3}>
-          <CustomDatePicker
-            name={listFields?.endDate?.name}
-            label={listFields?.endDate?.label}
-            size={listFields?.endDate?.size}
-            maxDate={listFields?.endDate?.maxDate}
-            value={values?.endDate}
-            errors={errors?.endDate}
-            touched={touched?.endDate}
-            setTouched={setFieldTouched}
-            customOnChange={(val) => {
-              setFieldTouched(listFields?.startDate?.name, true);
-              setFieldValue(
-                listFields?.endDate?.name,
-                formatDate({ date: val?.$d, format: "iso" })
-              );
-            }}
-          />
-        </Grid>
+          <Grid item xs={3}>
+            <CustomDatePicker
+              name={listFields?.endDate?.name}
+              label={listFields?.endDate?.label}
+              size={listFields?.endDate?.size}
+              // maxDate={listFields?.endDate?.maxDate}
+              value={values?.endDate}
+              errors={errors?.endDate}
+              touched={touched?.endDate}
+              setTouched={setFieldTouched}
+              customOnChange={(val) => {
+                setFieldTouched(listFields?.startDate?.name, true);
+                setFieldValue(
+                  listFields?.endDate?.name,
+                  formatDate({ date: val?.$d, format: "iso" })
+                );
+              }}
+            />
+          </Grid>
+        </WithCondition>
 
-        <Grid item>
+        <Grid item ml={isMobile ? "80%" : 0} mb={isMobile ? 1 : 0}>
           <SubmitButton
-            sx={{ textTransform: "capitalize", height: "38px" }}
+            sx={{
+              textTransform: "capitalize",
+              height: isMobile ? "24px" : "38px",
+              minWidth: isMobile ? "max-content !important" : "64px",
+            }}
             onClick={() => {
               setValues({ ...initialValues });
               setTouched({});
             }}
           >
-            Reset <Refresh />
+            {isMobile ? "" : "Reset"} <Refresh />
           </SubmitButton>
         </Grid>
       </Grid>
+      <WithCondition isValid={!isMobile}>
+        <CustomReactTable
+          columnData={listColumns || []}
+          rawData={data?.data || []}
+          isLoading={isLoading}
+          onPageNumberChange={onPageNumberChange}
+          onChangePageSize={onChangePageSize}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          count={data?.total}
+          maxHeight={"350px"}
+          disableLayout
+        />
+      </WithCondition>
 
-      <CustomReactTable
-        columnData={listColumns || []}
-        rawData={data?.data || []}
-        isLoading={isLoading}
-        onPageNumberChange={onPageNumberChange}
-        onChangePageSize={onChangePageSize}
-        pageSize={pageSize}
-        currentPage={currentPage}
-        count={data?.total}
-        maxHeight={"350px"}
-        disableLayout
-      />
+      <WithCondition isValid={isMobile}>
+        <ResponsiveList
+          columnData={listColumns}
+          rawData={data?.data}
+          disablePagination
+        />
+      </WithCondition>
     </ListingContainer>
   );
 };

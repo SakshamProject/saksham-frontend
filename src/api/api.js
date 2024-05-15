@@ -8,8 +8,8 @@ export const getByIdApiService = async (path, id) => {
   return await appApi.get(`${path}/${id}`);
 };
 
-export const postApiService = async (path, value = {}) => {
-  return await appApi.post(path, value);
+export const postApiService = async (path, value = {}, params = {}) => {
+  return await appApi.post(path, value, { params: { ...params } });
 };
 
 export const postUpdateApiService = async (path, id, value = {}) => {

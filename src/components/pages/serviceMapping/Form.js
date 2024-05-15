@@ -7,11 +7,15 @@ import {
   getApiService,
   getByIdApiService,
   postApiService,
+  updateApiService,
 } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import { appApi } from "../../../api/config";
 import user from "../../../assets/profile.png";
-import { divyangDetailsColumn } from "../../../constants/globalConstants";
+import {
+  CODES,
+  divyangDetailsColumn,
+} from "../../../constants/globalConstants";
 import {
   formFields,
   initialValues,
@@ -20,7 +24,6 @@ import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, theme } from "../../../styles";
 import { validationSchema } from "../../../validations/serviceMapping/serviceMapping";
 import {
-  AuditLog,
   CustomDatePicker,
   CustomRadioButton,
   CustomTextField,
@@ -30,13 +33,55 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import { dispatchResponseAction } from "../../../utils/dispatch";
+import { formatDate, getValidValues } from "../../../utils/common";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import useResponsive from "../../../hooks/useResponsive";
 
 const Form = () => {
   const { state } = useLocation();
-  const [params] = useSearchParams();
-  const editId = params.get("editId");
   const isViewMode = state?.viewDetails;
+  const editId = state?.editId;
   const navigate = useNavigate();
+  const { isMobile } = useResponsive();
+
+  const handleOnSubmit = (value) => {
+    const payload = getValidValues({
+      ...value,
+      divyangId: "e5159dc9-1611-4c1a-8685-dadd2ffed3ba", // do changes on this
+      isNonSevaKendraFollowUpRequired:
+        value.isNonSevaKendraFollowUpRequired === CODES?.YES,
+      dateOfService: formatDate({ date: value?.dateOfService, format: "iso" }),
+      dueDate: formatDate({
+        date: value?.dueDate,
+        format: "iso",
+      }),
+      ...(value.isNonSevaKendraFollowUpRequired === CODES?.YES
+        ? {
+            nonSevaKendraFollowUp: getValidValues({
+              ...value.nonSevaKendraFollowUp,
+              sendMail: values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
+            }),
+          }
+        : { nonSevaKendraFollowUp: "" }),
+    });
+    onSubmit(payload);
+  };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["createAndUpdate"],
+    mutationFn: (data) =>
+      editId
+        ? updateApiService(API_PATHS?.SERVICE_MAPPING, editId, data)
+        : postApiService(API_PATHS?.SERVICE_MAPPING, data),
+    onSuccess: () => {
+      dispatchResponseAction(
+        "Service Mapping",
+        editId ? CODES?.UPDATED : CODES?.ADDED
+      );
+      navigate(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
+    },
+  });
 
   const {
     values,
@@ -48,8 +93,10 @@ const Form = () => {
     setFieldTouched,
     setValues,
     handleSubmit,
+    setTouched,
   } = useFormik({
     initialValues,
+    onSubmit: () => handleOnSubmit(values),
     validationSchema,
   });
 
@@ -83,8 +130,8 @@ const Form = () => {
     queryKey: ["getSevaKendraUserBySevaKendraName", values?.sevaKendraId],
     queryFn: () =>
       getByIdApiService(
-        API_PATHS?.SEVAKENDRA,
-        `${values?.sevaKendraId}${API_PATHS?.SEVAKENDRA_USERS}?status=ACTIVE`
+        API_PATHS?.SEVAKENDRAS,
+        `${values?.sevaKendraId}${API_PATHS?.USERS}?status=ACTIVE`
       ),
     select: ({ data }) => data?.data?.map((item) => item?.user),
     enabled: !!values?.sevaKendraId,
@@ -96,11 +143,42 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
+  const { data } = useCustomQuery({
+    queryKey: ["serviceMappingGetById", editId],
+    queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
+    enabled: !!editId,
+    onSuccess: (data) => {
+      console.log(data);
+      setValues({
+        ...data,
+        serviceTypeId: data?.service?.serviceType?.id,
+        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired
+          ? CODES?.YES
+          : CODES?.NO,
+        ...(data?.nonSevaKendraFollowUp?.length
+          ? {
+              nonSevaKendraFollowUp: {
+                ...data?.nonSevaKendraFollowUp?.[0],
+                sendMail: data?.nonSevaKendraFollowUp?.[0]?.sendMail
+                  ? CODES?.YES
+                  : CODES?.NO,
+              },
+            }
+          : {
+              stateId: data?.user?.designation?.sevaKendra?.district?.stateId,
+              districtId: data?.user?.designation?.sevaKendra?.districtId,
+              sevaKendraId: data?.user?.designation?.sevaKendraId,
+            }),
+      });
+    },
+    select: ({ data }) => data?.data,
+  });
+
   const { data: allService } = useQuery({
     queryKey: ["getAllService", values?.serviceTypeId],
     queryFn: () =>
       allServiceType?.find((item) => item?.id === values?.serviceTypeId),
-    select: ({ data }) => {},
+    select: ({ service }) => service,
     enabled: !!values?.serviceTypeId,
   });
 
@@ -120,180 +198,342 @@ const Form = () => {
       title="Service Mapping"
       navigateTo={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
     >
-      <Grid item xs={12}>
-        <CustomTypography
-          sx={{ marginBottom: 0, color: theme.palette?.commonColor?.black }}
-        >
-          Search Divyang
-        </CustomTypography>
-      </Grid>
+      <WithCondition isValid={!editId}>
+        <Grid item xs={12}>
+          <CustomTypography
+            sx={{ marginBottom: 0, color: theme.palette?.commonColor?.black }}
+          >
+            Search Divyang
+          </CustomTypography>
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomTextField
-          label={formFields?.searchDivyangId?.label}
-          name={formFields?.searchDivyangId?.name}
-          fieldType={formFields?.searchDivyangId?.fieldType}
-          value={values?.searchDivyangId}
-          errors={errors?.searchDivyangId}
-          touched={touched?.searchDivyangId}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-          onKeyPress={(e) => onKeyPress(e, "divyangId")}
-          disabled={
-            !!values?.searchAadharNo ||
-            !!values?.searchMobileNo ||
-            !!values?.searchUDIDNo
-          }
-        />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomTextField
+            label={formFields?.searchDivyangId?.label}
+            name={formFields?.searchDivyangId?.name}
+            fieldType={formFields?.searchDivyangId?.fieldType}
+            value={values?.searchDivyangId}
+            errors={errors?.searchDivyangId}
+            touched={touched?.searchDivyangId}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+            onKeyPress={(e) => onKeyPress(e, "divyangId")}
+            disabled={
+              !!values?.searchAadharNo ||
+              !!values?.searchMobileNo ||
+              !!values?.searchUDIDNo
+            }
+          />
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomTextField
-          label={formFields?.searchMobileNo?.label}
-          name={formFields?.searchMobileNo?.name}
-          type={formFields?.searchMobileNo?.type}
-          value={values?.searchMobileNo}
-          errors={errors?.searchMobileNo}
-          touched={touched?.searchMobileNo}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-          onKeyPress={(e) => onKeyPress(e, "mobileNumber")}
-          disabled={
-            !!values?.searchAadharNo ||
-            !!values?.searchDivyangId ||
-            !!values?.searchUDIDNo
-          }
-        />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomTextField
+            label={formFields?.searchMobileNo?.label}
+            name={formFields?.searchMobileNo?.name}
+            type={formFields?.searchMobileNo?.type}
+            value={values?.searchMobileNo}
+            errors={errors?.searchMobileNo}
+            touched={touched?.searchMobileNo}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+            onKeyPress={(e) => onKeyPress(e, "mobileNumber")}
+            disabled={
+              !!values?.searchAadharNo ||
+              !!values?.searchDivyangId ||
+              !!values?.searchUDIDNo
+            }
+          />
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomTextField
-          label={formFields?.searchAadharNo?.label}
-          name={formFields?.searchAadharNo?.name}
-          type={formFields?.searchAadharNo?.type}
-          value={values?.searchAadharNo}
-          errors={errors?.searchAadharNo}
-          touched={touched?.searchAadharNo}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-          onKeyPress={(e) => onKeyPress(e, "aadharCardNumber")}
-          disabled={
-            !!values?.searchDivyangId ||
-            !!values?.searchMobileNo ||
-            !!values?.searchUDIDNo
-          }
-        />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomTextField
+            label={formFields?.searchAadharNo?.label}
+            name={formFields?.searchAadharNo?.name}
+            type={formFields?.searchAadharNo?.type}
+            value={values?.searchAadharNo}
+            errors={errors?.searchAadharNo}
+            touched={touched?.searchAadharNo}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+            onKeyPress={(e) => onKeyPress(e, "aadharCardNumber")}
+            disabled={
+              !!values?.searchDivyangId ||
+              !!values?.searchMobileNo ||
+              !!values?.searchUDIDNo
+            }
+          />
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomTextField
-          label={formFields?.searchUDIDNo?.label}
-          name={formFields?.searchUDIDNo?.name}
-          fieldType={formFields?.searchUDIDNo?.fieldType}
-          value={values?.searchUDIDNo}
-          errors={errors?.searchUDIDNo}
-          touched={touched?.searchUDIDNo}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-          onKeyPress={(e) => onKeyPress(e, "udidCardNumber")}
-          disabled={
-            !!values?.searchDivyangId ||
-            !!values?.searchMobileNo ||
-            !!values?.searchAadharNo
-          }
-        />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomTextField
+            label={formFields?.searchUDIDNo?.label}
+            name={formFields?.searchUDIDNo?.name}
+            fieldType={formFields?.searchUDIDNo?.fieldType}
+            value={values?.searchUDIDNo}
+            errors={errors?.searchUDIDNo}
+            touched={touched?.searchUDIDNo}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+            onKeyPress={(e) => onKeyPress(e, "udidCardNumber")}
+            disabled={
+              !!values?.searchDivyangId ||
+              !!values?.searchMobileNo ||
+              !!values?.searchAadharNo
+            }
+          />
+        </Grid>
+      </WithCondition>
 
-      {/* <WithCondition isValid={!!searchedDivyang?.data?.data}>
+      <WithCondition isValid={!!searchedDivyang?.data?.data}>
         <Grid container item xs={12} gap={3} sx={{ marginBottom: "22px" }}>
           {searchedDivyang?.data?.data?.map((item, key) => (
             <DivyangCard divyangDetail={item} key={key + item?.id} />
           ))}
         </Grid>
-      </WithCondition> */}
+      </WithCondition>
 
-      <Grid item xs={12}>
+      <WithCondition isValid={!!editId}>
+        <Grid container item xs={12} gap={3} sx={{ marginBottom: "22px" }}>
+          <DivyangCard divyangDetail={data?.divyang} />
+        </Grid>
+      </WithCondition>
+
+      <Grid
+        item
+        xs={12}
+        sx={{
+          paddingTop: "0px !important",
+        }}
+      >
         <DividerLine />
       </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <SingleAutoComplete
-          label={formFields?.serviceType?.label}
-          name={formFields?.serviceType?.name}
-          value={values?.serviceTypeId}
-          errors={errors?.serviceTypeId}
-          touched={touched?.serviceTypeId}
-          onChange={setFieldValue}
-          onBlur={handleBlur}
-          inputValues={allServiceType || []}
-          isViewMode={isViewMode}
-        />
-      </Grid>
+      <WithCondition isValid={editId}>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Service Type: {data?.service?.serviceType?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Service Name: {data?.service?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Date:{" "}
+            {formatDate({ date: data?.dateOfService, format: "DD-MM-YYYY" })}
+          </CustomTypography>
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <SingleAutoComplete
-          label={formFields?.serviceSubtype?.label}
-          name={formFields?.serviceSubtype?.name}
-          value={values?.serviceId}
-          errors={errors?.serviceId}
-          touched={touched?.serviceId}
-          onChange={setFieldValue}
-          onBlur={handleBlur}
-          inputValues={allService || []}
-          isViewMode={isViewMode}
-        />
-      </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <DividerLine gap={"8px 0 24px"} />
+        </Grid>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomDatePicker
-          name={formFields?.dateOfService?.name}
-          label={formFields?.dateOfService?.label}
-          minDate={formFields?.dateOfService?.minDate}
-          value={values?.dateOfService}
-          errors={errors?.dateOfService}
-          touched={touched?.dateOfService}
-          onChange={setFieldValue}
-          setTouched={setFieldTouched}
-        />
-      </Grid>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Seva Kendra State & District:{" "}
+            {data?.user?.designation?.sevaKendra?.district?.state?.name}
+            {" - "}
+            {data?.user?.designation?.sevaKendra?.district?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Seva Kendra Name: {data?.user?.designation?.sevaKendra?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            User Assigned: {data?.user?.firstName} {data?.user?.lastName}
+          </CustomTypography>
+        </Grid>
+      </WithCondition>
 
-      <Grid item xs={12} sm={12} md={6}>
-        <CustomDatePicker
-          name={formFields?.completedBefore?.name}
-          label={formFields?.completedBefore?.label}
-          minDate={formFields?.completedBefore?.minDate}
-          value={values?.dueDate}
-          errors={errors?.dueDate}
-          touched={touched?.dueDate}
-          onChange={setFieldValue}
-          setTouched={setFieldTouched}
-        />
-      </Grid>
+      <WithCondition isValid={!editId}>
+        <Grid item xs={12} sm={12} md={6}>
+          <SingleAutoComplete
+            label={formFields?.serviceType?.label}
+            name={formFields?.serviceType?.name}
+            value={values?.serviceTypeId}
+            errors={errors?.serviceTypeId}
+            touched={touched?.serviceTypeId}
+            onChange={(_, value) => {
+              setFieldValue(formFields?.serviceType?.name, value);
+            }}
+            onBlur={handleBlur}
+            inputValues={allServiceType || []}
+            isViewMode={isViewMode}
+          />
+        </Grid>
 
-      <Grid item xs={12}>
-        <DividerLine />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <SingleAutoComplete
+            label={formFields?.serviceSubtype?.label}
+            name={formFields?.serviceSubtype?.name}
+            value={values?.serviceId}
+            errors={errors?.serviceId}
+            touched={touched?.serviceId}
+            onChange={(_, value) => {
+              setFieldValue(formFields?.serviceSubtype?.name, value);
+            }}
+            onBlur={handleBlur}
+            inputValues={allService || []}
+            isViewMode={isViewMode}
+          />
+        </Grid>
 
-      <Grid item xs={12} marginBottom={"-20px"}>
-        <CustomRadioButton
-          name={formFields?.isNonSevaKendraFollowUpRequired?.name}
-          label={formFields?.isNonSevaKendraFollowUpRequired?.label}
-          inputValues={formFields?.isNonSevaKendraFollowUpRequired?.inputValues}
-          value={values?.isNonSevaKendraFollowUpRequired}
-          touched={touched?.isNonSevaKendraFollowUpRequired}
-          errors={errors?.isNonSevaKendraFollowUpRequired}
-          onChange={handleChange}
-          onBlur={handleBlur}
-          isViewMode={isViewMode}
-          rowBreak
-        />
-      </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomDatePicker
+            name={formFields?.dateOfService?.name}
+            label={formFields?.dateOfService?.label}
+            minDate={formFields?.dateOfService?.minDate}
+            value={values?.dateOfService}
+            errors={errors?.dateOfService}
+            touched={touched?.dateOfService}
+            onChange={setFieldValue}
+            setTouched={setFieldTouched}
+          />
+        </Grid>
 
-      <WithCondition isValid={values?.isNonSevaKendraFollowUpRequired === "NO"}>
+        <Grid item xs={12} sm={12} md={6}>
+          <CustomDatePicker
+            name={formFields?.completedBefore?.name}
+            label={formFields?.completedBefore?.label}
+            minDate={formFields?.completedBefore?.minDate}
+            value={values?.dueDate}
+            errors={errors?.dueDate}
+            touched={touched?.dueDate}
+            onChange={setFieldValue}
+            setTouched={setFieldTouched}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <DividerLine />
+        </Grid>
+
+        <Grid item xs={12} marginBottom={"-20px"}>
+          <CustomRadioButton
+            name={formFields?.isNonSevaKendraFollowUpRequired?.name}
+            label={formFields?.isNonSevaKendraFollowUpRequired?.label}
+            inputValues={
+              formFields?.isNonSevaKendraFollowUpRequired?.inputValues
+            }
+            value={values?.isNonSevaKendraFollowUpRequired}
+            touched={touched?.isNonSevaKendraFollowUpRequired}
+            errors={errors?.isNonSevaKendraFollowUpRequired}
+            onChange={(_, value) => {
+              setValues({
+                ...values,
+                isNonSevaKendraFollowUpRequired: value,
+                stateId: "",
+                districtId: "",
+                sevaKendraId: "",
+                assignUserId: "",
+                nonSevaKendraFollowUp: {
+                  ...values.nonSevaKendraFollowUp,
+                  name: "",
+                  mobileNumber: "",
+                  email: "",
+                },
+              });
+              setTouched({
+                ...touched,
+                [formFields?.state?.name]: false,
+                [formFields?.district?.name]: false,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+                nonSevaKendraFollowUp: {
+                  name: false,
+                  mobileNumber: false,
+                  email: false,
+                },
+              });
+            }}
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+            rowBreak
+          />
+        </Grid>
+      </WithCondition>
+
+      <WithCondition isValid={editId}>
+        <Grid item xs={12}>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.black}
+            fontSize={isMobile ? "16px" : "18px"}
+          >
+            Forward to non SevaKendra Volunteer
+          </CustomTypography>
+        </Grid>
+      </WithCondition>
+
+      <WithCondition
+        isValid={values?.isNonSevaKendraFollowUpRequired === CODES.NO}
+      >
         <Grid item xs={12} sm={12} md={6}>
           <SingleAutoComplete
             label={formFields?.state?.label}
@@ -301,15 +541,22 @@ const Form = () => {
             value={values?.stateId}
             errors={errors?.stateId}
             touched={touched?.stateId}
-            customOnchange={(_, value) =>
+            customOnchange={(_, value) => {
               setValues({
                 ...values,
                 [formFields?.state?.name]: value?.id,
                 [formFields?.district?.name]: "",
                 [formFields?.sevaKendra?.name]: "",
                 [formFields?.assignUser?.name]: "",
-              })
-            }
+              });
+              setTouched({
+                ...touched,
+                [formFields?.state?.name]: false,
+                [formFields?.district?.name]: false,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+              });
+            }}
             onBlur={handleBlur}
             inputValues={allStates || []}
             isViewMode={isViewMode}
@@ -323,14 +570,20 @@ const Form = () => {
             value={values?.districtId}
             errors={errors?.districtId}
             touched={touched?.districtId}
-            customOnchange={(_, value) =>
+            customOnchange={(_, value) => {
               setValues({
                 ...values,
                 [formFields?.district?.name]: value?.id,
                 [formFields?.sevaKendra?.name]: "",
                 [formFields?.assignUser?.name]: "",
-              })
-            }
+              });
+              setTouched({
+                ...touched,
+                [formFields?.district?.name]: false,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+              });
+            }}
             onBlur={handleBlur}
             inputValues={allDistricts || []}
             isViewMode={isViewMode}
@@ -344,13 +597,18 @@ const Form = () => {
             value={values?.sevaKendraId}
             errors={errors?.sevaKendraId}
             touched={touched?.sevaKendraId}
-            customOnchange={(_, value) =>
+            customOnchange={(_, value) => {
               setValues({
                 ...values,
                 [formFields?.sevaKendra?.name]: value?.id,
                 [formFields?.assignUser?.name]: "",
-              })
-            }
+              });
+              setTouched({
+                ...touched,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+              });
+            }}
             onBlur={handleBlur}
             inputValues={allSevaKendras || []}
             isViewMode={isViewMode}
@@ -374,7 +632,7 @@ const Form = () => {
       </WithCondition>
 
       <WithCondition
-        isValid={values?.isNonSevaKendraFollowUpRequired === "YES"}
+        isValid={values?.isNonSevaKendraFollowUpRequired === CODES?.YES}
       >
         <Grid item xs={12} sm={12} md={6}>
           <CustomTextField
@@ -389,7 +647,6 @@ const Form = () => {
             isViewMode={isViewMode}
           />
         </Grid>
-
         <Grid item xs={12} sm={12} md={6}>
           <CustomTextField
             label={formFields?.mobileNo?.label}
@@ -401,14 +658,14 @@ const Form = () => {
             onChange={handleChange}
             onBlur={handleBlur}
             isViewMode={isViewMode}
+            maxLength={10}
           />
         </Grid>
-
         <Grid item xs={12} sm={12} md={6}>
           <CustomTextField
             label={formFields?.emailId?.label}
             name={formFields?.emailId?.name}
-            fieldType={formFields?.mobileNo?.fieldType}
+            fieldType={formFields?.emailId?.fieldType}
             value={values?.nonSevaKendraFollowUp?.email}
             errors={errors?.nonSevaKendraFollowUp?.email}
             touched={touched?.nonSevaKendraFollowUp?.email}
@@ -417,7 +674,6 @@ const Form = () => {
             isViewMode={isViewMode}
           />
         </Grid>
-
         <Grid item xs={12} sm={12} md={6}>
           <CustomRadioButton
             name={formFields?.emailStatus?.name}
@@ -440,14 +696,6 @@ const Form = () => {
         handleOnReset={handleOnReset}
         isViewMode={isViewMode}
         isUpdate={!!editId}
-      />
-
-      <AuditLog
-        hide={!editId}
-        // createdAt={data?.createdAt}
-        // createdByName={`${data?.createdBy?.firstName} ${data?.createdBy?.lastName}`}
-        // updatedAt={data?.updatedAt}
-        // updatedByName={`${data?.updatedBy?.firstName} ${data?.updatedBy?.lastName}`}
       />
     </FormWrapper>
   );
