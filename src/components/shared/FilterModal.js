@@ -126,8 +126,8 @@ export const FilterModal = ({ listPath, filterFields, filterFieldInitial }) => {
                 return (
                   <Grid
                     container
-                    columnSpacing={4}
-                    rowSpacing={3}
+                    columnSpacing={3}
+                    rowSpacing={2}
                     style={{
                       display: "flex",
                       alignItems: "center",

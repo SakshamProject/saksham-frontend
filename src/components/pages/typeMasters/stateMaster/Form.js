@@ -55,7 +55,7 @@ const Form = () => {
         <Box
           sx={{
             width: "100%",
-            marginBottom: "24px",
+            marginBottom: "16px",
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",

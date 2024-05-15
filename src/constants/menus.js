@@ -13,7 +13,7 @@ import { CODES } from "./globalConstants";
 
 export const RIGHT_SIDE_MENU = (role, isMobile = false) =>
   [
-    role === CODES?.ADMIN && {
+    role !== CODES?.DIVYANG && {
       label: "My Profile",
       routePath: ROUTE_PATHS?.PROFILE,
       navigateTo: ROUTE_PATHS?.PROFILE,

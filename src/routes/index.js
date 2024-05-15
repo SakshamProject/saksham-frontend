@@ -183,6 +183,16 @@ export const ADMIN_ROUTES = [
     element: routeElements?.ServiceMappingForm,
     key: CODES?.SERVICE_MAPPING,
   },
+  {
+    path: ROUTE_PATHS?.PROFILE,
+    element: routeElements?.UserProfile,
+    key: "profile",
+  },
+  {
+    path: ROUTE_PATHS?.CHANGE_PASSWORD,
+    element: routeElements?.ChangePassword,
+    key: "profile",
+  },
 ];
 
 const DIVYANG_ROUTES = [
@@ -219,12 +229,15 @@ export const getRoutes = ({ role, designations = [] }) => {
   if (role === CODES?.DIVYANG) return DIVYANG_ROUTES;
 
   if (role === CODES?.SEVA_KENDRA && designations?.length > 0)
-    return designations?.reduce((acc, designation) => {
-      const validRoutes = ADMIN_ROUTES?.filter(
-        (route) => designation?.name === route?.key
-      );
-      return [...acc, ...validRoutes];
-    }, []);
+    return [...designations, { name: "profile" }]?.reduce(
+      (acc, designation) => {
+        const validRoutes = ADMIN_ROUTES?.filter(
+          (route) => designation?.name === route?.key
+        );
+        return [...acc, ...validRoutes];
+      },
+      []
+    );
 
   return [];
 };

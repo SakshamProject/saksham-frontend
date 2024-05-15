@@ -14,6 +14,7 @@ const Titles = styled(Typography)(({ theme }) => ({
   cursor: "pointer !important",
   font: "normal normal normal 16px/19px sans-serif !important",
   color: `${theme.palette?.commonColor?.black} !important`,
+  borderBottom: `1px solid ${theme.palette?.commonColor?.black}`,
 }));
 
 export const RightMenu = ({

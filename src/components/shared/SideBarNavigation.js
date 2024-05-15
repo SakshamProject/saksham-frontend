@@ -14,7 +14,6 @@ export const CustomTabs = styled(Tabs)(({ theme }) => ({
   paddingTop: 10,
   paddingBottom: "auto",
   minWidth: "280px",
-  // maxWidth: "350px",
   ".MuiTabs-flexContainer": {
     overflowY: "auto",
     maxHeight: "100%",

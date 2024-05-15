@@ -163,7 +163,12 @@ const StateType = () => {
 
   return (
     <Grid container direction={"column"}>
-      <StyledFormContainer sx={{ width: "100% !important" }}>
+      <StyledFormContainer
+        sx={{
+          width: "100% !important",
+          ...(isMobile && { padding: "8px 0 !important" }),
+        }}
+      >
         <Grid container columnSpacing={3}>
           <Grid item xs={12} sm={12} md={6}>
             <SingleAutoComplete

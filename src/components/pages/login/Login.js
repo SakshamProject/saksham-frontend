@@ -116,6 +116,7 @@ const Login = () => {
         userId: data?.user?.id,
         serviceMapping,
         role: CODES?.SEVA_KENDRA,
+        name: data?.user?.person?.userName,
         designation: {
           id: data?.user?.designation?.id,
           name: data?.user?.designation?.name,
@@ -130,6 +131,7 @@ const Login = () => {
       userInfo = {
         userId: data?.divyang?.id,
         role: CODES?.DIVYANG,
+        name: data?.divyang?.person?.userName,
         designation: {
           name: CODES?.DIVYANG,
         },

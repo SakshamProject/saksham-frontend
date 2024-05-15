@@ -95,5 +95,8 @@ export const MyServicesForm = lazy(() =>
   import("../components/pages/divyang/myServices/Form")
 );
 export const ChangePassword = lazy(() =>
-  import("../components/pages/divyang/ChangePassword")
+  import("../components/pages/login/ChangePassword")
+);
+export const UserProfile = lazy(() =>
+  import("../components/pages/user/MyProfile")
 );
