@@ -147,29 +147,27 @@ const Form = () => {
     queryKey: ["serviceMappingGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     enabled: !!editId,
-    onSuccess: ({ data }) => {
+    onSuccess: (data) => {
       console.log(data);
       setValues({
-        ...data?.data,
-        serviceTypeId: data?.data?.service?.serviceType?.id,
-        isNonSevaKendraFollowUpRequired: data?.data
-          ?.isNonSevaKendraFollowUpRequired
+        ...data,
+        serviceTypeId: data?.service?.serviceType?.id,
+        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired
           ? CODES?.YES
           : CODES?.NO,
-        ...(data?.data?.nonSevaKendraFollowUp?.length
+        ...(data?.nonSevaKendraFollowUp?.length
           ? {
               nonSevaKendraFollowUp: {
-                ...data?.data?.nonSevaKendraFollowUp?.[0],
-                sendMail: data?.data?.nonSevaKendraFollowUp?.[0]?.sendMail
+                ...data?.nonSevaKendraFollowUp?.[0],
+                sendMail: data?.nonSevaKendraFollowUp?.[0]?.sendMail
                   ? CODES?.YES
                   : CODES?.NO,
               },
             }
           : {
-              stateId:
-                data?.data?.user?.designation?.sevaKendra?.district?.stateId,
-              districtId: data?.data?.user?.designation?.sevaKendra?.districtId,
-              sevaKendraId: data?.data?.user?.designation?.sevaKendraId,
+              stateId: data?.user?.designation?.sevaKendra?.district?.stateId,
+              districtId: data?.user?.designation?.sevaKendra?.districtId,
+              sevaKendraId: data?.user?.designation?.sevaKendraId,
             }),
       });
     },
@@ -304,11 +302,115 @@ const Form = () => {
         </Grid>
       </WithCondition>
 
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          paddingTop: "0px !important",
+        }}
+      >
         <DividerLine />
       </Grid>
 
-      <WithCondition isValid={editId}></WithCondition>
+      <WithCondition isValid={editId}>
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Service Type: {data?.service?.serviceType?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Service Name: {data?.service?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Date:{" "}
+            {formatDate({ date: data?.dateOfService, format: "DD-MM-YYYY" })}
+          </CustomTypography>
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <DividerLine gap={"8px 0 24px"} />
+        </Grid>
+
+        <Grid
+          item
+          xs={12}
+          sx={{
+            paddingTop: "0px !important",
+          }}
+        >
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Seva Kendra State & District:{" "}
+            {data?.user?.designation?.sevaKendra?.district?.state?.name}
+            {" - "}
+            {data?.user?.designation?.sevaKendra?.district?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            Seva Kendra Name: {data?.user?.designation?.sevaKendra?.name}
+          </CustomTypography>
+          <CustomTypography
+            color={theme?.palette?.commonColor?.grey}
+            fontSize={isMobile ? "14px" : "16px"}
+            capitalize={"capitalize"}
+            sx={{
+              marginBottom: "2px !important",
+              fontWeight: "500 !important",
+            }}
+          >
+            User Assigned: {data?.user?.firstName} {data?.user?.lastName}
+          </CustomTypography>
+        </Grid>
+      </WithCondition>
 
       <WithCondition isValid={!editId}>
         <Grid item xs={12} sm={12} md={6}>
