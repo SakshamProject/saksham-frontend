@@ -3,7 +3,7 @@ import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer, theme } from "../../styles";
 import { formatDate } from "../../utils/common";
 import { CODES } from "../globalConstants";
-import { serviceStatus, yesNoSeed } from "../seeds";
+import { serviceStatus, services, yesNoSeed } from "../seeds";
 
 export const listInitialValues = {
   serviceStatus: "",
@@ -229,6 +229,67 @@ export const formFields = {
     name: "isNonSevaKendraFollowUpRequired",
     inputValues: yesNoSeed,
   },
+  isCompleted: {
+    label: "Completed",
+    name: "isCompleted",
+    inputValues: yesNoSeed,
+  },
+  completedDate: {
+    label: "Completed Date *",
+    name: "completedDate",
+    maxDate: new Date(),
+  },
+  howTheyGotService: {
+    label: "How they got service *",
+    name: "howTheyGotService",
+    inputValues: services,
+  },
+  reasonForNonCompletion: {
+    label: "Reason for not completed *",
+    name: "reasonForNonCompletion",
+    fieldType: "alphaNumeric",
+  },
+  isFollowUpRequired: {
+    label: "Further Follow up needed",
+    name: "isFollowUpRequired",
+    inputValues: yesNoSeed,
+  },
+  followUpdate: {
+    label: "Follow up date *",
+    name: "followUp.followUpdate",
+  },
+  followUpState: {
+    label: "Follow up seva kendra state *",
+    name: "followUp.stateId",
+  },
+  followUpDistrict: {
+    label: "Follow up seva kendra district *",
+    name: "followUp.districtId",
+  },
+  followUpSevaKendra: {
+    label: "Follow up seva kendra *",
+    name: "followUp.sevaKendraId",
+  },
+  followUpUser: {
+    label: "Follow up user *",
+    name: "followUp.userId",
+    getOptionLabel: (val) => `${val?.firstName} ${val?.lastName}`,
+  },
+  donorName: {
+    label: "Donor Name",
+    name: "donor.name",
+    fieldType: "alphabets",
+  },
+  donorContact: {
+    label: "Donor Contact",
+    name: "donor.contact",
+    fieldType: "mobile",
+  },
+  donorAddress: {
+    label: "Donor Address",
+    name: "donor.address",
+    fieldType: "alphaNumeric",
+  },
 };
 
 export const initialValues = {
@@ -252,4 +313,31 @@ export const initialValues = {
   },
   divyangId: "",
   isNonSevaKendraFollowUpRequired: CODES?.NO,
+};
+
+export const editInitialValues = {
+  isCompleted: CODES?.NO,
+  isNonSevaKendraFollowUpRequired: false,
+  completedDate: "",
+  howTheyGotService: "",
+  reasonForNonCompletion: "",
+  nonSevaKendraFollowUp: {
+    name: "",
+    mobileNumber: "",
+    email: "",
+    sendMail: CODES?.NO,
+  },
+  donor: {
+    name: "",
+    contact: "",
+    address: "",
+  },
+  isFollowUpRequired: CODES?.NO,
+  followUp: {
+    followUpdate: "",
+    stateId: "",
+    districtId: "",
+    sevaKendraId: "",
+    userId: "",
+  },
 };
