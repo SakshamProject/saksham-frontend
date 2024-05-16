@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography, colors } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
@@ -17,12 +17,16 @@ import {
   divyangDetailsColumn,
 } from "../../../constants/globalConstants";
 import {
+  editInitialValues,
   formFields,
   initialValues,
 } from "../../../constants/serviceMapping/serviceMapping";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, theme } from "../../../styles";
-import { validationSchema } from "../../../validations/serviceMapping/serviceMapping";
+import {
+  editValidationSchema,
+  validationSchema,
+} from "../../../validations/serviceMapping/serviceMapping";
 import {
   CustomDatePicker,
   CustomRadioButton,
@@ -33,7 +37,10 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { dispatchResponseAction } from "../../../utils/dispatch";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
 import { formatDate, getValidValues } from "../../../utils/common";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import useResponsive from "../../../hooks/useResponsive";
@@ -46,26 +53,84 @@ const Form = () => {
   const { isMobile } = useResponsive();
 
   const handleOnSubmit = (value) => {
-    const payload = getValidValues({
-      ...value,
-      divyangId: "e5159dc9-1611-4c1a-8685-dadd2ffed3ba", // do changes on this
-      isNonSevaKendraFollowUpRequired:
-        value.isNonSevaKendraFollowUpRequired === CODES?.YES,
-      dateOfService: formatDate({ date: value?.dateOfService, format: "iso" }),
-      dueDate: formatDate({
-        date: value?.dueDate,
-        format: "iso",
-      }),
-      ...(value.isNonSevaKendraFollowUpRequired === CODES?.YES
-        ? {
-            nonSevaKendraFollowUp: getValidValues({
-              ...value.nonSevaKendraFollowUp,
-              sendMail: values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
+    if (!editId) {
+      const payload = getValidValues({
+        ...value,
+        divyangId: "e5159dc9-1611-4c1a-8685-dadd2ffed3ba", // do changes on this
+        isNonSevaKendraFollowUpRequired:
+          value.isNonSevaKendraFollowUpRequired === CODES?.YES,
+        dateOfService: formatDate({
+          date: value?.dateOfService,
+          format: "iso",
+        }),
+        dueDate: formatDate({
+          date: value?.dueDate,
+          format: "iso",
+        }),
+        ...(value.isNonSevaKendraFollowUpRequired === CODES?.YES
+          ? {
+              nonSevaKendraFollowUp: getValidValues({
+                ...value.nonSevaKendraFollowUp,
+                sendMail:
+                  values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
+              }),
+            }
+          : { nonSevaKendraFollowUp: "" }),
+      });
+      onSubmit(payload);
+    } else {
+      if (
+        !(
+          Object.keys(getValidValues(value?.donor)).length === 0 ||
+          Object.keys(getValidValues(value?.donor)).length === 3
+        )
+      ) {
+        dispatchSnackbarError("Please Fill Donor Details Fully If Hav one");
+      } else if (
+        !(
+          Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length ===
+            1 ||
+          Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length === 4
+        )
+      ) {
+        dispatchSnackbarError("Please Fill Follow up Details Fully If Hav one");
+      } else if (
+        Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length < 4 &&
+        value?.isFollowUpRequired === CODES?.NO
+      ) {
+        dispatchSnackbarError("Please Fill any Follow up Details");
+      } else {
+        const payload = getValidValues({
+          ...value,
+          isCompleted:
+            value?.isCompleted === CODES?.YES ? "COMPLETED" : "PENDING",
+          completedDate: formatDate({
+            date: value.completedDate,
+            format: "iso",
+          }),
+          isNonSevaKendraFollowUpRequired:
+            Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length >
+            1,
+          followUp: {
+            followUpdate: formatDate({
+              date: value?.followUp?.followUpdate,
+              format: "iso",
             }),
-          }
-        : { nonSevaKendraFollowUp: "" }),
-    });
-    onSubmit(payload);
+            userId: value?.followUp?.userId,
+          },
+          ...(!!value?.nonSevaKendraFollowUp?.name
+            ? {
+                nonSevaKendraFollowUp: getValidValues({
+                  ...value.nonSevaKendraFollowUp,
+                  sendMail:
+                    values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
+                }),
+              }
+            : { nonSevaKendraFollowUp: "" }),
+        });
+        onSubmit(payload);
+      }
+    }
   };
 
   const { mutate: onSubmit } = useMutation({
@@ -95,9 +160,9 @@ const Form = () => {
     handleSubmit,
     setTouched,
   } = useFormik({
-    initialValues,
+    initialValues: !editId ? initialValues : editInitialValues,
     onSubmit: () => handleOnSubmit(values),
-    validationSchema,
+    validationSchema: !editId ? validationSchema : editValidationSchema,
   });
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
@@ -109,32 +174,52 @@ const Form = () => {
   });
 
   const { data: allDistricts } = useQuery({
-    queryKey: ["getAllDistrictByState", values?.stateId],
-    queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
+    queryKey: [
+      "getAllDistrictByState",
+      values?.stateId,
+      values?.followUp?.stateId,
+    ],
+    queryFn: () =>
+      getByIdApiService(
+        API_PATHS?.STATES,
+        values?.stateId || values?.followUp?.stateId
+      ),
     select: ({ data }) => data?.data?.districts,
-    enabled: !!values?.stateId,
+    enabled: !!values?.stateId || !!values?.followUp?.stateId,
   });
 
   const { data: allSevaKendras } = useQuery({
-    queryKey: ["getSevaKendraNameByDistrict", values?.districtId],
+    queryKey: [
+      "getSevaKendraNameByDistrict",
+      values?.districtId,
+      values?.followUp?.districtId,
+    ],
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        `${values?.districtId}${API_PATHS?.SEVAKENDRA}?status=ACTIVE`
+        `${values?.districtId || values?.followUp?.districtId}${
+          API_PATHS?.SEVAKENDRA
+        }?status=ACTIVE`
       ),
     select: ({ data }) => data?.data,
-    enabled: !!values?.districtId,
+    enabled: !!values?.districtId || !!values?.followUp?.districtId,
   });
 
   const { data: allSevaKendraUsers } = useQuery({
-    queryKey: ["getSevaKendraUserBySevaKendraName", values?.sevaKendraId],
+    queryKey: [
+      "getSevaKendraUserBySevaKendraName",
+      values?.sevaKendraId,
+      values?.followUp?.sevaKendraId,
+    ],
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.SEVAKENDRAS,
-        `${values?.sevaKendraId}${API_PATHS?.USERS}?status=ACTIVE`
+        `${values?.sevaKendraId || values?.followUp?.sevaKendraId}${
+          API_PATHS?.USERS
+        }?status=ACTIVE`
       ),
     select: ({ data }) => data?.data?.map((item) => item?.user),
-    enabled: !!values?.sevaKendraId,
+    enabled: !!values?.sevaKendraId || !!values?.followUp?.sevaKendraId,
   });
 
   const { data: allServiceType } = useQuery({
@@ -148,27 +233,27 @@ const Form = () => {
     queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     enabled: !!editId,
     onSuccess: (data) => {
-      console.log(data);
       setValues({
-        ...data,
-        serviceTypeId: data?.service?.serviceType?.id,
-        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired
+        ...editInitialValues,
+        isCompleted: data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
+        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired,
+        completedDate: data?.completedDatem,
+        howTheyGotService: data?.howTheyGotService,
+        reasonForNonCompletion: data?.reasonForNonCompletion,
+        donor: {
+          ...data?.donor,
+        },
+        isFollowUpRequired: !!data?.nonSevaKendraFollowUp?.length
           ? CODES?.YES
           : CODES?.NO,
-        ...(data?.nonSevaKendraFollowUp?.length
-          ? {
-              nonSevaKendraFollowUp: {
-                ...data?.nonSevaKendraFollowUp?.[0],
-                sendMail: data?.nonSevaKendraFollowUp?.[0]?.sendMail
-                  ? CODES?.YES
-                  : CODES?.NO,
-              },
-            }
-          : {
-              stateId: data?.user?.designation?.sevaKendra?.district?.stateId,
-              districtId: data?.user?.designation?.sevaKendra?.districtId,
-              sevaKendraId: data?.user?.designation?.sevaKendraId,
-            }),
+        nonSevaKendraFollowUp: {
+          email: data?.nonSevaKendraFollowUp?.[0]?.email,
+          mobileNumber: data?.nonSevaKendraFollowUp?.[0]?.mobileNumber,
+          name: data?.nonSevaKendraFollowUp?.[0]?.name,
+          sendMail: data?.nonSevaKendraFollowUp?.[0]?.sendMail
+            ? CODES?.YES
+            : CODES?.NO,
+        },
       });
     },
     select: ({ data }) => data?.data,
@@ -312,7 +397,7 @@ const Form = () => {
         <DividerLine />
       </Grid>
 
-      <WithCondition isValid={editId}>
+      <WithCondition isValid={!!editId}>
         <Grid
           item
           xs={12}
@@ -356,6 +441,63 @@ const Form = () => {
           </CustomTypography>
         </Grid>
 
+        <WithCondition isValid={!!data?.user}>
+          <Grid
+            item
+            xs={12}
+            sx={{
+              paddingTop: "0px !important",
+            }}
+          >
+            <DividerLine gap={"8px 0 24px"} />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            sx={{
+              paddingTop: "0px !important",
+            }}
+          >
+            <CustomTypography
+              color={theme?.palette?.commonColor?.grey}
+              fontSize={isMobile ? "14px" : "16px"}
+              capitalize={"capitalize"}
+              sx={{
+                marginBottom: "2px !important",
+                fontWeight: "500 !important",
+              }}
+            >
+              Seva Kendra State & District:{" "}
+              {data?.user?.designation?.sevaKendra?.district?.state?.name}
+              {" - "}
+              {data?.user?.designation?.sevaKendra?.district?.name}
+            </CustomTypography>
+            <CustomTypography
+              color={theme?.palette?.commonColor?.grey}
+              fontSize={isMobile ? "14px" : "16px"}
+              capitalize={"capitalize"}
+              sx={{
+                marginBottom: "2px !important",
+                fontWeight: "500 !important",
+              }}
+            >
+              Seva Kendra Name: {data?.user?.designation?.sevaKendra?.name}
+            </CustomTypography>
+            <CustomTypography
+              color={theme?.palette?.commonColor?.grey}
+              fontSize={isMobile ? "14px" : "16px"}
+              capitalize={"capitalize"}
+              sx={{
+                marginBottom: "2px !important",
+                fontWeight: "500 !important",
+              }}
+            >
+              User Assigned: {data?.user?.firstName} {data?.user?.lastName}
+            </CustomTypography>
+          </Grid>
+        </WithCondition>
+
         <Grid
           item
           xs={12}
@@ -366,50 +508,313 @@ const Form = () => {
           <DividerLine gap={"8px 0 24px"} />
         </Grid>
 
-        <Grid
-          item
-          xs={12}
-          sx={{
-            paddingTop: "0px !important",
-          }}
-        >
-          <CustomTypography
-            color={theme?.palette?.commonColor?.grey}
-            fontSize={isMobile ? "14px" : "16px"}
-            capitalize={"capitalize"}
-            sx={{
-              marginBottom: "2px !important",
-              fontWeight: "500 !important",
+        <Grid item xs={12} marginBottom={"-20px"}>
+          <CustomRadioButton
+            name={formFields?.isCompleted?.name}
+            label={formFields?.isCompleted?.label}
+            inputValues={formFields?.isCompleted?.inputValues}
+            value={values?.isCompleted}
+            touched={touched?.isCompleted}
+            errors={errors?.isCompleted}
+            labelStyle={{ color: theme?.palette?.commonColor?.lightBlue }}
+            onChange={(_, value) => {
+              setValues({
+                ...values,
+                isCompleted: value,
+                completedDate: "",
+                howTheyGotService: "",
+                reasonForNonCompletion: "",
+                isFollowUpRequired: CODES?.NO,
+                followUp: { ...editInitialValues?.followUp },
+                donor: { ...editInitialValues?.donor },
+              });
+              setTouched({});
             }}
-          >
-            Seva Kendra State & District:{" "}
-            {data?.user?.designation?.sevaKendra?.district?.state?.name}
-            {" - "}
-            {data?.user?.designation?.sevaKendra?.district?.name}
-          </CustomTypography>
-          <CustomTypography
-            color={theme?.palette?.commonColor?.grey}
-            fontSize={isMobile ? "14px" : "16px"}
-            capitalize={"capitalize"}
-            sx={{
-              marginBottom: "2px !important",
-              fontWeight: "500 !important",
-            }}
-          >
-            Seva Kendra Name: {data?.user?.designation?.sevaKendra?.name}
-          </CustomTypography>
-          <CustomTypography
-            color={theme?.palette?.commonColor?.grey}
-            fontSize={isMobile ? "14px" : "16px"}
-            capitalize={"capitalize"}
-            sx={{
-              marginBottom: "2px !important",
-              fontWeight: "500 !important",
-            }}
-          >
-            User Assigned: {data?.user?.firstName} {data?.user?.lastName}
-          </CustomTypography>
+            onBlur={handleBlur}
+            isViewMode={isViewMode}
+          />
         </Grid>
+
+        <WithCondition isValid={values?.isCompleted === CODES?.YES}>
+          <Grid item xs={12} sm={12} md={6}>
+            <CustomDatePicker
+              name={formFields?.completedDate?.name}
+              label={formFields?.completedDate?.label}
+              minDate={formFields?.completedDate?.minDate}
+              value={values?.completedDate}
+              errors={errors?.completedDate}
+              touched={touched?.completedDate}
+              onChange={setFieldValue}
+              setTouched={setFieldTouched}
+              maxDate={formFields?.completedDate?.maxDate}
+            />
+          </Grid>
+
+          <Grid item xs={12} sm={12} md={6}>
+            <SingleAutoComplete
+              label={formFields?.howTheyGotService?.label}
+              name={formFields?.howTheyGotService?.name}
+              value={values?.howTheyGotService}
+              errors={errors?.howTheyGotService}
+              touched={touched?.howTheyGotService}
+              onChange={(_, value) => {
+                setFieldValue(formFields?.howTheyGotService?.name, value);
+              }}
+              onBlur={handleBlur}
+              inputValues={formFields?.howTheyGotService?.inputValues || []}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+
+          <Grid
+            item
+            xs={12}
+            sx={{
+              paddingTop: "0px !important",
+            }}
+          >
+            <DividerLine gap={"8px 0 24px"} />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomTextField
+              label={formFields?.donorName?.label}
+              name={formFields?.donorName?.name}
+              fieldType={formFields?.donorName?.fieldType}
+              value={values?.donor?.name}
+              errors={errors?.donor?.name}
+              touched={touched?.donor?.name}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomTextField
+              label={formFields?.donorContact?.label}
+              name={formFields?.donorContact?.name}
+              fieldType={formFields?.donorContact?.fieldType}
+              value={values?.donor?.contact}
+              errors={errors?.donor?.contact}
+              touched={touched?.donor?.contact}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+              maxLength={10}
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <CustomTextField
+              label={formFields?.donorAddress?.label}
+              name={formFields?.donorAddress?.name}
+              fieldType={formFields?.donorAddress?.fieldType}
+              value={values?.donor?.address}
+              errors={errors?.donor?.address}
+              touched={touched?.donor?.address}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+        </WithCondition>
+
+        <WithCondition isValid={values?.isCompleted === CODES?.NO}>
+          <Grid item xs={12}>
+            <CustomTextField
+              label={formFields?.reasonForNonCompletion?.label}
+              name={formFields?.reasonForNonCompletion?.name}
+              fieldType={formFields?.reasonForNonCompletion?.fieldType}
+              value={values?.reasonForNonCompletion}
+              errors={errors?.reasonForNonCompletion}
+              touched={touched?.reasonForNonCompletion}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+
+          <Grid item xs={12} marginBottom={"-20px"}>
+            <CustomRadioButton
+              name={formFields?.isFollowUpRequired?.name}
+              label={formFields?.isFollowUpRequired?.label}
+              inputValues={formFields?.isFollowUpRequired?.inputValues}
+              value={values?.isFollowUpRequired}
+              touched={touched?.isFollowUpRequired}
+              errors={errors?.isFollowUpRequired}
+              labelStyle={{ color: theme?.palette?.commonColor?.lightBlue }}
+              onChange={(_, value) => {
+                setValues({
+                  ...values,
+                  isFollowUpRequired: value,
+                  followUp: {
+                    ...editInitialValues?.followUp,
+                  },
+                });
+                setTouched({
+                  ...touched,
+                  followUp: {
+                    followUpdate: false,
+                    followUpState: false,
+                    followUpDistrict: false,
+                    followUpSevaKendra: false,
+                    followUpUser: false,
+                  },
+                });
+              }}
+              onBlur={handleBlur}
+              isViewMode={isViewMode}
+            />
+          </Grid>
+
+          <WithCondition isValid={values?.isFollowUpRequired === CODES?.YES}>
+            <Grid item xs={12}>
+              <CustomTypography
+                capitalize={"capitalize"}
+                color={{ color: theme?.palette?.commonColor?.lightBlue }}
+              >
+                Follow Up Details
+              </CustomTypography>
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6}>
+              <CustomDatePicker
+                name={formFields?.followUpdate?.name}
+                label={formFields?.followUpdate?.label}
+                minDate={formFields?.followUpdate?.minDate}
+                value={values?.followUp?.followUpdate}
+                errors={errors?.followUp?.followUpdate}
+                touched={touched?.followUp?.followUpdate}
+                onChange={setFieldValue}
+                setTouched={setFieldTouched}
+                maxDate={formFields?.followUpdate?.maxDate}
+              />
+            </Grid>
+
+            <Grid
+              item
+              xs={12}
+              sm={12}
+              md={6}
+              sx={{ paddingTop: "0px !important" }}
+            />
+
+            <Grid item xs={12} sm={12} md={6}>
+              <SingleAutoComplete
+                label={formFields?.followUpState?.label}
+                name={formFields?.followUpState?.name}
+                value={values?.followUp?.stateId}
+                errors={errors?.followUp?.stateId}
+                touched={touched?.followUp?.stateId}
+                customOnchange={(_, value) => {
+                  setValues({
+                    ...values,
+                    followUp: {
+                      ...values?.followUp,
+                      stateId: value?.id,
+                      districtId: "",
+                      sevaKendraId: "",
+                      userId: "",
+                    },
+                  });
+                  setTouched({
+                    ...touched,
+                    followUp: {
+                      ...touched?.followUp,
+                      stateId: false,
+                      districtId: false,
+                      sevaKendraId: false,
+                      userId: false,
+                    },
+                  });
+                }}
+                onBlur={handleBlur}
+                inputValues={allStates || []}
+                isViewMode={isViewMode}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={12} md={6}>
+              <SingleAutoComplete
+                label={formFields?.followUpDistrict?.label}
+                name={formFields?.followUpDistrict?.name}
+                value={values?.followUp?.districtId}
+                errors={errors?.followUp?.districtId}
+                touched={touched?.followUp?.districtId}
+                customOnchange={(_, value) => {
+                  setValues({
+                    ...values,
+                    followUp: {
+                      ...values?.followUp,
+                      districtId: value?.id,
+                      sevaKendraId: "",
+                      userId: "",
+                    },
+                  });
+                  setTouched({
+                    ...touched,
+                    followUp: {
+                      ...touched?.followUp,
+                      districtId: false,
+                      sevaKendraId: false,
+                      userId: false,
+                    },
+                  });
+                }}
+                onBlur={handleBlur}
+                inputValues={allDistricts || []}
+                isViewMode={isViewMode}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <SingleAutoComplete
+                label={formFields?.followUpSevaKendra?.label}
+                name={formFields?.followUpSevaKendra?.name}
+                value={values?.followUp?.sevaKendraId}
+                errors={errors?.followUp?.sevaKendraId}
+                touched={touched?.followUp?.sevaKendraId}
+                customOnchange={(_, value) => {
+                  setValues({
+                    ...values,
+                    followUp: {
+                      ...values?.followUp,
+                      sevaKendraId: value?.id,
+                      userId: "",
+                    },
+                  });
+                  setTouched({
+                    ...touched,
+                    followUp: {
+                      ...touched?.followUp,
+                      sevaKendraId: false,
+                      userId: false,
+                    },
+                  });
+                }}
+                onBlur={handleBlur}
+                inputValues={allSevaKendras || []}
+                isViewMode={isViewMode}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <SingleAutoComplete
+                label={formFields?.followUpUser?.label}
+                name={formFields?.followUpUser?.name}
+                getOptionLabel={formFields?.followUpUser?.getOptionLabel}
+                value={values?.followUp?.userId}
+                errors={errors?.followUp?.userId}
+                touched={touched?.followUp?.userId}
+                onChange={setFieldValue}
+                onBlur={handleBlur}
+                inputValues={allSevaKendraUsers || []}
+                isViewMode={isViewMode}
+              />
+            </Grid>
+          </WithCondition>
+        </WithCondition>
       </WithCondition>
 
       <WithCondition isValid={!editId}>
@@ -520,7 +925,7 @@ const Form = () => {
         </Grid>
       </WithCondition>
 
-      <WithCondition isValid={editId}>
+      <WithCondition isValid={!!editId}>
         <Grid item xs={12}>
           <CustomTypography
             color={theme?.palette?.commonColor?.black}
@@ -532,7 +937,9 @@ const Form = () => {
       </WithCondition>
 
       <WithCondition
-        isValid={values?.isNonSevaKendraFollowUpRequired === CODES.NO}
+        isValid={
+          values?.isNonSevaKendraFollowUpRequired === CODES.NO && !editId
+        }
       >
         <Grid item xs={12} sm={12} md={6}>
           <SingleAutoComplete
@@ -632,7 +1039,9 @@ const Form = () => {
       </WithCondition>
 
       <WithCondition
-        isValid={values?.isNonSevaKendraFollowUpRequired === CODES?.YES}
+        isValid={
+          values?.isNonSevaKendraFollowUpRequired === CODES?.YES || !!editId
+        }
       >
         <Grid item xs={12} sm={12} md={6}>
           <CustomTextField

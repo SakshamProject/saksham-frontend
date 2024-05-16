@@ -96,7 +96,7 @@ export const CustomRadioButton = ({
 };
 
 CustomRadioButton.propTypes = {
-  value: propTypes.string,
+  value: propTypes.oneOfType([propTypes.string, propTypes.bool]),
   touched: propTypes.bool,
   errors: propTypes.string,
   customHelperText: propTypes.string,

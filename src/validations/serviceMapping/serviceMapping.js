@@ -111,10 +111,78 @@ export const validationSchema = object({
         "isRequired",
         "Contact person Email is required",
         (value, context) =>
-          context?.from?.[1]?.value.isNonSevaKendraFollowUpRequired !==
+          context?.from?.[1]?.value?.isNonSevaKendraFollowUpRequired !==
           CODES?.YES
             ? true
             : !!value
       ),
+  }),
+});
+
+export const editValidationSchema = object({
+  completedDate: date()
+    .typeError("Invalid Date")
+    .test("isRequired", "Completed date is required", (value, context) =>
+      context?.parent?.isCompleted !== CODES?.YES ? true : !!value
+    )
+    .test("isFut", "Completed date should not greater than today", (value) =>
+      !!value
+        ? formatDate({ date: value, format: "iso" }) <
+          formatDate({ date: new Date(), format: "iso" })
+        : true
+    ),
+  howTheyGotService: string()
+    .trim()
+    .test("isRequired", "This Field is required", (value, context) =>
+      context?.parent?.isCompleted !== CODES?.YES ? true : !!value
+    ),
+  reasonForNonCompletion: string()
+    .trim()
+    .min(3, "Reason must be at least 3 characters long")
+    .max(255, "Reason cannot have more than 255 characters")
+    .test("isRequired", "Reason is required", (value, context) =>
+      context?.parent?.isCompleted !== CODES?.NO ? true : !!value
+    ),
+
+  followUp: object({
+    followUpdate: date()
+      .typeError("Invalid Date")
+      .test("isRequired", "Follow date is required", (value, context) =>
+        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+          ? true
+          : !!value
+      ),
+    stateId: string().test(
+      "isRequired",
+      "State is required",
+      (value, context) =>
+        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+          ? true
+          : !!value
+    ),
+    districtId: string().test(
+      "isRequired",
+      "District is required",
+      (value, context) =>
+        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+          ? true
+          : !!value
+    ),
+    sevaKendraId: string().test(
+      "isRequired",
+      "Seva Kendra is required",
+      (value, context) =>
+        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+          ? true
+          : !!value
+    ),
+    userId: string().test(
+      "isRequired",
+      "User id is required",
+      (value, context) =>
+        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+          ? true
+          : !!value
+    ),
   }),
 });
