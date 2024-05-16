@@ -100,76 +100,37 @@ const Login = () => {
     }
   };
 
-  const setUserInfo = (data) => {
-    let userInfo = {};
+  const handleForgetPassword = () => {
+    navigate(ROUTE_PATHS?.FORGOT_PASSWORD, {
+      state: { role },
+      replace: true,
+    });
+  };
 
-    if (data?.user) {
-      let serviceMapping = false;
-      const designations = data?.user?.designation?.features?.map((item) => {
-        const { feature } = item;
-        if (feature?.name === CODES?.SERVICE_MAPPING) {
-          serviceMapping = true;
-        }
-        return { ...feature };
-      });
-      userInfo = {
-        userId: data?.user?.id,
-        serviceMapping,
-        role: CODES?.SEVA_KENDRA,
-        name: data?.user?.person?.userName,
-        designation: {
-          id: data?.user?.designation?.id,
-          name: data?.user?.designation?.name,
-          designations,
-        },
-        person: {
-          id: data?.user?.person?.id,
-          name: data?.user?.person?.userName,
-        },
-      };
-    } else if (data?.divyang) {
-      userInfo = {
-        userId: data?.divyang?.id,
-        role: CODES?.DIVYANG,
-        name: data?.divyang?.person?.userName,
-        designation: {
-          name: CODES?.DIVYANG,
-        },
-        person: {
-          id: data?.divyang?.person?.id,
-          name: data?.divyang?.person?.userName,
-        },
-      };
-    } else {
-      userInfo = {
-        name: data?.superAdmin,
-        role: CODES?.ADMIN,
-        designation: {
-          name: CODES?.ADMIN,
-        },
-      };
+  const handleLink = () => {
+    if (role === CODES?.DIVYANG) {
+      navigate(ROUTE_PATHS?.SIGNUP);
     }
-    dispatchUserInfo(userInfo);
-    setCookie(COOKIE_KEYS?.TOKEN, data?.token);
-    setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
+    if (role === CODES?.SEVA_KENDRA) {
+      handleRole(CODES?.ADMIN);
+    }
+  };
+
+  const getApiPath = () => {
+    if (role === CODES?.ADMIN) return API_PATHS?.LOGIN_ADMIN;
+    if (role === CODES?.SEVA_KENDRA) return API_PATHS?.LOGIN;
+    return API_PATHS?.LOGIN_DIVYANG;
   };
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["userLogin"],
-    mutationFn: (value) => {
-      let apiPath = "";
-      if (role === CODES?.ADMIN) {
-        apiPath = API_PATHS?.LOGIN_ADMIN;
-      } else if (role === CODES?.SEVA_KENDRA) {
-        apiPath = API_PATHS?.LOGIN;
-      } else {
-        apiPath = API_PATHS?.LOGIN_DIVYANG;
-      }
-      return postApiService(apiPath, getValidValues(value));
-    },
+    mutationFn: (value) => postApiService(getApiPath(), getValidValues(value)),
     onSuccess: ({ data }, value) => {
+      const userInfo = getUserInfo(data);
       setRememberMe(value);
-      setUserInfo(data);
+      dispatchUserInfo(userInfo);
+      setCookie(COOKIE_KEYS?.TOKEN, data?.token);
+      setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
       navigate(ROUTE_PATHS?.LAYOUT);
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
     },
@@ -302,14 +263,7 @@ const Login = () => {
             </Box>
 
             <WithCondition isValid={role !== CODES?.ADMIN}>
-              <ForgetPassword
-                onClick={() =>
-                  navigate(ROUTE_PATHS?.FORGOT_PASSWORD, {
-                    state: { role },
-                    replace: true,
-                  })
-                }
-              >
+              <ForgetPassword onClick={() => handleForgetPassword()}>
                 Forget Password
               </ForgetPassword>
             </WithCondition>
@@ -329,16 +283,7 @@ const Login = () => {
 
           <WithCondition isValid={role !== CODES?.ADMIN}>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
-              <ForgetPassword
-                onClick={() => {
-                  if (role === CODES?.DIVYANG) {
-                    navigate(ROUTE_PATHS?.SIGNUP);
-                  }
-                  if (role === CODES?.SEVA_KENDRA) {
-                    handleRole(CODES?.ADMIN);
-                  }
-                }}
-              >
+              <ForgetPassword onClick={() => handleLink()}>
                 {role === CODES?.SEVA_KENDRA
                   ? "Admin login"
                   : "Click here to register"}
@@ -352,3 +297,56 @@ const Login = () => {
 };
 
 export default Login;
+
+const getUserInfo = (data) => {
+  if (data?.user) {
+    let serviceMapping = false;
+
+    const designations = data?.user?.designation?.features?.map((item) => {
+      const { feature } = item;
+      if (feature?.name === CODES?.SERVICE_MAPPING) {
+        serviceMapping = true;
+      }
+      return { ...feature };
+    });
+
+    return {
+      userId: data?.user?.id,
+      serviceMapping,
+      role: CODES?.SEVA_KENDRA,
+      name: data?.user?.person?.userName,
+      designation: {
+        id: data?.user?.designation?.id,
+        name: data?.user?.designation?.name,
+        designations,
+      },
+      person: {
+        id: data?.user?.person?.id,
+        name: data?.user?.person?.userName,
+      },
+    };
+  }
+
+  if (data?.divyang) {
+    return {
+      userId: data?.divyang?.id,
+      role: CODES?.DIVYANG,
+      name: data?.divyang?.person?.userName,
+      designation: {
+        name: CODES?.DIVYANG,
+      },
+      person: {
+        id: data?.divyang?.person?.id,
+        name: data?.divyang?.person?.userName,
+      },
+    };
+  }
+
+  return {
+    name: data?.superAdmin,
+    role: CODES?.ADMIN,
+    designation: {
+      name: CODES?.ADMIN,
+    },
+  };
+};

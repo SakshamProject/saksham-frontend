@@ -5,7 +5,7 @@ const CustomTooltip = ({ children, title, placement, arrow }) => {
   return (
     <Tooltip
       title={title || ""}
-      arrow={arrow || true}
+      arrow={!arrow || true}
       placement={placement || "bottom"}
     >
       {children}

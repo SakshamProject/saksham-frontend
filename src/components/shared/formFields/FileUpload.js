@@ -135,12 +135,13 @@ export const FileUpload = ({
 
   const resetValues = () => {
     if (type === "image") {
-      setFieldValue(`${name}Url`, "");
+      setFieldValue(`${name}File`, null);
+      setFieldValue(`${name}FileName`, null);
     }
     setImgUrl("");
     setFieldValue(name, null);
     if (!disableResetForAllValues) {
-      setFieldValue(`${name}Name`, "");
+      setFieldValue(`${name}FileName`, "");
     }
     setKey(!key);
     setFileName("");

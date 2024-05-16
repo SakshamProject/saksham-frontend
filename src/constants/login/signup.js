@@ -6,7 +6,7 @@ export const initialValues = {
   firstName: "",
   lastName: "",
   divyangId: "",
-  picture: "",
+  profilePhoto: "",
   gender: CODES?.MALE,
   dateOfBirth: "",
   mailId: "",
@@ -33,9 +33,9 @@ export const fields = {
     label: "Divyang ID *",
     name: "divyangId",
   },
-  picture: {
+  profilePhoto: {
     label: "Upload picture",
-    name: "picture",
+    name: "profilePhoto",
     type: "image",
     accept: "image/*",
   },

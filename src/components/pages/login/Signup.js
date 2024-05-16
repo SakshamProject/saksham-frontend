@@ -10,11 +10,6 @@ import { CODES } from "../../../constants/globalConstants";
 import { fields, initialValues } from "../../../constants/login/signup";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
-  CancelButton,
-  StyledButtonContainer,
-  SubmitButton,
-} from "../../../styles";
-import {
   BackIcon,
   FormWrapper,
   SignupContainer,
@@ -22,8 +17,9 @@ import {
   Title,
   TitleContainer,
 } from "../../../styles/signup";
-import { formatDate, getValidValues } from "../../../utils/common";
+import { formatDate } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/login/signup";
 import {
   CustomDatePicker,
@@ -32,18 +28,23 @@ import {
   CustomTextField,
   DividerLine,
   FileUpload,
+  FormActions,
 } from "../../shared";
 
 const Signup = () => {
   const navigate = useNavigate();
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.LOGIN, { replace: true });
+  const handleOnReset = () => navigate(ROUTE_PATHS?.LOGIN);
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues({
-      ...values,
-      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-    });
+    const payload = multiPartFormData(
+      {
+        ...values,
+        dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+      },
+      [],
+      ["profilePhoto"]
+    );
     onSubmit(payload);
   };
 
@@ -82,7 +83,7 @@ const Signup = () => {
         </TitleContainer>
 
         <FormWrapper container rowSpacing={2} columnSpacing={3}>
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.firstName?.label}
               name={fields?.firstName?.name}
@@ -95,7 +96,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.lastName?.label}
               name={fields?.lastName?.name}
@@ -108,7 +109,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.divyangId?.label}
               name={fields?.divyangId?.name}
@@ -120,24 +121,23 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <FileUpload
-              name={fields?.picture?.name}
-              type={fields?.picture?.type}
-              accept={fields?.picture?.accept}
-              label={fields?.picture?.label}
-              defaultLabel={fields?.picture?.label}
+              name={fields?.profilePhoto?.name}
+              type={fields?.profilePhoto?.type}
+              accept={fields?.profilePhoto?.accept}
+              defaultLabel={fields?.profilePhoto?.label}
               setFieldValue={setFieldValue}
-              value={values?.picture}
-              error={errors?.picture}
-              touched={touched?.picture}
+              value={values?.profilePhoto}
+              error={errors?.profilePhoto}
+              touched={touched?.profilePhoto}
               onChange={(e) =>
-                setFieldValue(fields?.picture?.name, e?.target?.files[0])
+                setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0])
               }
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomRadioButton
               rowBreak
               name={fields?.gender?.name}
@@ -153,7 +153,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomDatePicker
               label={fields?.dateOfBirth?.label}
               name={fields?.dateOfBirth?.name}
@@ -166,7 +166,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mailId?.label}
               name={fields?.mailId?.name}
@@ -179,7 +179,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.mobileNumber?.label}
               name={fields?.mobileNumber?.name}
@@ -193,7 +193,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.aadharCardNumber?.label}
               name={fields?.aadharCardNumber?.name}
@@ -207,7 +207,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomTextField
               label={fields?.UDIDCardNumber?.label}
               name={fields?.UDIDCardNumber?.name}
@@ -235,7 +235,7 @@ const Signup = () => {
             />
           </Grid>
 
-          <Grid item xs={12} sm={6} md={6}>
+          <Grid item xs={12} md={6}>
             <CustomPasswordField
               showEyeIcon
               label={fields?.password?.label}
@@ -247,7 +247,8 @@ const Signup = () => {
               onBlur={handleBlur}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={6}>
+
+          <Grid item xs={12} md={6}>
             <CustomPasswordField
               showEyeIcon
               label={fields?.confirmPassword?.label}
@@ -260,10 +261,12 @@ const Signup = () => {
             />
           </Grid>
 
-          <StyledButtonContainer style={{ marginTop: "16px" }}>
-            <CancelButton onClick={handleOnReset}>Cancel</CancelButton>
-            <SubmitButton onClick={handleSubmit}>Submit</SubmitButton>
-          </StyledButtonContainer>
+          <Grid item container sx={{ marginTop: "-24px" }}>
+            <FormActions
+              handleOnReset={handleOnReset}
+              handleSubmit={handleSubmit}
+            />
+          </Grid>
         </FormWrapper>
 
         <Box sx={{ height: "28px" }}></Box>
