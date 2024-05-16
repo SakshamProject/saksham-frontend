@@ -56,7 +56,7 @@ export const CustomTextField = ({
       type={"text"}
       name={name}
       fullWidth
-      autoComplete={autoComplete ? "on" : "off"}
+      autoComplete={autoComplete ? (autoComplete ? "on" : "off") : "on"}
       onChange={onChange}
       onBlur={onBlur}
       value={value || ""}

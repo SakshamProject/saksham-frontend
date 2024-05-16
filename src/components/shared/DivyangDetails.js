@@ -1,55 +1,58 @@
-import { Box, Grid, Typography, styled } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import propTypes from "prop-types";
 import user from "../../assets/profile.png";
-import { WithCondition } from "./WithCondition";
 import { divyangDetailsColumn } from "../../constants/globalConstants";
-
-const StyledImage = styled("img")({
-  width: 140,
-  aspectRatio: 1,
-  objectFit: "cover",
-  borderRadius: 16,
-});
-
-const DetailSection = styled(Box)({
-  display: "flex",
-});
-
-const Title = styled(Typography)({
-  width: 180,
-  display: "flex",
-  justifyContent: "space-between",
-  marginRight: 16,
-  fontWeight: 700,
-});
+import useResponsive from "../../hooks/useResponsive";
+import { WithCondition } from "./WithCondition";
 
 export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
+  const { theme } = useResponsive();
+
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        borderRadius: "16px",
+        border: `1px solid ${theme?.palette?.shadowColor?.main}`,
+        flexWrap: "wrap",
+        flex: 1,
+        columnGap: 2,
+        padding: "8px",
+      }}
+    >
       <WithCondition isValid={!disableProfile}>
-        <Grid item xs={4}>
-          <StyledImage
-            src={divyangDetail?.profileImageUrl || user}
-            onError={(e) => (e.target.src = user)}
-            alt="Profile picture"
-          />
-        </Grid>
+        <img
+          style={{
+            width: 120,
+            aspectRatio: 1,
+            objectFit: "cover",
+            borderRadius: "16px",
+          }}
+          src={divyangDetail?.profileImageUrl || user}
+          onError={(e) => (e.target.src = user)}
+          alt="divyang profile"
+        />
       </WithCondition>
 
-      <Grid item xs={8}>
+      <Box>
         {divyangDetailsColumn?.map((item, key) => (
           <WithCondition
-            isValid={!!divyangDetail?.[item?.accessor]}
+            isValid={!!item?.Cell || !!divyangDetail?.[item?.accessor]}
             key={key + item?.accessor}
           >
-            <DetailSection sx={{ display: "flex" }}>
-              <Title>{`${item?.Header} : `}</Title>
-              <Typography>{divyangDetail?.[item?.accessor]}</Typography>
-            </DetailSection>
+            <Box sx={{ display: "flex" }}>
+              <Typography>{`${item?.Header} :`}</Typography>
+              <Typography>
+                &nbsp;
+                {!!item?.Cell
+                  ? item?.Cell(divyangDetail)
+                  : divyangDetail?.[item?.accessor]}
+              </Typography>
+            </Box>
           </WithCondition>
         ))}
-      </Grid>
-    </>
+      </Box>
+    </Box>
   );
 };
 

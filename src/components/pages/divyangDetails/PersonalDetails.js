@@ -234,7 +234,6 @@ const PersonalDetails = () => {
 
   const {
     values: eqValues,
-    handleBlur: eqHandleBlur,
     touched: eqTouched,
     errors: eqErrors,
     handleSubmit: eqHandleSubmit,
@@ -275,24 +274,25 @@ const PersonalDetails = () => {
     queryKey: ["divyangGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       setValues({
         ...initialValues,
-        ...data,
-        UDIDCardNumber: data?.udidCardNumber,
-        date: data?.effectiveFromDate,
-        isMarried: data?.isMarried ? CODES?.YES : CODES?.NO,
-        userName: data?.person?.userName,
-        educationQualifications: data?.educationQualifications.map((value) => ({
-          educationQualificationTypeId: value?.educationQualificationType,
-          educationQualificationId: {
-            id: value?.educationQualification?.id,
-            name: value?.educationQualification?.name,
-          },
-        })),
+        ...data?.data,
+        UDIDCardNumber: data?.data?.udidCardNumber,
+        date: data?.data?.effectiveFromDate,
+        isMarried: data?.data?.isMarried ? CODES?.YES : CODES?.NO,
+        userName: data?.data?.person?.userName,
+        educationQualifications: data?.data?.educationQualifications.map(
+          (value) => ({
+            educationQualificationTypeId: value?.educationQualificationType,
+            educationQualificationId: {
+              id: value?.educationQualification?.id,
+              name: value?.educationQualification?.name,
+            },
+          })
+        ),
       });
     },
-    select: ({ data }) => data?.data,
   });
 
   const handleEditList = (index) => {
@@ -745,6 +745,7 @@ const PersonalDetails = () => {
                 errors={errors?.password}
                 isViewMode={isViewMode}
                 touched={touched?.password}
+                autoComplete
               />
             </Grid>
 
@@ -758,6 +759,7 @@ const PersonalDetails = () => {
                 onBlur={handleBlur}
                 errors={errors?.confirmPassword}
                 touched={touched?.confirmPassword}
+                autoComplete
               />
             </Grid>
           </WithCondition>

@@ -1,15 +1,17 @@
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
 import React from "react";
-
 import { useLocation, useNavigate } from "react-router-dom";
+import { getByIdApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/idProffUploads";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { StyledFormContainer } from "../../../styles";
-import { getValidValues } from "../../../utils/common";
+import { getNeededValues, getValidValues } from "../../../utils/common";
 import { dispatchSnackbarError } from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
@@ -24,38 +26,75 @@ import {
 const IdProffUploads = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const isViewMode = state?.isViewMode;
+  const isViewMode = state?.isViewMode || false;
   const editId = state?.editId;
 
   const handleOnReset = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
       state: {
-        isViewMode: isViewMode,
-        editId: editId,
+        isViewMode,
+        editId,
       },
     });
+
   const handleSkip = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, {
       state: {
-        isViewMode: isViewMode,
-        editId: editId,
+        isViewMode,
+        editId,
       },
     });
 
   const handleOnSubmit = (values) => {
-    if (Object.keys(getValidValues(values))?.length < 4 && false) {
-      dispatchSnackbarError("Atleast Upload any 2 Id Proofs");
+    console.log(getValidValues(values));
+    if (Object.keys(getValidValues(values))?.length < 4) {
+      dispatchSnackbarError("At least Upload any 2 Id Proofs");
     } else {
       const payload = multiPartFormData(values);
+
+      console.log({ payload });
+
       // onSubmit(payload);
-      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
-        state: {
-          isViewMode: isViewMode,
-          editId: editId,
-        },
-      });
+      // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
+      //   state: {
+      //     isViewMode: isViewMode,
+      //     editId: editId,
+      //   },
+      // });
     }
   };
+
+  useCustomQuery({
+    queryKey: ["divyangGetById", editId],
+    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+    enabled: !!editId,
+    onSuccess: ({ data }) => {
+      setValues(
+        getNeededValues(
+          {
+            ...initialValues,
+            ...data?.data,
+          },
+          {
+            ...initialValues,
+            voterIdFileName: "",
+            panCardFileName: "",
+            drivingLicenseFileName: "",
+            rationCardFileName: "",
+            aadharCardFileName: "",
+            pensionCardFileName: "",
+            medicalInsuranceCardFileName: "",
+            disabilitySchemeCardFileName: "",
+            BPL_OR_APL_CardFileName: "",
+            firstName: "",
+            lastName: "",
+            mobileNumber: "",
+            divyangId: "",
+          }
+        )
+      );
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -65,42 +104,39 @@ const IdProffUploads = () => {
 
   const {
     values,
-    handleChange,
     handleBlur,
     touched,
     errors,
     handleSubmit,
     setFieldValue,
-    setFieldTouched,
     setValues,
   } = formik;
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
       <Grid item xs={12}>
-        <DivyangDetail />
+        <DivyangDetail divyangDetail={values || ""} />
       </Grid>
+
       <Grid item xs={12}>
-        <StyledFormContainer width="100%">
+        <StyledFormContainer sx={{ width: "100% !important" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12} md={6}>
               <CustomTextField
-                label={fields?.voterId?.label}
-                name={fields?.voterId?.name}
-                value={values?.voterId}
+                label={fields?.voterIdNumber?.label}
+                name={fields?.voterIdNumber?.name}
+                value={values?.voterIdNumber}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.voterId?.name,
+                    fields?.voterIdNumber?.name,
                     e?.target?.value?.toUpperCase()
                   );
-                  if (!values?.voterId)
-                    setFieldTouched(fields?.voterIdPicture?.name, false);
                 }}
                 onBlur={handleBlur}
-                errors={errors?.voterId}
-                touched={touched?.voterId}
+                errors={errors?.voterIdNumber}
+                touched={touched?.voterIdNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.voterId?.type}
+                fieldType={fields?.voterIdNumber?.fieldType}
                 maxLength={10}
               />
             </Grid>
@@ -110,20 +146,15 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.voterIdPicture?.name}
-                label={fields?.voterIdPicture?.label}
-                defaultLabel={fields?.voterIdPicture?.label}
-                value={values?.voterIdPicture}
-                error={errors?.voterIdPicture}
-                touched={touched?.voterIdPicture}
+                disabled={isViewMode}
+                name={fields?.voterId?.name}
+                defaultLabel={fields?.voterId?.label}
+                label={values?.voterIdFileName}
+                value={values?.voterId}
+                error={errors?.voterId}
+                touched={touched?.voterId}
                 onChange={(e) => {
-                  setFieldValue(
-                    fields?.voterIdPicture?.name,
-                    e?.target?.files[0] || ""
-                  );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.voterIdPicture?.name, false);
-                  setFieldTouched(fields?.voterId?.name, false);
+                  setFieldValue(fields?.voterId?.name, e?.target?.files[0]);
                 }}
               />
             </Grid>
@@ -142,14 +173,12 @@ const IdProffUploads = () => {
                     fields?.panCardNumber?.name,
                     e?.target?.value?.toUpperCase()
                   );
-                  if (!values?.panCardNumber)
-                    setFieldTouched(fields?.panCardPicture?.name, false);
                 }}
                 onBlur={handleBlur}
                 errors={errors?.panCardNumber}
                 touched={touched?.panCardNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.panCardNumber?.type}
+                fieldType={fields?.panCardNumber?.fieldType}
                 maxLength={10}
               />
             </Grid>
@@ -159,20 +188,15 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.panCardPicture?.name}
-                label={fields?.panCardPicture?.label}
-                defaultLabel={fields?.panCardPicture?.label}
-                value={values?.panCardPicture}
-                error={errors?.panCardPicture}
-                touched={touched?.panCardPicture}
+                disabled={isViewMode}
+                name={fields?.panCard?.name}
+                defaultLabel={fields?.panCard?.label}
+                label={values?.panCardFileName}
+                value={values?.panCard}
+                error={errors?.panCard}
+                touched={touched?.panCard}
                 onChange={(e) => {
-                  setFieldValue(
-                    fields?.panCardPicture?.name,
-                    e?.target?.files[0] || ""
-                  );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.panCardPicture?.name, false);
-                  setFieldTouched(fields?.panCardNumber?.name, false);
+                  setFieldValue(fields?.panCard?.name, e?.target?.files[0]);
                 }}
               />
             </Grid>
@@ -183,22 +207,20 @@ const IdProffUploads = () => {
 
             <Grid item xs={12} md={6}>
               <CustomTextField
-                label={fields?.drivingLicense?.label}
-                name={fields?.drivingLicense?.name}
-                value={values?.drivingLicense}
+                label={fields?.drivingLicenseNumber?.label}
+                name={fields?.drivingLicenseNumber?.name}
+                value={values?.drivingLicenseNumber}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.drivingLicense?.name,
+                    fields?.drivingLicenseNumber?.name,
                     e?.target?.value?.toUpperCase()
                   );
-                  if (!values?.drivingLicense)
-                    setFieldTouched(fields?.drivingLicensePicture?.name, false);
                 }}
                 onBlur={handleBlur}
-                errors={errors?.drivingLicense}
-                touched={touched?.drivingLicense}
+                errors={errors?.drivingLicenseNumber}
+                touched={touched?.drivingLicenseNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.drivingLicense?.type}
+                fieldType={fields?.drivingLicenseNumber?.fieldType}
                 maxLength={15}
               />
             </Grid>
@@ -208,20 +230,18 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.drivingLicensePicture?.name}
-                label={fields?.drivingLicensePicture?.label}
-                defaultLabel={fields?.drivingLicensePicture?.label}
-                value={values?.drivingLicensePicture}
-                error={errors?.drivingLicensePicture}
-                touched={touched?.drivingLicensePicture}
+                disabled={isViewMode}
+                name={fields?.drivingLicense?.name}
+                defaultLabel={fields?.drivingLicense?.label}
+                label={values?.drivingLicenseFileName}
+                value={values?.drivingLicense}
+                error={errors?.drivingLicense}
+                touched={touched?.drivingLicense}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.drivingLicensePicture?.name,
-                    e?.target?.files[0] || ""
+                    fields?.drivingLicense?.name,
+                    e?.target?.files[0]
                   );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.drivingLicensePicture?.name, false);
-                  setFieldTouched(fields?.drivingLicense?.name, false);
                 }}
               />
             </Grid>
@@ -240,14 +260,12 @@ const IdProffUploads = () => {
                     fields?.rationCardNumber?.name,
                     e?.target?.value
                   );
-                  if (!values?.rationCardNumber)
-                    setFieldTouched(fields?.rationCardPicture?.name, false);
                 }}
                 onBlur={handleBlur}
                 errors={errors?.rationCardNumber}
                 touched={touched?.rationCardNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.rationCardNumber?.type}
+                fieldType={fields?.rationCardNumber?.fieldType}
                 maxLength={12}
               />
             </Grid>
@@ -257,20 +275,15 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.rationCardPicture?.name}
-                label={fields?.rationCardPicture?.label}
-                defaultLabel={fields?.rationCardPicture?.label}
-                value={values?.rationCardPicture}
-                error={errors?.rationCardPicture}
-                touched={touched?.rationCardPicture}
+                disabled={isViewMode}
+                name={fields?.rationCard?.name}
+                defaultLabel={fields?.rationCard?.label}
+                label={values?.rationCardFileName}
+                value={values?.rationCard}
+                error={errors?.rationCard}
+                touched={touched?.rationCard}
                 onChange={(e) => {
-                  setFieldValue(
-                    fields?.rationCardPicture?.name,
-                    e?.target?.files[0] || ""
-                  );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.rationCardPicture?.name, false);
-                  setFieldTouched(fields?.rationCardNumber?.name, false);
+                  setFieldValue(fields?.rationCard?.name, e?.target?.files[0]);
                 }}
               />
             </Grid>
@@ -288,14 +301,12 @@ const IdProffUploads = () => {
                     fields?.aadharCardNumber?.name,
                     e?.target?.value
                   );
-                  if (!values?.aadharCardNumber)
-                    setFieldTouched(fields?.aadharCardPicture?.name, false);
                 }}
                 onBlur={handleBlur}
                 errors={errors?.aadharCardNumber}
                 touched={touched?.aadharCardNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.aadharCardNumber?.type}
+                type={fields?.aadharCardNumber?.type}
                 maxLength={12}
               />
             </Grid>
@@ -305,23 +316,19 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.aadharCardPicture?.name}
-                label={fields?.aadharCardPicture?.label}
-                defaultLabel={fields?.aadharCardPicture?.label}
-                value={values?.aadharCardPicture}
-                error={errors?.aadharCardPicture}
-                touched={touched?.aadharCardPicture}
+                disabled={isViewMode}
+                name={fields?.aadharCard?.name}
+                defaultLabel={fields?.aadharCard?.label}
+                label={values?.aadharCardFileName}
+                value={values?.aadharCard}
+                error={errors?.aadharCard}
+                touched={touched?.aadharCard}
                 onChange={(e) => {
-                  setFieldValue(
-                    fields?.aadharCardPicture?.name,
-                    e?.target?.files[0] || ""
-                  );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.aadharCardPicture?.name, false);
-                  setFieldTouched(fields?.aadharCardNumber?.name, false);
+                  setFieldValue(fields?.aadharCard?.name, e?.target?.files[0]);
                 }}
               />
             </Grid>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
@@ -336,14 +343,12 @@ const IdProffUploads = () => {
                     fields?.pensionCardNumber?.name,
                     e?.target?.value
                   );
-                  if (!values?.pensionCardNumber)
-                    setFieldTouched(fields?.pensionCardPicture?.name, false);
                 }}
                 onBlur={handleBlur}
                 errors={errors?.pensionCardNumber}
                 touched={touched?.pensionCardNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.pensionCardNumber?.type}
+                fieldType={fields?.pensionCardNumber?.fieldType}
               />
             </Grid>
 
@@ -352,23 +357,19 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.pensionCardPicture?.name}
-                label={fields?.pensionCardPicture?.label}
-                defaultLabel={fields?.pensionCardPicture?.label}
-                value={values?.pensionCardPicture}
-                error={errors?.pensionCardPicture}
-                touched={touched?.pensionCardPicture}
+                disabled={isViewMode}
+                name={fields?.pensionCard?.name}
+                defaultLabel={fields?.pensionCard?.label}
+                label={values?.pensionCardFileName}
+                value={values?.pensionCard}
+                error={errors?.pensionCard}
+                touched={touched?.pensionCard}
                 onChange={(e) => {
-                  setFieldValue(
-                    fields?.pensionCardPicture?.name,
-                    e?.target?.files[0] || ""
-                  );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.pensionCardPicture?.name, false);
-                  setFieldTouched(fields?.pensionCardNumber?.name, false);
+                  setFieldValue(fields?.pensionCard?.name, e?.target?.files[0]);
                 }}
               />
             </Grid>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
@@ -383,17 +384,12 @@ const IdProffUploads = () => {
                     fields?.medicalInsuranceNumber?.name,
                     e?.target?.value
                   );
-                  if (!values?.medicalInsuranceNumber)
-                    setFieldTouched(
-                      fields?.medicalInsurancePicture?.name,
-                      false
-                    );
                 }}
                 onBlur={handleBlur}
                 errors={errors?.medicalInsuranceNumber}
                 touched={touched?.medicalInsuranceNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.medicalInsuranceNumber?.type}
+                fieldType={fields?.medicalInsuranceNumber?.fieldType}
               />
             </Grid>
 
@@ -402,26 +398,22 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.medicalInsurancePicture?.name}
-                label={fields?.medicalInsurancePicture?.label}
-                defaultLabel={fields?.medicalInsurancePicture?.label}
-                value={values?.medicalInsurancePicture}
-                error={errors?.medicalInsurancePicture}
-                touched={touched?.medicalInsurancePicture}
+                disabled={isViewMode}
+                name={fields?.medicalInsuranceCard?.name}
+                defaultLabel={fields?.medicalInsuranceCard?.label}
+                label={values?.medicalInsuranceCardFileName}
+                value={values?.medicalInsuranceCard}
+                error={errors?.medicalInsuranceCard}
+                touched={touched?.medicalInsuranceCard}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.medicalInsurancePicture?.name,
-                    e?.target?.files[0] || ""
+                    fields?.medicalInsuranceCard?.name,
+                    e?.target?.files[0]
                   );
-                  if (e?.target?.files[0])
-                    setFieldTouched(
-                      fields?.medicalInsurancePicture?.name,
-                      false
-                    );
-                  setFieldTouched(fields?.medicalInsuranceNumber?.name, false);
                 }}
               />
             </Grid>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
@@ -436,17 +428,12 @@ const IdProffUploads = () => {
                     fields?.disabilitySchemeNumber?.name,
                     e?.target?.value
                   );
-                  if (!values?.disabilitySchemeNumber)
-                    setFieldTouched(
-                      fields?.disabilitySchemePicture?.name,
-                      false
-                    );
                 }}
                 onBlur={handleBlur}
                 errors={errors?.disabilitySchemeNumber}
                 touched={touched?.disabilitySchemeNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.disabilitySchemeNumber?.type}
+                fieldType={fields?.disabilitySchemeNumber?.fieldType}
               />
             </Grid>
 
@@ -455,26 +442,22 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.disabilitySchemePicture?.name}
-                label={fields?.disabilitySchemePicture?.label}
-                defaultLabel={fields?.disabilitySchemePicture?.label}
-                value={values?.disabilitySchemePicture}
-                error={errors?.disabilitySchemePicture}
-                touched={touched?.disabilitySchemePicture}
+                disabled={isViewMode}
+                name={fields?.disabilitySchemeCard?.name}
+                defaultLabel={fields?.disabilitySchemeCard?.label}
+                label={values?.disabilitySchemeCardFileName}
+                value={values?.disabilitySchemeCard}
+                error={errors?.disabilitySchemeCard}
+                touched={touched?.disabilitySchemeCard}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.disabilitySchemePicture?.name,
-                    e?.target?.files[0] || ""
+                    fields?.disabilitySchemeCard?.name,
+                    e?.target?.files[0]
                   );
-                  if (e?.target?.files[0])
-                    setFieldTouched(
-                      fields?.disabilitySchemePicture?.name,
-                      false
-                    );
-                  setFieldTouched(fields?.disabilitySchemeNumber?.name, false);
                 }}
               />
             </Grid>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
@@ -489,14 +472,12 @@ const IdProffUploads = () => {
                     fields?.BPL_OR_APL_Number?.name,
                     e?.target?.value
                   );
-                  if (!values?.BPL_OR_APL_Number)
-                    setFieldTouched(fields?.BPL_OR_APL_Picture?.name, false);
                 }}
                 onBlur={handleBlur}
                 errors={errors?.BPL_OR_APL_Number}
                 touched={touched?.BPL_OR_APL_Number}
                 isViewMode={isViewMode}
-                fieldType={fields?.BPL_OR_APL_Number?.type}
+                fieldType={fields?.BPL_OR_APL_Number?.fieldType}
               />
             </Grid>
 
@@ -505,20 +486,18 @@ const IdProffUploads = () => {
                 type={"image"}
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
-                name={fields?.BPL_OR_APL_Picture?.name}
-                label={fields?.BPL_OR_APL_Picture?.label}
-                defaultLabel={fields?.BPL_OR_APL_Picture?.label}
-                value={values?.BPL_OR_APL_Picture}
-                error={errors?.BPL_OR_APL_Picture}
-                touched={touched?.BPL_OR_APL_Picture}
+                disabled={isViewMode}
+                name={fields?.BPL_OR_APL_Card?.name}
+                defaultLabel={fields?.BPL_OR_APL_Card?.label}
+                label={values?.BPL_OR_APL_CardFileName}
+                value={values?.BPL_OR_APL_Card}
+                error={errors?.BPL_OR_APL_Card}
+                touched={touched?.BPL_OR_APL_Card}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.BPL_OR_APL_Picture?.name,
-                    e?.target?.files[0] || ""
+                    fields?.BPL_OR_APL_Card?.name,
+                    e?.target?.files[0]
                   );
-                  if (e?.target?.files[0])
-                    setFieldTouched(fields?.BPL_OR_APL_Picture?.name, false);
-                  setFieldTouched(fields?.BPL_OR_APL_Number?.name, false);
                 }}
               />
             </Grid>

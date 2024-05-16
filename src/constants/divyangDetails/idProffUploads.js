@@ -1,109 +1,109 @@
 import { CODES } from "../globalConstants";
 
 export const initialValues = {
+  voterIdNumber: "",
   voterId: "",
-  voterIdPicture: "",
   panCardNumber: "",
-  panCardPicture: "",
+  panCard: "",
+  drivingLicenseNumber: "",
   drivingLicense: "",
-  drivingLicensePicture: "",
   rationCardNumber: "",
-  rationCardPicture: "",
+  rationCard: "",
   aadharCardNumber: "",
-  aadharCardPicture: "",
+  aadharCard: "",
   pensionCardNumber: "",
-  pensionCardPicture: "",
+  pensionCard: "",
   medicalInsuranceNumber: "",
-  medicalInsurancePicture: "",
+  medicalInsuranceCard: "",
   disabilitySchemeNumber: "",
-  disabilitySchemePicture: "",
+  disabilitySchemeCard: "",
   BPL_OR_APL_Number: "",
-  BPL_OR_APL_Picture: "",
+  BPL_OR_APL_Card: "",
   status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
 };
 
 export const fields = {
-  voterId: {
+  voterIdNumber: {
     label: "Voter ID No",
-    name: "voterId",
-    type: "alphaNumeric",
+    name: "voterIdNumber",
+    fieldType: "alphaNumeric",
   },
-  voterIdPicture: {
+  voterId: {
     label: "Upload Voter ID",
-    name: "voterIdPicture",
+    name: "voterId",
   },
   panCardNumber: {
     label: "Pan Card No",
     name: "panCardNumber",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  panCardPicture: {
+  panCard: {
     label: "Upload Pan Card",
-    name: "panCardPicture",
+    name: "panCard",
+  },
+  drivingLicenseNumber: {
+    label: "Driving License No",
+    name: "drivingLicenseNumber",
+    fieldType: "alphaNumeric",
   },
   drivingLicense: {
-    label: "Driving License No",
-    name: "drivingLicense",
-    type: "alphaNumeric",
-  },
-  drivingLicensePicture: {
     label: "Upload Driving License",
-    name: "drivingLicensePicture",
+    name: "drivingLicense",
   },
   rationCardNumber: {
     label: "Ration Card No",
     name: "rationCardNumber",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  rationCardPicture: {
+  rationCard: {
     label: "Upload Ration Card",
-    name: "rationCardPicture",
+    name: "rationCard",
   },
   aadharCardNumber: {
     label: "Aadhar Card No",
     name: "aadharCardNumber",
-    type: "mobile",
+    type: "number",
   },
-  aadharCardPicture: {
+  aadharCard: {
     label: "Upload Aadhar Card",
-    name: "aadharCardPicture",
+    name: "aadharCard",
   },
   pensionCardNumber: {
     label: "Pension Card No",
     name: "pensionCardNumber",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  pensionCardPicture: {
+  pensionCard: {
     label: "Upload Pension Card",
-    name: "pensionCardPicture",
+    name: "pensionCard",
   },
   medicalInsuranceNumber: {
     label: "Medical Insurance Card No",
     name: "medicalInsuranceNumber",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  medicalInsurancePicture: {
+  medicalInsuranceCard: {
     label: "Upload Medical Insurance Card",
-    name: "medicalInsurancePicture",
+    name: "medicalInsuranceCard",
   },
   disabilitySchemeNumber: {
     label: "Disability Scheme Card No",
     name: "disabilitySchemeNumber",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  disabilitySchemePicture: {
+  disabilitySchemeCard: {
     label: "Upload Disability Scheme Card",
-    name: "disabilitySchemePicture",
+    name: "disabilitySchemeCard",
   },
   BPL_OR_APL_Number: {
     label: "BPL/APL Card No",
     name: "BPL_OR_APL_Number",
-    type: "alphaNumeric",
+    fieldType: "alphaNumeric",
   },
-  BPL_OR_APL_Picture: {
+  BPL_OR_APL_Card: {
     label: "Upload BPL/APL Card",
-    name: "BPL_OR_APL_Picture",
+    name: "BPL_OR_APL_Card",
   },
 };

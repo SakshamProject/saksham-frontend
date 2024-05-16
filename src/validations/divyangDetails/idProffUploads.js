@@ -8,21 +8,21 @@ import {
 } from "../../constants/globalConstants";
 
 export const validationSchema = object({
-  voterId: string()
+  voterIdNumber: string()
     .trim()
     .matches(VOTERID_REGEX, "Enter Valid Voter ID")
     .min(10, "Voter ID should be 10 characters")
     .test(
       "voterId",
       "Voter Id is required",
-      (value, context) => !(context.parent?.voterIdPicture && !value)
+      (value, context) => !(context.parent?.voterId && !value)
     )
     .nullable(),
-  voterIdPicture: string()
+  voterId: string()
     .test(
       "voterIdPicture",
-      "Voter Id is required",
-      (value, context) => !(context.parent?.voterId && !value)
+      "Voter Id file is required",
+      (value, context) => !(context.parent?.voterIdNumber && !value)
     )
     .nullable(),
   panCardNumber: string()
@@ -31,32 +31,32 @@ export const validationSchema = object({
     .min(10, "Pan Card Number should be 10 characters")
     .test(
       "panCardNumber",
-      "Pan is required",
-      (value, context) => !(context.parent?.panCardPicture && !value)
+      "Pan Card is required",
+      (value, context) => !(context.parent?.panCard && !value)
     )
     .nullable(),
-  panCardPicture: string()
+  panCard: string()
     .test(
       "panCardPicture",
       "Pan is required",
       (value, context) => !(context.parent?.panCardNumber && !value)
     )
     .nullable(),
-  drivingLicense: string()
+  drivingLicenseNumber: string()
     .trim()
     .matches(DRIVING_LICENSE_REGEX, "Enter Valid Driving License Number")
     .min(15, "Driving License Number should be 15 characters")
     .test(
       "drivingLicense",
-      "Driving Lisence is required",
-      (value, context) => !(context.parent?.drivingLicensePicture && !value)
+      "Driving License is required",
+      (value, context) => !(context.parent?.drivingLicense && !value)
     )
     .nullable(),
-  drivingLicensePicture: string()
+  drivingLicense: string()
     .test(
       "drivingLicensePicture",
-      "Driving Lisence is required",
-      (value, context) => !(context.parent?.drivingLicense && !value)
+      "Driving License is required",
+      (value, context) => !(context.parent?.drivingLicenseNumber && !value)
     )
     .nullable(),
   rationCardNumber: string()
@@ -66,10 +66,10 @@ export const validationSchema = object({
     .test(
       "rationCardNumber",
       "Ration Card is required",
-      (value, context) => !(context.parent?.rationCardPicture && !value)
+      (value, context) => !(context.parent?.rationCard && !value)
     )
     .nullable(),
-  rationCardPicture: string()
+  rationCard: string()
     .test(
       "rationCardPicture",
       "Ration Card is required",
@@ -83,10 +83,10 @@ export const validationSchema = object({
     .test(
       "aadharCardNumber",
       "Aadhar Card is required",
-      (value, context) => !(context.parent?.aadharCardPicture && !value)
+      (value, context) => !(context.parent?.aadharCard && !value)
     )
     .nullable(),
-  aadharCardPicture: string()
+  aadharCard: string()
     .test(
       "aadharCardPicture",
       "Aadhar Card is required",
@@ -99,10 +99,10 @@ export const validationSchema = object({
     .test(
       "pensionCardNumber",
       "Pension Card is required",
-      (value, context) => !(context.parent?.pensionCardPicture && !value)
+      (value, context) => !(context.parent?.pensionCard && !value)
     )
     .nullable(),
-  pensionCardPicture: string()
+  pensionCard: string()
     .test(
       "pensionCardPicture",
       "Pension Card is required",
@@ -115,10 +115,10 @@ export const validationSchema = object({
     .test(
       "medicalInsuranceNumber",
       "Medical Insurance is required",
-      (value, context) => !(context.parent?.medicalInsurancePicture && !value)
+      (value, context) => !(context.parent?.medicalInsuranceCard && !value)
     )
     .nullable(),
-  medicalInsurancePicture: string()
+  medicalInsuranceCard: string()
     .test(
       "medicalInsurancePicture",
       "Medical Insurance is required",
@@ -131,10 +131,10 @@ export const validationSchema = object({
     .test(
       "disabilitySchemeNumber",
       "Disability Scheme is required",
-      (value, context) => !(context.parent?.disabilitySchemePicture && !value)
+      (value, context) => !(context.parent?.disabilitySchemeCard && !value)
     )
     .nullable(),
-  disabilitySchemePicture: string()
+  disabilitySchemeCard: string()
     .test(
       "disabilitySchemePicture",
       "Disability Scheme is required",
@@ -147,10 +147,10 @@ export const validationSchema = object({
     .test(
       "BPL_OR_APL_Number",
       "BPL or APL is required",
-      (value, context) => !(context.parent?.BPL_OR_APL_Picture && !value)
+      (value, context) => !(context.parent?.BPL_OR_APL_Card && !value)
     )
     .nullable(),
-  BPL_OR_APL_Picture: string()
+  BPL_OR_APL_Card: string()
     .test(
       "BPL_OR_APL_Picture",
       "BPL or APL is required",
