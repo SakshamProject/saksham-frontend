@@ -44,7 +44,10 @@ export const fields = {
     name: "gender",
     isHelperText: false,
     inputValues: genderSeed(),
-    labelStyle: { color: theme.palette?.commonColor?.blue, fontSize: "16px" },
+    labelStyle: {
+      color: theme.palette?.commonColor?.blue,
+      fontSize: "16px",
+    },
   },
   dateOfBirth: {
     label: "Date of Birth *",

@@ -20,7 +20,6 @@ export const validationSchema = object({
     .matches(NUMBER, "Password must contain at least one number")
     .min(7, "Password must be at least 7 characters long")
     .max(24, "Password cannot have more than 24 characters"),
-
   confirmPassword: string()
     .trim()
     .required("Confirm password is required")

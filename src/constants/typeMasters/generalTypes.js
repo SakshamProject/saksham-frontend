@@ -1,15 +1,8 @@
-import { Box } from "@mui/material";
 import { API_PATHS } from "../../api/apiPaths";
-import { EditPopover, WithCondition } from "../../components/shared";
+import { EditPopover } from "../../components/shared";
+import { EditDelete } from "../../components/shared/EditDelete";
 import { ROUTE_PATHS } from "../../routes/routePaths";
-import {
-  DeleteIcon,
-  EditIcon,
-  OptionsContainer,
-  OptionsContainerChild,
-  StyledIconButton,
-  theme,
-} from "../../styles";
+import { OptionsContainer, theme } from "../../styles";
 
 export const GENERAL_TYPES = {
   EDUCATIONAL_QUALIFICATION: "Educational Qualification",
@@ -152,27 +145,12 @@ export const generalColumns = ({
     {
       Header: " ",
       Cell: ({ row }) => {
-        const disabled = !!tableEditId;
-
         return (
-          <OptionsContainerChild>
-            <WithCondition isValid={!isViewMode}>
-              <Box>
-                <StyledIconButton
-                  onClick={() => handleEdit(row?.original?.id)}
-                  disabled={disabled}
-                >
-                  <EditIcon disabled={disabled} />
-                </StyledIconButton>
-                <StyledIconButton
-                  onClick={() => handleDelete(row?.original?.id)}
-                  disabled={disabled}
-                >
-                  <DeleteIcon disabled={disabled} />
-                </StyledIconButton>
-              </Box>
-            </WithCondition>
-          </OptionsContainerChild>
+          <EditDelete
+            isViewMode={!!tableEditId || isViewMode}
+            onDelete={() => handleDelete(row?.original?.id)}
+            onEdit={handleEdit(row?.original?.id)}
+          />
         );
       },
       inputValues: ({ row }) => [

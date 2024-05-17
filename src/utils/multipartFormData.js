@@ -1,5 +1,5 @@
 export const multiPartFormData = (workData, nullables = [], stringify = []) => {
-  let form = new FormData();
+  const form = new FormData();
 
   const appendFormData = (data, parentKey = "") => {
     Object.keys(data).forEach((key) => {
@@ -12,15 +12,13 @@ export const multiPartFormData = (workData, nullables = [], stringify = []) => {
         !stringify?.includes(newKey)
       ) {
         appendFormData(value, newKey);
-      } else {
-        if (!!value || nullables?.includes(newKey)) {
-          form.append(
-            newKey,
-            typeof value === "string"
-              ? value.trim().replace(/\s{2,}/g, " ")
-              : value
-          );
-        }
+      } else if (!!value || nullables?.includes(newKey)) {
+        form.append(
+          newKey,
+          typeof value === "string"
+            ? value.trim().replace(/\s{2,}/g, " ")
+            : value
+        );
       }
     });
   };

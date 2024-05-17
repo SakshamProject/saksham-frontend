@@ -96,20 +96,20 @@ export const sevakendraColumn = [
     filterAccessor: "sevaKendraName",
     width: 300,
     sticky: "left",
-    Cell: (props) => (
+    Cell: ({ value, row }) => (
       <OptionsContainer>
-        {props?.value}
+        {value}
         <EditPopover
           inputValues={[
             {
               label: "View details",
-              id: props?.row?.original?.id,
+              id: row?.original?.id,
               path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
               view: true,
             },
             {
               label: "Edit",
-              id: props?.row?.original?.id,
+              id: row?.original?.id,
               path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_FORM,
             },
           ]}

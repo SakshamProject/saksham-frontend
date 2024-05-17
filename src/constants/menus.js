@@ -17,8 +17,8 @@ export const RIGHT_SIDE_MENU = (role, isMobile = false) =>
       label: "My Profile",
       routePath: ROUTE_PATHS?.PROFILE,
       navigateTo: ROUTE_PATHS?.PROFILE,
-      value: "myProfile",
-      key: "myProfile",
+      value: "profile",
+      key: "profile",
       icon: <AccountCircle />,
     },
     !isMobile && {
@@ -105,20 +105,20 @@ const DIVYANG_SIDE_MENU = [
   {
     label: "My Profile",
     value: "myProfile",
-    navigateTo: ROUTE_PATHS?.MY_PROFILE,
+    navigateTo: ROUTE_PATHS?.PROFILE,
     key: CODES?.DIVYANG_DETAILS,
     icon: <AccountCircle />,
   },
   {
     label: "My Services",
     value: "myServices",
-    navigateTo: ROUTE_PATHS?.MY_SERVICES_LIST,
+    navigateTo: ROUTE_PATHS?.DIVYANG_SERVICES_LIST,
     key: CODES?.DIVYANG_DETAILS,
     icon: <ManageAccounts />,
   },
 ];
 
-export const getSideMenus = ({ role, designations = [], isMobile = false }) => {
+export const getSideMenus = ({ role, designations = [], isMobile }) => {
   if (role === CODES?.ADMIN)
     return isMobile
       ? [...RIGHT_SIDE_MENU(role, isMobile), ...ADMIN_SIDE_MENUS]
@@ -126,13 +126,20 @@ export const getSideMenus = ({ role, designations = [], isMobile = false }) => {
 
   if (role === CODES?.DIVYANG) return DIVYANG_SIDE_MENU;
 
-  if (role === CODES?.SEVA_KENDRA && designations?.length > 0)
-    return designations?.reduce((acc, designation) => {
-      const validMenu = ADMIN_SIDE_MENUS?.filter(
-        (menu) => designation?.name === menu?.key
-      );
-      return [...acc, ...validMenu];
-    }, []);
+  if (role === CODES?.SEVA_KENDRA && designations?.length)
+    return [isMobile && { name: "profile" }, ...designations]?.reduce(
+      (acc, designation) => {
+        if (designation) {
+          const validMenu = [
+            ...RIGHT_SIDE_MENU(role, isMobile),
+            ...ADMIN_SIDE_MENUS,
+          ]?.filter((menu) => designation?.name === menu?.key);
+          return [...acc, ...validMenu];
+        }
+        return [...acc];
+      },
+      []
+    );
 
   return [];
 };

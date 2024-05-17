@@ -15,5 +15,6 @@ export const getTableSchemas = (columns = []) => {
       }
     });
   }
+
   return { filterFields, filterInitialValues };
 };

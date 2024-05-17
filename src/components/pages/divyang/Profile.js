@@ -94,7 +94,7 @@ const CustomDataShower = ({ title, value, matches, width, onClick }) => {
   );
 };
 
-const MyProfile = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
   const { theme } = useResponsive();
@@ -456,7 +456,7 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Profile;
 
 const getAddress = (data, addressKeys) => {
   return (

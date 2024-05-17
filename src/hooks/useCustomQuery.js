@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
@@ -24,7 +23,7 @@ export const useCustomQuery = ({
       setSuccessCount((prev) => prev + 1);
       onSuccess(query?.data);
     }
-  }, [query.data]);
+  }, [query?.data]); //eslint-disable-line
 
   query.successCount = successCount;
 

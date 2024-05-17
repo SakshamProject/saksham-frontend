@@ -13,6 +13,7 @@ import {
   LOGIN_SUCCESS,
 } from "../../../constants/globalConstants";
 import { fields, initialValues } from "../../../constants/login/login";
+import { getSideMenus } from "../../../constants/menus";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   CancelButton,
@@ -127,6 +128,7 @@ const Login = () => {
     mutationFn: (value) => postApiService(getApiPath(), getValidValues(value)),
     onSuccess: ({ data }, value) => {
       const userInfo = getUserInfo(data);
+      console.log("user info", userInfo);
       setRememberMe(value);
       dispatchUserInfo(userInfo);
       setCookie(COOKIE_KEYS?.TOKEN, data?.token);
@@ -168,6 +170,14 @@ const Login = () => {
       setRole(role);
     }
   }, []); //eslint-disable-line
+
+  console.log(
+    getSideMenus({
+      role: CODES?.SEVA_KENDRA,
+      isMobile: false,
+      designations: [{ name: CODES?.DASHBOARD }],
+    })
+  );
 
   return (
     <LoginWrapper container>
@@ -315,6 +325,7 @@ const getUserInfo = (data) => {
       serviceMapping,
       role: CODES?.SEVA_KENDRA,
       name: data?.user?.person?.userName,
+      profileUrl: "",
       designation: {
         id: data?.user?.designation?.id,
         name: data?.user?.designation?.name,
@@ -331,13 +342,13 @@ const getUserInfo = (data) => {
     return {
       userId: data?.divyang?.id,
       role: CODES?.DIVYANG,
-      name: data?.divyang?.person?.userName,
+      name: `${data?.divyang?.firstName} ${data?.divyang?.lastName}`,
+      profileUrl: "",
       designation: {
         name: CODES?.DIVYANG,
       },
       person: {
-        id: data?.divyang?.person?.id,
-        name: data?.divyang?.person?.userName,
+        ...data?.divyang?.person,
       },
     };
   }
@@ -345,6 +356,7 @@ const getUserInfo = (data) => {
   return {
     name: data?.superAdmin,
     role: CODES?.ADMIN,
+    profileUrl: "",
     designation: {
       name: CODES?.ADMIN,
     },

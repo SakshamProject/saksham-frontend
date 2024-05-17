@@ -1,5 +1,4 @@
-import { IconButton } from "@mui/material";
-import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
+import { EditDelete } from "../../components/shared/EditDelete";
 import { CODES } from "../globalConstants";
 
 export const initialValues = {
@@ -145,6 +144,7 @@ export const eqColumns = ({
   tableEditId,
   handleDeleteList,
   handleEditList,
+  isViewMode,
 }) => [
   {
     Header: "Qualification",
@@ -160,26 +160,13 @@ export const eqColumns = ({
   },
   {
     Header: " ",
-    Cell: (props) => {
-      const disabled = tableEditId === 0 || !!tableEditId;
-
+    Cell: ({ row }) => {
       return (
-        <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
-          <div>
-            <IconButton
-              onClick={() => handleEditList(props?.row?.index)}
-              disabled={disabled}
-            >
-              <EditIcon disabled={disabled} />
-            </IconButton>
-            <IconButton
-              onClick={() => handleDeleteList(props?.row?.index)}
-              disabled={disabled}
-            >
-              <DeleteIcon disabled={disabled} />
-            </IconButton>
-          </div>
-        </OptionsContainerChild>
+        <EditDelete
+          isViewMode={isViewMode || tableEditId === 0 || !!tableEditId}
+          onDelete={() => handleDeleteList(row?.index)}
+          onEdit={() => handleEditList(row?.index)}
+        />
       );
     },
   },

@@ -21,8 +21,10 @@ export const validationSchema = object({
     "Applicant Occupation  must be at least 3 characters long"
   ),
   income: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0)
-      return context.createError({ message: "Enter Valid Personal Income" });
+    if (!!value && Number(value) === 0) {
+      context.createError({ message: "Enter Valid Personal Income" });
+      return false;
+    }
     return true;
   }),
   fatherOccupation: string().min(
@@ -30,8 +32,10 @@ export const validationSchema = object({
     "Father Occupation must be at least 3 characters long"
   ),
   fatherIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0)
-      return context.createError({ message: "Enter Valid Father Income" });
+    if (!!value && Number(value) === 0) {
+      context.createError({ message: "Enter Valid Father Income" });
+      return false;
+    }
     return true;
   }),
   motherOccupation: string().min(
@@ -39,8 +43,10 @@ export const validationSchema = object({
     "Mother Occupation must be at least 3 characters long"
   ),
   motherIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0)
-      return context.createError({ message: "Enter Valid Mother Income" });
+    if (!!value && Number(value) === 0) {
+      context.createError({ message: "Enter Valid Mother Income" });
+      return false;
+    }
     return true;
   }),
   spouseOccupation: string().min(
@@ -48,8 +54,10 @@ export const validationSchema = object({
     "Spouse Occupation must be at least 3 characters long"
   ),
   spouseIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0)
-      return context.createError({ message: "Enter Valid Spouse Income" });
+    if (!!value && Number(value) === 0) {
+      context.createError({ message: "Enter Valid Spouse Income" });
+      return false;
+    }
     return true;
   }),
 });

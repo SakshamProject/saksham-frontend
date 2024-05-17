@@ -1,6 +1,6 @@
 import { date, object, string } from "yup";
-import { formatDate } from "../../utils/common";
 import { CODES, EMAIL_REGEX } from "../../constants/globalConstants";
+import { formatDate } from "../../utils/common";
 
 export const listValidationSchema = object({
   startDate: date()
@@ -126,7 +126,7 @@ export const editValidationSchema = object({
       context?.parent?.isCompleted !== CODES?.YES ? true : !!value
     )
     .test("isFut", "Completed date should not greater than today", (value) =>
-      !!value
+      value
         ? formatDate({ date: value, format: "iso" }) <
           formatDate({ date: new Date(), format: "iso" })
         : true

@@ -40,8 +40,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.Dashboard,
     key: CODES?.DASHBOARD,
   },
-
-  //seva kendra setup
   {
     path: ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST,
     element: routeElements?.SevaKendraMasterList,
@@ -52,8 +50,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.SevaKendraMasterForm,
     key: CODES?.SEVAKENDRA_SETUP,
   },
-
-  //designation
   {
     path: ROUTE_PATHS?.DESIGNATIONS_LIST,
     element: routeElements?.DesignationsList,
@@ -64,8 +60,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.DesignationsForm,
     key: CODES?.SEVAKENDRA_SETUP,
   },
-
-  //seva kendra users
   {
     path: ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST,
     element: routeElements?.SevaKendraUsersList,
@@ -76,8 +70,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.SevaKendraUsersForm,
     key: CODES?.SEVAKENDRA_USERS,
   },
-
-  //general types
   {
     path: ROUTE_PATHS?.GENERAL_TYPES_LIST,
     element: routeElements?.GeneralTypesList,
@@ -88,8 +80,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.GeneralTypesForm,
     key: CODES?.TYPE_MASTERS,
   },
-
-  //state master
   {
     path: ROUTE_PATHS?.STATE_MASTER,
     element: routeElements?.StateMasterForm,
@@ -125,8 +115,6 @@ export const ADMIN_ROUTES = [
       },
     ],
   },
-
-  //divyang details
   {
     path: ROUTE_PATHS?.DIVYANG_DETAILS_LIST,
     element: routeElements?.DivyangDetailsList,
@@ -159,8 +147,6 @@ export const ADMIN_ROUTES = [
       },
     ],
   },
-
-  //service master
   {
     path: ROUTE_PATHS?.SERVICE_MASTER_LIST,
     element: routeElements?.ServiceMasterList,
@@ -171,8 +157,6 @@ export const ADMIN_ROUTES = [
     element: routeElements?.ServiceMasterForm,
     key: CODES?.SERVICE_MASTER,
   },
-
-  //service mapping
   {
     path: ROUTE_PATHS?.SERVICE_MAPPING_LIST,
     element: routeElements?.ServiceMappingList,
@@ -188,37 +172,59 @@ export const ADMIN_ROUTES = [
     element: routeElements?.UserProfile,
     key: "profile",
   },
-  {
-    path: ROUTE_PATHS?.CHANGE_PASSWORD,
-    element: routeElements?.ChangePassword,
-    key: "profile",
-  },
+  // {
+  //   path: ROUTE_PATHS?.CHANGE_PASSWORD,
+  //   element: routeElements?.ChangePassword,
+  //   key: "profile",
+  // },
 ];
 
 const DIVYANG_ROUTES = [
   {
-    path: ROUTE_PATHS?.MY_PROFILE,
-    element: routeElements?.MyProfile,
+    path: ROUTE_PATHS?.PROFILE,
+    element: routeElements?.DivyangProfile,
     key: CODES?.DIVYANG_DETAILS,
   },
   {
-    path: ROUTE_PATHS?.MY_SERVICES_LIST,
-    element: routeElements?.MyServicesList,
+    path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM,
+    element: routeElements?.DivyangDetailsForm,
     key: CODES?.DIVYANG_DETAILS,
-  },
-  {
-    path: ROUTE_PATHS?.MY_SERVICES_FORM,
-    element: routeElements?.MyServicesForm,
-    key: CODES?.DIVYANG_DETAILS,
-  },
-  {
-    path: ROUTE_PATHS?.EDIT_PROFILE,
-    element: "",
-    key: CODES?.DIVYANG_DETAILS,
+    children: [
+      {
+        path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
+        element: routeElements?.PersonalDetails,
+      },
+      {
+        path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF,
+        element: routeElements?.IdProffUploads,
+      },
+      {
+        path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS,
+        element: routeElements?.Address,
+      },
+      {
+        path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY,
+        element: routeElements?.DisabilityDetails,
+      },
+      {
+        path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_EMPLOYMENT,
+        element: routeElements?.EmploymentDetails,
+      },
+    ],
   },
   {
     path: ROUTE_PATHS?.CHANGE_PASSWORD,
     element: routeElements?.ChangePassword,
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_SERVICES_LIST,
+    element: routeElements?.DivyangServicesList,
+    key: CODES?.DIVYANG_DETAILS,
+  },
+  {
+    path: ROUTE_PATHS?.DIVYANG_SERVICES_FORM,
+    element: routeElements?.DivyangServicesForm,
     key: CODES?.DIVYANG_DETAILS,
   },
 ];
@@ -228,7 +234,7 @@ export const getRoutes = ({ role, designations = [] }) => {
 
   if (role === CODES?.DIVYANG) return DIVYANG_ROUTES;
 
-  if (role === CODES?.SEVA_KENDRA && designations?.length > 0)
+  if (role === CODES?.SEVA_KENDRA && designations?.length)
     return [...designations, { name: "profile" }]?.reduce(
       (acc, designation) => {
         const validRoutes = ADMIN_ROUTES?.filter(

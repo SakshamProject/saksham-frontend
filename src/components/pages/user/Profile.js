@@ -76,7 +76,7 @@ const RoleContainer = styled("div")(({ theme }) => ({
   color: theme?.palette?.primary?.contrastText,
 }));
 
-const MyProfile = () => {
+const Profile = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
 
@@ -132,4 +132,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Profile;

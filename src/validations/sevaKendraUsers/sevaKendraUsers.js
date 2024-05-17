@@ -31,7 +31,7 @@ export const validationSchema = (editId) =>
     designationId: string().trim().required("Designation is required"),
     email: string()
       .trim()
-      .matches(EMAIL_REGEX, "Enter Valid Personal Email Id")
+      .matches(EMAIL_REGEX, "Enter valid email")
       .required("Personal Email Id is required"),
     dateOfBirth: date()
       .typeError("Invalid date")
@@ -97,14 +97,18 @@ export const validationSchema = (editId) =>
         "Confirm password is required",
         (value, context) => {
           if (editId) return true;
-          if (!value)
-            return context.createError({
+          if (!value) {
+            context.createError({
               message: "Confirm password is required",
             });
-          if (!!value && value !== context?.parent?.password)
-            return context.createError({
+            return false;
+          }
+          if (!!value && value !== context?.parent?.password) {
+            context.createError({
               message: "Confirm password should be same",
             });
+            return false;
+          }
           return !!editId || !!value;
         }
       ),

@@ -29,10 +29,12 @@ export const validationSchema = object({
     .required("Disability Percentage is required")
     .matches(PERCENTAGE_REGEX, "Enter Valid Disability Percentage")
     .test("isZero", (value, context) => {
-      if (!!value && Number(value) === 0)
-        return context.createError({
+      if (!!value && Number(value) === 0) {
+        context.createError({
           message: "Enter Valid Disability Percentage",
         });
+        return false;
+      }
       return true;
     }),
   disabilityDueTo: string()

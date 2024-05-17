@@ -1,10 +1,10 @@
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Navigate } from "react-router-dom";
-import { COOKIE_KEYS } from "../constants/globalConstants";
+import { COOKIE_KEYS, TOKEN_EXPIRED } from "../constants/globalConstants";
 import { ROUTE_PATHS } from "../routes/routePaths";
 import { getCookie, removeAllCookie } from "../utils/cookie";
-import { dispatchIsLoading } from "../utils/dispatch";
+import { dispatchIsLoading, dispatchSnackbarError } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
@@ -38,6 +38,7 @@ appApi.interceptors.response.use(
 
     if (isTokenExp < currentTime) {
       removeAllCookie();
+      dispatchSnackbarError(TOKEN_EXPIRED);
       return <Navigate to={ROUTE_PATHS?.LOGIN} />;
     }
 

@@ -1,21 +1,20 @@
 import { OptionsContainer } from "../styles";
 import { formatDate } from "../utils/common";
 
-// Regex
 export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 export const LOWER_CASE = /(?=.*?[a-z])/;
 export const UPPER_CASE = /(?=.*?[A-Z])/;
-export const NUMBER = /(?=.*?[0-9])/;
+export const NUMBER = /(?=.*?\d)/;
 export const SPECIAL_CHARACTER =
   /(?=.*?[!@#$%^&*()\-_=+\\[\]{}\\|;:'",.<>\\/?`~])/;
-export const VOTERID_REGEX = /^[A-Z]{3}[0-9]{7}$/;
-export const PAN_REGEX = /[A-Z]{5}[0-9]{4}[A-Z]{1}/;
+export const VOTERID_REGEX = /^[A-Z]{3}\d{7}$/;
+export const PAN_REGEX = /[A-Z]{5}\d{4}[A-Z]/;
 export const DRIVING_LICENSE_REGEX =
-  /^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/;
+  /^(([A-Z]{2}\d{2})( )|([A-Z]{2}-\d{2}))((19|20)\d)\d{7}$/;
 export const RATION_CARD_REGEX = /^([a-zA-Z0-9]){8,12}\s*$/;
-export const AADHAR_CARD_REGEX = /^[2-9]{1}[0-9]{3}[0-9]{4}[0-9]{4}$/;
-export const PINCODE_REGEX = /^[1-9][0-9]{5}$/;
-export const PERCENTAGE_REGEX = /\b(?:[1-9]|[1-9][0-9]|100)\b/;
+export const AADHAR_CARD_REGEX = /^[2-9]\d{3}\d{4}\d{4}$/;
+export const PINCODE_REGEX = /^[1-9]\d{5}$/;
+export const PERCENTAGE_REGEX = /\b(?:[1-9]|[1-9]\d|100)\b/;
 export const NUMBER_ALPHABET_REGEX = /^[0-9a-zA-Z]+$/;
 
 export const COOKIE_KEYS = {
@@ -27,7 +26,6 @@ export const LOCAL_STORAGE_KEYS = {
   REMEMBER: "remember",
 };
 
-// codes
 export const CODES = {
   ACTIVE: "ACTIVE",
   DEACTIVE: "DEACTIVE",
@@ -54,33 +52,30 @@ export const CODES = {
   SEVA_KENDRA: "sevaKendra",
 };
 
-// api messages
 export const SERVER_ERROR = "Something went wrong. Please try again!";
 export const LOGIN_SUCCESS = "Logged in successfully";
 export const VALID_SEVA_KENDRA = "Valid seva kendra user !";
 export const VALID_DIVYANG = "Valid divyang user !";
 export const PASSWORD_SUCCESS = "Password updated successfully !";
-
-// msg labels
+export const TOKEN_EXPIRED = "Sorry, Token has expired !";
 export const DELETE_MSG = "Are you sure you want to delete this ";
 
-// audit log columns
 export const statusColumns = [
   {
     Header: "Status",
     width: 160,
     sticky: "left",
-    Cell: (props) => (
-      <OptionsContainer>{props?.row?.original?.status || ""}</OptionsContainer>
+    Cell: ({ row }) => (
+      <OptionsContainer>{row?.original?.status || ""}</OptionsContainer>
     ),
   },
   {
     Header: "Date",
     accessor: "date",
     width: 160,
-    Cell: (props) => (
+    Cell: ({ value }) => (
       <OptionsContainer>
-        {formatDate({ date: props?.value, format: "DD-MM-YYYY" }) || "N/A"}
+        {formatDate({ date: value, format: "DD-MM-YYYY" }) || "N/A"}
       </OptionsContainer>
     ),
   },
@@ -88,7 +83,7 @@ export const statusColumns = [
     Header: "Reason",
     accessor: "description",
     width: 320,
-    Cell: (props) => <OptionsContainer>{props?.value || "-"}</OptionsContainer>,
+    Cell: ({ value }) => <OptionsContainer>{value || "-"}</OptionsContainer>,
   },
 ];
 

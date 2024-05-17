@@ -63,7 +63,7 @@ export const validationSchema = object({
     .nullable()
     .test(
       "corporationId",
-      "Coporation is required",
+      "Corporation is required",
       (value, context) => !(context.parent?.isRural !== CODES?.RURAL && !value)
     ),
   MLAConstituencyId: string().required("MLA Constituency is required"),
@@ -73,8 +73,10 @@ export const validationSchema = object({
     .required("Pincode is required")
     .matches(PINCODE_REGEX, "Enter Valid Email")
     .test("isZero", (value, context) => {
-      if (!!value && Number(value) === 0)
-        return context.createError({ message: "Enter Valid Pincode" });
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Pincode" });
+        return false;
+      }
       return true;
     })
     .min(6, "Pincode must be 6 characters long"),
@@ -143,7 +145,7 @@ export const validationSchema = object({
     .nullable()
     .test(
       "corporationIdCommunication",
-      "Coporation is required",
+      "Corporation is required",
       (value, context) =>
         !(context.parent?.isRuralCommunication !== CODES?.RURAL && !value)
     ),
@@ -158,8 +160,10 @@ export const validationSchema = object({
     .required("Pincode is required")
     .matches(PINCODE_REGEX, "Enter Valid Pincode")
     .test("isZero", (value, context) => {
-      if (!!value && Number(value) === 0)
-        return context.createError({ message: "Enter Valid Email" });
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Email" });
+        return false;
+      }
       return true;
     })
     .min(6, "Pincode must be 6 characters long"),

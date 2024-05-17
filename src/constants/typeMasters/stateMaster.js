@@ -1,7 +1,6 @@
-import { IconButton } from "@mui/material";
 import { API_PATHS } from "../../api/apiPaths";
+import { EditDelete } from "../../components/shared/EditDelete";
 import { ROUTE_PATHS } from "../../routes/routePaths";
-import { DeleteIcon, EditIcon, OptionsContainerChild } from "../../styles";
 
 export const initialValues = (name) => ({
   [name]: "",
@@ -141,26 +140,13 @@ export const stateMasterColumns = ({
   },
   {
     Header: " ",
-    Cell: (props) => {
-      const disabled = !!tableEditId;
-
+    Cell: ({ row }) => {
       return (
-        <OptionsContainerChild style={{ justifyContent: "flex-end" }}>
-          <div>
-            <IconButton
-              onClick={() => handleEditList(props?.row?.index)}
-              disabled={disabled}
-            >
-              <EditIcon disabled={disabled} />
-            </IconButton>
-            <IconButton
-              onClick={() => handleDeleteList(props?.row?.index)}
-              disabled={disabled}
-            >
-              <DeleteIcon disabled={disabled} />
-            </IconButton>
-          </div>
-        </OptionsContainerChild>
+        <EditDelete
+          onEdit={() => handleEditList(row?.index)}
+          onDelete={() => handleDeleteList(row?.index)}
+          isViewMode={!!tableEditId}
+        />
       );
     },
     inputValues: ({ index }) => [
@@ -176,16 +162,3 @@ export const stateMasterColumns = ({
     disable: !!tableEditId,
   },
 ];
-
-export const tableStyles = {
-  tableHead: {
-    ".tr .th:first-child": {
-      boxShadow: "none !important",
-    },
-  },
-  tr: {
-    "div:nth-child(5)": {
-      flex: 1,
-    },
-  },
-};

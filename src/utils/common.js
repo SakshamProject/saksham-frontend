@@ -129,6 +129,7 @@ export const findNameById = (id, data) =>
 
 export const getMinimumAgeDate = (value) => {
   const now = new Date();
+
   return new Date(
     now.getFullYear() - parseInt(value),
     now.getMonth(),
@@ -137,11 +138,16 @@ export const getMinimumAgeDate = (value) => {
 };
 
 export const getAge = (dob) => {
+  if (!dob) return;
+
   const today = new Date();
   const birthDate = new Date(dob);
   let age = today.getFullYear() - birthDate.getFullYear();
-  const m = today.getMonth() - birthDate.getMonth();
-  if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+  const monthDiff = today.getMonth() - birthDate.getMonth();
+  if (
+    monthDiff < 0 ||
+    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+  ) {
     age--;
   }
 
