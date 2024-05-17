@@ -32,7 +32,6 @@ export const API_PATHS = {
   SERVICES_LIST: "/api/services/list",
   SERVICE_MAPPING: "/api/servicemapping",
   SERVICE_MAPPING_LIST: "/api/servicemapping/list",
-
   USERS: "/users",
   SEVAKENDRA: "/sevakendras",
   DESIGNATIONS: "/designations",

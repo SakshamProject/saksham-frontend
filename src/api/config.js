@@ -4,7 +4,7 @@ import { Navigate } from "react-router-dom";
 import { COOKIE_KEYS } from "../constants/globalConstants";
 import { ROUTE_PATHS } from "../routes/routePaths";
 import { getCookie, removeAllCookie } from "../utils/cookie";
-import { dispatchIsLoading, dispatchSnackbarError } from "../utils/dispatch";
+import { dispatchIsLoading } from "../utils/dispatch";
 
 export const appApi = axios.create({
   baseURL:
