@@ -1,8 +1,53 @@
-import { Box, Pagination, Typography } from "@mui/material";
+import { Box, Pagination, Typography, styled } from "@mui/material";
+import propTypes from "prop-types";
 import React, { Fragment } from "react";
-import { theme } from "../../styles";
 import { scrollbarStyle } from "../../styles/scrollbarStyle";
 import { EditPopover, WithCondition } from "./index";
+
+const CardWrapper = styled(Box)(({ theme }) => ({
+  overflow: "auto",
+  height: "calc(100vh - (56px + 80px + 24px))",
+  ...scrollbarStyle(true),
+  [theme.breakpoints.down("sm")]: {
+    height: "auto",
+  },
+}));
+
+const CardContainer = styled(Box)(({ theme }) => ({
+  width: "100%",
+  padding: "8px 40px 8px 8px",
+  border: `1px solid ${theme.palette?.commonColor?.black}`,
+  borderRadius: "8px",
+  marginBottom: "16px",
+  minHeight: "64px",
+  position: "relative",
+}));
+
+const MoreButtonContainer = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: 0,
+  right: 0,
+}));
+
+const CardDetailsContainer = styled(Box)(() => ({
+  padding: "4px 0",
+  width: "100%",
+  display: "flex",
+}));
+
+const CardDetail = styled(Box)(() => ({
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  flex: "1",
+}));
+
+const PaginationContainer = styled(Box)(() => ({
+  display: "flex",
+  width: "100%",
+  justifyContent: "center",
+  paddingBottom: "16px",
+}));
 
 const ResponsiveList = ({
   columnData,
@@ -26,50 +71,25 @@ const ResponsiveList = ({
     }
     return value;
   };
+
   return (
     <>
-      <WithCondition isValid={rawData?.length <= 0}>
+      <WithCondition isValid={!rawData?.length}>
         <Box sx={{ textAlign: "center" }}>
           <Typography fontSize={"20px"}>No Data</Typography>
           <Typography>There seems to be no data found.</Typography>
         </Box>
       </WithCondition>
 
-      <WithCondition isValid={rawData?.length > 0}>
-        <Box
-          sx={{
-            overflow: "auto",
-            height: "calc(100vh - (56px + 80px + 24px))",
-            ...scrollbarStyle(true),
-            [theme.breakpoints.down("sm")]: {
-              height: "auto",
-            },
-          }}
-        >
+      <WithCondition isValid={!!rawData?.length}>
+        <CardWrapper>
           <Box sx={{ marginBottom: "24px" }}>
             {rawData?.map((cardItem, rawDataKey) => (
-              <Box
-                key={rawDataKey + cardItem?.id}
-                sx={{
-                  width: "100%",
-                  padding: "8px 40px 8px 8px",
-                  border: "1px solid black",
-                  borderRadius: "8px",
-                  marginBottom: "16px",
-                  minHeight: "64px",
-                  position: "relative",
-                }}
-              >
+              <CardContainer key={rawDataKey + cardItem?.id}>
                 {columnData?.map((card, key) => (
                   <Fragment key={card?.Header + key}>
                     <WithCondition isValid={!!card?.inputValues}>
-                      <Box
-                        sx={{
-                          position: "absolute",
-                          top: 0,
-                          right: 0,
-                        }}
-                      >
+                      <MoreButtonContainer>
                         <EditPopover
                           inputValues={
                             card?.inputValues
@@ -85,26 +105,13 @@ const ResponsiveList = ({
                           }
                           disable={card?.disable}
                         />
-                      </Box>
+                      </MoreButtonContainer>
                     </WithCondition>
 
                     <WithCondition isValid={card?.Header?.trim()}>
-                      <Box
-                        sx={{
-                          padding: "4px 0",
-                          width: "100%",
-                          display: "flex",
-                        }}
-                      >
+                      <CardDetailsContainer>
                         <Box sx={{ flex: "1" }}>{card?.Header}</Box>
-                        <Box
-                          sx={{
-                            whiteSpace: "nowrap",
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            flex: "1",
-                          }}
-                        >
+                        <CardDetail>
                           &nbsp;:&nbsp;
                           {card?.responsiveCell
                             ? card?.responsiveCell({
@@ -112,37 +119,39 @@ const ResponsiveList = ({
                                 value: accessProperty(cardItem, card?.accessor),
                               }) || "--"
                             : accessProperty(cardItem, card?.accessor) || "--"}
-                        </Box>
-                      </Box>
+                        </CardDetail>
+                      </CardDetailsContainer>
                     </WithCondition>
                   </Fragment>
                 ))}
-              </Box>
+              </CardContainer>
             ))}
           </Box>
 
           <WithCondition
             isValid={!disablePagination && Math.ceil(count / 10) > 1}
           >
-            <Box
-              sx={{
-                display: "flex",
-                width: "100%",
-                justifyContent: "center",
-                paddingBottom: "16px",
-              }}
-            >
+            <PaginationContainer>
               <Pagination
                 count={Math.ceil(count / 10) || 0}
                 page={currentPage}
                 onChange={(_, page) => onPageNumberChange(page)}
               />
-            </Box>
+            </PaginationContainer>
           </WithCondition>
-        </Box>
+        </CardWrapper>
       </WithCondition>
     </>
   );
 };
 
 export default ResponsiveList;
+
+ResponsiveList.propTypes = {
+  columnData: propTypes.array.isRequired,
+  rawData: propTypes.array.isRequired,
+  onPageNumberChange: propTypes.func,
+  currentPage: propTypes.number,
+  count: propTypes.number,
+  disablePagination: propTypes.bool,
+};

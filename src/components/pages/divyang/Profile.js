@@ -10,7 +10,7 @@ import {
   communicationAddress,
   divyangBasicDetails,
   permanentAddress,
-} from "../../../constants/divyang/myProfile";
+} from "../../../constants/divyang/profile";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {

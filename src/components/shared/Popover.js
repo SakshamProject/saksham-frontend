@@ -1,6 +1,6 @@
 import { Popover as MuiPopover, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
 import propTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 
 export const Popover = ({
   menuItems,
@@ -47,11 +47,11 @@ export const Popover = ({
 };
 
 Popover.propTypes = {
-  menuItems: propTypes.array,
-  anchorEl: propTypes.any,
-  onClose: propTypes.func,
-  open: propTypes.any,
-  menuAction: propTypes.func,
+  menuItems: propTypes.array.isRequired,
+  anchorEl: propTypes.any.isRequired,
+  onClose: propTypes.func.isRequired,
+  open: propTypes.any.isRequired,
+  menuAction: propTypes.func.isRequired,
   anchorOrigin: propTypes.object,
   transformOrigin: propTypes.object,
   popoverStyle: propTypes.object,

@@ -45,6 +45,7 @@ const StatusFields = ({
       <Grid item xs={12}>
         <DividerLine gap={gap || "8px 0 24px"} />
       </Grid>
+
       <Grid item xs={6}>
         <CustomRadioButton
           name="status"
@@ -69,7 +70,6 @@ const StatusFields = ({
             value={values?.date}
             onChange={setFieldValue}
             isViewMode={isViewMode}
-            // minDate={new Date()}
             errors={errors?.date}
             onBlur={handleBlur}
             setTouched={setFieldTouched}
@@ -113,18 +113,18 @@ const StatusFields = ({
 export default StatusFields;
 
 StatusFields.propTypes = {
-  handleChange: propTypes.func,
-  handleBlur: propTypes.func,
-  values: propTypes.object,
-  touched: propTypes.object,
-  errors: propTypes.object,
-  isViewMode: propTypes.bool,
-  setFieldValue: propTypes.func,
-  setFieldTouched: propTypes.func,
-  statusSeeds: propTypes.any,
+  handleChange: propTypes.func.isRequired,
+  handleBlur: propTypes.func.isRequired,
+  values: propTypes.object.isRequired,
+  touched: propTypes.object.isRequired,
+  errors: propTypes.object.isRequired,
+  isViewMode: propTypes.bool.isRequired,
+  setFieldValue: propTypes.func.isRequired,
+  setFieldTouched: propTypes.func.isRequired,
+  statusSeeds: propTypes.array.isRequired,
   rowBreak: propTypes.bool,
-  statusHistory: propTypes.array,
+  statusHistory: propTypes.array.isRequired,
   disableListLayout: propTypes.bool,
   hide: propTypes.bool,
-  gap: propTypes.any,
+  gap: propTypes.oneOfType([propTypes.number, propTypes.string]),
 };

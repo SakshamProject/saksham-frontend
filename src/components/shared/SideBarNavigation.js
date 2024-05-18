@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../styles";
 import { Popover } from "./Popover";
+import { WithCondition } from "./WithCondition";
 
 export const CustomTabs = styled(Tabs)(({ theme }) => ({
   display: "flex",
@@ -84,26 +85,29 @@ export const SideBarNavigation = ({ menuList }) => {
 
   useEffect(() => {
     if (!menuList?.length) return;
-    const currentMenu = menuList.find((menu) => menu?.value === currentPage);
+    const currentMenu = menuList?.find((menu) => menu?.value === currentPage);
     setValue(currentMenu?.value || false);
   }, [pathname, activeMenu, menuList]); // eslint-disable-line
 
   return (
-    <CustomTabs
-      orientation="vertical"
-      value={value || false}
-      onChange={handleTab}
-    >
-      {menuList?.map((menu) => (
-        <CustomTab
-          label={menu?.label}
-          id={menu?.value}
-          value={menu?.value}
-          key={menu?.label}
-          onClick={handleMenuClick(menu)}
-        />
-      ))}
-      {anchorEl && (
+    <>
+      <CustomTabs
+        orientation="vertical"
+        value={value || false}
+        onChange={handleTab}
+      >
+        {menuList?.map((menu) => (
+          <CustomTab
+            label={menu?.label}
+            id={menu?.value}
+            value={menu?.value}
+            key={menu?.label}
+            onClick={handleMenuClick(menu)}
+          />
+        ))}
+      </CustomTabs>
+
+      <WithCondition isValid={!!anchorEl}>
         <Popover
           popoverStyle={popoverStyle}
           open={Boolean(anchorEl)}
@@ -112,11 +116,11 @@ export const SideBarNavigation = ({ menuList }) => {
           popoverItemStyle={popoverItemStyle}
           onClose={handleClosePopover}
         />
-      )}
-    </CustomTabs>
+      </WithCondition>
+    </>
   );
 };
 
 SideBarNavigation.propTypes = {
-  menuList: propTypes.array,
+  menuList: propTypes.array.isRequired,
 };

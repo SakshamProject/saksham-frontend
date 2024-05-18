@@ -5,11 +5,7 @@ export const WithCondition = ({ children, isValid, nullComponent }) => {
 };
 
 WithCondition.propTypes = {
-  nullComponent: propTypes.any,
-  isValid: propTypes.oneOfType([
-    propTypes.string,
-    propTypes.bool,
-    propTypes.number,
-  ]),
   children: propTypes.any,
+  isValid: propTypes.bool.isRequired,
+  nullComponent: propTypes.any,
 };

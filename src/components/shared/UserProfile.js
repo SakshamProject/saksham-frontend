@@ -32,7 +32,7 @@ export const UserProfile = ({ userInfo, style, placement }) => {
 };
 
 UserProfile.propTypes = {
-  userInfo: propTypes.any,
+  userInfo: propTypes.object.isRequired,
   placement: propTypes.string,
   style: propTypes.object,
 };

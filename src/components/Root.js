@@ -23,14 +23,14 @@ const Root = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const token = getCookie(COOKIE_KEYS?.TOKEN);
+  const hideRoutes = [
+    ROUTE_PATHS?.RESET_PASSWORD,
+    ROUTE_PATHS?.FORGOT_PASSWORD,
+  ];
 
   useEffect(() => {
-    if (
-      [ROUTE_PATHS?.RESET_PASSWORD, ROUTE_PATHS?.FORGOT_PASSWORD].includes(
-        pathname
-      )
-    ) {
-      navigate(ROUTE_PATHS?.LOGIN);
+    if (hideRoutes.includes(pathname)) {
+      navigate(ROUTE_PATHS?.LOGIN, { replace: true });
     } else if (token && userInfo && !userInfoSelector) {
       dispatchUserInfo(userInfo);
     }

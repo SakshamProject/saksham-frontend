@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { Suspense, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { CODES, COOKIE_KEYS } from "../../constants/globalConstants";
+import { CODES } from "../../constants/globalConstants";
 import { getSideMenus } from "../../constants/menus";
 import useResponsive from "../../hooks/useResponsive";
 import { ADMIN_ROUTES } from "../../routes";
@@ -12,15 +12,11 @@ import {
   AppMainContainer,
   AppMainLayout,
 } from "../../styles/index";
-import { getCookie } from "../../utils/cookie";
-import { objectDecryption } from "../../utils/encryptionAndDecryption";
 import { CustomLoader, SideBarNavigation, WithCondition } from "../shared";
 import { AppBar } from "../shared/AppBar";
 
 export const Layout = () => {
-  const userInfo =
-    useSelector((state) => state?.userInfo) ||
-    objectDecryption(getCookie(COOKIE_KEYS?.USER_INFO));
+  const userInfo = useSelector((state) => state?.userInfo);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const { isTablets, isMobile } = useResponsive();

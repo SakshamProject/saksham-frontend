@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { getApiService, getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
@@ -12,7 +11,6 @@ import {
 } from "../../../constants/divyangDetails/disabilityDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { authorities, yesNoSeed } from "../../../constants/seeds";
-import { tableStyles } from "../../../constants/typeMasters/stateMaster";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
 import { getValidValues } from "../../../utils/common";
@@ -305,7 +303,6 @@ const DisabilityDetails = () => {
                 disablePagination
                 disableLayout
                 count={0}
-                style={tableStyles}
               />
             </Grid>
 

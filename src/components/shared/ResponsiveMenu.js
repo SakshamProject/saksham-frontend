@@ -115,7 +115,7 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
 };
 
 ResponsiveMenu.propTypes = {
-  redirect: propTypes.func,
-  drawerOpen: propTypes.bool,
-  setDrawerOpen: propTypes.func,
+  redirect: propTypes.func.isRequired,
+  drawerOpen: propTypes.bool.isRequired,
+  setDrawerOpen: propTypes.func.isRequired,
 };

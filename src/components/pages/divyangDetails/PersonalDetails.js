@@ -66,7 +66,6 @@ const PersonalDetails = () => {
       dispatchSnackbarError("At least Add One Education Qualification");
       return;
     }
-    console.log({ values });
     const payload = multiPartFormData(
       {
         personalDetails: {
