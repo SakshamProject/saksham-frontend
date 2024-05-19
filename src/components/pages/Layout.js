@@ -29,12 +29,8 @@ export const Layout = () => {
         );
         navigate(userPage?.path);
       } else if (userInfo?.role === CODES?.DIVYANG) {
-        navigate(ROUTE_PATHS?.MY_PROFILE);
-      } else if (userInfo?.role === CODES?.ADMIN) {
-        navigate(ROUTE_PATHS?.DASHBOARD);
-      } else {
-        navigate(ROUTE_PATHS?.LOGIN);
-      }
+        navigate(ROUTE_PATHS?.PROFILE);
+      } else navigate(ROUTE_PATHS?.DASHBOARD);
     }
   }, [pathname]); //eslint-disable-line
 

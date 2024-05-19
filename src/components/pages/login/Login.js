@@ -126,13 +126,10 @@ const Login = () => {
     mutationKey: ["userLogin"],
     mutationFn: (value) => postApiService(getApiPath(), getValidValues(value)),
     onSuccess: ({ data }, value) => {
-      const userInfo = getUserInfo(data);
+      setUserInfo(data);
       setRememberMe(value);
-      dispatchUserInfo(userInfo);
-      setCookie(COOKIE_KEYS?.TOKEN, data?.token);
-      setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
-      navigate(ROUTE_PATHS?.LAYOUT);
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
+      navigate(ROUTE_PATHS?.LAYOUT);
     },
     onError: ({ response }) => {
       if (response?.data?.error?.message && role !== CODES?.ADMIN) {
@@ -298,7 +295,16 @@ const Login = () => {
 
 export default Login;
 
-const getUserInfo = (data) => {
+const setUserInfo = async (data) => {
+  let userInfo = {
+    name: data?.superAdmin,
+    role: CODES?.ADMIN,
+    profileUrl: "",
+    designation: {
+      name: CODES?.ADMIN,
+    },
+  };
+
   if (data?.user) {
     let serviceMapping = false;
 
@@ -310,7 +316,7 @@ const getUserInfo = (data) => {
       return { ...feature };
     });
 
-    return {
+    userInfo = {
       userId: data?.user?.id,
       serviceMapping,
       role: CODES?.SEVA_KENDRA,
@@ -329,11 +335,11 @@ const getUserInfo = (data) => {
   }
 
   if (data?.divyang) {
-    return {
+    userInfo = {
       userId: data?.divyang?.id,
       role: CODES?.DIVYANG,
       name: `${data?.divyang?.firstName} ${data?.divyang?.lastName}`,
-      profileUrl: "",
+      profileUrl: data?.file?.profilePhoto?.url,
       designation: {
         name: CODES?.DIVYANG,
       },
@@ -343,12 +349,7 @@ const getUserInfo = (data) => {
     };
   }
 
-  return {
-    name: data?.superAdmin,
-    role: CODES?.ADMIN,
-    profileUrl: "",
-    designation: {
-      name: CODES?.ADMIN,
-    },
-  };
+  dispatchUserInfo(userInfo);
+  setCookie(COOKIE_KEYS?.TOKEN, data?.token);
+  setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
 };

@@ -6,6 +6,6 @@ export const WithCondition = ({ children, isValid, nullComponent }) => {
 
 WithCondition.propTypes = {
   children: propTypes.any,
-  isValid: propTypes.bool.isRequired,
+  isValid: propTypes.bool,
   nullComponent: propTypes.any,
 };

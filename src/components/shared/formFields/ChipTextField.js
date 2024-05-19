@@ -125,7 +125,7 @@ ChipTextField.propTypes = {
   disabled: propTypes.bool,
   isViewMode: propTypes.bool,
   autoComplete: propTypes.bool,
-  customOnChange: propTypes.func.isRequired,
+  customOnChange: propTypes.func,
   onBlur: propTypes.func,
   onKeyPress: propTypes.func,
   onKeyDown: propTypes.func,

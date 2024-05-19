@@ -1,3 +1,4 @@
+import { Edit } from "@mui/icons-material";
 import LockIcon from "@mui/icons-material/Lock";
 import { Box, IconButton, Typography, styled } from "@mui/material";
 import { useSelector } from "react-redux";
@@ -74,6 +75,7 @@ const RoleContainer = styled("div")(({ theme }) => ({
   padding: "5px 10px",
   background: theme.palette?.primary?.main,
   color: theme?.palette?.primary?.contrastText,
+  cursor: "pointer",
 }));
 
 const Profile = () => {
@@ -108,7 +110,11 @@ const Profile = () => {
 
           <GeneralContainer sx={{ flex: 1 }}>
             <ProfileDetails>
-              <Typography textTransform={"uppercase"} fontSize={20}>
+              <Typography
+                textTransform={"uppercase"}
+                fontSize={20}
+                sx={{ cursor: "pointer" }}
+              >
                 {userInfo?.name || "User"}
               </Typography>
 
@@ -119,6 +125,13 @@ const Profile = () => {
           </GeneralContainer>
 
           <GeneralContainer>
+            <IconContainer
+              onClick={() => navigate(ROUTE_PATHS?.PROFILE)}
+              disabled={userInfo?.role !== CODES?.SEVA_KENDRA}
+            >
+              <Edit />
+            </IconContainer>
+
             <IconContainer
               onClick={changePassword}
               disabled={userInfo?.role !== CODES?.SEVA_KENDRA}

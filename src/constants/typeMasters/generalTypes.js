@@ -149,7 +149,7 @@ export const generalColumns = ({
           <EditDelete
             isViewMode={!!tableEditId || isViewMode}
             onDelete={() => handleDelete(row?.original?.id)}
-            onEdit={handleEdit(row?.original?.id)}
+            onEdit={() => handleEdit(row?.original?.id)}
           />
         );
       },

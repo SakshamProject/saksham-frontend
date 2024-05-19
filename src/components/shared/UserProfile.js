@@ -1,7 +1,6 @@
 import propTypes from "prop-types";
 import defaultAvatar from "../../assets/avatar.png";
 import { CommonAvatar } from "../../styles";
-import CustomTooltip from "./CustomTooltip";
 import { WithCondition } from "./WithCondition";
 
 export const UserProfile = ({ userInfo, style, placement }) => {
@@ -11,28 +10,25 @@ export const UserProfile = ({ userInfo, style, placement }) => {
   for (let i = 0; i < Math.min(userName.length, 2); i++) {
     firstCharacter += userName[i][0] || "";
   }
+  firstCharacter = firstCharacter.toUpperCase();
 
   return (
-    <CustomTooltip title={"profile"} placement={placement}>
-      <WithCondition
-        isValid={!!userInfo?.profileUrl}
-        nullComponent={
-          <CommonAvatar>{firstCharacter?.toUpperCase()}</CommonAvatar>
-        }
-      >
-        <CommonAvatar
-          style={style}
-          src={userInfo?.profileUrl || defaultAvatar}
-          onError={(e) => (e.target.src = defaultAvatar)}
-          alt="profile"
-        />
-      </WithCondition>
-    </CustomTooltip>
+    <WithCondition
+      isValid={!!userInfo?.profileUrl}
+      nullComponent={<CommonAvatar>{firstCharacter}</CommonAvatar>}
+    >
+      <CommonAvatar
+        style={style}
+        src={userInfo?.profileUrl || defaultAvatar}
+        onError={(e) => (e.target.src = defaultAvatar)}
+        alt="profile"
+      />
+    </WithCondition>
   );
 };
 
 UserProfile.propTypes = {
-  userInfo: propTypes.object.isRequired,
+  userInfo: propTypes.object,
   placement: propTypes.string,
   style: propTypes.object,
 };

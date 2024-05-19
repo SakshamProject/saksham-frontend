@@ -3,13 +3,15 @@ import propTypes from "prop-types";
 
 const CustomTooltip = ({ children, title, placement, arrow }) => {
   return (
-    <Tooltip
-      title={title || ""}
-      arrow={!arrow || true}
-      placement={placement || "bottom"}
-    >
-      {children}
-    </Tooltip>
+    <span>
+      <Tooltip
+        title={title || ""}
+        arrow={!arrow || true}
+        placement={placement || "bottom"}
+      >
+        {children}
+      </Tooltip>
+    </span>
   );
 };
 

@@ -53,7 +53,6 @@ export const EditPopover = ({ inputValues, disable }) => {
   return (
     <Box sx={{ display: "flex", justifyContent: "end" }}>
       <CustomTooltip title={"More actions"}>
-        <span>
           <IconButton
             aria-describedby={id}
             onClick={handleClick}
@@ -61,7 +60,6 @@ export const EditPopover = ({ inputValues, disable }) => {
           >
             <MoreHorizTwoTone />
           </IconButton>
-        </span>
       </CustomTooltip>
 
       {open ? (

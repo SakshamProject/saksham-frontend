@@ -47,11 +47,11 @@ export const Popover = ({
 };
 
 Popover.propTypes = {
-  menuItems: propTypes.array.isRequired,
-  anchorEl: propTypes.any.isRequired,
-  onClose: propTypes.func.isRequired,
-  open: propTypes.any.isRequired,
-  menuAction: propTypes.func.isRequired,
+  menuItems: propTypes.array,
+  anchorEl: propTypes.any,
+  onClose: propTypes.func,
+  open: propTypes.any,
+  menuAction: propTypes.func,
   anchorOrigin: propTypes.object,
   transformOrigin: propTypes.object,
   popoverStyle: propTypes.object,

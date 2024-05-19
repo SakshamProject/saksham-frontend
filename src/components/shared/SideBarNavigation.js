@@ -122,5 +122,5 @@ export const SideBarNavigation = ({ menuList }) => {
 };
 
 SideBarNavigation.propTypes = {
-  menuList: propTypes.array.isRequired,
+  menuList: propTypes.array,
 };

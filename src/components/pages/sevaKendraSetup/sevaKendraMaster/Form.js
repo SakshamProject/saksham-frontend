@@ -237,7 +237,7 @@ const Form = () => {
         <CustomDatePicker
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
-          // minDate={fields?.startDate?.minDate}
+          minDate={(!editId && fields?.startDate?.minDate) || null}
           isViewMode={isViewMode}
           value={values?.startDate}
           errors={errors?.startDate}

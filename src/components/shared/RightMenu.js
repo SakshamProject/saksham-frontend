@@ -42,9 +42,9 @@ export const RightMenu = ({
 };
 
 RightMenu.propTypes = {
-  open: propTypes.bool.isRequired,
-  anchorEl: propTypes.any.isRequired,
-  handleClose: propTypes.func.isRequired,
-  redirect: propTypes.func.isRequired,
-  menuList: propTypes.array.isRequired,
+  open: propTypes.bool,
+  anchorEl: propTypes.any,
+  handleClose: propTypes.func,
+  redirect: propTypes.func,
+  menuList: propTypes.array,
 };

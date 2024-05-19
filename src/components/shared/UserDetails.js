@@ -20,6 +20,6 @@ export const UserDetails = ({ userInfo, color }) => (
 );
 
 UserDetails.propTypes = {
-  userInfo: propTypes.object.isRequired,
+  userInfo: propTypes.object,
   color: propTypes.string,
 };

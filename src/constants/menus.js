@@ -104,7 +104,7 @@ const ADMIN_SIDE_MENUS = [
 const DIVYANG_SIDE_MENU = [
   {
     label: "My Profile",
-    value: "myProfile",
+    value: "profile",
     navigateTo: ROUTE_PATHS?.PROFILE,
     key: CODES?.DIVYANG_DETAILS,
     icon: <AccountCircle />,

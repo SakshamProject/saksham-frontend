@@ -148,8 +148,8 @@ const ResponsiveList = ({
 export default ResponsiveList;
 
 ResponsiveList.propTypes = {
-  columnData: propTypes.array.isRequired,
-  rawData: propTypes.array.isRequired,
+  columnData: propTypes.array,
+  rawData: propTypes.array,
   onPageNumberChange: propTypes.func,
   currentPage: propTypes.number,
   count: propTypes.number,
