@@ -63,7 +63,6 @@ const Form = () => {
           description: remaining?.description,
         },
       },
-      [],
       ["profilePhoto"]
     );
     onSubmit(payload);
@@ -155,6 +154,7 @@ const Form = () => {
             auditLog: "",
             personId: "",
             profilePhotoFileName: "",
+            profilePhotoFile: "",
           }
         )
       );

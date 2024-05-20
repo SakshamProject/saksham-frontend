@@ -42,7 +42,6 @@ const Signup = () => {
         ...values,
         dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
       },
-      [],
       ["profilePhoto"]
     );
     onSubmit(payload);

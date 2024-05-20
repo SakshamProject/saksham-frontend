@@ -247,7 +247,11 @@ const Form = () => {
           <Grid item xs={12}>
             <ChipTextField
               name={fields?.chipSetField?.name}
-              label={fields?.chipSetField?.label}
+              label={`${fields?.chipSetField?.label} ${
+                generalType !== GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION
+                  ? "*"
+                  : ""
+              }`}
               placeholder={fields?.chipSetField?.placeHolder}
               chipVariant={fields?.chipSetField?.chipVariant}
               value={values?.chip}
@@ -280,6 +284,9 @@ const Form = () => {
           disableNewForm
           disableFilter
           placeholder={values?.typeMaster}
+          style={{
+            ".searchField": { margin: 0 },
+          }}
         />
       </WithCondition>
 

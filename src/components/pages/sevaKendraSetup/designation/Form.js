@@ -144,17 +144,18 @@ const Form = () => {
     return values?.featuresId?.includes(id);
   };
 
-  const checkItem = (id, name) => {
+  const checkItem = async (id) => {
     if (checkExistence(id)) {
-      setFieldValue(
-        name,
-        values?.featuresId?.filter((item) => {
-          return editId ? item?.id !== id : item !== id;
-        })
-      );
-      return;
+      const filtered = values?.featuresId?.filter((item) => {
+        return editId ? item?.id !== id : item !== id;
+      });
+      setFieldValue(fields?.featuresId?.name, filtered);
+    } else {
+      setFieldValue(fields?.featuresId?.name, [
+        ...(values?.featuresId || []),
+        !!editId ? { id } : id,
+      ]);
     }
-    setFieldValue(name, [...(values?.featuresId || []), editId ? { id } : id]);
   };
 
   const handleSelectAll = (e) => {
@@ -165,9 +166,9 @@ const Form = () => {
           return editId ? { id: item?.id } : item?.id;
         })
       );
-      return;
+    } else {
+      setFieldValue(fields?.featuresId?.name, []);
     }
-    setFieldValue(fields?.featuresId?.name, []);
   };
 
   return (
@@ -266,7 +267,7 @@ const Form = () => {
             name={menu?.id}
             label={menu?.name?.split("_")?.join(" ")}
             style={{ marginLeft: "18px" }}
-            onChange={() => checkItem(menu?.id, fields.featuresId.name)}
+            onChange={() => checkItem(menu?.id)}
             checked={checkExistence(menu?.id)}
             isViewMode={isViewMode}
           />

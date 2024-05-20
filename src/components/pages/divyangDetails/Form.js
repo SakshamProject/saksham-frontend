@@ -1,11 +1,9 @@
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { Box, styled } from "@mui/material";
+import { styled } from "@mui/material";
 import React, { Suspense } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { CustomHeader, StyledIconButton } from "../../../styles";
 import { scrollbarStyle } from "../../../styles/scrollbarStyle";
 import {
   BackNavigator,
@@ -54,9 +52,10 @@ const Form = () => {
       <BackNavigator
         title={"Divyang"}
         navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
+        disableModes
       />
 
-      <WithCondition isValid={isMobile}>
+      {/* <WithCondition isValid={isMobile}>
         <Box
           sx={{
             width: "100%",
@@ -88,7 +87,7 @@ const Form = () => {
             <ArrowForwardIos />
           </StyledIconButton>
         </Box>
-      </WithCondition>
+      </WithCondition> */}
 
       <FormLayout>
         <WithCondition isValid={!isMobile}>

@@ -1,18 +1,26 @@
 import { Grid } from "@mui/material";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getByIdApiService } from "../../../api/api";
+import { getByIdApiService, updateApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/idProffUploads";
+import {
+  fileKeys,
+  getFilesUrl,
+} from "../../../constants/divyangDetails/personalDetails";
+import { CODES } from "../../../constants/globalConstants";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { StyledFormContainer } from "../../../styles";
-import { getNeededValues, getValidValues } from "../../../utils/common";
-import { dispatchSnackbarError } from "../../../utils/dispatch";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
 import {
@@ -28,6 +36,7 @@ const IdProffUploads = () => {
   const { state } = useLocation();
   const isViewMode = state?.isViewMode || false;
   const editId = state?.editId;
+  const newStatus = state?.newStatus;
 
   const handleOnReset = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
@@ -45,19 +54,33 @@ const IdProffUploads = () => {
       },
     });
 
+  const { mutate } = useMutation({
+    mutationKey: ["divyangUpdate", editId],
+    mutationFn: (payload) =>
+      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload),
+    onSuccess: ({ data }) => {
+      console.log(data);
+      dispatchResponseAction(
+        "Id Proff",
+        newStatus ? CODES?.ADDED : CODES?.UPDATED
+      );
+      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
+        state: { ...state },
+      });
+    },
+  });
+
   const handleOnSubmit = (values) => {
-    if (Object.keys(getValidValues(values))?.length < 4) {
+    const { date, status, description, ...remaining } = initialValues;
+    let fileCount = 0;
+    Object.keys(remaining).forEach((key) => {
+      if (values[key]) fileCount++;
+    });
+    if (fileCount < 4) {
       dispatchSnackbarError("At least Upload any 2 Id Proofs");
     } else {
-      const payload = multiPartFormData(values);
-
-      // onSubmit(payload);
-      // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
-      //   state: {
-      //     isViewMode: isViewMode,
-      //     editId: editId,
-      //   },
-      // });
+      const payload = multiPartFormData({ ...values, pageNumber: 2 }, fileKeys);
+      mutate(payload);
     }
   };
 
@@ -66,37 +89,13 @@ const IdProffUploads = () => {
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
     onSuccess: ({ data }) => {
-      setValues(
-        getNeededValues(
-          {
-            ...initialValues,
-            ...data?.data,
-          },
-          {
-            ...initialValues,
-            voterIdFileName: "",
-            panCardFileName: "",
-            drivingLicenseFileName: "",
-            rationCardFileName: "",
-            aadharCardFileName: "",
-            pensionCardFileName: "",
-            medicalInsuranceCardFileName: "",
-            disabilitySchemeCardFileName: "",
-            BPL_OR_APL_CardFileName: "",
-            firstName: "",
-            lastName: "",
-            mobileNumber: "",
-            divyangId: "",
-          }
-        )
-      );
+      const { auditLog, ...remaining } = data?.data;
+      setValues({
+        ...initialValues,
+        ...remaining,
+        ...getFilesUrl(data?.files),
+      });
     },
-  });
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema: validationSchema,
-    onSubmit: handleOnSubmit,
   });
 
   const {
@@ -107,7 +106,11 @@ const IdProffUploads = () => {
     handleSubmit,
     setFieldValue,
     setValues,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
+  });
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>

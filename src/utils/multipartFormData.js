@@ -1,4 +1,4 @@
-export const multiPartFormData = (workData, nullables = [], stringify = []) => {
+export const multiPartFormData = (workData, stringify = []) => {
   const form = new FormData();
 
   const appendFormData = (data, parentKey = "") => {
@@ -12,7 +12,7 @@ export const multiPartFormData = (workData, nullables = [], stringify = []) => {
         !stringify?.includes(newKey)
       ) {
         appendFormData(value, newKey);
-      } else if (!!value || nullables?.includes(newKey)) {
+      } else if (!!value) {
         form.append(
           newKey,
           typeof value === "string"

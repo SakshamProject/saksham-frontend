@@ -3,7 +3,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { Box, IconButton, Typography, styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import BasicUserImg from "../../../assets/profile.png";
+import userImg from "../../../assets/profile.png";
 import { CODES } from "../../../constants/globalConstants";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { WithCondition } from "../../shared";
@@ -16,9 +16,13 @@ const Title = styled(Typography)(({ theme }) => ({
   margin: "30px 0",
 }));
 
-const FormContainer = styled("div")({
+const FormContainer = styled("div")(({theme})=>({
   margin: "0 30px",
-});
+  [theme.breakpoints.down("sm")]: {
+    margin: "0",
+    width: "100%",
+  },
+}));
 
 const SubFormContainer = styled("div")(({ theme }) => ({
   padding: "30px",
@@ -30,8 +34,8 @@ const SubFormContainer = styled("div")(({ theme }) => ({
     margin: "20px auto",
   },
   [theme.breakpoints.down("sm")]: {
-    margin: "20px auto",
-    width: "80%",
+    margin: "0",
+    width: "100%",
   },
 }));
 
@@ -78,6 +82,13 @@ const RoleContainer = styled("div")(({ theme }) => ({
   cursor: "pointer",
 }));
 
+const ProfileCard = styled(Box)(()=>({
+  display: "flex",
+  flexWrap: "wrap",
+  justifyContent: "space-between",
+  gap: "24px",
+}))
+
 const Profile = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
@@ -90,19 +101,12 @@ const Profile = () => {
     <FormContainer>
       <Title>PROFILE</Title>
       <SubFormContainer>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            gap: "24px",
-          }}
-        >
+        <ProfileCard>
           <GeneralContainer>
             <Image
-              src={userInfo?.profileImageUrl || BasicUserImg}
+              src={userInfo?.profileImageUrl || userImg}
               onError={(e) => {
-                e.currentTarget.src = BasicUserImg;
+                e.currentTarget.src = userImg;
               }}
               alt="user profile"
             />
@@ -139,7 +143,7 @@ const Profile = () => {
               <LockIcon />
             </IconContainer>
           </GeneralContainer>
-        </Box>
+        </ProfileCard>
       </SubFormContainer>
     </FormContainer>
   );

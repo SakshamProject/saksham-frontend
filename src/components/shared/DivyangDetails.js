@@ -28,7 +28,11 @@ export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
             objectFit: "cover",
             borderRadius: "16px",
           }}
-          src={divyangDetail?.profileImageUrl || user}
+          src={
+            divyangDetail?.profileImageUrl ||
+            divyangDetail?.profilePhoto ||
+            user
+          }
           onError={(e) => (e.target.src = user)}
           alt="divyang profile"
         />

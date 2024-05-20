@@ -13,12 +13,12 @@ export const EditDelete = ({
     <Box style={{ display: "flex" }}>
       {!disableEdit && (
         <IconButton disabled={isViewMode} onClick={onEdit}>
-          <EditIcon />
+          <EditIcon disabled={isViewMode} />
         </IconButton>
       )}
       {!disableDelete && (
         <IconButton disabled={isViewMode} onClick={onDelete}>
-          <DeleteIcon />
+          <DeleteIcon disabled={isViewMode} />
         </IconButton>
       )}
     </Box>

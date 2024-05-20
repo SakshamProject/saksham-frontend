@@ -21,7 +21,7 @@ export const validationSchema = object({
     .test(
       "isLength",
       "Sub type name must be at least 3 characters long",
-      (value) => value?.length >= 3
+      (value) => !(value?.length < 3)
     )
     .test("isRequired", "Sub type name is required", (value, context) => {
       if (

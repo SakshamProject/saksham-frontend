@@ -191,7 +191,7 @@ export const fields = {
   },
 
   chipSetField: {
-    label: "Sub Type Name *",
+    label: "Sub Type Name",
     placeHolder: "Use enter key to add multiple sub type",
     name: "chip",
     chipVariant: "outlined",

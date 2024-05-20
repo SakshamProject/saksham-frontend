@@ -14,6 +14,7 @@ import {
   eqColumns,
   eqInitialValues,
   fields,
+  getFilesUrl,
   initialValues,
 } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
@@ -95,10 +96,8 @@ const PersonalDetails = () => {
           description: values?.description,
         },
       },
-      [],
       ["picture"]
     );
-
     onSubmit(payload);
   };
 
@@ -116,7 +115,8 @@ const PersonalDetails = () => {
       navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF}`, {
         state: {
           editId: data?.data?.id,
-          isViewMode: !!isViewMode,
+          isViewMode: isViewMode,
+          newStatus: !editId,
         },
       });
     },
@@ -290,6 +290,7 @@ const PersonalDetails = () => {
             },
           })
         ),
+        ...getFilesUrl(data?.files),
       });
     },
   });
@@ -376,14 +377,19 @@ const PersonalDetails = () => {
               type={"image"}
               accept={"image/*"}
               setFieldValue={setFieldValue}
-              name={fields?.picture?.name}
+              name={editId ? "profilePhoto" : fields?.picture?.name}
               defaultLabel={fields?.picture?.label}
-              label={values?.pictureFileName || ""}
-              value={values?.picture || ""}
-              error={errors?.picture}
-              touched={touched?.picture}
+              label={
+                values?.pictureFileName || values?.profilePhotoFileName || ""
+              }
+              value={values?.picture || values?.profilePhoto || ""}
+              error={errors?.picture || errors?.profilePhoto}
+              touched={touched?.picture || touched?.profilePhoto}
               onChange={(e) =>
-                setFieldValue(fields?.picture?.name, e?.target?.files[0])
+                setFieldValue(
+                  editId ? "profilePhoto" : fields?.picture?.name,
+                  e?.target?.files[0]
+                )
               }
               disabled={isViewMode}
             />
@@ -784,6 +790,7 @@ const PersonalDetails = () => {
             handleOnReset={handleOnReset}
             disableSubmit={isViewMode}
             submitLabel={"Save\xa0&\xa0Next"}
+            isViewMode={isViewMode}
           />
         </Grid>
       </StyledFormContainer>

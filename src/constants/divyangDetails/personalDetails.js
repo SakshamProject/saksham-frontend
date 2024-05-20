@@ -87,11 +87,11 @@ export const fields = {
     name: "isMarried",
   },
   spouseName: {
-    label: "Spouse Name",
+    label: "Spouse Name *",
     name: "spouseName",
   },
   spouseNumber: {
-    label: "Spouse Mobile No",
+    label: "Spouse Mobile No *",
     name: "spouseNumber",
     fieldType: "mobile",
   },
@@ -171,3 +171,30 @@ export const eqColumns = ({
     },
   },
 ];
+
+export const fileKeys = [
+  "voterId",
+  "panCard",
+  "drivingLicense",
+  "rationCard",
+  "aadharCard",
+  "pensionCard",
+  "medicalInsuranceCard",
+  "disabilitySchemeCard",
+  "BPL_OR_APL_Card",
+  "disabilityCard",
+  "UDIDCard",
+  "profilePhoto",
+];
+
+export const getFilesUrl = (files) =>
+  files?.reduce((acc, file) => {
+    const key = Object.keys(file)[0];
+    if (key === "profilePhoto") {
+      return { ...acc, [key]: file?.[key]?.url, picture: file?.[key]?.url };
+    }
+    if (fileKeys.includes(key)) {
+      return { ...acc, [key]: file?.[key]?.url };
+    }
+    return acc;
+  }, {});

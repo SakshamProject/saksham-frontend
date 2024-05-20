@@ -91,7 +91,7 @@ export const ListTopbar = ({
               />
             </WithCondition>
 
-            <WithCondition isValid={!disableNewForm && newFormPath}>
+            <WithCondition isValid={!disableNewForm && !!newFormPath}>
               <CustomTooltip title={"New"}>
                 <NewButton onClick={() => navigate(newFormPath)}>
                   {newButtonLabel || <Add />}
