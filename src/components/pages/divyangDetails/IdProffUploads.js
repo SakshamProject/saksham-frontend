@@ -40,26 +40,19 @@ const IdProffUploads = () => {
 
   const handleOnReset = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
-      state: {
-        isViewMode,
-        editId,
-      },
+      state: { ...state },
     });
 
   const handleSkip = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, {
-      state: {
-        isViewMode,
-        editId,
-      },
+      state: { ...state },
     });
 
   const { mutate } = useMutation({
     mutationKey: ["divyangUpdate", editId],
     mutationFn: (payload) =>
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload),
-    onSuccess: ({ data }) => {
-      console.log(data);
+    onSuccess: () => {
       dispatchResponseAction(
         "Id Proff",
         newStatus ? CODES?.ADDED : CODES?.UPDATED
@@ -79,7 +72,23 @@ const IdProffUploads = () => {
     if (fileCount < 4) {
       dispatchSnackbarError("At least Upload any 2 Id Proofs");
     } else {
-      const payload = multiPartFormData({ ...values, pageNumber: 2 }, fileKeys);
+      const files = fileKeys.reduce((acc, key) => {
+        if (values[key]) {
+          return {
+            ...acc,
+            [key]: values[key],
+          };
+        }
+        return acc;
+      }, {});
+      const payload = multiPartFormData(
+        {
+          IdProofUploads: { ...values },
+          ...files,
+          pageNumber: 2,
+        },
+        fileKeys
+      );
       mutate(payload);
     }
   };
@@ -93,6 +102,8 @@ const IdProffUploads = () => {
       setValues({
         ...initialValues,
         ...remaining,
+        voterIdNumber: remaining?.voterId,
+        drivingLicenseNumber: remaining?.drivingLicense,
         ...getFilesUrl(data?.files),
       });
     },

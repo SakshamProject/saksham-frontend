@@ -102,7 +102,7 @@ export const AppMainLayout = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     height: "calc(100% - 56px)",
     margin: "0 16px",
-    position: "relative",
+    // position: "relative",
   },
 }));
 

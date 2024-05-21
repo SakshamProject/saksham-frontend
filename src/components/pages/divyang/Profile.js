@@ -6,11 +6,14 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
+import fileNotFound from "../../../assets/fileNotFound.png";
 import {
   communicationAddress,
   divyangBasicDetails,
+  divyangFilesDetail,
   permanentAddress,
 } from "../../../constants/divyang/profile";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
@@ -20,7 +23,12 @@ import {
   theme,
 } from "../../../styles";
 import { scrollbarStyle } from "../../../styles/scrollbarStyle";
-import { DividerLine, DivyangDetail, ListTopbar } from "../../shared";
+import {
+  DividerLine,
+  DivyangDetail,
+  ListTopbar,
+  WithCondition,
+} from "../../shared";
 
 const Close = styled(IconButton)(({ theme }) => ({
   color: theme?.palette?.commonColor?.white,
@@ -42,6 +50,32 @@ const ProfileWrapper = styled(Box)({
   overflow: "auto",
   ...scrollbarStyle(true),
 });
+
+const FileModal = styled(Box)(({ theme }) => ({
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  width: "100%",
+  height: "100%",
+  transform: "translate(-50%, -50%)",
+  zIndex: 1500,
+  backgroundColor: theme.palette?.shadowColor?.dark,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  overflow: "auto",
+  ...scrollbarStyle(true),
+}));
+
+const FileWrapper = styled(Box)(() => ({
+  width: "100%",
+  height: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  flexDirection: "column",
+  padding: "24px",
+}));
 
 const CustomDataShower = ({ title, value, matches, width, onClick }) => {
   return (
@@ -103,13 +137,31 @@ const Profile = () => {
   const matchesSm = useMediaQuery(theme.breakpoints.up("sm"));
   const [open, setOpen] = useState(false);
 
-  const { data } = useQuery({
+  const { data: divyangDetails } = useQuery({
     queryKey: ["divyangDetails", userInfo],
     queryFn: () =>
       getByIdApiService(API_PATHS?.DIVYANG_DETAILS, userInfo?.userId),
     enabled: !!userInfo?.userId,
     select: ({ data }) => data,
   });
+  const { data, files, disabilityCards } = divyangDetails || {};
+  const divyangFilesUrl = getFilesUrl(files);
+
+  const FileImage = styled("img")(() => ({
+    width: matches ? "32%" : matchesMd ? "40%" : matchesSm ? "56%" : "74%",
+    aspectRatio: 1 / 1.41,
+    objectPosition: "center",
+    objectFit: open?.image ? "cover" : "contain",
+    borderRadius: "4px",
+    boxShadow: `0px 0px 10px 0px ${theme.palette?.shadowColor?.main} `,
+    cursor: "pointer",
+    transition: "transform 0.3s ease-in-out",
+    position: "relative",
+    display: "block",
+    margin: "auto",
+    userSelect: "none",
+    background: "white",
+  }));
 
   return (
     <>
@@ -141,11 +193,13 @@ const Profile = () => {
         <Grid container direction={"column"} width={"100%"}>
           <StyledFormContainer width="100% !important">
             <Grid item xs={12}>
-              <DivyangDetail divyangDetail={data?.data} />
+              <DivyangDetail divyangDetail={{ ...data, ...divyangFilesUrl }} />
             </Grid>
+
             <Grid item xs={12}>
               <DividerLine gap={"16px 0px 20px"} />
             </Grid>
+
             <CustomBox matches={`${matches}`}>
               {divyangBasicDetails?.map((item) => (
                 <CustomDataShower
@@ -153,13 +207,14 @@ const Profile = () => {
                   title={item?.label}
                   value={
                     item?.cell
-                      ? item.cell({ value: data?.data?.[item?.accessor] })
-                      : data?.data?.[item?.accessor] || "--"
+                      ? item.cell({ value: data?.[item?.accessor] })
+                      : data?.[item?.accessor] || "--"
                   }
                   matches={`${matches}`}
                 />
               ))}
             </CustomBox>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
@@ -167,7 +222,7 @@ const Profile = () => {
             <CustomBox matches={`${matches}`}>
               <CustomDataShower
                 title={"Permanent Address"}
-                value={getAddress(data?.data, permanentAddress) || "--"}
+                value={getAddress(data, permanentAddress) || "--"}
                 width={"100%"}
                 matches={`${matches}`}
               />
@@ -176,7 +231,7 @@ const Profile = () => {
             <CustomBox matches={`${matches}`}>
               <CustomDataShower
                 title={"Communication Address"}
-                value={getAddress(data?.data, communicationAddress) || "--"}
+                value={getAddress(data, communicationAddress) || "--"}
                 width={"100%"}
                 matches={`${matches}`}
               />
@@ -186,96 +241,25 @@ const Profile = () => {
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
 
-            <CustomBox matches={`${matches}`}>
-              <CustomDataShower
-                title={"Voter ID"}
-                onClick={() =>
-                  setOpen({
-                    title: "Voter ID",
-                    image: "",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"PAN Card"}
-                onClick={() =>
-                  setOpen({
-                    title: "PAN Card",
-                    image:
-                      "https://www.pdffiller.com/preview/244/69/244069077.png",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Driving Lisence"}
-                onClick={() =>
-                  setOpen({
-                    title: "Driving Lisence",
-                    image: "",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Ration Card"}
-                onClick={() =>
-                  setOpen({
-                    title: "Ration Card",
-                    image:
-                      "https://www.pdffiller.com/preview/244/69/244069077.png",
-                  })
-                }
-                matches={`${matches}`}
-              />
+            <CustomBox matches={`${matches}`} sx={{ flexWrap: "wrap" }}>
+              {divyangFilesDetail?.map((item) => (
+                <CustomDataShower
+                  title={item?.title}
+                  onClick={() =>
+                    setOpen({
+                      title: item?.title,
+                      image: divyangFilesUrl?.[item?.image] || fileNotFound,
+                    })
+                  }
+                  matches={`${matches}`}
+                />
+              ))}
             </CustomBox>
-            <CustomBox matches={`${matches}`}>
-              <CustomDataShower
-                title={"Aadhar Card"}
-                onClick={() =>
-                  setOpen({
-                    title: "Aadhar Card",
-                    image: "",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Pension Card"}
-                onClick={() =>
-                  setOpen({
-                    title: "Pension Card",
-                    image: "",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Medical Insurance Card"}
-                onClick={() =>
-                  setOpen({
-                    title: "Medical Insurance Card",
-                    image:
-                      "https://www.pdffiller.com/preview/244/69/244069077.png",
-                  })
-                }
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Disability Scheme No"}
-                onClick={() =>
-                  setOpen({
-                    title: "Disability Scheme No",
-                    image: "",
-                  })
-                }
-                matches={`${matches}`}
-              />
-            </CustomBox>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
+
             <Grid item xs={12}>
               <CustomTypography
                 capitalize={"capitalize"}
@@ -290,6 +274,7 @@ const Profile = () => {
                 Disability Details(1)
               </CustomTypography>
             </Grid>
+
             <CustomBox matches={`${matches}`}>
               <CustomDataShower
                 title={"Name"}
@@ -312,146 +297,57 @@ const Profile = () => {
                 matches={`${matches}`}
               />
             </CustomBox>
-            <Grid item xs={12}>
-              <CustomTypography
-                capitalize={"capitalize"}
-                variant="h6"
-                style={{
-                  fontSize: "18px",
-                  display: "flex",
-                  justifyContent: matches ? "start" : "center",
-                }}
-                color={theme.palette.commonColor.black}
-              >
-                Disability Details(2)
-              </CustomTypography>
-            </Grid>
-            <CustomBox matches={`${matches}`}>
-              <CustomDataShower
-                title={"Name"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Type"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Disability Since"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Disability Area"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-            </CustomBox>
+
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
+
             <CustomBox matches={`${matches}`} width={"66%"}>
               <CustomDataShower
                 title={"Applicant Occupation"}
-                value={"Lorem Ipsum"}
+                value={data?.occupation || "--"}
                 matches={`${matches}`}
                 width={"50%"}
               />
               <CustomDataShower
                 title={"Personal Income"}
-                value={"Lorem Ipsum"}
+                value={data?.income || "--"}
                 matches={`${matches}`}
                 width={"50%"}
               />
             </CustomBox>
-            {/* {mapDivyang(divayangDetail(), matches)} */}
-            {open ? (
-              <Box
-                sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  width: "100%",
-                  height: "100%",
-                  transform: "translate(-50%, -50%)",
-                  zIndex: 1000,
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  overflow: "auto",
-                  scrollbarWidth: "thin",
-                }}
-              >
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    flexDirection: "column",
-                    padding: "24px",
-                  }}
-                  onClick={() => setOpen(false)}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <CustomTypography
-                      capitalize={"capitalize"}
-                      variant="h6"
-                      style={{
-                        fontSize: "24px",
-                      }}
-                      color={theme.palette.commonColor.white}
-                    >
-                      {open?.title}
-                    </CustomTypography>
-                    <Close onClick={() => setOpen(false)}>
-                      <CloseIcon sx={{ fontSize: 30 }} />
-                    </Close>
-                  </Box>
-                  <img
-                    src={open?.image}
-                    alt="img"
-                    style={{
-                      width: matches
-                        ? "32%"
-                        : matchesMd
-                        ? "40%"
-                        : matchesSm
-                        ? "56%"
-                        : "74%",
-                      aspectRatio: 1 / 1.41,
-                      objectPosition: "center",
-                      objectFit: open?.image ? "cover" : "contain",
-                      borderRadius: "4px",
-                      boxShadow: "0px 0px 10px 0px rgba(0, 0, 0, 0.5)",
-                      cursor: "pointer",
-                      transition: "transform 0.3s ease-in-out",
-                      position: "relative",
-                      display: "block",
-                      margin: "auto",
-                      userSelect: "none",
-                      background: "white",
-                    }}
-                    onClick={(e) => {
-                      !!open?.image && e.stopPropagation();
-                    }}
-                  />
-                </Box>
-              </Box>
-            ) : (
-              ""
-            )}
           </StyledFormContainer>
         </Grid>
       </ProfileWrapper>
+
+      <WithCondition isValid={!!open}>
+        <FileModal>
+          <FileWrapper onClick={() => setOpen(false)}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <CustomTypography
+                capitalize={"capitalize"}
+                variant="h6"
+                style={{ fontSize: "24px" }}
+                color={theme.palette.commonColor.white}
+              >
+                {open?.title}
+              </CustomTypography>
+              <Close onClick={() => setOpen(false)}>
+                <CloseIcon sx={{ fontSize: 30 }} />
+              </Close>
+            </Box>
+
+            <FileImage
+              src={open?.image || fileNotFound}
+              alt="img"
+              onError={(e) => e.target.value === fileNotFound}
+              onClick={(e) => {
+                !!open?.image && e.stopPropagation();
+              }}
+            />
+          </FileWrapper>
+        </FileModal>
+      </WithCondition>
     </>
   );
 };

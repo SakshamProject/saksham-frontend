@@ -1,12 +1,15 @@
 import { Grid } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { putApiService } from "../../../api/api";
+import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
+import { CODES } from "../../../constants/globalConstants";
 import { initialValues, labels } from "../../../constants/login/changePassword";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { getValidValues } from "../../../utils/common";
+import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/login/changePassword";
 import { FormActions } from "../../shared/FormActions";
 import { FormWrapper } from "../../shared/FormWrapper";
@@ -14,15 +17,27 @@ import { CustomPasswordField } from "../../shared/formFields/CustomPasswordField
 
 const ChangePassword = () => {
   const navigate = useNavigate();
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.PROFILE);
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["changePassword"],
-    mutationFn: (payload) =>
-      putApiService(API_PATHS?.UPDATE_PASSWORD, getValidValues(payload)),
-    onSuccess: ({ data }) => {},
+    mutationFn: (value) => {
+      const payload = getValidValues(value);
+      const apiPath =
+        userInfo?.role === CODES?.DIVYANG
+          ? API_PATHS?.RESET_PASSWORD_DIVYANG
+          : API_PATHS?.RESET_PASSWORD;
+
+      return postApiService(apiPath, payload);
+    },
+    onSuccess: () => {
+      dispatchResponseAction("Password", CODES?.UPDATED);
+      handleOnReset();
+    },
   });
+
   const { values, handleChange, handleBlur, touched, errors, handleSubmit } =
     useFormik({
       initialValues,
@@ -52,12 +67,12 @@ const ChangePassword = () => {
       <Grid xs={12} item>
         <CustomPasswordField
           label={labels?.newPassword}
-          name="password"
+          name="newPassword"
           value={values?.newPassword}
           onChange={handleChange}
           onBlur={handleBlur}
-          errors={errors?.password}
-          touched={touched?.password}
+          errors={errors?.newPassword}
+          touched={touched?.newPassword}
           showEyeIcon
         />
       </Grid>

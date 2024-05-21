@@ -10,7 +10,7 @@ const List = () => {
       label={"My Services"}
       listPath={"DIVYANG_SERVICES_LIST"}
       formPath={"DIVYANG_SERVICES_FORM"}
-      customApiPath={`${API_PATHS?.SERVICE_MAPPING_LIST}?divyangId=${userInfo?.userId}`}
+      customApiPath={`${API_PATHS?.DIVYANG_DETAILS}/${userInfo?.userId}${API_PATHS?.SERVICE}`}
       columns={columns}
     />
   );

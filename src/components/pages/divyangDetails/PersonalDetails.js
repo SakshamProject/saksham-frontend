@@ -89,6 +89,7 @@ const PersonalDetails = () => {
           ),
         },
         picture: values?.picture,
+        profilePhoto: values?.profilePhoto,
         pageNumber: 1,
         auditLog: {
           status: values?.status,
@@ -96,8 +97,9 @@ const PersonalDetails = () => {
           description: values?.description,
         },
       },
-      ["picture"]
+      ["picture", "profilePhoto"]
     );
+
     onSubmit(payload);
   };
 

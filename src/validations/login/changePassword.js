@@ -26,6 +26,6 @@ export const validationSchema = object({
     .test(
       "isSame",
       "Confirm password should be same",
-      (value, context) => value === context?.parent?.password
+      (value, context) => value === context?.parent?.newPassword
     ),
 });

@@ -42,6 +42,7 @@ export const theme = createTheme({
 
     shadowColor: {
       main: "#00000029",
+      dark: "#0000008f",
     },
   },
 });

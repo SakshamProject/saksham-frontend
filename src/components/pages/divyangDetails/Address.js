@@ -15,12 +15,13 @@ import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/address";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { locationSeed } from "../../../constants/seeds";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { formatDate, getValidValues } from "../../../utils/common";
+import { getNeededValues, getValidValues } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/divyangDetails/address";
 import {
@@ -36,43 +37,29 @@ import {
 const Address = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const isViewMode = state?.isViewMode;
+  const isViewMode = state?.isViewMode || false;
   const editId = state?.editId;
+  const newStatus = state?.newStatus;
 
   const handleOnReset = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
-      state: {
-        isViewMode: isViewMode,
-        editId: editId,
-      },
+      state: { ...state },
     });
+
   const handleSkip = () =>
     navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, {
-      state: {
-        isViewMode: isViewMode,
-        editId: editId,
-      },
+      state: { ...state },
     });
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues({
       ...values,
-      status: values?.status,
       isRural: values?.isRural === CODES?.RURAL,
       isSameAddress: !!values?.isSameAddress,
       isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
-      date: formatDate({ date: values?.auditLog?.date, format: "iso" }),
-      dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-      effectiveDate: editId
-        ? values?.effectiveDate || ""
-        : formatDate({ date: new Date(), format: "iso" }),
-      auditLog: getValidValues({
-        status: values?.status,
-        date: formatDate({ date: values?.date, format: "iso" }),
-        description: values?.description,
-      }),
-      currentStatus: values?.status,
     });
+
+    console.log(getNeededValues(payload, initialValues));
 
     onSubmit({ addressRequest: payload, pageNumber: 3 });
   };
@@ -81,21 +68,15 @@ const Address = () => {
     mutationKey: ["update"],
     mutationFn: (data) =>
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
-    onSuccess: ({ data }) => {
-      dispatchResponseAction("Address", CODES?.SAVED);
-      navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY}`, {
-        state: {
-          editId: data?.data?.id,
-          isViewMode: !!isViewMode,
-        },
+    onSuccess: () => {
+      dispatchResponseAction(
+        "Address",
+        newStatus ? CODES?.ADDED : CODES?.UPDATED
+      );
+      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY, {
+        state: { ...state },
       });
     },
-  });
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: handleOnSubmit,
   });
 
   const {
@@ -109,7 +90,11 @@ const Address = () => {
     setFieldTouched,
     setValues,
     setTouched,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
+  });
 
   const { data: stateList } = useQuery({
     queryKey: ["getAllStates"],
@@ -147,20 +132,18 @@ const Address = () => {
     enabled: !!values?.districtIdCommunication,
   });
 
-  const { data } = useCustomQuery({
+  useCustomQuery({
     queryKey: ["divyangGetById", editId],
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
-    onSuccess: (data) => {
-      // setValues({
-      //   ...data,
-      //   status: data?.status,
-      //   date:
-      //     data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
-      //   description: data?.status === CODES?.ACTIVE ? "" : data?.description,
-      // });
+    onSuccess: ({ data }) => {
+      const { auditLog, ...remaining } = data?.data;
+      setValues({
+        ...initialValues,
+        ...remaining,
+        ...getFilesUrl(data?.files),
+      });
     },
-    select: ({ data }) => data?.data,
   });
 
   const removePermanentTouched = () => {
@@ -200,10 +183,11 @@ const Address = () => {
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
       <Grid item xs={12}>
-        <DivyangDetail />
+        <DivyangDetail divyangDetail={values || ""} />
       </Grid>
+
       <Grid item xs={12}>
-        <StyledFormContainer width="100%">
+        <StyledFormContainer sx={{ width: "100% !important" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12}>
               <CustomTypography
