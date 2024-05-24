@@ -16,7 +16,7 @@ const Container = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     position: "fixed",
     backgroundColor: theme.palette?.commonColor?.white,
-    width: "100%",
+    width: "95%",
     zIndex: 10,
   },
 }));

@@ -3,7 +3,7 @@ import defaultAvatar from "../../assets/avatar.png";
 import { CommonAvatar } from "../../styles";
 import { WithCondition } from "./WithCondition";
 
-export const UserProfile = ({ userInfo, style, placement }) => {
+export const UserProfile = ({ userInfo, style }) => {
   const userName = userInfo?.name?.split(" ") || [];
   let firstCharacter = "";
 
@@ -29,6 +29,5 @@ export const UserProfile = ({ userInfo, style, placement }) => {
 
 UserProfile.propTypes = {
   userInfo: propTypes.object,
-  placement: propTypes.string,
   style: propTypes.object,
 };

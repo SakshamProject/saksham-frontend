@@ -13,10 +13,13 @@ const Container = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
+  background: theme.palette?.commonColor?.white,
   [theme.breakpoints.down("sm")]: {
     position: "fixed",
-    background: theme.palette?.commonColor?.white,
     zIndex: 100,
+    width: "95%",
+    height: "auto",
+    paddingBottom: "8px",
   },
 }));
 
@@ -49,6 +52,7 @@ const IconsContainer = styled(Box)(({ theme }) => ({
   alignItems: "center",
   [theme.breakpoints.down("sm")]: {
     justifyContent: "space-between",
+    width: "100%",
   },
 }));
 

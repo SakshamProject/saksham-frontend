@@ -10,7 +10,7 @@ const CustomTypography = styled(Typography)(({ theme, color, fontSize }) => ({
 export const UserDetails = ({ userInfo, color }) => (
   <>
     <CustomTypography color={color}>
-      {userInfo?.person?.name || userInfo?.name || "Anonymous"}
+      {userInfo?.name || userInfo?.person?.name || "Anonymous"}
     </CustomTypography>
 
     <CustomTypography color={color} fontSize={"12px"}>

@@ -108,7 +108,7 @@ const ResponsiveList = ({
                       </MoreButtonContainer>
                     </WithCondition>
 
-                    <WithCondition isValid={card?.Header?.trim()}>
+                    <WithCondition isValid={!!card?.Header?.trim()}>
                       <CardDetailsContainer>
                         <Box sx={{ flex: "1" }}>{card?.Header}</Box>
                         <CardDetail>
