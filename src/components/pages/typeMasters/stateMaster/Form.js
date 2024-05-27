@@ -37,6 +37,20 @@ const FormContainer = styled("div")({
   ...scrollbarStyle(true),
 });
 
+const ResponsiveStepperContainer = styled(Box)(() => ({
+  width: "100%",
+  marginBottom: "16px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+}));
+
+const ResponsiveHeader = styled(CustomHeader)(() => ({
+  fontSize: 20,
+  fontWeight: 500,
+  textTransform: "uppercase",
+}));
+
 const Form = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -52,15 +66,7 @@ const Form = () => {
       <BackNavigator title={"State Types"} disableModes disableBack />
 
       <WithCondition isValid={isMobile}>
-        <Box
-          sx={{
-            width: "100%",
-            marginBottom: "16px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <ResponsiveStepperContainer>
           <StyledIconButton
             disabled={activeStep <= 0}
             onClick={() => onChange(STEPS[activeStep - 1])}
@@ -68,11 +74,7 @@ const Form = () => {
             <ArrowBackIos />
           </StyledIconButton>
 
-          <CustomHeader
-            sx={{ fontSize: 20, fontWeight: 500, textTransform: "uppercase" }}
-          >
-            {STEPS?.[activeStep]?.label}
-          </CustomHeader>
+          <ResponsiveHeader>{STEPS?.[activeStep]?.label}</ResponsiveHeader>
 
           <StyledIconButton
             disabled={activeStep >= STEPS?.length - 1}
@@ -80,7 +82,7 @@ const Form = () => {
           >
             <ArrowForwardIos />
           </StyledIconButton>
-        </Box>
+        </ResponsiveStepperContainer>
       </WithCondition>
 
       <FormLayout>
