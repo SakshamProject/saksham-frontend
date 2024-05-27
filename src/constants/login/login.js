@@ -67,12 +67,10 @@ export const getUserInfo = (data) => {
   }
 
   return {
-    // userId: "",
     role: CODES?.ADMIN,
     name: data?.superAdmin,
     designation: {
       name: CODES?.ADMIN,
     },
-    // person: {},
   };
 };

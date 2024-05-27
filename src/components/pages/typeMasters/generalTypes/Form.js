@@ -59,7 +59,7 @@ const Form = () => {
   const { isMobile } = useResponsive();
 
   const { mutate } = useMutation({
-    mutationKey: ["createAndUpdate"],
+    mutationKey: ["create and update"],
     mutationFn: ({ apiPath, payload }) => {
       return tableEditId
         ? updateApiService(apiPath, tableEditId, payload)
@@ -91,12 +91,6 @@ const Form = () => {
     mutate({ payload, apiPath });
   };
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: handleOnSubmit,
-  });
-
   const {
     values,
     errors,
@@ -107,16 +101,20 @@ const Form = () => {
     handleBlur,
     setFieldValue,
     resetForm,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
+  });
 
   const { data: allGeneralTypes } = useQuery({
-    queryKey: ["getAllGeneralTypes"],
+    queryKey: ["get all general types"],
     queryFn: () => getApiService(API_PATHS?.GENERAL_MASTER_SEED),
     select: ({ data }) => data?.data,
   });
 
   const { data: generalTypeList, refetch } = useQuery({
-    queryKey: ["getGeneralTypeList", values?.typeMaster, searchData],
+    queryKey: ["get general type list", values?.typeMaster, searchData],
     queryFn: () => {
       const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return getApiService(
@@ -124,17 +122,18 @@ const Form = () => {
       );
     },
     select: ({ data }) => data,
+    enabled: !!values?.typeMaster,
   });
 
   const { data: allStates } = useQuery({
-    queryKey: ["getAllStates", values?.typeMaster],
+    queryKey: ["get all states", values?.typeMaster],
     queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
     enabled: generalTypeApiPath?.[values?.typeMaster] === API_PATHS?.DISTRICTS,
   });
 
   const { mutate: onDelete } = useMutation({
-    mutationKey: ["deleteGeneralType"],
+    mutationKey: ["delete general type"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return deleteApiService(apiPath, id);
@@ -149,7 +148,7 @@ const Form = () => {
   const handleDelete = (id) => setOpen(id);
 
   const { mutate: handleEdit } = useMutation({
-    mutationKey: ["editGeneralType"],
+    mutationKey: ["edit general type"],
     mutationFn: (id) => {
       const apiPath = generalTypeApiPath?.[values?.typeMaster];
       return getByIdApiService(apiPath, id);
@@ -167,11 +166,14 @@ const Form = () => {
 
   const handleReset = useCallback(() => {
     const typeMaster = values?.typeMaster;
-    const stateId = values?.stateId;
     resetForm();
+    setValues({
+      ...initialValues,
+      typeMaster,
+      ...(!tableEditId && { stateId: values?.stateId }),
+    });
     setTableEditId("");
-    setValues({ ...initialValues, typeMaster, stateId });
-  }, [resetForm, setValues, values?.stateId, values?.typeMaster]);
+  }, [resetForm, setValues, tableEditId, values?.stateId, values?.typeMaster]);
 
   useEffect(() => {
     if (generalType) setFieldValue("typeMaster", generalType);
@@ -214,7 +216,7 @@ const Form = () => {
 
       <WithCondition isValid={!isViewMode}>
         <WithCondition isValid={values?.typeMaster === GENERAL_TYPES.DISTRICT}>
-          <Grid item xs={12} sm={12} md={6}>
+          <Grid item xs={12}>
             <SingleAutoComplete
               label={fields?.stateId?.label}
               name={fields?.stateId?.name}
@@ -290,7 +292,11 @@ const Form = () => {
         />
       </WithCondition>
 
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        style={{ ...(isMobile && isViewMode && { marginTop: "-24px" }) }}
+      >
         <WithCondition
           isValid={!isMobile}
           nullComponent={
@@ -307,6 +313,7 @@ const Form = () => {
                 generalTypeList?.data
               }
               disablePagination
+              disableFlex={values?.typeMaster !== GENERAL_TYPES?.DISTRICT}
             />
           }
         >

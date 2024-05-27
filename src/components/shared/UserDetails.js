@@ -9,11 +9,14 @@ const CustomTypography = styled(Typography)(({ theme, color, fontSize }) => ({
 
 export const UserDetails = ({ userInfo, color }) => (
   <>
-    <CustomTypography color={color}>
+    <CustomTypography color={color} style={{ cursor: "default" }}>
       {userInfo?.name || userInfo?.person?.name || "Anonymous"}
     </CustomTypography>
 
-    <CustomTypography color={color} fontSize={"12px"}>
+    <CustomTypography
+      color={color}
+      style={{ cursor: "default", fontSize: "12px" }}
+    >
       {userInfo?.designation?.name || userInfo?.role || "Unknown"}
     </CustomTypography>
   </>

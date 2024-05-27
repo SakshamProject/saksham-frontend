@@ -1,5 +1,11 @@
 import { ExpandLess, ExpandMore, Logout } from "@mui/icons-material";
-import { Collapse, List, ListItemIcon, ListItemText } from "@mui/material";
+import {
+  Collapse,
+  List,
+  ListItemIcon,
+  ListItemText,
+  styled,
+} from "@mui/material";
 import propTypes from "prop-types";
 import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
@@ -20,6 +26,15 @@ import { DividerLine } from "./DividerLine";
 import { UserDetails } from "./UserDetails";
 import { UserProfile } from "./UserProfile";
 import { WithCondition } from "./WithCondition";
+
+const LogoutButton = styled(StyledIconButton)(() => ({
+  padding: 0,
+  marginRight: "32px",
+}));
+
+const LogoutTypo = styled("span")(() => ({
+  cursor: "pointer",
+}));
 
 export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
   const navigate = useNavigate();
@@ -103,11 +118,13 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
           {getListItem(getSideMenus({ role: userInfo?.role, isMobile: true }))}
         </List>
 
-        <LogoutContainer onClick={() => redirect(ROUTE_PATHS?.LOGIN)}>
-          <StyledIconButton sx={{ padding: 0, marginRight: "32px" }}>
+        <LogoutContainer>
+          <LogoutButton onClick={() => redirect(ROUTE_PATHS?.LOGIN)}>
             <Logout />
-          </StyledIconButton>
-          <span style={{ cursor: "pointer" }}>Logout</span>
+          </LogoutButton>
+          <LogoutTypo onClick={() => redirect(ROUTE_PATHS?.LOGIN)}>
+            Logout
+          </LogoutTypo>
         </LogoutContainer>
       </ListWrapper>
     </StyledDrawer>

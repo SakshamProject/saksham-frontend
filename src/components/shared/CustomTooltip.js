@@ -1,12 +1,12 @@
 import { Tooltip } from "@mui/material";
 import propTypes from "prop-types";
 
-const CustomTooltip = ({ children, title, placement, arrow }) => {
+const CustomTooltip = ({ children, title, placement, disableArrow }) => {
   return (
     <span>
       <Tooltip
         title={title || ""}
-        arrow={!arrow || true}
+        arrow={!disableArrow || true}
         placement={placement || "bottom"}
       >
         {children}
@@ -21,5 +21,5 @@ CustomTooltip.propTypes = {
   children: propTypes.any,
   title: propTypes.string,
   placement: propTypes.string,
-  arrow: propTypes.bool,
+  disableArrow: propTypes.bool,
 };

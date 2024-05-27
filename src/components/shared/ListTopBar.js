@@ -113,7 +113,18 @@ export const ListTopbar = ({
       </Container>
 
       <WithCondition isValid={isMobile}>
-        <Box sx={{ height: 110, width: "100%" }}></Box>
+        <Box
+          sx={{
+            height:
+              disableSearchField &&
+              disableFilter &&
+              (disableNewForm || !newFormPath) &&
+              !additionalComponent
+                ? 64
+                : 110,
+            width: "100%",
+          }}
+        ></Box>
       </WithCondition>
     </>
   );

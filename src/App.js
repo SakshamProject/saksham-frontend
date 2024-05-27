@@ -8,10 +8,14 @@ import { dispatchSnackbarError } from "./utils/dispatch.js";
 
 const handleError = (res) => {
   const { data = {} } = res || {};
-  
+
   if (typeof data?.error?.message === "string") {
     dispatchSnackbarError(data?.error?.message);
-  } else if (data?.name === "ZodError" && Array.isArray(data?.issues)) {
+  } else if (
+    data?.name === "ZodError" &&
+    Array.isArray(data?.issues) &&
+    data?.issues.length > 0
+  ) {
     const issues = data?.issues[0];
     dispatchSnackbarError(`${issues?.path[0]} ${issues?.message}`);
   } else {

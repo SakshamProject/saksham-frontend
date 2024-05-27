@@ -27,6 +27,7 @@ export const CommonList = ({
   rawDataAccessor,
   disableNewForm,
   maxHeight,
+  disableFlex,
 }) => {
   const { isMobile } = useResponsive();
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
@@ -94,6 +95,7 @@ export const CommonList = ({
           onPageNumberChange={onPageNumberChange}
           currentPage={currentPage}
           count={data?.total}
+          disableFlex={disableFlex}
         />
       </WithCondition>
     </>
@@ -119,4 +121,6 @@ CommonList.propTypes = {
   manualSort: propTypes.bool,
   rawDataAccessor: propTypes.string,
   disableNewForm: propTypes.bool,
+  maxHeight: propTypes.oneOfType([propTypes.number, propTypes.string]),
+  disableFlex: propTypes.bool,
 };

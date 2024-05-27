@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { getApiService } from "../api/api";
 import { dispatchSeeds } from "../utils/dispatch";
 
-function useSeeds(seedPaths = []) {
+const useSeeds = (seedPaths = []) => {
   const seeds = useSelector((state) => state?.seeds);
 
   useQueries({
@@ -16,10 +16,11 @@ function useSeeds(seedPaths = []) {
         return response;
       },
       enabled: !seeds?.[name] && !!path,
+      select : ()
     })),
   });
 
   return { ...seeds };
-}
+};
 
 export default useSeeds;

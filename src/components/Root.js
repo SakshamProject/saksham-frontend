@@ -22,7 +22,6 @@ const Root = () => {
   const snackbar = useSelector((state) => state?.snackbar);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const token = getCookie(COOKIE_KEYS?.TOKEN);
   const hideRoutes = [
     ROUTE_PATHS?.RESET_PASSWORD,
     ROUTE_PATHS?.FORGOT_PASSWORD,
@@ -31,7 +30,7 @@ const Root = () => {
   useEffect(() => {
     if (hideRoutes.includes(pathname)) {
       navigate(ROUTE_PATHS?.LOGIN, { replace: true });
-    } else if (token && userInfo && !userInfoSelector) {
+    } else if (getCookie(COOKIE_KEYS?.TOKEN) && userInfo && !userInfoSelector) {
       dispatchUserInfo(userInfo);
     }
   }, []); //eslint-disable-line

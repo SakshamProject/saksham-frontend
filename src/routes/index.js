@@ -172,11 +172,11 @@ export const ADMIN_ROUTES = [
     element: routeElements?.UserProfile,
     key: "profile",
   },
-  // {
-  //   path: ROUTE_PATHS?.CHANGE_PASSWORD,
-  //   element: routeElements?.ChangePassword,
-  //   key: "profile",
-  // },
+  {
+    path: ROUTE_PATHS?.CHANGE_PASSWORD,
+    element: routeElements?.ChangePassword,
+    key: "profile",
+  },
 ];
 
 const DIVYANG_ROUTES = [
@@ -234,9 +234,11 @@ export const getRoutes = ({ role, designations = [] }) => {
     return ADMIN_ROUTES;
   }
 
-  if (role === CODES?.DIVYANG) return DIVYANG_ROUTES;
+  if (role === CODES?.DIVYANG) {
+    return DIVYANG_ROUTES;
+  }
 
-  if (role === CODES?.SEVA_KENDRA && designations?.length)
+  if (role === CODES?.SEVA_KENDRA && designations?.length > 0) {
     return [...designations, { name: "profile" }]?.reduce(
       (acc, designation) => {
         const validRoutes = ADMIN_ROUTES?.filter(
@@ -246,6 +248,7 @@ export const getRoutes = ({ role, designations = [] }) => {
       },
       []
     );
+  }
 
   return [];
 };

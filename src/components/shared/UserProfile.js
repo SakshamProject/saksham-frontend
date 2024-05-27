@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import defaultAvatar from "../../assets/avatar.png";
 import { CommonAvatar } from "../../styles";
-import { WithCondition } from "./WithCondition";
+import CustomTooltip from "./CustomTooltip";
 
 export const UserProfile = ({ userInfo, style }) => {
   const userName = userInfo?.name?.split(" ") || [];
@@ -13,17 +13,20 @@ export const UserProfile = ({ userInfo, style }) => {
   firstCharacter = firstCharacter.toUpperCase();
 
   return (
-    <WithCondition
-      isValid={!!userInfo?.profileUrl}
-      nullComponent={<CommonAvatar>{firstCharacter}</CommonAvatar>}
-    >
-      <CommonAvatar
-        style={style}
-        src={userInfo?.profileUrl || defaultAvatar}
-        onError={(e) => (e.target.src = defaultAvatar)}
-        alt="profile"
-      />
-    </WithCondition>
+    <CustomTooltip title={"My Profile"}>
+      {userInfo?.profileUrl ? (
+        <CommonAvatar
+          style={{ ...style, cursor: "pointer" }}
+          src={userInfo?.profileUrl || defaultAvatar}
+          onError={(e) => (e.target.src = defaultAvatar)}
+          alt="profile"
+        />
+      ) : (
+        <CommonAvatar style={{ cursor: "pointer" }}>
+          {firstCharacter}
+        </CommonAvatar>
+      )}
+    </CustomTooltip>
   );
 };
 

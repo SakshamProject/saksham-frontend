@@ -17,6 +17,7 @@ const List = () => {
       disableColumnHiding
       manualSort
       disableNewForm
+      disableFlex
     />
   );
 };

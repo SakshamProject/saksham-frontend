@@ -23,7 +23,7 @@ const CardContainer = styled(Box)(({ theme }) => ({
   position: "relative",
 }));
 
-const MoreButtonContainer = styled(Box)(({ theme }) => ({
+const MoreButtonContainer = styled(Box)(() => ({
   position: "absolute",
   top: 0,
   right: 0,
@@ -35,11 +35,11 @@ const CardDetailsContainer = styled(Box)(() => ({
   display: "flex",
 }));
 
-const CardDetail = styled(Box)(() => ({
+const CardDetail = styled(Box)(({ disableflex }) => ({
   whiteSpace: "nowrap",
   overflow: "hidden",
   textOverflow: "ellipsis",
-  flex: "1",
+  ...(disableflex === "false" && { flex: "1" }),
 }));
 
 const PaginationContainer = styled(Box)(() => ({
@@ -56,6 +56,7 @@ const ResponsiveList = ({
   currentPage,
   count,
   disablePagination,
+  disableFlex = false,
 }) => {
   const accessProperty = (obj, accessorString) => {
     const accessors = accessorString?.split(".");
@@ -110,8 +111,10 @@ const ResponsiveList = ({
 
                     <WithCondition isValid={!!card?.Header?.trim()}>
                       <CardDetailsContainer>
-                        <Box sx={{ flex: "1" }}>{card?.Header}</Box>
-                        <CardDetail>
+                        <Box sx={{ ...(!disableFlex && { flex: "1" }) }}>
+                          {card?.Header}
+                        </Box>
+                        <CardDetail disableflex={disableFlex?.toString()}>
                           &nbsp;:&nbsp;
                           {card?.responsiveCell
                             ? card?.responsiveCell({
@@ -154,4 +157,5 @@ ResponsiveList.propTypes = {
   currentPage: propTypes.number,
   count: propTypes.number,
   disablePagination: propTypes.bool,
+  disableFlex: propTypes.bool,
 };

@@ -134,13 +134,13 @@ export const generalColumns = ({
     {
       Header: type,
       accessor: "name",
-      width: 300,
+      width: 250,
       sticky: "left",
     },
     type === GENERAL_TYPES?.DISTRICT && {
       Header: "State",
       accessor: "state.name",
-      width: 300,
+      width: 250,
     },
     {
       Header: " ",
@@ -168,7 +168,7 @@ export const generalColumns = ({
   ].filter((item) => item);
 
 export const initialValues = {
-  typeMaster: GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION,
+  typeMaster: "",
   name: "",
   chip: "",
   stateId: "",
