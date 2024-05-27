@@ -8,7 +8,7 @@ import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
-} from "../../../constants/divyangDetails/idProffUploads";
+} from "../../../constants/divyangDetails/idProofUploads";
 import {
   fileKeys,
   getFilesUrl,
@@ -22,7 +22,7 @@ import {
   dispatchSnackbarError,
 } from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
-import { validationSchema } from "../../../validations/divyangDetails/idProffUploads";
+import { validationSchema } from "../../../validations/divyangDetails/idProofUploads";
 import {
   CustomTextField,
   DividerLine,
@@ -31,7 +31,7 @@ import {
   FormActions,
 } from "../../shared";
 
-const IdProffUploads = () => {
+const IdProofUploads = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const isViewMode = state?.isViewMode || false;
@@ -54,7 +54,7 @@ const IdProffUploads = () => {
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload),
     onSuccess: () => {
       dispatchResponseAction(
-        "Id Proff",
+        "Id Proof",
         newStatus ? CODES?.ADDED : CODES?.UPDATED
       );
       navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
@@ -98,7 +98,7 @@ const IdProffUploads = () => {
     queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     enabled: !!editId,
     onSuccess: ({ data }) => {
-      const { auditLog, ...remaining } = data?.data;
+      const { auditLog, ...remaining } = data?.data || {};
       setValues({
         ...initialValues,
         ...remaining,
@@ -528,4 +528,4 @@ const IdProffUploads = () => {
   );
 };
 
-export default IdProffUploads;
+export default IdProofUploads;

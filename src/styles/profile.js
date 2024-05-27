@@ -72,6 +72,13 @@ export const RoleContainer = styled("div")(({ theme }) => ({
   background: theme.palette?.primary?.main,
   color: theme?.palette?.primary?.contrastText,
   cursor: "pointer",
+  textTransform: "capitalize",
+}));
+
+export const UserName = styled(Typography)(() => ({
+  cursor: "pointer",
+  fontSize: 20,
+  textTransform: "uppercase",
 }));
 
 export const ProfileCard = styled(Box)(() => ({

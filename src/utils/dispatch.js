@@ -1,26 +1,21 @@
 import { CODES } from "../constants/globalConstants";
-import {
-  removeGlobalStates,
-  setIsLoading,
-  setSnackbar,
-  setUserInfo,
-} from "../redux/slice";
+import { actions } from "../redux/slice";
 import store from "../redux/store";
 
 export const dispatchSnackbar = (payload) => {
-  store.dispatch(setSnackbar(payload));
+  store.dispatch(actions.setSnackbar(payload));
 };
 
 export const dispatchIsLoading = (isLoading) => {
-  store.dispatch(setIsLoading(isLoading));
+  store.dispatch(actions.setIsLoading(isLoading));
 };
 
 export const dispatchUserInfo = (userInfo) => {
-  store.dispatch(setUserInfo(userInfo));
+  store.dispatch(actions.setUserInfo(userInfo));
 };
 
 export const dispatchRemoveGlobalStates = () => {
-  store.dispatch(removeGlobalStates());
+  store.dispatch(actions.removeGlobalStates());
 };
 
 export const dispatchSnackbarSuccess = (message) => {
@@ -29,6 +24,10 @@ export const dispatchSnackbarSuccess = (message) => {
 
 export const dispatchSnackbarError = (message) => {
   dispatchSnackbar([message, "error"]);
+};
+
+export const dispatchSeeds = (seed) => {
+  store.dispatch(actions.setSeeds(seed));
 };
 
 export const dispatchResponseAction = (title, action) => {

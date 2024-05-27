@@ -4,6 +4,7 @@ const initialState = {
   snackbar: "",
   isLoading: false,
   userInfo: null,
+  seeds: {},
 };
 
 const { reducer, actions } = createSlice({
@@ -27,15 +28,17 @@ const { reducer, actions } = createSlice({
       state.userInfo = action?.payload;
     },
 
+    setSeeds: (state, action) => {
+      state.seeds = { ...state.seeds, ...action };
+    },
+
     removeGlobalStates: (state) => {
       state.isLoading = initialState?.isLoading;
       state.snackbar = initialState?.snackbar;
       state.userInfo = initialState?.userInfo;
+      state.seeds = initialState?.seeds;
     },
   },
 });
 
-export default reducer;
-
-export const { setIsLoading, setSnackbar, setUserInfo, removeGlobalStates } =
-  actions;
+export { actions, reducer };

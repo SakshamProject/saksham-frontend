@@ -131,7 +131,7 @@ export const ADMIN_ROUTES = [
       },
       {
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF,
-        element: routeElements?.IdProffUploads,
+        element: routeElements?.IdProofUploads,
       },
       {
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS,
@@ -196,7 +196,7 @@ const DIVYANG_ROUTES = [
       },
       {
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF,
-        element: routeElements?.IdProffUploads,
+        element: routeElements?.IdProofUploads,
       },
       {
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS,
@@ -230,7 +230,9 @@ const DIVYANG_ROUTES = [
 ];
 
 export const getRoutes = ({ role, designations = [] }) => {
-  if (role === CODES?.ADMIN) return ADMIN_ROUTES;
+  if (role === CODES?.ADMIN) {
+    return ADMIN_ROUTES;
+  }
 
   if (role === CODES?.DIVYANG) return DIVYANG_ROUTES;
 

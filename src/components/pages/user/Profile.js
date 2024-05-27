@@ -1,5 +1,4 @@
 import { Edit, Lock } from "@mui/icons-material";
-import { Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import userProfile from "../../../assets/profile.png";
@@ -15,6 +14,7 @@ import {
   RoleContainer,
   SubFormContainer,
   Title,
+  UserName,
 } from "../../../styles/profile";
 
 const Profile = () => {
@@ -29,7 +29,7 @@ const Profile = () => {
         <ProfileCard>
           <GeneralContainer>
             <Image
-              src={userInfo?.profileImageUrl || userProfile}
+              src={userInfo?.profileUrl || userProfile}
               onError={(e) => {
                 e.currentTarget.src = userProfile;
               }}
@@ -39,15 +39,9 @@ const Profile = () => {
 
           <GeneralContainer sx={{ flex: 1 }}>
             <ProfileDetails>
-              <Typography
-                sx={{
-                  cursor: "pointer",
-                  fontSize: 20,
-                  textTransform: "uppercase",
-                }}
-              >
+              <UserName>
                 {userInfo?.name || userInfo?.person?.name || "Anonymous"}
-              </Typography>
+              </UserName>
 
               <RoleContainer>
                 {userInfo?.designation?.name || userInfo?.role || "Unknown"}
@@ -58,14 +52,14 @@ const Profile = () => {
           <GeneralContainer>
             <IconContainer
               onClick={() => navigate(ROUTE_PATHS?.PROFILE)}
-              disabled={userInfo?.role === CODES?.ADMIN}
+              disabled={userInfo?.role !== CODES?.SEVA_KENDRA}
             >
               <Edit />
             </IconContainer>
 
             <IconContainer
-              onClick={() => navigate(ROUTE_PATHS.CHANGE_PASSWORD)}
-              disabled={userInfo?.role === CODES?.ADMIN}
+              onClick={() => navigate(ROUTE_PATHS?.CHANGE_PASSWORD)}
+              disabled={userInfo?.role !== CODES?.SEVA_KENDRA}
             >
               <Lock />
             </IconContainer>

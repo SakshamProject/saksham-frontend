@@ -12,7 +12,11 @@ import {
   LOCAL_STORAGE_KEYS,
   LOGIN_SUCCESS,
 } from "../../../constants/globalConstants";
-import { fields, initialValues } from "../../../constants/login/login";
+import {
+  fields,
+  getUserInfo,
+  initialValues,
+} from "../../../constants/login/login";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   CancelButton,
@@ -50,26 +54,53 @@ import {
   WithCondition,
 } from "../../shared/index";
 
+const TitleContainer = styled(Grid)(({ role }) => ({
+  display: "flex",
+  marginBottom: role === CODES?.ADMIN ? "24px" : 0,
+}));
+
+const RoleButtonContainer = styled(StyledButtonContainer)(() => ({
+  margin: "16px 0",
+  justifyContent: "space-between",
+}));
+
+const RememberMeContainer = styled(StyledButtonContainer)(() => ({
+  marginTop: "-14px",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  rowGap: 1,
+}));
+
+const LoginButtonContainer = styled(Grid)(() => ({
+  margin: "16px 0",
+  textAlign: "center",
+}));
+
+const LoginButton = styled(SubmitButton)(() => ({
+  borderRadius: "18px",
+  width: "50%",
+}));
+
+const RoleButton = styled(CancelButton)(({ theme, roletype, role }) => ({
+  width: "100%",
+  marginRight: "0 !important",
+  margin: roletype === CODES?.DIVYANG ? "0 8px 0 0" : "0 0 0 16px",
+  ...(((role === CODES?.DIVYANG && roletype === CODES?.DIVYANG) ||
+    (role === CODES?.SEVA_KENDRA && roletype === CODES?.SEVA_KENDRA)) && {
+    backgroundColor: theme.palette?.primary?.main,
+    color: theme.palette?.primary?.contrastText,
+    ":hover": {
+      backgroundColor: theme.palette?.primary?.main,
+      color: theme.palette?.primary?.contrastText,
+    },
+  }),
+}));
+
 const Login = () => {
   const navigate = useNavigate();
   const [role, setRole] = useState(CODES?.DIVYANG);
   const localRemember = getLocalStorageItem(LOCAL_STORAGE_KEYS?.REMEMBER);
   const remember = localRemember ? objectDecryption(localRemember) : null;
-
-  const RoleButton = styled(CancelButton)(({ theme, roletype }) => ({
-    width: "100%",
-    marginRight: "0 !important",
-    margin: roletype === CODES?.DIVYANG ? "0 8px 0 0" : "0 0 0 16px",
-    ...(((role === CODES?.DIVYANG && roletype === CODES?.DIVYANG) ||
-      (role === CODES?.SEVA_KENDRA && roletype === CODES?.SEVA_KENDRA)) && {
-      backgroundColor: theme.palette?.primary?.main,
-      color: theme.palette?.primary?.contrastText,
-      ":hover": {
-        backgroundColor: theme.palette?.primary?.main,
-        color: theme.palette?.primary?.contrastText,
-      },
-    }),
-  }));
 
   const setRememberMe = (value) => {
     if (value?.rememberMe) {
@@ -81,8 +112,13 @@ const Login = () => {
   };
 
   const getTitle = () => {
-    if (role === CODES?.ADMIN) return "Admin Login";
-    return role === CODES?.SEVA_KENDRA ? "Seva Kendra Login" : "Divyang Login";
+    if (role === CODES?.ADMIN) {
+      return "Admin Login";
+    }
+    if (role === CODES?.SEVA_KENDRA) {
+      return "Seva Kendra Login";
+    }
+    return "Divyang Login";
   };
 
   const handleKeyDown = (e) => {
@@ -117,27 +153,37 @@ const Login = () => {
   };
 
   const getApiPath = () => {
-    if (role === CODES?.ADMIN) return API_PATHS?.LOGIN_ADMIN;
-    if (role === CODES?.SEVA_KENDRA) return API_PATHS?.LOGIN;
+    if (role === CODES?.ADMIN) {
+      return API_PATHS?.LOGIN_ADMIN;
+    }
+    if (role === CODES?.SEVA_KENDRA) {
+      return API_PATHS?.LOGIN;
+    }
     return API_PATHS?.LOGIN_DIVYANG;
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["userLogin"],
-    mutationFn: (value) => postApiService(getApiPath(), getValidValues(value)),
+    mutationKey: ["user login"],
+    mutationFn: (value) => {
+      const apiPath = getApiPath();
+      const payload = getValidValues(value);
+      return postApiService(apiPath, payload);
+    },
     onSuccess: ({ data }, value) => {
-      setUserInfo(data);
+      const userInfo = getUserInfo(data);
+      dispatchUserInfo(userInfo);
+      setCookie(COOKIE_KEYS?.TOKEN, data?.token);
+      setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
       setRememberMe(value);
       dispatchSnackbarSuccess(LOGIN_SUCCESS);
       navigate(ROUTE_PATHS?.LAYOUT);
     },
     onError: ({ response }) => {
-      if (response?.data?.error?.message && role !== CODES?.ADMIN) {
-        dispatchSnackbarError(
-          `${role === CODES?.SEVA_KENDRA ? "Seva Kendra" : "Divyang"} ${
-            response?.data?.error?.message
-          }`
-        );
+      if (role !== CODES?.ADMIN) {
+        const errorMessage =
+          (role === CODES?.SEVA_KENDRA ? "Seva Kendra " : "Divyang ") +
+          response?.data?.error?.message;
+        dispatchSnackbarError(errorMessage);
       }
     },
   });
@@ -160,8 +206,8 @@ const Login = () => {
 
   useEffect(() => {
     if (remember?.rememberMe) {
-      const { role, ...value } = remember;
-      setValues({ ...value });
+      const { role, ...remaining } = remember;
+      setValues({ ...remaining });
       setRole(role);
     }
   }, []); //eslint-disable-line
@@ -170,14 +216,7 @@ const Login = () => {
     <LoginWrapper container>
       <LoginContainer>
         <Grid container gap={2}>
-          <Grid
-            item
-            xs={12}
-            sx={{
-              display: "flex",
-              marginBottom: role === CODES?.ADMIN ? "24px" : 0,
-            }}
-          >
+          <TitleContainer item xs={12} role={role}>
             <WithCondition isValid={role === CODES?.ADMIN}>
               <BackIcon
                 disableFocusRipple
@@ -189,28 +228,25 @@ const Login = () => {
             </WithCondition>
 
             <LoginHeading>{getTitle()}</LoginHeading>
-          </Grid>
+          </TitleContainer>
 
           <WithCondition isValid={role !== CODES?.ADMIN}>
-            <StyledButtonContainer
-              sx={{
-                margin: "16px 0",
-                justifyContent: "space-between",
-              }}
-            >
+            <RoleButtonContainer>
               <RoleButton
                 onClick={() => handleRole(CODES?.DIVYANG)}
                 roletype={CODES?.DIVYANG}
+                role={role}
               >
                 Divyang
               </RoleButton>
               <RoleButton
                 onClick={() => handleRole(CODES?.SEVA_KENDRA)}
                 roletype={CODES?.SEVA_KENDRA}
+                role={role}
               >
                 {"Seva\xa0Kendra"}
               </RoleButton>
-            </StyledButtonContainer>
+            </RoleButtonContainer>
           </WithCondition>
 
           <Grid item xs={12}>
@@ -240,14 +276,7 @@ const Login = () => {
             />
           </Grid>
 
-          <StyledButtonContainer
-            sx={{
-              marginTop: "-14px",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              rowGap: 1,
-            }}
-          >
+          <RememberMeContainer>
             <Box>
               <CustomCheckBox
                 label={fields?.rememberMe?.label}
@@ -260,27 +289,19 @@ const Login = () => {
             </Box>
 
             <WithCondition isValid={role !== CODES?.ADMIN}>
-              <ForgetPassword onClick={() => handleForgetPassword()}>
+              <ForgetPassword onClick={handleForgetPassword}>
                 Forget Password
               </ForgetPassword>
             </WithCondition>
-          </StyledButtonContainer>
+          </RememberMeContainer>
 
-          <Grid item xs={12} sx={{ margin: "16px 0", textAlign: "center" }}>
-            <SubmitButton
-              onClick={handleSubmit}
-              sx={{
-                borderRadius: "18px",
-                width: "50%",
-              }}
-            >
-              Login
-            </SubmitButton>
-          </Grid>
+          <LoginButtonContainer item xs={12}>
+            <LoginButton onClick={handleSubmit}>Login</LoginButton>
+          </LoginButtonContainer>
 
           <WithCondition isValid={role !== CODES?.ADMIN}>
             <Grid item xs={12} sx={{ textAlign: "center" }}>
-              <ForgetPassword onClick={() => handleLink()}>
+              <ForgetPassword onClick={handleLink}>
                 {role === CODES?.SEVA_KENDRA
                   ? "Admin login"
                   : "Click here to register"}
@@ -294,62 +315,3 @@ const Login = () => {
 };
 
 export default Login;
-
-const setUserInfo = async (data) => {
-  let userInfo = {
-    name: data?.superAdmin,
-    role: CODES?.ADMIN,
-    profileUrl: "",
-    designation: {
-      name: CODES?.ADMIN,
-    },
-  };
-
-  if (data?.user) {
-    let serviceMapping = false;
-
-    const designations = data?.user?.designation?.features?.map((item) => {
-      const { feature } = item;
-      if (feature?.name === CODES?.SERVICE_MAPPING) {
-        serviceMapping = true;
-      }
-      return { ...feature };
-    });
-
-    userInfo = {
-      userId: data?.user?.id,
-      serviceMapping,
-      role: CODES?.SEVA_KENDRA,
-      name: data?.user?.person?.userName,
-      profileUrl: "",
-      designation: {
-        id: data?.user?.designation?.id,
-        name: data?.user?.designation?.name,
-        designations,
-      },
-      person: {
-        id: data?.user?.person?.id,
-        name: data?.user?.person?.userName,
-      },
-    };
-  }
-
-  if (data?.divyang) {
-    userInfo = {
-      userId: data?.divyang?.id,
-      role: CODES?.DIVYANG,
-      name: `${data?.divyang?.firstName} ${data?.divyang?.lastName}`,
-      profileUrl: data?.file?.profilePhoto?.url,
-      designation: {
-        name: CODES?.DIVYANG,
-      },
-      person: {
-        ...data?.divyang?.person,
-      },
-    };
-  }
-
-  dispatchUserInfo(userInfo);
-  setCookie(COOKIE_KEYS?.TOKEN, data?.token);
-  setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(userInfo));
-};

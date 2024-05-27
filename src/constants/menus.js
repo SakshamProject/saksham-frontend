@@ -119,14 +119,17 @@ const DIVYANG_SIDE_MENU = [
 ];
 
 export const getSideMenus = ({ role, designations = [], isMobile }) => {
-  if (role === CODES?.ADMIN)
+  if (role === CODES?.ADMIN) {
     return isMobile
       ? [...RIGHT_SIDE_MENU(role, isMobile), ...ADMIN_SIDE_MENUS]
       : ADMIN_SIDE_MENUS;
+  }
 
-  if (role === CODES?.DIVYANG) return DIVYANG_SIDE_MENU;
+  if (role === CODES?.DIVYANG) {
+    return DIVYANG_SIDE_MENU;
+  }
 
-  if (role === CODES?.SEVA_KENDRA && designations?.length)
+  if (role === CODES?.SEVA_KENDRA && designations?.length) {
     return [isMobile && { name: "profile" }, ...designations]?.reduce(
       (acc, designation) => {
         if (designation) {
@@ -140,6 +143,7 @@ export const getSideMenus = ({ role, designations = [], isMobile }) => {
       },
       []
     );
+  }
 
   return [];
 };

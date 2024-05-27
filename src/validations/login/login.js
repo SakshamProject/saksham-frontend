@@ -1,9 +1,5 @@
 import { object, string } from "yup";
-import {
-  LOWER_CASE,
-  NUMBER,
-  UPPER_CASE,
-} from "../../constants/globalConstants";
+import { LOWER_CASE, NUMBER, UPPER_CASE } from "../../constants/globalConstants";
 
 export const validationSchema = object({
   userName: string()

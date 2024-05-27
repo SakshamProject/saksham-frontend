@@ -7,12 +7,13 @@ import store from "./redux/store";
 import { dispatchSnackbarError } from "./utils/dispatch.js";
 
 const handleError = (res) => {
-  const data = res?.data;
-  if (data?.name === "ZodError") {
-    const issue = data?.issues[0];
-    dispatchSnackbarError(`${issue?.path[0]} ${issue?.message}`);
-  } else if (typeof data?.error?.message === "string") {
+  const { data = {} } = res || {};
+  
+  if (typeof data?.error?.message === "string") {
     dispatchSnackbarError(data?.error?.message);
+  } else if (data?.name === "ZodError" && Array.isArray(data?.issues)) {
+    const issues = data?.issues[0];
+    dispatchSnackbarError(`${issues?.path[0]} ${issues?.message}`);
   } else {
     dispatchSnackbarError(SERVER_ERROR);
   }

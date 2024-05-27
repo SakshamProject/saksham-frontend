@@ -22,15 +22,18 @@ export const Layout = () => {
   const { isTablets, isMobile } = useResponsive();
 
   useEffect(() => {
-    if (pathname === ROUTE_PATHS?.LAYOUT) {
-      if (userInfo?.role === CODES?.SEVA_KENDRA) {
-        const userPage = ADMIN_ROUTES?.find(
-          (item) => item?.key === userInfo?.designation?.designations[0]
-        );
-        navigate(userPage?.path);
-      } else if (userInfo?.role === CODES?.DIVYANG) {
-        navigate(ROUTE_PATHS?.PROFILE);
-      } else navigate(ROUTE_PATHS?.DASHBOARD);
+    if (
+      pathname === ROUTE_PATHS?.LAYOUT &&
+      userInfo?.role === CODES?.SEVA_KENDRA
+    ) {
+      const userPage = ADMIN_ROUTES?.find(
+        (item) => item?.key === userInfo?.designation?.designations[0]
+      );
+      navigate(userPage?.path);
+    } else if (userInfo?.role === CODES?.DIVYANG) {
+      navigate(ROUTE_PATHS?.PROFILE);
+    } else {
+      navigate(ROUTE_PATHS?.DASHBOARD);
     }
   }, [pathname]); //eslint-disable-line
 

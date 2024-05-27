@@ -244,6 +244,7 @@ const Profile = () => {
             <CustomBox matches={`${matches}`} sx={{ flexWrap: "wrap" }}>
               {divyangFilesDetail?.map((item) => (
                 <CustomDataShower
+                  key={item?.title}
                   title={item?.title}
                   onClick={() =>
                     setOpen({
@@ -362,6 +363,7 @@ const getAddress = (data, addressKeys) => {
         if (addressKeys?.includes(item)) {
           return data?.data?.[item];
         }
+        return false
       })
       ?.join(", ")
   );

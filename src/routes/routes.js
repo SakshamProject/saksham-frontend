@@ -30,8 +30,8 @@ export const DivyangDetailsForm = lazy(() =>
 export const PersonalDetails = lazy(() =>
   import("../components/pages/divyangDetails/PersonalDetails")
 );
-export const IdProffUploads = lazy(() =>
-  import("../components/pages/divyangDetails/IdProffUploads")
+export const IdProofUploads = lazy(() =>
+  import("../components/pages/divyangDetails/IdProofUploads")
 );
 export const Address = lazy(() =>
   import("../components/pages/divyangDetails/Address")
