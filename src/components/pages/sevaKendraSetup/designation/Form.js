@@ -17,6 +17,7 @@ import {
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
+import { formatDate } from "../../../../utils/common";
 import {
   dispatchResponseAction,
   dispatchSnackbarError,
@@ -61,21 +62,21 @@ const Form = () => {
       dispatchSnackbarError("Minimum one access is required");
       return;
     }
-    const payload = editId
-      ? {
-          ...value,
-          features: value?.featuresId,
-          auditLog: { date: new Date(), status: CODES?.ACTIVE },
-        }
-      : { ...value };
+    const payload = {
+      ...value,
+      features: value?.featuresId,
+      auditLog: editId
+        ? {
+            ...value?.auditLog,
+            date: formatDate({ date: value?.auditLog?.date, format: "iso" }),
+          }
+        : {
+            date: formatDate({ date: new Date(), format: "iso" }),
+            status: CODES?.ACTIVE,
+          },
+    };
     mutate(payload);
   };
-
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: handleOnSubmit,
-  });
 
   const {
     values,
@@ -86,10 +87,15 @@ const Form = () => {
     handleSubmit,
     setFieldValue,
     setValues,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
+  });
 
   const { data } = useCustomQuery({
-    queryKey: ["fetchDesignationById", editId],
+    dependency: editId,
+    queryKey: "get designation by id",
     queryFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
     enabled: !!editId,
     onSuccess: (data) => {
@@ -98,9 +104,15 @@ const Form = () => {
         districtId: data?.sevaKendra?.district?.id,
         sevaKendraId: data?.sevaKendra?.id,
         designation: data?.name,
-        featuresId: data?.features?.map((item) => item?.feature),
+        featuresId: data?.features?.map(({ feature }) => feature),
         auditLog: {
-          ...data?.auditLog[0],
+          status: data?.status,
+          description:
+            data?.status === CODES?.DEACTIVE ? data?.description : "",
+          date:
+            data?.status === CODES?.DEACTIVE
+              ? data?.effectiveFromDate
+              : new Date(),
         },
       });
     },
@@ -108,26 +120,26 @@ const Form = () => {
   });
 
   const { data: accessMenu } = useQuery({
-    queryKey: ["getAllAccessList"],
+    queryKey: ["get all access list"],
     queryFn: () => getApiService(API_PATHS?.FEATURES),
     select: ({ data }) => data?.data,
   });
 
   const { data: stateList } = useQuery({
-    queryKey: ["getAllStates"],
+    queryKey: ["get all states"],
     queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
-    queryKey: ["getAllDistrictByState", values?.stateId],
+    queryKey: ["get all district by state", values?.stateId],
     queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });
 
   const { data: sevaKendraNames } = useQuery({
-    queryKey: ["getSevaKendraNameByDistrict", values?.districtId],
+    queryKey: ["get seva kendra name by district", values?.districtId],
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
