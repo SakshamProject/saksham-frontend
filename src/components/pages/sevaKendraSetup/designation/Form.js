@@ -73,6 +73,7 @@ const Form = () => {
         : {
             date: formatDate({ date: new Date(), format: "iso" }),
             status: CODES?.ACTIVE,
+            description: "",
           },
     };
     mutate(payload);
@@ -93,13 +94,14 @@ const Form = () => {
     onSubmit: handleOnSubmit,
   });
 
-  const { data } = useCustomQuery({
+  useCustomQuery({
     dependency: editId,
     queryKey: "get designation by id",
     queryFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
     enabled: !!editId,
     onSuccess: (data) => {
       setValues({
+        ...data,
         stateId: data?.sevaKendra?.district?.state?.id,
         districtId: data?.sevaKendra?.district?.id,
         sevaKendraId: data?.sevaKendra?.id,
@@ -107,12 +109,8 @@ const Form = () => {
         featuresId: data?.features?.map(({ feature }) => feature),
         auditLog: {
           status: data?.status,
-          description:
-            data?.status === CODES?.DEACTIVE ? data?.description : "",
-          date:
-            data?.status === CODES?.DEACTIVE
-              ? data?.effectiveFromDate
-              : new Date(),
+          description: data?.description,
+          date: data?.effectiveFromDate,
         },
       });
     },
@@ -297,12 +295,12 @@ const Form = () => {
         <AuditLog
           hide={!editId}
           auditLog={{
-            createdAt: data?.createdAt,
-            updatedAt: data?.updatedAt,
+            createdAt: values?.createdAt,
+            updatedAt: values?.updatedAt,
             createdBy:
-              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+              values?.createdBy?.userName || values?.createdBy?.firstName || "",
             updatedBy:
-              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+              values?.updatedBy?.userName || values?.updatedBy?.firstName || "",
           }}
         />
       </Grid>

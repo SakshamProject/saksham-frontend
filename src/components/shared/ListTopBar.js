@@ -17,7 +17,7 @@ const Container = styled(Box)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     position: "fixed",
     zIndex: 100,
-    width: "92%",
+    width: "94%",
     height: "auto",
     paddingBottom: "8px",
   },

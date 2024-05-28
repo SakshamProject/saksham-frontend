@@ -1,8 +1,8 @@
-import { Box, Grid, Typography, colors } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
   getByIdApiService,
@@ -21,8 +21,15 @@ import {
   formFields,
   initialValues,
 } from "../../../constants/serviceMapping/serviceMapping";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, theme } from "../../../styles";
+import { formatDate, getValidValues } from "../../../utils/common";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
 import {
   editValidationSchema,
   validationSchema,
@@ -37,13 +44,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import {
-  dispatchResponseAction,
-  dispatchSnackbarError,
-} from "../../../utils/dispatch";
-import { formatDate, getValidValues } from "../../../utils/common";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
-import useResponsive from "../../../hooks/useResponsive";
 
 const Form = () => {
   const { state } = useLocation();
@@ -229,7 +229,8 @@ const Form = () => {
   });
 
   const { data } = useCustomQuery({
-    queryKey: ["serviceMappingGetById", editId],
+    dependency: editId,
+    queryKey: "serviceMappingGetById",
     queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     enabled: !!editId,
     onSuccess: (data) => {

@@ -20,11 +20,7 @@ import {
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
-import {
-  formatDate,
-  getNeededValues,
-  getValidValues,
-} from "../../../../utils/common";
+import { formatDate, getValidValues } from "../../../../utils/common";
 import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
@@ -112,29 +108,22 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const { data: sevaKendraDetails } = useCustomQuery({
+  useCustomQuery({
     dependency: editId,
-    queryKey: ["get seva kendra by id"],
+    queryKey: "get seva kendra by id",
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
     enabled: !!editId,
     onSuccess: (data) => {
-      setValues(
-        getNeededValues(
-          {
-            ...initialValues,
-            ...data,
-            stateId: data?.district?.state?.id,
-            servicesBySevaKendra: data?.services?.map(({ service }) => service),
-            date:
-              data?.status === CODES?.DEACTIVE
-                ? data?.effectiveFromDate
-                : new Date(),
-            description:
-              data?.status === CODES?.DEACTIVE ? data?.description : "",
-          },
-          { ...initialValues, id: "" }
-        )
-      );
+      setValues({
+        ...data,
+        stateId: data?.district?.state?.id,
+        servicesBySevaKendra: data?.services?.map(({ service }) => service),
+        date:
+          data?.status === CODES?.DEACTIVE
+            ? data?.effectiveFromDate
+            : new Date(),
+        description: data?.status === CODES?.DEACTIVE ? data?.description : "",
+      });
     },
     select: ({ data }) => data?.data,
   });
@@ -351,7 +340,7 @@ const Form = () => {
           statusSeeds={statusSeed}
           isViewMode={isViewMode}
           rowBreak={false}
-          statusHistory={sevaKendraDetails?.auditLog}
+          statusHistory={values?.auditLog}
           disableListLayout
         />
       </WithCondition>
@@ -367,16 +356,12 @@ const Form = () => {
         <AuditLog
           hide={!editId}
           auditLog={{
-            createdAt: sevaKendraDetails?.createdAt,
-            updatedAt: sevaKendraDetails?.updatedAt,
+            createdAt: values?.createdAt,
+            updatedAt: values?.updatedAt,
             createdBy:
-              sevaKendraDetails?.createdBy?.userName ||
-              sevaKendraDetails?.createdBy?.firstName ||
-              "",
+              values?.createdBy?.userName || values?.createdBy?.firstName || "",
             updatedBy:
-              sevaKendraDetails?.updatedBy?.userName ||
-              sevaKendraDetails?.updatedBy?.firstName ||
-              "",
+              values?.updatedBy?.userName || values?.updatedBy?.firstName || "",
           }}
         />
       </Grid>

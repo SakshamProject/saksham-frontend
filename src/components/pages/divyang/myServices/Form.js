@@ -179,7 +179,8 @@ const Form = () => {
   });
 
   useCustomQuery({
-    queryKey: ["serviceMappingGetById", editId],
+    dependency: editId,
+    queryKey: "serviceMappingGetById",
     queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     enabled: !!editId,
     onSuccess: (data) => {

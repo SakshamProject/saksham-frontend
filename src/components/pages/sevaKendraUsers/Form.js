@@ -19,7 +19,7 @@ import {
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
-import { formatDate, getNeededValues } from "../../../utils/common";
+import { formatDate } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
@@ -44,23 +44,22 @@ const Form = () => {
   const editId = state?.editId;
 
   const handleOnSubmit = (value) => {
-    const { auditLog, ...remaining } = value;
     const payload = multiPartFormData(
       {
-        ...remaining,
+        ...value,
         dateOfBirth: formatDate({
-          date: remaining?.dateOfBirth,
+          date: value?.dateOfBirth,
           format: "iso",
         }),
-        currentStatus: remaining?.status,
+        currentStatus: value?.status,
         effectiveDate: formatDate({
-          date: remaining?.date,
+          date: value?.date,
           format: "iso",
         }),
         auditlog: {
-          status: remaining?.status,
-          date: formatDate({ date: remaining?.date, format: "iso" }),
-          description: remaining?.description,
+          status: value?.status,
+          date: formatDate({ date: value?.date, format: "iso" }),
+          description: value?.description,
         },
       },
       ["profilePhoto"]
@@ -69,7 +68,7 @@ const Form = () => {
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["createAndUpdate"],
+    mutationKey: ["create and update"],
     mutationFn: (data) =>
       editId
         ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
@@ -98,20 +97,20 @@ const Form = () => {
   });
 
   const { data: stateList } = useQuery({
-    queryKey: ["getAllStates"],
+    queryKey: ["get all states"],
     queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
-    queryKey: ["getAllDistrictByState", values?.stateId],
+    queryKey: ["get all district by state", values?.stateId],
     queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });
 
   const { data: sevaKendraList } = useQuery({
-    queryKey: ["sevaKendraListByDistrict", values?.districtId],
+    queryKey: ["seva kendra list by district", values?.districtId],
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
@@ -122,7 +121,7 @@ const Form = () => {
   });
 
   const { data: designationsList } = useQuery({
-    queryKey: ["designationsListBySevaKendra", values?.sevaKendraId],
+    queryKey: ["designations list by seva kendra", values?.sevaKendraId],
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.SEVAKENDRAS,
@@ -132,32 +131,28 @@ const Form = () => {
     enabled: !!values?.sevaKendraId,
   });
 
-  const { data } = useCustomQuery({
-    queryKey: ["sevaKendraUsersGetById", editId],
+  useCustomQuery({
+    dependency: editId,
+    queryKey: "seva kendra users by id",
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
     enabled: !!editId,
     onSuccess: ({ data }) => {
-      setValues(
-        getNeededValues(
-          {
-            ...data?.data,
-            ...data?.data?.person,
-            stateId: data?.data?.designation?.sevaKendra?.district?.state?.id,
-            districtId: data?.data?.designation?.sevaKendra?.district?.id,
-            sevaKendraId: data?.data?.designation?.sevaKendra?.id,
-            designationId: data?.data?.designation?.id,
-            date: data?.data?.effectiveFromDate,
-            profilePhoto: data?.file?.profilePhoto?.url,
-          },
-          {
-            ...initialValues,
-            auditLog: "",
-            personId: "",
-            profilePhotoFileName: "",
-            profilePhotoFile: "",
-          }
-        )
-      );
+      setValues({
+        ...data?.data,
+        ...data?.data?.person,
+        stateId: data?.data?.designation?.sevaKendra?.district?.state?.id,
+        districtId: data?.data?.designation?.sevaKendra?.district?.id,
+        sevaKendraId: data?.data?.designation?.sevaKendra?.id,
+        designationId: data?.data?.designation?.id,
+        profilePhoto: data?.file?.profilePhoto?.url,
+        status: data?.data?.status,
+        date:
+          data?.data?.status === CODES?.DEACTIVE
+            ? data?.data?.effectiveFromDate
+            : new Date(),
+        description:
+          data?.data?.status === CODES?.DEACTIVE ? data?.data?.description : "",
+      });
     },
   });
 
@@ -463,9 +458,7 @@ const Form = () => {
 
       <FormActions
         handleSubmit={handleSubmit}
-        handleOnReset={() => {
-          navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
-        }}
+        handleOnReset={() => navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST)}
         isUpdate={!!editId}
         isViewMode={isViewMode}
       />
@@ -474,12 +467,12 @@ const Form = () => {
         <AuditLog
           hide={!editId}
           auditLog={{
-            createdAt: data?.createdAt,
-            updatedAt: data?.updatedAt,
+            createdAt: values?.createdAt,
+            updatedAt: values?.updatedAt,
             createdBy:
-              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+              values?.createdBy?.userName || values?.createdBy?.firstName || "",
             updatedBy:
-              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+              values?.updatedBy?.userName || values?.updatedBy?.firstName || "",
           }}
         />
       </Grid>
