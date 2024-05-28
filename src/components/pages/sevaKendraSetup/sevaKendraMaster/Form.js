@@ -113,31 +113,28 @@ const Form = () => {
   });
 
   const { data: sevaKendraDetails } = useCustomQuery({
+    dependency: editId,
     queryKey: ["get seva kendra by id"],
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
     enabled: !!editId,
     onSuccess: (data) => {
-      if (editId) {
-        setValues(
-          getNeededValues(
-            {
-              ...initialValues,
-              ...data,
-              stateId: data?.district?.state?.id,
-              servicesBySevaKendra: data?.services?.map(
-                ({ service }) => service
-              ),
-              date:
-                data?.status === CODES?.DEACTIVE
-                  ? data?.effectiveFromDate
-                  : new Date(),
-              description:
-                data?.status === CODES?.DEACTIVE ? data?.description : "",
-            },
-            { ...initialValues, id: "" }
-          )
-        );
-      }
+      setValues(
+        getNeededValues(
+          {
+            ...initialValues,
+            ...data,
+            stateId: data?.district?.state?.id,
+            servicesBySevaKendra: data?.services?.map(({ service }) => service),
+            date:
+              data?.status === CODES?.DEACTIVE
+                ? data?.effectiveFromDate
+                : new Date(),
+            description:
+              data?.status === CODES?.DEACTIVE ? data?.description : "",
+          },
+          { ...initialValues, id: "" }
+        )
+      );
     },
     select: ({ data }) => data?.data,
   });

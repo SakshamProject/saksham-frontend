@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const useCustomQuery = ({
   dependency = "",
@@ -10,7 +10,6 @@ export const useCustomQuery = ({
   invokeSuccess,
   select,
 }) => {
-  const [successCount, setSuccessCount] = useState(-1);
   const query = useQuery({
     queryKey: [queryKey, dependency],
     queryFn: queryFn,
@@ -20,12 +19,9 @@ export const useCustomQuery = ({
 
   useEffect(() => {
     if (query?.data || invokeSuccess) {
-      setSuccessCount((prev) => prev + 1);
       onSuccess(query?.data);
     }
   }, [query?.data]); //eslint-disable-line
-
-  query.successCount = successCount;
 
   return query;
 };
