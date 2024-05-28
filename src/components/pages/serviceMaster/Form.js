@@ -168,7 +168,7 @@ const Form = () => {
         />
       </WithCondition>
 
-      <Grid item xs={12} mt={4} mb={2}>
+      <Grid item xs={12} mt={isViewMode ? 0 : 4} mb={2}>
         <WithCondition isValid={!isMobile}>
           <CustomReactTable
             columnData={

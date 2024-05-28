@@ -28,6 +28,7 @@ export const CommonList = ({
   disableNewForm,
   maxHeight,
   disableFlex,
+  style,
 }) => {
   const { isMobile } = useResponsive();
   const { filterFields, filterInitialValues } = getTableSchemas(columns);
@@ -67,6 +68,7 @@ export const CommonList = ({
           disableSearchField={disableSearchField}
           disableFilter={disableFilters}
           disableNewForm={disableNewForm}
+          style={style}
         />
       </WithCondition>
 

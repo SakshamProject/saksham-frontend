@@ -35,6 +35,7 @@ const BackIcon = styled(IconButton)(({ theme }) => ({
   color: theme?.palette?.commonColor?.black,
   fontSize: 24,
   marginRight: "16px",
+  padding: 0,
 }));
 
 export const BackNavigator = ({

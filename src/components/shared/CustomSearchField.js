@@ -3,10 +3,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputAdornment } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
+import propTypes from "prop-types";
 import queryString from "query-string";
 import { useEffect, useMemo, useState } from "react";
 import { createSearchParams, useLocation, useNavigate } from "react-router-dom";
-import propTypes from "prop-types";
 
 const Search = styled("div")(({ theme }) => ({
   width: "250px",
@@ -38,6 +38,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   boxSizing: "border-box",
   paddingRight: "12px",
   fontSize: "0.875rem",
+  width: "100%",
   ".MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(3)})`,
