@@ -20,7 +20,11 @@ import {
 import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
-import { formatDate, getValidValues } from "../../../../utils/common";
+import {
+  formatDate,
+  getNeededValues,
+  getValidValues,
+} from "../../../../utils/common";
 import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
@@ -59,7 +63,7 @@ const Form = () => {
   };
 
   const { mutate: onSubmit } = useMutation({
-    mutationKey: ["createAndUpdate"],
+    mutationKey: ["create and update"],
     mutationFn: (data) =>
       editId
         ? updateApiService(API_PATHS?.SEVAKENDRAS, editId, data)
@@ -73,12 +77,6 @@ const Form = () => {
     },
   });
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: handleOnSubmit,
-  });
-
   const {
     values,
     handleChange,
@@ -89,48 +87,57 @@ const Form = () => {
     setFieldValue,
     setFieldTouched,
     setValues,
-  } = formik;
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
+  });
 
   const { data: stateList } = useQuery({
-    queryKey: ["getAllStates"],
+    queryKey: ["get all states"],
     queryFn: () => getApiService(API_PATHS?.STATES),
     select: ({ data }) => data?.data,
   });
 
   const { data: districtList } = useQuery({
-    queryKey: ["getAllDistrictsByState", values?.stateId],
+    queryKey: ["get all districts by state", values?.stateId],
     queryFn: () => getByIdApiService(API_PATHS?.STATES, values?.stateId),
     select: ({ data }) => data?.data,
     enabled: !!values?.stateId,
   });
 
   const { data: serviceTypeList } = useQuery({
-    queryKey: ["getAllServiceTypes"],
+    queryKey: ["get all service types"],
     queryFn: () => getApiService(API_PATHS?.SERVICES),
     select: ({ data }) => data?.data,
   });
 
-  const { data } = useCustomQuery({
-    queryKey: ["sevaKendraGetById", editId],
+  const { data: sevaKendraDetails } = useCustomQuery({
+    queryKey: ["get seva kendra by id"],
     queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
     enabled: !!editId,
     onSuccess: (data) => {
-      setValues({
-        ...data,
-        stateId: data?.district?.state?.id,
-        status: data?.status,
-        servicesBySevaKendra: data?.services?.map(({ service }) => ({
-          id: service.id,
-          name: service.name,
-          serviceType: {
-            id: service.serviceType.id,
-            name: service.serviceType.name,
-          },
-        })),
-        date:
-          data?.status === CODES?.ACTIVE ? new Date() : data?.effectiveFromDate,
-        description: data?.status === CODES?.ACTIVE ? "" : data?.description,
-      });
+      if (editId) {
+        setValues(
+          getNeededValues(
+            {
+              ...initialValues,
+              ...data,
+              stateId: data?.district?.state?.id,
+              servicesBySevaKendra: data?.services?.map(
+                ({ service }) => service
+              ),
+              date:
+                data?.status === CODES?.DEACTIVE
+                  ? data?.effectiveFromDate
+                  : new Date(),
+              description:
+                data?.status === CODES?.DEACTIVE ? data?.description : "",
+            },
+            { ...initialValues, id: "" }
+          )
+        );
+      }
     },
     select: ({ data }) => data?.data,
   });
@@ -237,7 +244,6 @@ const Form = () => {
         <CustomDatePicker
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
-          minDate={(!editId && fields?.startDate?.minDate) || null}
           isViewMode={isViewMode}
           value={values?.startDate}
           errors={errors?.startDate}
@@ -348,18 +354,14 @@ const Form = () => {
           statusSeeds={statusSeed}
           isViewMode={isViewMode}
           rowBreak={false}
-          statusHistory={values?.auditLog}
+          statusHistory={sevaKendraDetails?.auditLog}
           disableListLayout
         />
       </WithCondition>
 
       <FormActions
-        handleSubmit={() => {
-          handleSubmit();
-        }}
-        handleOnReset={() => {
-          navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST);
-        }}
+        handleSubmit={handleSubmit}
+        handleOnReset={() => navigate(ROUTE_PATHS?.SEVA_KENDRA_MASTER_LIST)}
         isUpdate={!!editId}
         isViewMode={isViewMode}
       />
@@ -368,12 +370,16 @@ const Form = () => {
         <AuditLog
           hide={!editId}
           auditLog={{
-            createdAt: data?.createdAt,
-            updatedAt: data?.updatedAt,
+            createdAt: sevaKendraDetails?.createdAt,
+            updatedAt: sevaKendraDetails?.updatedAt,
             createdBy:
-              data?.createdBy?.userName || data?.createdBy?.firstName || "",
+              sevaKendraDetails?.createdBy?.userName ||
+              sevaKendraDetails?.createdBy?.firstName ||
+              "",
             updatedBy:
-              data?.updatedBy?.userName || data?.updatedBy?.firstName || "",
+              sevaKendraDetails?.updatedBy?.userName ||
+              sevaKendraDetails?.updatedBy?.firstName ||
+              "",
           }}
         />
       </Grid>

@@ -10,7 +10,7 @@ export const initialValues = {
   address: "",
   landLineNumber: "",
   mobileNumber: "",
-  startDate: "",
+  startDate: new Date(),
   contactPerson: {
     name: "",
     email: "",

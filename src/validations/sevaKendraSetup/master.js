@@ -94,6 +94,7 @@ export const validationSchema = object({
     .test("isLength", "Services is required", (value) => value?.length !== 0)
     .min(1, "Minimum one Service is required"),
   status: string().nullable(),
+  date: string().nullable(),
   description: string()
     .trim()
     .nullable()

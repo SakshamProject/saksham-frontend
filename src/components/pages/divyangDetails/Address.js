@@ -21,7 +21,7 @@ import { locationSeed } from "../../../constants/seeds";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { getNeededValues, getValidValues } from "../../../utils/common";
+import { getValidValues } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/divyangDetails/address";
 import {
@@ -58,8 +58,6 @@ const Address = () => {
       isSameAddress: !!values?.isSameAddress,
       isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
     });
-
-    console.log(getNeededValues(payload, initialValues));
 
     onSubmit({ addressRequest: payload, pageNumber: 3 });
   };
