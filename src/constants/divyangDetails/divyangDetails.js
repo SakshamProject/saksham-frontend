@@ -10,9 +10,9 @@ export const DIVYANG_STEPS = [
     value: "personal",
   },
   {
-    label: "Id Proff Uploads",
+    label: "Id Proof Uploads",
     route: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF,
-    value: "idproff",
+    value: "idproof",
   },
   {
     label: "Address",
@@ -48,11 +48,13 @@ export const divyangDetailsColumn = [
               id: row?.original?.id,
               path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
               view: true,
+              search: { action: "view" },
             },
             {
               label: "Edit",
               id: row?.original?.id,
               path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
+              search: { action: "edit" },
             },
           ]}
         />

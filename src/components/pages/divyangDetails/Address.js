@@ -21,7 +21,6 @@ import { locationSeed } from "../../../constants/seeds";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { getValidValues } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/divyangDetails/address";
 import {
@@ -33,33 +32,35 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const Address = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, search } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
   const isViewMode = state?.isViewMode || false;
   const editId = state?.editId;
-  const newStatus = state?.newStatus;
 
-  const handleOnReset = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
-      state: { ...state },
-    });
+  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
   const handleSkip = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, {
-      state: { ...state },
-    });
+    navigate(
+      { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
+      { state },
+    );
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues({
-      ...values,
-      isRural: values?.isRural === CODES?.RURAL,
-      isSameAddress: !!values?.isSameAddress,
-      isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
+    const payload = multiPartFormData({
+      addressRequest: {
+        ...values,
+        isRural: values?.isRural === CODES?.RURAL,
+        isSameAddress: !!values?.isSameAddress,
+        isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
+      },
+      pageNumber: 3,
     });
-
-    onSubmit({ addressRequest: payload, pageNumber: 3 });
+    onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
@@ -67,13 +68,11 @@ const Address = () => {
     mutationFn: (data) =>
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
     onSuccess: () => {
-      dispatchResponseAction(
-        "Address",
-        newStatus ? CODES?.ADDED : CODES?.UPDATED
+      dispatchResponseAction("Address", action ? CODES?.UPDATED : CODES?.SAVED);
+      navigate(
+        { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY, search },
+        { state },
       );
-      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY, {
-        state: { ...state },
-      });
     },
   });
 
@@ -140,6 +139,8 @@ const Address = () => {
       setValues({
         ...initialValues,
         ...remaining,
+        isRural: remaining?.isRural || CODES?.RURAL,
+        isRuralCommunication: remaining?.isRuralCommunication || CODES?.RURAL,
         ...getFilesUrl(data?.files),
       });
     },

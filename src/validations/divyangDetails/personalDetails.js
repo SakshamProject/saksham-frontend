@@ -30,7 +30,7 @@ export const validationSchema = (editId) =>
       .typeError("Invalid date")
       .min(
         minMaxAge({})?.max,
-        "Date of birth should be less than 100 years old"
+        "Date of birth should be less than 100 years old",
       )
       .max(new Date(), "Date of birth should be in Past")
       .required("Date of birth is required"),
@@ -45,14 +45,18 @@ export const validationSchema = (editId) =>
       .test(
         "isZero",
         "Invalid mobile number",
-        (value) => !(!!value && Number(value) === 0)
+        (value) => !(!!value && Number(value) === 0),
       )
       .test(
         "isNumeric",
         "Mobile Number should contain only numbers",
-        (value) => !(value && !/^\d+$/.test(value))
+        (value) => !(value && !/^\d+$/.test(value)),
       )
       .length(10, "Mobile Number should be 10 digits"),
+    UDIDCardNumber: string()
+      .trim()
+      .required("UDID card number is required")
+      .max(255, "UDID cannot have more than 255 characters"),
     fatherName: string()
       .trim()
       .min(3, "Father Name must be at least 3 characters long")
@@ -69,7 +73,8 @@ export const validationSchema = (editId) =>
       .test(
         "spouseName",
         "Spouse Name is required",
-        (value, context) => !(context.parent?.isMarried !== CODES?.NO && !value)
+        (value, context) =>
+          !(context.parent?.isMarried !== CODES?.NO && !value),
       )
       .max(255, "Spouse Name cannot have more than 255 characters"),
     spouseNumber: string()
@@ -78,18 +83,19 @@ export const validationSchema = (editId) =>
       .test(
         "spouseNumber",
         "Spouse Number is required",
-        (value, context) => !(context.parent?.isMarried !== CODES?.NO && !value)
+        (value, context) =>
+          !(context.parent?.isMarried !== CODES?.NO && !value),
       )
       .test(
         "isNumeric",
         "Spouse Number should contain only numbers",
-        (value) => !(value && !/^\d+$/.test(value))
+        (value) => !(value && !/^\d+$/.test(value)),
       )
       .length(10, "Spouse Number should be 10 digits")
       .test(
         "isZero",
         "Invalid Spouse number",
-        (value) => !(!!value && Number(value) === 0)
+        (value) => !(!!value && Number(value) === 0),
       )
       .max(255, "Spouse Number cannot have more than 255 characters"),
     religion: string()
@@ -104,7 +110,7 @@ export const validationSchema = (editId) =>
       .test(
         "community",
         "Community is required",
-        (value, context) => !(context.parent?.communityCategoryId && !value)
+        (value, context) => !(context.parent?.communityCategoryId && !value),
       )
       .max(255, "Community cannot have more than 255 characters"),
     userName: string()
@@ -115,15 +121,15 @@ export const validationSchema = (editId) =>
     password: string()
       .trim()
       .test("password", "Password is required", (value) =>
-        editId ? true : !!value
+        editId ? true : !!value,
       )
       .matches(
         UPPER_CASE,
-        "Password must contain at least one uppercase letter"
+        "Password must contain at least one uppercase letter",
       )
       .matches(
         LOWER_CASE,
-        "Password must contain at least one lowercase letter"
+        "Password must contain at least one lowercase letter",
       )
       .matches(NUMBER, "Password must contain at least one number")
       .min(7, "Password must be at least 7 characters long")
@@ -148,12 +154,12 @@ export const validationSchema = (editId) =>
             return false;
           }
           return !!editId || !!value;
-        }
+        },
       ),
   });
 
 export const eqValidationSchema = object({
   educationQualificationTypeId: string().required(
-    "Educational Qualification is required"
+    "Educational Qualification is required",
   ),
 });

@@ -27,27 +27,24 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 
 const DisabilityDetails = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const isViewMode = state?.isViewMode;
+  const { state, search } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
+  const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
 
-  const handleOnReset = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
-      state: {
-        isViewMode: isViewMode,
-        editId: editId,
-      },
-    });
+  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
+
   const handleSkip = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
-      state: {
-        isViewMode: isViewMode,
-        editId: editId,
-      },
-    });
+    navigate(
+      { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, search },
+      { state },
+    );
 
   const handleOnSubmit = (values) => {
     const payload = getValidValues(values);
@@ -71,7 +68,6 @@ const DisabilityDetails = () => {
     setFieldValue,
     setFieldTouched,
     setValues,
-    setTouched,
   } = formik;
 
   const { data: disabilityTypes } = useQuery({
@@ -88,11 +84,27 @@ const DisabilityDetails = () => {
     enabled: !!values?.disabilityType,
   });
 
+  useCustomQuery({
+    dependency: editId,
+    queryKey: "divyangGetById",
+    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+    enabled: !!editId,
+    onSuccess: ({ data }) => {
+      const { auditLog, ...remaining } = data?.data;
+      setValues({
+        ...initialValues,
+        ...remaining,
+        ...getFilesUrl(data?.files),
+      });
+    },
+  });
+
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
       <Grid item xs={12}>
-        <DivyangDetail />
+        <DivyangDetail divyangDetail={values || ""} />
       </Grid>
+
       <Grid item xs={12}>
         <StyledFormContainer width="100%">
           <Grid container columnSpacing={3} rowSpacing={1}>

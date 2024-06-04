@@ -1,6 +1,11 @@
 import { styled } from "@mui/material";
 import React, { Suspense } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
@@ -39,20 +44,31 @@ const FormContainer = styled("div")(({ matches }) => ({
 const Form = () => {
   const navigate = useNavigate();
   const { pathname, search, state } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
   const editId = state?.editId;
   const allSteps = DIVYANG_STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
-  const { isMobile } = useResponsive();
+  const { isMobile } = useResponsive(state, search);
 
   const onChange = (step) =>
-    editId ? navigate(`${step?.route}${search}`, { state }) : null;
+    editId
+      ? navigate(
+          { pathname: step?.route, search: search },
+          { state: { ...state } },
+        )
+      : null;
+
+  const getTitle = () => {
+    if (!action) return "NEW DIVYANG";
+    return action === "view" ? "VIEW DIVYANG" : "EDIT DIVYANG";
+  };
 
   return (
     <>
       <BackNavigator
-        title={"Divyang"}
         navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
-        disableModes
+        customTitle={getTitle()}
       />
 
       {/* <WithCondition isValid={isMobile}>

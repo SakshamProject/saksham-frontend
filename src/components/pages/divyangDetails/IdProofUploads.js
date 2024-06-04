@@ -33,20 +33,19 @@ import {
 
 const IdProofUploads = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const isViewMode = state?.isViewMode || false;
+  const { state, search } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
+  const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
-  const newStatus = state?.newStatus;
 
-  const handleOnReset = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST, {
-      state: { ...state },
-    });
+  const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
   const handleSkip = () =>
-    navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, {
-      state: { ...state },
-    });
+    navigate(
+      { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, search },
+      { state },
+    );
 
   const { mutate } = useMutation({
     mutationKey: ["divyangUpdate", editId],
@@ -55,11 +54,12 @@ const IdProofUploads = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Id Proof",
-        newStatus ? CODES?.ADDED : CODES?.UPDATED
+        action ? CODES?.UPDATED : CODES?.SAVED,
       );
-      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, {
-        state: { ...state },
-      });
+      navigate(
+        { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, search },
+        { state },
+      );
     },
   });
 
@@ -74,20 +74,13 @@ const IdProofUploads = () => {
     } else {
       const files = fileKeys.reduce((acc, key) => {
         if (values[key]) {
-          return {
-            ...acc,
-            [key]: values[key],
-          };
+          return { ...acc, [key]: values[key] };
         }
         return acc;
       }, {});
       const payload = multiPartFormData(
-        {
-          IdProofUploads: { ...values },
-          ...files,
-          pageNumber: 2,
-        },
-        fileKeys
+        { IdProofUploads: { ...values }, ...files, pageNumber: 2 },
+        fileKeys,
       );
       mutate(payload);
     }
@@ -141,7 +134,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.voterIdNumber?.name,
-                    e?.target?.value?.toUpperCase()
+                    e?.target?.value?.toUpperCase(),
                   );
                 }}
                 onBlur={handleBlur}
@@ -166,7 +159,10 @@ const IdProofUploads = () => {
                 error={errors?.voterId}
                 touched={touched?.voterId}
                 onChange={(e) => {
-                  setFieldValue(fields?.voterId?.name, e?.target?.files[0]);
+                  setFieldValue(
+                    fields?.voterId?.name,
+                    e?.target?.files[0] || null,
+                  );
                 }}
               />
             </Grid>
@@ -183,7 +179,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.panCardNumber?.name,
-                    e?.target?.value?.toUpperCase()
+                    e?.target?.value?.toUpperCase(),
                   );
                 }}
                 onBlur={handleBlur}
@@ -208,7 +204,10 @@ const IdProofUploads = () => {
                 error={errors?.panCard}
                 touched={touched?.panCard}
                 onChange={(e) => {
-                  setFieldValue(fields?.panCard?.name, e?.target?.files[0]);
+                  setFieldValue(
+                    fields?.panCard?.name,
+                    e?.target?.files[0] || null,
+                  );
                 }}
               />
             </Grid>
@@ -225,7 +224,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.drivingLicenseNumber?.name,
-                    e?.target?.value?.toUpperCase()
+                    e?.target?.value?.toUpperCase(),
                   );
                 }}
                 onBlur={handleBlur}
@@ -252,7 +251,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.drivingLicense?.name,
-                    e?.target?.files[0]
+                    e?.target?.files[0] || null,
                   );
                 }}
               />
@@ -270,7 +269,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.rationCardNumber?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -295,7 +294,10 @@ const IdProofUploads = () => {
                 error={errors?.rationCard}
                 touched={touched?.rationCard}
                 onChange={(e) => {
-                  setFieldValue(fields?.rationCard?.name, e?.target?.files[0]);
+                  setFieldValue(
+                    fields?.rationCard?.name,
+                    e?.target?.files[0] || null,
+                  );
                 }}
               />
             </Grid>
@@ -311,7 +313,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.aadharCardNumber?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -336,7 +338,10 @@ const IdProofUploads = () => {
                 error={errors?.aadharCard}
                 touched={touched?.aadharCard}
                 onChange={(e) => {
-                  setFieldValue(fields?.aadharCard?.name, e?.target?.files[0]);
+                  setFieldValue(
+                    fields?.aadharCard?.name,
+                    e?.target?.files[0] || null,
+                  );
                 }}
               />
             </Grid>
@@ -353,7 +358,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.pensionCardNumber?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -377,7 +382,10 @@ const IdProofUploads = () => {
                 error={errors?.pensionCard}
                 touched={touched?.pensionCard}
                 onChange={(e) => {
-                  setFieldValue(fields?.pensionCard?.name, e?.target?.files[0]);
+                  setFieldValue(
+                    fields?.pensionCard?.name,
+                    e?.target?.files[0] || null,
+                  );
                 }}
               />
             </Grid>
@@ -394,7 +402,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.medicalInsuranceNumber?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -420,7 +428,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.medicalInsuranceCard?.name,
-                    e?.target?.files[0]
+                    e?.target?.files[0] || null,
                   );
                 }}
               />
@@ -438,7 +446,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.disabilitySchemeNumber?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -464,7 +472,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.disabilitySchemeCard?.name,
-                    e?.target?.files[0]
+                    e?.target?.files[0] || null,
                   );
                 }}
               />
@@ -482,7 +490,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.BPL_OR_APL_Number?.name,
-                    e?.target?.value
+                    e?.target?.value,
                   );
                 }}
                 onBlur={handleBlur}
@@ -508,7 +516,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.BPL_OR_APL_Card?.name,
-                    e?.target?.files[0]
+                    e?.target?.files[0] || null,
                   );
                 }}
               />

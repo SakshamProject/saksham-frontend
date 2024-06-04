@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, styled } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
@@ -52,9 +52,18 @@ import {
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
 
+const PersonalDetailsContainer = styled(StyledFormContainer)(({ theme }) => ({
+  width: "100% !important",
+  [theme.breakpoints.down("sm")]: {
+    paddingTop: "8px !important",
+  },
+}));
+
 const PersonalDetails = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, search } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
   const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
   const [tableEditId, setTableEditId] = useState("");
@@ -85,7 +94,7 @@ const PersonalDetails = () => {
               ...(value?.educationQualificationId && {
                 educationQualificationId: value?.educationQualificationId?.id,
               }),
-            })
+            }),
           ),
         },
         picture: values?.picture,
@@ -97,9 +106,8 @@ const PersonalDetails = () => {
           description: values?.description,
         },
       },
-      ["picture", "profilePhoto"]
+      ["picture", "profilePhoto"],
     );
-
     onSubmit(payload);
   };
 
@@ -112,15 +120,12 @@ const PersonalDetails = () => {
     onSuccess: ({ data }) => {
       dispatchResponseAction(
         "Personal Details",
-        editId ? CODES?.SAVED : CODES?.ADDED
+        action ? CODES?.UPDATED : CODES?.SAVED,
       );
-      navigate(`${ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF}`, {
-        state: {
-          editId: data?.data?.id,
-          isViewMode: isViewMode,
-          newStatus: !editId,
-        },
-      });
+      navigate(
+        { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
+        { state: { editId: data?.data?.id, isViewMode } },
+      );
     },
   });
 
@@ -137,20 +142,20 @@ const PersonalDetails = () => {
     ) {
       eqSetFieldError(
         fields?.educationQualificationId?.name,
-        "Education Qualification Sub Type is required"
+        "Education Qualification Sub Type is required",
       );
       return;
     } else if (
       (values?.educationQualifications.some(
         (obj) =>
           obj.educationQualificationId?.id ===
-          eqValues?.educationQualificationId
+          eqValues?.educationQualificationId,
       ) &&
         !!eqValues?.educationQualificationId) ||
       (values?.educationQualifications.some(
         (obj) =>
           obj.educationQualificationTypeId?.id ===
-          eqValues?.educationQualificationTypeId
+          eqValues?.educationQualificationTypeId,
       ) &&
         !eqValues?.educationQualificationId)
     ) {
@@ -165,7 +170,7 @@ const PersonalDetails = () => {
             id: eqValues.educationQualificationTypeId,
             name: getSeedNameById(
               educationQualification,
-              eqValues.educationQualificationTypeId
+              eqValues.educationQualificationTypeId,
             ),
           },
           ...(eqValues.educationQualificationId && {
@@ -173,14 +178,14 @@ const PersonalDetails = () => {
               id: eqValues.educationQualificationId,
               name: getSeedNameById(
                 educationQualificationSubType,
-                eqValues.educationQualificationId
+                eqValues.educationQualificationId,
               ),
             },
           }),
         };
         setFieldValue(
           fields.educationQualifications.name,
-          updatedEducationQualifications
+          updatedEducationQualifications,
         );
       } else {
         setFieldValue(fields?.educationQualifications?.name, [
@@ -190,7 +195,7 @@ const PersonalDetails = () => {
               id: eqValues?.educationQualificationTypeId,
               name: getSeedNameById(
                 educationQualification,
-                eqValues?.educationQualificationTypeId
+                eqValues?.educationQualificationTypeId,
               ),
             },
             ...(eqValues?.educationQualificationId && {
@@ -198,7 +203,7 @@ const PersonalDetails = () => {
                 id: eqValues?.educationQualificationId,
                 name: getSeedNameById(
                   educationQualificationSubType,
-                  eqValues?.educationQualificationId
+                  eqValues?.educationQualificationId,
                 ),
               },
             }),
@@ -265,7 +270,7 @@ const PersonalDetails = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.EDUCATION_QUALIFICATION,
-        eqValues?.educationQualificationTypeId
+        eqValues?.educationQualificationTypeId,
       ),
     select: ({ data }) => data?.data?.educationQualification,
     enabled: !!eqValues?.educationQualificationTypeId,
@@ -291,7 +296,7 @@ const PersonalDetails = () => {
               id: value?.educationQualification?.id,
               name: value?.educationQualification?.name,
             },
-          })
+          }),
         ),
         ...getFilesUrl(data?.files),
       });
@@ -312,7 +317,7 @@ const PersonalDetails = () => {
   const handleDeleteList = (index) => {
     setFieldValue(
       fields?.educationQualifications?.name,
-      values?.educationQualifications?.filter((_, pos) => pos !== index)
+      values?.educationQualifications?.filter((_, pos) => pos !== index),
     );
   };
 
@@ -327,14 +332,7 @@ const PersonalDetails = () => {
 
   return (
     <Grid container direction={"column"}>
-      <StyledFormContainer
-        sx={{
-          width: "100% !important",
-          [theme.breakpoints.down("sm")]: {
-            paddingTop: "8px !important",
-          },
-        }}
-      >
+      <PersonalDetailsContainer>
         <Grid container columnSpacing={3} rowSpacing={2}>
           <Grid item xs={12} md={6}>
             <CustomTextField
@@ -391,7 +389,7 @@ const PersonalDetails = () => {
               onChange={(e) =>
                 setFieldValue(
                   editId ? "profilePhoto" : fields?.picture?.name,
-                  e?.target?.files[0]
+                  e?.target?.files[0],
                 )
               }
               disabled={isViewMode}
@@ -584,16 +582,16 @@ const PersonalDetails = () => {
               onChange={(_, value) => {
                 eqSetFieldValue(
                   fields?.educationQualificationTypeId?.name,
-                  value
+                  value,
                 );
                 eqSetFieldValue(fields?.educationQualificationId?.name, "");
                 eqSetFieldTouched(
                   fields?.educationQualificationTypeId?.name,
-                  false
+                  false,
                 );
                 eqSetFieldTouched(
                   fields?.educationQualificationId?.name,
-                  false
+                  false,
                 );
               }}
               errors={eqErrors?.educationQualificationTypeId}
@@ -617,11 +615,11 @@ const PersonalDetails = () => {
                 onChange={(_, value) => {
                   eqSetFieldValue(
                     fields?.educationQualificationId?.name,
-                    value
+                    value,
                   );
                   eqSetFieldTouched(
                     fields?.educationQualificationId?.name,
-                    false
+                    false,
                   );
                 }}
                 errors={eqErrors?.educationQualificationId}
@@ -796,7 +794,7 @@ const PersonalDetails = () => {
             isViewMode={isViewMode}
           />
         </Grid>
-      </StyledFormContainer>
+      </PersonalDetailsContainer>
     </Grid>
   );
 };

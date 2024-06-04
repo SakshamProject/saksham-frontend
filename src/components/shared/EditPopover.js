@@ -41,11 +41,10 @@ export const EditPopover = ({ inputValues, disable }) => {
         {
           pathname: path,
           search: `?${createSearchParams({
-            // editId: id,
             ...search,
           })}`,
         },
-        { state: { viewDetails: Boolean(view), editId: id, ...stateProps } }
+        { state: { viewDetails: Boolean(view), editId: id, ...stateProps } },
       );
     setAnchorEl(null);
   };
@@ -93,7 +92,7 @@ export const EditPopover = ({ inputValues, disable }) => {
                 stateProps = {},
                 onClick,
               },
-              index
+              index,
             ) =>
               !toHide ? (
                 customComp ? (
@@ -110,7 +109,7 @@ export const EditPopover = ({ inputValues, disable }) => {
                             view,
                             search,
                             stateProps,
-                            onClick
+                            onClick,
                           )
                     }
                   >
@@ -119,7 +118,7 @@ export const EditPopover = ({ inputValues, disable }) => {
                 )
               ) : (
                 <></>
-              )
+              ),
           )}
         </PopoverComponent>
       ) : (
