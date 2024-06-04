@@ -39,7 +39,7 @@ const Address = () => {
   const { state, search } = useLocation();
   const params = new URLSearchParams(search);
   const action = params.get("action");
-  const isViewMode = state?.isViewMode || false;
+  const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
@@ -47,14 +47,14 @@ const Address = () => {
   const handleSkip = () =>
     navigate(
       { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
-      { state },
+      { state }
     );
 
   const handleOnSubmit = (values) => {
     const payload = multiPartFormData({
       addressRequest: {
         ...values,
-        isRural: values?.isRural === CODES?.RURAL,
+        isRural: values?.isRural === CODES?.RURAL ? "true" : "false",
         isSameAddress: !!values?.isSameAddress,
         isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
       },
@@ -71,7 +71,7 @@ const Address = () => {
       dispatchResponseAction("Address", action ? CODES?.UPDATED : CODES?.SAVED);
       navigate(
         { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_DISABILITY, search },
-        { state },
+        { state }
       );
     },
   });

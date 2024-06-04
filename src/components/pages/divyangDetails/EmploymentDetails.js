@@ -18,14 +18,23 @@ import {
   WithCondition,
 } from "../../shared";
 import { StyledFormContainer, theme } from "../../../styles";
-import { getValidValues } from "../../../utils/common";
+import { formatDate, getValidValues } from "../../../utils/common";
 import { yesNoSeed } from "../../../constants/seeds";
 import { CODES } from "../../../constants/globalConstants";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import { getByIdApiService, updateApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
+import { useMutation } from "@tanstack/react-query";
+import { dispatchResponseAction } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const EmploymentDetails = () => {
   const navigate = useNavigate();
-  const { state } = useLocation();
-  const isViewMode = state?.isViewMode;
+  const { state, search } = useLocation();
+  const params = new URLSearchParams(search);
+  const action = params.get("action");
+  const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
 
   const handleOnReset = () =>
@@ -44,10 +53,33 @@ const EmploymentDetails = () => {
     });
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues(values);
-    // onSubmit(payload);
-    // handleOnReset();
+    console.log(values?.isEmployed);
+    const payload = multiPartFormData({
+      employmentDetails: {
+        ...values,
+        isEmployed: values?.isEmployed === CODES?.YES ? "true" : "false",
+        unemployedSince: formatDate({
+          date: values?.unemployedSince,
+          format: "iso",
+        }),
+      },
+      pageNumber: 5,
+    });
+    onSubmit(payload);
   };
+
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["update"],
+    mutationFn: (data) =>
+      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
+    onSuccess: () => {
+      dispatchResponseAction(
+        "Employment Details",
+        action ? CODES?.UPDATED : CODES?.SAVED
+      );
+      navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
+    },
+  });
 
   const formik = useFormik({
     initialValues,
@@ -68,10 +100,26 @@ const EmploymentDetails = () => {
     setTouched,
   } = formik;
 
+  useCustomQuery({
+    dependency: editId,
+    queryKey: "divyangGetById",
+    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
+    enabled: !!editId,
+    onSuccess: ({ data }) => {
+      const { auditLog, ...remaining } = data?.data;
+      setValues({
+        ...initialValues,
+        ...remaining,
+        isEmployed: data.isEmployed === false ? CODES.NO : CODES.YES,
+        ...getFilesUrl(data?.files),
+      });
+    },
+  });
+
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
       <Grid item xs={12}>
-        <DivyangDetail />
+        <DivyangDetail divyangDetail={values || ""} />
       </Grid>
       <Grid item xs={12}>
         <StyledFormContainer width="100%">

@@ -1,16 +1,7 @@
 import { CODES } from "../globalConstants";
 
 export const initialValues = {
-  disabilityType: "",
-  disabilities: "",
-  isDisabilitySinceBirth: CODES?.YES,
-  disabilitySince: "",
-  disabilityArea: "",
-  disabilityPercentage: "",
-  disabilityDueTo: "",
-  certificateIssuingAuthority: "",
-  disabilityCard: "",
-  dateOfIssue: "",
+  disabilities: [],
   identityCardNumber: "",
   stateCode: "",
   districtCode: "",
@@ -22,14 +13,27 @@ export const initialValues = {
   description: "",
 };
 
+export const multiPartInitialState = {
+  disabilityTypeId: "",
+  disabilitySubTypeId: "",
+  isDisabilitySinceBirth: CODES?.YES,
+  disabilitySince: "",
+  disabilityArea: "",
+  disabilityPercentage: "",
+  disabilityDueTo: "",
+  certificateIssueAuthority: "",
+  disabilityCard: "",
+  dateOfIssue: "",
+};
+
 export const fields = {
   disabilityType: {
     label: "Disability Type *",
-    name: "disabilityType",
+    name: "disabilityTypeId",
   },
   disabilities: {
     label: "Disability Sub Type *",
-    name: "disabilities",
+    name: "disabilitySubTypeId",
   },
   isDisabilitySinceBirth: {
     label: "Disability Since Birth",
@@ -55,7 +59,7 @@ export const fields = {
   },
   certificateIssuingAuthority: {
     label: "Certificate Issuing Authority *",
-    name: "certificateIssuingAuthority",
+    name: "certificateIssueAuthority",
   },
   disabilityCard: {
     label: "Upload Disability Card",
@@ -92,3 +96,5 @@ export const fields = {
     name: "udidCardUrl",
   },
 };
+
+export const rawData = [];

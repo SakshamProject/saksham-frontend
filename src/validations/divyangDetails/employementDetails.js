@@ -15,49 +15,54 @@ export const validationSchema = object({
       "unemployedSince",
       "Unemployed Since is required",
       (value, context) => !(context.parent?.isEmployed !== CODES?.YES && !value)
-    ),
-  occupation: string().min(
-    3,
-    "Applicant Occupation  must be at least 3 characters long"
-  ),
-  income: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0) {
-      context.createError({ message: "Enter Valid Personal Income" });
-      return false;
-    }
-    return true;
-  }),
-  fatherOccupation: string().min(
-    3,
-    "Father Occupation must be at least 3 characters long"
-  ),
-  fatherIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0) {
-      context.createError({ message: "Enter Valid Father Income" });
-      return false;
-    }
-    return true;
-  }),
-  motherOccupation: string().min(
-    3,
-    "Mother Occupation must be at least 3 characters long"
-  ),
-  motherIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0) {
-      context.createError({ message: "Enter Valid Mother Income" });
-      return false;
-    }
-    return true;
-  }),
-  spouseOccupation: string().min(
-    3,
-    "Spouse Occupation must be at least 3 characters long"
-  ),
-  spouseIncome: string().test("isZero", (value, context) => {
-    if (!!value && Number(value) === 0) {
-      context.createError({ message: "Enter Valid Spouse Income" });
-      return false;
-    }
-    return true;
-  }),
+    )
+    .nullable(),
+  occupation: string()
+    .min(3, "Applicant Occupation  must be at least 3 characters long")
+    .nullable(),
+  income: string()
+    .test("isZero", (value, context) => {
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Personal Income" });
+        return false;
+      }
+      return true;
+    })
+    .nullable(),
+  fatherOccupation: string()
+    .min(3, "Father Occupation must be at least 3 characters long")
+    .nullable(),
+  fatherIncome: string()
+    .test("isZero", (value, context) => {
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Father Income" });
+        return false;
+      }
+      return true;
+    })
+    .nullable(),
+  motherOccupation: string()
+    .min(3, "Mother Occupation must be at least 3 characters long")
+    .nullable(),
+  motherIncome: string()
+    .test("isZero", (value, context) => {
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Mother Income" });
+        return false;
+      }
+      return true;
+    })
+    .nullable(),
+  spouseOccupation: string()
+    .min(3, "Spouse Occupation must be at least 3 characters long")
+    .nullable(),
+  spouseIncome: string()
+    .test("isZero", (value, context) => {
+      if (!!value && Number(value) === 0) {
+        context.createError({ message: "Enter Valid Spouse Income" });
+        return false;
+      }
+      return true;
+    })
+    .nullable(),
 });
