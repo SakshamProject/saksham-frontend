@@ -53,15 +53,17 @@ const EmploymentDetails = () => {
     });
 
   const handleOnSubmit = (values) => {
-    console.log(values?.isEmployed);
     const payload = multiPartFormData({
       employmentDetails: {
         ...values,
         isEmployed: values?.isEmployed === CODES?.YES ? "true" : "false",
-        unemployedSince: formatDate({
-          date: values?.unemployedSince,
-          format: "iso",
-        }),
+        unemployedSince:
+          values?.isEmployed === CODES?.NO
+            ? formatDate({
+                date: values?.unemployedSince,
+                format: "iso",
+              })
+            : "",
       },
       pageNumber: 5,
     });

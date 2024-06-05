@@ -23,18 +23,18 @@ export const validationSchema = object({
     .test(
       "udidCardNumber",
       "UDID Card number is required",
-      (value, context) => !!context.parent?.udidEnrollmentNumber || value
+      (value, context) => !!context.parent?.UDIDEnrollmentNumber || value
     )
     .nullable(),
-  udidEnrollmentNumber: string()
+  UDIDEnrollmentNumber: string()
     .trim()
     .test(
-      "udidEnrollmentNumber",
+      "UDIDEnrollmentNumber",
       "UDID Enrollment Number is required",
       (value, context) => !!context.parent?.udidCardNumber || value
     )
     .nullable(),
-  udidCardUrl: string().required("UDID Card Authority is required"),
+  UDIDCardFile: string().required("UDID Card Authority is required"),
 });
 
 export const multiValidationSchema = object({

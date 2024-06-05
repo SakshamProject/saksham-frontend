@@ -94,6 +94,8 @@ export const FileUpload = ({
       setFileName("");
     } else if (typeof value === "string") {
       setFileName(label);
+    } else {
+      setFileName(value?.name);
     }
   }, [value]);
 

@@ -1,11 +1,16 @@
 import { Grid, Typography } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getApiService, getByIdApiService } from "../../../api/api";
+import {
+  getApiService,
+  getByIdApiService,
+  updateApiService,
+} from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
+  columnData,
   fields,
   initialValues,
   multiPartInitialState,
@@ -33,6 +38,11 @@ import {
 } from "../../shared";
 import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const DisabilityDetails = () => {
   const navigate = useNavigate();
@@ -51,20 +61,43 @@ const DisabilityDetails = () => {
     );
 
   const handleOnSubmit = (values) => {
-    const payload = getValidValues({
-      disabilityDetails: {
-        ...values,
-      },
-    });
-    console.log(payload);
-    // onSubmit(payload);
-    // navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
+    if (values?.disabilities?.length < 1) {
+      dispatchSnackbarError("Atleast one Disabilities must be specified");
+    } else {
+      console.log(values);
+      const payload = multiPartFormData(
+        {
+          disabilityDetails: {
+            ...values,
+            UDIDCardFile:
+              typeof values?.UDIDCardFile === "object"
+                ? "null"
+                : values.UDIDCardFile,
+          },
+          UDIDCard: values?.UDIDCardFile,
+          pageNumber: 4,
+        },
+        ["UDIDCard"]
+      );
+      // console.log(payload);
+      onSubmit(payload);
+    }
   };
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: handleOnSubmit,
+  const { mutate: onSubmit } = useMutation({
+    mutationKey: ["update"],
+    mutationFn: (data) =>
+      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data),
+    onSuccess: () => {
+      dispatchResponseAction(
+        "Disability Details",
+        action ? CODES?.UPDATED : CODES?.SAVED
+      );
+      navigate(
+        { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_EMPLOYMENT, search },
+        { state }
+      );
+    },
   });
 
   const {
@@ -77,40 +110,10 @@ const DisabilityDetails = () => {
     setFieldValue,
     setFieldTouched,
     setValues,
-  } = formik;
-
-  const multiPartFormik = useFormik({
-    initialValues: multiPartInitialState,
-    validationSchema: multiValidationSchema,
-    onSubmit: () => {
-      setValues({
-        ...values,
-        disabilities: [
-          ...values?.disabilities,
-          {
-            ...multiValues,
-            isDisabilitySinceBirth:
-              multiValues?.isDisabilitySinceBirth === CODES?.YES
-                ? "true"
-                : "false",
-            disabilitySince:
-              multiValues?.isDisabilitySinceBirth === CODES?.NO
-                ? formatDate({
-                    date: multiValues?.disabilitySince,
-                    format: "iso",
-                  })
-                : "",
-            disabilityPercentage: Number(multiValues?.disabilityPercentage),
-            dateOfIssue: formatDate({
-              date: multiValues?.dateOfIssue,
-              format: "iso",
-            }),
-            disabilityCardFileName: multiValues?.disabilityCard?.name,
-          },
-        ],
-      });
-      multiResetForm();
-    },
+  } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: handleOnSubmit,
   });
 
   const {
@@ -124,7 +127,46 @@ const DisabilityDetails = () => {
     setFieldTouched: multiSetFieldTouched,
     setValues: multiSetValues,
     resetForm: multiResetForm,
-  } = multiPartFormik;
+  } = useFormik({
+    initialValues: multiPartInitialState,
+    validationSchema: multiValidationSchema,
+    onSubmit: () => {
+      const dataValue = {
+        ...multiValues,
+        isDisabilitySinceBirth:
+          multiValues?.isDisabilitySinceBirth === CODES?.YES ? "true" : "false",
+        disabilitySince:
+          multiValues?.isDisabilitySinceBirth === CODES?.NO
+            ? formatDate({
+                date: multiValues?.disabilitySince,
+                format: "iso",
+              })
+            : "",
+        disabilityPercentage: Number(multiValues?.disabilityPercentage),
+        dateOfIssue: formatDate({
+          date: multiValues?.dateOfIssue,
+          format: "iso",
+        }),
+        disabilityCardFileName: multiValues?.disabilityCard?.name,
+      };
+      setValues({
+        ...values,
+        ...(!!tableEditId || tableEditId === 0
+          ? {
+              disabilities: [
+                ...values?.disabilities?.slice(0, tableEditId),
+                dataValue,
+                ...values?.disabilities?.slice(tableEditId + 1),
+              ],
+            }
+          : {
+              disabilities: [...values?.disabilities, dataValue],
+            }),
+      });
+      multiResetForm();
+      setTableEditId("");
+    },
+  });
 
   const { data: disabilityTypes } = useQuery({
     queryKey: ["disabilityTypes"],
@@ -142,7 +184,6 @@ const DisabilityDetails = () => {
     select: ({ data }) => data?.data,
     enabled: !!multiValues.disabilityTypeId,
   });
-
   useCustomQuery({
     dependency: editId,
     queryKey: "divyangGetById",
@@ -157,6 +198,23 @@ const DisabilityDetails = () => {
       });
     },
   });
+
+  const handleEditList = (id) => {
+    setTableEditId(id);
+    multiSetValues({
+      ...values?.disabilities?.[id],
+      isDisabilitySinceBirth:
+        values?.disabilities?.[id]?.isDisabilitySinceBirth === "true"
+          ? CODES?.YES
+          : CODES?.NO,
+    });
+  };
+
+  const handleDeleteList = (id) =>
+    setFieldValue(
+      "disabilities",
+      values?.disabilities?.filter((_, index) => id !== index)
+    );
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
@@ -362,15 +420,22 @@ const DisabilityDetails = () => {
                   setTableEditId("");
                 }}
                 resetLabel={"Clear"}
-                isUpdate={tableEditId}
+                isUpdate={!!tableEditId || tableEditId === 0}
                 submitLabel="Add"
               />
             </WithCondition>
 
             <Grid item xs={12} mb={6}>
               <CustomReactTable
-                columnData={values?.disabilities || []}
-                rawData={[] || []}
+                columnData={
+                  columnData({
+                    data: disabilityTypes,
+                    tableEditId,
+                    handleDeleteList,
+                    handleEditList,
+                  }) || []
+                }
+                rawData={values?.disabilities || []}
                 manualSort
                 disablePagination
                 disableLayout
@@ -447,11 +512,11 @@ const DisabilityDetails = () => {
               <CustomTextField
                 label={fields?.udidEnrollmentNumber?.label}
                 name={fields?.udidEnrollmentNumber?.name}
-                value={values?.udidEnrollmentNumber}
+                value={values?.UDIDEnrollmentNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                errors={errors?.udidEnrollmentNumber}
-                touched={touched?.udidEnrollmentNumber}
+                errors={errors?.UDIDEnrollmentNumber}
+                touched={touched?.UDIDEnrollmentNumber}
                 isViewMode={isViewMode}
               />
             </Grid>
@@ -464,9 +529,9 @@ const DisabilityDetails = () => {
                 name={fields?.udidCardUrl?.name}
                 label={fields?.udidCardUrl?.label}
                 defaultLabel={fields?.udidCardUrl?.label}
-                value={values?.udidCardUrl}
-                error={errors?.udidCardUrl}
-                touched={touched?.udidCardUrl}
+                value={values?.UDIDCardFile}
+                error={errors?.UDIDCardFile}
+                touched={touched?.UDIDCardFile}
                 onChange={(e) =>
                   setFieldValue(fields?.udidCardUrl?.name, e?.target?.files[0])
                 }

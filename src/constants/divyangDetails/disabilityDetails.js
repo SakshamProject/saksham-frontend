@@ -1,3 +1,4 @@
+import { EditDelete } from "../../components/shared/EditDelete";
 import { CODES } from "../globalConstants";
 
 export const initialValues = {
@@ -6,8 +7,8 @@ export const initialValues = {
   stateCode: "",
   districtCode: "",
   udidCardNumber: "",
-  udidEnrollmentNumber: "",
-  udidCardUrl: "",
+  UDIDEnrollmentNumber: "",
+  UDIDCardFile: "",
   status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
@@ -88,13 +89,62 @@ export const fields = {
   },
   udidEnrollmentNumber: {
     label: "UDID Enrollment Number *",
-    name: "udidEnrollmentNumber",
+    name: "UDIDEnrollmentNumber",
     type: "alphaNumeric",
   },
   udidCardUrl: {
     label: "Upload UDID Card",
-    name: "udidCardUrl",
+    name: "UDIDCardFile",
   },
 };
 
-export const rawData = [];
+export const columnData = ({
+  data,
+  tableEditId,
+  handleDeleteList,
+  handleEditList,
+}) => [
+  {
+    Header: "Disbilty Type",
+    accessor: "disabilityTypeId",
+    width: 220,
+    sticky: "left",
+    Cell: ({ row }) =>
+      data?.find((item) => row?.original?.disabilityTypeId === item?.id)
+        ?.name || "-",
+  },
+  {
+    Header: "Disbilty Type",
+    accessor: "disabilitySubTypeId",
+    width: 220,
+    Cell: ({ row }) =>
+      data
+        ?.find((item) => row?.original?.disabilityTypeId === item?.id)
+        ?.disability?.find(
+          (item) => row?.original?.disabilitySubTypeId === item?.id
+        )?.name || "-",
+  },
+  {
+    Header: " ",
+    Cell: ({ row }) => {
+      return (
+        <EditDelete
+          onEdit={() => handleEditList(row?.index)}
+          onDelete={() => handleDeleteList(row?.index)}
+          isViewMode={!!tableEditId || tableEditId === 0}
+        />
+      );
+    },
+    inputValues: ({ index }) => [
+      {
+        label: "Edit",
+        onClick: () => handleEditList(index),
+      },
+      {
+        label: "Delete",
+        onClick: () => handleDeleteList(index),
+      },
+    ],
+    disable: !!tableEditId || tableEditId === 0,
+  },
+];
