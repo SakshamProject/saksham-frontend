@@ -339,7 +339,6 @@ const Form = () => {
           setFieldValue={setFieldValue}
           statusSeeds={statusSeed}
           isViewMode={isViewMode}
-          rowBreak={false}
           statusHistory={values?.auditLog}
           disableListLayout
         />
