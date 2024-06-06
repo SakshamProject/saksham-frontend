@@ -499,11 +499,11 @@ const DisabilityDetails = () => {
               <CustomTextField
                 label={fields?.udidCardNumber?.label}
                 name={fields?.udidCardNumber?.name}
-                value={values?.udidCardNumber}
+                value={values?.UDIDCardNumber}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                errors={errors?.udidCardNumber}
-                touched={touched?.udidCardNumber}
+                errors={errors?.UDIDCardNumber}
+                touched={touched?.UDIDCardNumber}
                 isViewMode={isViewMode}
               />
             </Grid>

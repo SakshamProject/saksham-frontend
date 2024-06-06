@@ -109,10 +109,11 @@ const EmploymentDetails = () => {
     enabled: !!editId,
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data;
+
       setValues({
         ...initialValues,
         ...remaining,
-        isEmployed: data.isEmployed === false ? CODES.NO : CODES.YES,
+        isEmployed: data?.data?.isEmployed === false ? CODES.NO : CODES.YES,
         ...getFilesUrl(data?.files),
       });
     },

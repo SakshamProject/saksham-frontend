@@ -18,10 +18,10 @@ export const validationSchema = object({
     .min(3, "Identity Card Number must be at least 3 characters long")
     .max(255, "Identity Card Number cannot have more than 255 characters")
     .required("Identity Card Number is required"),
-  udidCardNumber: string()
+  UDIDCardNumber: string()
     .trim()
     .test(
-      "udidCardNumber",
+      "UDIDCardNumber",
       "UDID Card number is required",
       (value, context) => !!context.parent?.UDIDEnrollmentNumber || value
     )
@@ -31,7 +31,7 @@ export const validationSchema = object({
     .test(
       "UDIDEnrollmentNumber",
       "UDID Enrollment Number is required",
-      (value, context) => !!context.parent?.udidCardNumber || value
+      (value, context) => !!context.parent?.UDIDCardNumber || value
     )
     .nullable(),
   UDIDCardFile: string().required("UDID Card Authority is required"),

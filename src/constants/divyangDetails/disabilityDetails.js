@@ -6,7 +6,7 @@ export const initialValues = {
   identityCardNumber: "",
   stateCode: "",
   districtCode: "",
-  udidCardNumber: "",
+  UDIDCardNumber: "",
   UDIDEnrollmentNumber: "",
   UDIDCardFile: "",
   status: CODES?.ACTIVE,
@@ -84,7 +84,7 @@ export const fields = {
   },
   udidCardNumber: {
     label: "UDID Card Number *",
-    name: "udidCardNumber",
+    name: "UDIDCardNumber",
     type: "alphaNumeric",
   },
   udidEnrollmentNumber: {
