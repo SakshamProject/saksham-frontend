@@ -362,7 +362,6 @@ const Address = () => {
                 errors={errors?.isRural}
                 isViewMode={isViewMode}
                 inputValues={locationSeed}
-                rowBreak
                 labelStyle={{
                   color: theme?.palette?.commonColor?.blue,
                   fontSize: "16px",
@@ -731,7 +730,6 @@ const Address = () => {
                 errors={errors?.isRuralCommunication}
                 isViewMode={isViewMode || values?.isSameAddress}
                 inputValues={locationSeed}
-                rowBreak
                 labelStyle={{
                   color: theme?.palette?.commonColor?.blue,
                   fontSize: "16px",
