@@ -102,7 +102,8 @@ const Form = () => {
         dispatchSnackbarError("Please Fill Follow up Details Fully If Hav one");
       } else if (
         Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length < 4 &&
-        value?.isFollowUpRequired === CODES?.NO
+        value?.isFollowUpRequired === CODES?.NO &&
+        values?.isCompleted !== CODES?.YES
       ) {
         dispatchSnackbarError("Please Fill any Follow up Details");
       } else {
@@ -544,6 +545,9 @@ const Form = () => {
                 isFollowUpRequired: CODES?.NO,
                 followUp: { ...editInitialValues?.followUp },
                 donor: { ...editInitialValues?.donor },
+                nonSevaKendraFollowUp: {
+                  ...editInitialValues?.nonSevaKendraFollowUp,
+                },
               });
               setTouched({});
             }}
@@ -942,7 +946,7 @@ const Form = () => {
         </Grid>
       </WithCondition>
 
-      <WithCondition isValid={!!editId}>
+      <WithCondition isValid={!!editId && values?.isCompleted !== CODES?.YES}>
         <Grid item xs={12}>
           <CustomTypography
             color={theme?.palette?.commonColor?.black}
@@ -1057,7 +1061,9 @@ const Form = () => {
 
       <WithCondition
         isValid={
-          values?.isNonSevaKendraFollowUpRequired === CODES?.YES || !!editId
+          (values?.isNonSevaKendraFollowUpRequired === CODES?.YES ||
+            !!editId) &&
+          values?.isCompleted !== CODES?.YES
         }
       >
         <Grid item xs={12} sm={12} md={6}>
