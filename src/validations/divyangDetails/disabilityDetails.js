@@ -39,7 +39,6 @@ export const validationSchema = object({
 
 export const multiValidationSchema = object({
   disabilityTypeId: string().required("Disability Type is required"),
-  disabilitySubTypeId: string().required("Disability Sub Type is required"),
   isDisabilitySinceBirth: string().nullable(),
   disabilitySince: date()
     .typeError("Invalid date")
