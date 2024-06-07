@@ -1,11 +1,6 @@
-import { styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import React, { Suspense } from "react";
-import {
-  Outlet,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
@@ -16,6 +11,8 @@ import {
   CustomStepper,
   WithCondition,
 } from "../../shared";
+import { CustomHeader, StyledIconButton } from "../../../styles";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const FormLayout = styled("div")(({ matches }) => ({
   display: "flex",
@@ -55,7 +52,7 @@ const Form = () => {
     editId
       ? navigate(
           { pathname: step?.route, search: search },
-          { state: { ...state } },
+          { state: { ...state } }
         )
       : null;
 
@@ -71,7 +68,7 @@ const Form = () => {
         customTitle={getTitle()}
       />
 
-      {/* <WithCondition isValid={isMobile}>
+      <WithCondition isValid={isMobile}>
         <Box
           sx={{
             width: "100%",
@@ -95,15 +92,13 @@ const Form = () => {
           </CustomHeader>
 
           <StyledIconButton
-            disabled={
-              activeStep === DIVYANG_STEPS?.length - 1 || activeStep === 0
-            }
+            disabled={activeStep === DIVYANG_STEPS?.length - 1 || !editId}
             onClick={() => onChange(DIVYANG_STEPS[activeStep + 1])}
           >
             <ArrowForwardIos />
           </StyledIconButton>
         </Box>
-      </WithCondition> */}
+      </WithCondition>
 
       <FormLayout>
         <WithCondition isValid={!isMobile}>

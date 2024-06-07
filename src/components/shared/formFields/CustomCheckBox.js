@@ -1,15 +1,15 @@
 import { Box, Checkbox, FormLabel, styled } from "@mui/material";
 import propTypes from "prop-types";
 
-const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
+const StyledCheckbox = styled(Checkbox)(({ theme, checkboxcolor }) => ({
   padding: 0,
   margin: 0,
   marginRight: 1,
   "&.Mui-checked": {
-    color: theme.palette?.commonColor?.blue,
+    color: checkboxcolor || theme.palette?.commonColor?.blue,
   },
   "&.MuiCheckbox-indeterminate": {
-    color: theme.palette?.commonColor?.blue,
+    color: checkboxcolor || theme.palette?.commonColor?.blue,
   },
 }));
 
@@ -30,6 +30,7 @@ export const CustomCheckBox = ({
   style,
   indeterminate,
   labelStyle,
+  checkboxColor,
 }) => {
   return (
     <Box
@@ -40,6 +41,7 @@ export const CustomCheckBox = ({
       }}
     >
       <StyledCheckbox
+        checkboxcolor={checkboxColor}
         id={name}
         name={name}
         checked={Boolean(checked)}

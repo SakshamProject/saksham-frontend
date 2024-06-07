@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -35,6 +35,7 @@ import {
   validationSchema,
 } from "../../../validations/serviceMapping/serviceMapping";
 import {
+  CustomCheckBox,
   CustomDatePicker,
   CustomRadioButton,
   CustomTextField,
@@ -51,12 +52,17 @@ const Form = () => {
   const editId = state?.editId;
   const navigate = useNavigate();
   const { isMobile } = useResponsive();
+  const [divyangId, setDivayangId] = useState("");
 
   const handleOnSubmit = (value) => {
     if (!editId) {
+      if (!divyangId) {
+        dispatchSnackbarError("Please Select Divyang Id");
+        return;
+      }
       const payload = getValidValues({
         ...value,
-        divyangId: "e5159dc9-1611-4c1a-8685-dadd2ffed3ba", // do changes on this
+        divyangId,
         isNonSevaKendraFollowUpRequired:
           value.isNonSevaKendraFollowUpRequired === CODES?.YES,
         dateOfService: formatDate({
@@ -279,6 +285,8 @@ const Form = () => {
       getDivyang({ column, value: e?.target?.value });
   };
 
+  console.log(errors);
+
   return (
     <FormWrapper
       title="Service Mapping"
@@ -323,6 +331,7 @@ const Form = () => {
             touched={touched?.searchMobileNo}
             onChange={handleChange}
             onBlur={handleBlur}
+            maxLength={10}
             isViewMode={isViewMode}
             onKeyPress={(e) => onKeyPress(e, "mobileNumber")}
             disabled={
@@ -347,7 +356,7 @@ const Form = () => {
             onKeyPress={(e) => onKeyPress(e, "aadharCardNumber")}
             disabled={
               !!values?.searchDivyangId ||
-              !!values?.searchMobileNo ||
+              !!values?.searchMobile8054436456No ||
               !!values?.searchUDIDNo
             }
           />
@@ -375,9 +384,16 @@ const Form = () => {
       </WithCondition>
 
       <WithCondition isValid={!!searchedDivyang?.data?.data}>
-        <Grid container item xs={12} gap={3} sx={{ marginBottom: "22px" }}>
+        <Grid container item xs={12} spacing={3} sx={{ marginBottom: "22px" }}>
           {searchedDivyang?.data?.data?.map((item, key) => (
-            <DivyangCard divyangDetail={item} key={key + item?.id} />
+            <Grid item xs={12} lg={6}>
+              <DivyangCard
+                divyangDetail={item}
+                key={key + item?.id}
+                divyangId={divyangId}
+                setDivayangId={setDivayangId}
+              />
+            </Grid>
           ))}
         </Grid>
       </WithCondition>
@@ -1113,7 +1129,7 @@ const Form = () => {
 
 export default Form;
 
-const DivyangCard = ({ divyangDetail }) => (
+const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
   <Box
     sx={{
       display: "flex",
@@ -1122,7 +1138,14 @@ const DivyangCard = ({ divyangDetail }) => (
       flexWrap: "wrap",
       flex: 1,
       columnGap: 2,
+      position: "relative",
+      cursor: "pointer",
     }}
+    key={key || " "}
+    onClick={() =>
+      setDivayangId &&
+      setDivayangId(divyangId !== divyangDetail?.id ? divyangDetail?.id : "")
+    }
   >
     <img
       style={{
@@ -1153,5 +1176,29 @@ const DivyangCard = ({ divyangDetail }) => (
         </WithCondition>
       ))}
     </Box>
+
+    <WithCondition isValid={!!setDivayangId}>
+      <Box
+        sx={{
+          display: "flex",
+          position: "absolute",
+          right: 0,
+          top: 8,
+          backgroundColor: "white",
+        }}
+      >
+        <CustomCheckBox
+          name={" "}
+          checked={divyangId === divyangDetail?.id}
+          onChange={() =>
+            setDivayangId &&
+            setDivayangId(
+              divyangId !== divyangDetail?.id ? divyangDetail?.id : ""
+            )
+          }
+          checkboxColor={"green"}
+        />
+      </Box>
+    </WithCondition>
   </Box>
 );
