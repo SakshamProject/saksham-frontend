@@ -194,6 +194,7 @@ const DisabilityDetails = () => {
       setValues({
         ...initialValues,
         ...remaining,
+        UDIDCardNumber: remaining?.udidCardNumber,
         ...getFilesUrl(data?.files),
       });
     },
