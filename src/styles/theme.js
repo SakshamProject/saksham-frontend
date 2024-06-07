@@ -20,23 +20,23 @@ export const theme = createTheme({
     },
 
     primary: {
-      main: "#808080",
-      light: "#D9D9D9",
+      main: "#2F506C",
+      light: "#5F8FB9",
       dark: "#262626",
-      contrastText: "#ffffff",
+      contrastText: "#FFFFFF",
     },
 
     tableColor: {
-      header: "#808080",
+      header: "#2F506C",
       headerText: "#F2F2F2",
-      pagination: "#D9D9D9",
+      pagination: "#B8CDE0",
       paginationText: "#262626",
-      shadow: "#D3D3D3",
+      shadow: "#CADAE8",
     },
 
     scrollbarColor: {
       thumb: "#888888",
-      track: "#D3D3D3",
+      track: "#FFFFFF",
       hover: "#555555",
     },
 

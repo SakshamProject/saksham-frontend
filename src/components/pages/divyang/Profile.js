@@ -363,7 +363,7 @@ const getAddress = (data, addressKeys) => {
         if (addressKeys?.includes(item)) {
           return data?.data?.[item];
         }
-        return false
+        return false;
       })
       ?.join(", ")
   );

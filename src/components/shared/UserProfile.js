@@ -1,7 +1,14 @@
+import { styled } from "@mui/material";
 import propTypes from "prop-types";
 import defaultAvatar from "../../assets/avatar.png";
 import { CommonAvatar } from "../../styles";
 import CustomTooltip from "./CustomTooltip";
+
+const ProfileNameAvatar = styled(CommonAvatar)(({ theme }) => ({
+  cursor: "pointer",
+  color: theme?.palette?.commonColor?.white,
+  backgroundColor: theme?.palette?.primary?.light,
+}));
 
 export const UserProfile = ({ userInfo, style }) => {
   const userName = userInfo?.name?.split(" ") || [];
@@ -22,9 +29,7 @@ export const UserProfile = ({ userInfo, style }) => {
           alt="profile"
         />
       ) : (
-        <CommonAvatar style={{ cursor: "pointer" }}>
-          {firstCharacter}
-        </CommonAvatar>
+        <ProfileNameAvatar>{firstCharacter}</ProfileNameAvatar>
       )}
     </CustomTooltip>
   );

@@ -1,6 +1,24 @@
+import { Box, Checkbox, FormLabel, styled } from "@mui/material";
 import propTypes from "prop-types";
-import { Box, Checkbox, FormLabel } from "@mui/material";
-import { theme } from "../../../styles";
+
+const StyledCheckbox = styled(Checkbox)(({ theme, checkboxcolor }) => ({
+  padding: 0,
+  margin: 0,
+  marginRight: 1,
+  "&.Mui-checked": {
+    color: checkboxcolor || theme.palette?.commonColor?.blue,
+  },
+  "&.MuiCheckbox-indeterminate": {
+    color: checkboxcolor || theme.palette?.commonColor?.blue,
+  },
+}));
+
+const StyledLabel = styled(FormLabel)(({ theme }) => ({
+  color: theme.palette?.shadowColor?.dark,
+  cursor: "pointer",
+  paddingTop: "2px",
+  userSelect: "none",
+}));
 
 export const CustomCheckBox = ({
   name = "",
@@ -22,20 +40,10 @@ export const CustomCheckBox = ({
         ...style,
       }}
     >
-      <Checkbox
+      <StyledCheckbox
+        checkboxcolor={checkboxColor}
         id={name}
         name={name}
-        sx={{
-          padding: 0,
-          margin: 0,
-          marginRight: 1,
-          "&.Mui-checked": {
-            color: checkboxColor || theme.palette?.commonColor?.blue,
-          },
-          "&.MuiCheckbox-indeterminate": {
-            color: checkboxColor || theme.palette?.commonColor?.blue,
-          },
-        }}
         checked={Boolean(checked)}
         indeterminate={indeterminate}
         disabled={isViewMode || disabled}
@@ -43,18 +51,14 @@ export const CustomCheckBox = ({
         inputProps={{ "aria-label": "controlled" }}
       />
 
-      <FormLabel
+      <StyledLabel
         htmlFor={name}
         sx={{
-          color: "#00000090",
-          cursor: "pointer",
-          paddingTop: "2px",
-          userSelect: "none",
           ...labelStyle,
         }}
       >
         {label}
-      </FormLabel>
+      </StyledLabel>
     </Box>
   );
 };

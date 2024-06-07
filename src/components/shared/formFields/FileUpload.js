@@ -10,21 +10,22 @@ import { Box, FormControl, FormHelperText, IconButton } from "@mui/material";
 import { styled } from "@mui/system";
 import propTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+import useResponsive from "../../../hooks/useResponsive";
 import { dispatchSnackbarError } from "../../../utils/dispatch";
 
 const InputField = styled("input")(() => ({
   display: "none",
 }));
 
-const FileInputHolder = styled(Box)({
+const FileInputHolder = styled(Box)(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   padding: 10,
-  border: "1px dashed #c4c4c4",
+  border: `1px dashed ${theme.palette?.commonColor?.lightGrey}`,
   height: "35px !important",
   borderRadius: 5,
   svg: { fontSize: "29px" },
-});
+}));
 
 const ImgTag = styled("img")(() => ({
   height: 40,
@@ -54,6 +55,7 @@ export const FileUpload = ({
   const [fileName, setFileName] = useState(value ? value[0]?.name : "");
   const myRefname = useRef(null);
   const [key, setKey] = useState(false);
+  const { theme } = useResponsive();
 
   const handleClick = () => myRefname.current.click();
 
@@ -100,10 +102,14 @@ export const FileUpload = ({
   }, [value]);
 
   const errorBorder =
-    error && touched ? { border: "1.8px dashed #d32f2f" } : {};
+    error && touched
+      ? { border: `1.8px dashed ${theme?.palette?.commonColor?.red} ` }
+      : {};
 
   const errorText =
-    error && touched ? { color: "#d32f2f" } : { color: "rgba(0, 0, 0, 0.6)" };
+    error && touched
+      ? { color: theme?.palette?.commonColor?.red }
+      : { color: theme?.palette?.shadowColor?.dark };
 
   const imageIcon = () => {
     if (type === "image" || type === "GIF") {
@@ -186,10 +192,10 @@ export const FileUpload = ({
               position: "absolute",
               top: "-10px",
               left: "15px",
-              background: "#fff",
+              background: theme?.palette?.commonColor?.white,
               padding: "0 5px",
               fontSize: "13px",
-              color: "#686868",
+              color: theme?.palette?.commonColor?.grey,
             }}
           >
             {defaultLabel}
