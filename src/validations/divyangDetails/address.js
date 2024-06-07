@@ -67,7 +67,7 @@ export const validationSchema = object({
       (value, context) => !(context.parent?.isRural !== CODES?.RURAL && !value)
     ),
   MLAConstituencyId: string().required("MLA Constituency is required"),
-  MPConstituancyId: string().required("MP Constituency is required"),
+  MPConstituencyId: string().required("MP Constituency is required"),
   pincode: string()
     .trim()
     .required("Pincode is required")
@@ -152,7 +152,7 @@ export const validationSchema = object({
   MLAConstituencyIdCommunication: string().required(
     "MLA Constituency is required"
   ),
-  MPConstituancyIdCommunication: string().required(
+  MPConstituencyIdCommunication: string().required(
     "MP Constituency is required"
   ),
   pincodeCommunication: string()

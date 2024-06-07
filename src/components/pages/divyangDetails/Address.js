@@ -55,8 +55,9 @@ const Address = () => {
       addressRequest: {
         ...values,
         isRural: values?.isRural === CODES?.RURAL ? "true" : "false",
-        isSameAddress: !!values?.isSameAddress,
-        isRuralCommunication: values?.isRuralCommunication === CODES?.RURAL,
+        isSameAddress: !!values?.isSameAddress ? "true" : "false",
+        isRuralCommunication:
+          values?.isRuralCommunication === CODES?.RURAL ? "true" : "false",
       },
       pageNumber: 3,
     });
@@ -139,9 +140,18 @@ const Address = () => {
       setValues({
         ...initialValues,
         ...remaining,
-        isRural: remaining?.isRural || CODES?.RURAL,
-        isRuralCommunication: remaining?.isRuralCommunication || CODES?.RURAL,
+        isRural: remaining?.isRural ? CODES?.RURAL : CODES?.URBAN,
+        isRuralCommunication: remaining?.isRuralCommunication
+          ? CODES?.RURAL
+          : CODES?.URBAN,
         ...getFilesUrl(data?.files),
+        stateId: remaining?.district?.stateId,
+        districtId: remaining?.district?.id,
+        stateIdCommunication: remaining?.districtCommunication?.stateId,
+        districtIdCommunication: remaining?.districtCommunication?.id,
+        MPConstituencyId: remaining?.MPConstituancyId,
+        MPConstituencyIdCommunication: remaining?.MPConstituancyIdCommunication,
+        isSameAddress: remaining?.isSameAddress,
       });
     },
   });
@@ -156,7 +166,7 @@ const Address = () => {
       municipalityId: false,
       corporationId: false,
       MLAConstituencyId: false,
-      MPConstituancyId: false,
+      MPConstituencyId: false,
       pincode: false,
     });
   };
@@ -175,7 +185,7 @@ const Address = () => {
       municipalityIdCommunication: false,
       corporationIdCommunication: false,
       MLAConstituencyIdCommunication: false,
-      MPConstituancyIdCommunication: false,
+      MPConstituencyIdCommunication: false,
       pincodeCommunication: false,
     });
   };
@@ -520,7 +530,7 @@ const Address = () => {
               <SingleAutoComplete
                 label={fields?.MPConstituancyId?.label}
                 name={fields?.MPConstituancyId?.name}
-                value={values?.MPConstituancyId}
+                value={values?.MPConstituencyId}
                 onChange={(_, value) => {
                   setFieldValue(fields?.MPConstituancyId?.name, value);
                   if (values?.isSameAddress)
@@ -531,8 +541,8 @@ const Address = () => {
                 }}
                 isViewMode={isViewMode}
                 onBlur={handleBlur}
-                errors={errors?.MPConstituancyId}
-                touched={touched?.MPConstituancyId}
+                errors={errors?.MPConstituencyId}
+                touched={touched?.MPConstituencyId}
                 inputValues={district?.MPConstituencies || []}
               />
             </Grid>
@@ -594,8 +604,8 @@ const Address = () => {
                     MLAConstituencyIdCommunication: value
                       ? values?.MLAConstituencyId
                       : "",
-                    MPConstituancyIdCommunication: value
-                      ? values?.MPConstituancyId
+                    MPConstituencyIdCommunication: value
+                      ? values?.MPConstituencyId
                       : "",
                     pincodeCommunication: value ? values?.pincode : "",
                   });
@@ -873,7 +883,7 @@ const Address = () => {
               <SingleAutoComplete
                 label={fields?.MPConstituancyIdCommunication?.label}
                 name={fields?.MPConstituancyIdCommunication?.name}
-                value={values?.MPConstituancyIdCommunication}
+                value={values?.MPConstituencyIdCommunication}
                 onChange={(_, value) => {
                   setFieldValue(
                     fields?.MPConstituancyIdCommunication?.name,
@@ -882,8 +892,8 @@ const Address = () => {
                 }}
                 onBlur={handleBlur}
                 isViewMode={isViewMode || values?.isSameAddress}
-                errors={errors?.MPConstituancyIdCommunication}
-                touched={touched?.MPConstituancyIdCommunication}
+                errors={errors?.MPConstituencyIdCommunication}
+                touched={touched?.MPConstituencyIdCommunication}
                 inputValues={districtCommunication?.MPConstituencies || []}
               />
             </Grid>

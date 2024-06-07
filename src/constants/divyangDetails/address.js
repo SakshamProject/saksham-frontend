@@ -15,7 +15,7 @@ export const initialValues = {
   municipalityId: "",
   corporationId: "",
   MLAConstituencyId: "",
-  MPConstituancyId: "",
+  MPConstituencyId: "",
   pincode: "",
   isSameAddress: false,
   doorNumberCommunication: "",
@@ -32,7 +32,7 @@ export const initialValues = {
   municipalityIdCommunication: "",
   corporationIdCommunication: "",
   MLAConstituencyIdCommunication: "",
-  MPConstituancyIdCommunication: "",
+  MPConstituencyIdCommunication: "",
   pincodeCommunication: "",
   status: CODES?.ACTIVE,
   date: new Date(),
@@ -98,7 +98,7 @@ export const fields = {
   },
   MPConstituancyId: {
     label: "MP Constituency *",
-    name: "MPConstituancyId",
+    name: "MPConstituencyId",
   },
   pincode: {
     label: "Pincode *",
@@ -167,7 +167,7 @@ export const fields = {
   },
   MPConstituancyIdCommunication: {
     label: "MP Constituency *",
-    name: "MPConstituancyIdCommunication",
+    name: "MPConstituencyIdCommunication",
   },
   pincodeCommunication: {
     label: "Pincode *",
