@@ -7,12 +7,24 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/system";
 import propTypes from "prop-types";
-import { theme } from "../../../styles";
 
 const RadioBox = styled("div")(({ rowbreak }) => ({
   display: "flex",
   alignItems: rowbreak ? "left" : "center",
   flexDirection: rowbreak ? "column" : "row",
+}));
+
+const StyledLabel = styled("span")(({ theme }) => ({
+  marginRight: "20px",
+  fontSize: "18px",
+  fontWeight: 500,
+  color: theme.palette?.shadowColor?.dark,
+}));
+
+const StyledRadio = styled(Radio)(({ theme }) => ({
+  "&.Mui-checked": {
+    color: theme.palette?.commonColor?.blue,
+  },
 }));
 
 export const CustomRadioButton = ({
@@ -40,17 +52,7 @@ export const CustomRadioButton = ({
         rowbreak={rowBreak}
         style={{ justifyContent: "space-between", gap: 4 }}
       >
-        <span
-          style={{
-            marginRight: "20px",
-            fontSize: "18px",
-            fontWeight: 500,
-            color: "#000000de",
-            ...labelStyle,
-          }}
-        >
-          {label}
-        </span>
+        <StyledLabel style={{ ...labelStyle }}>{label}</StyledLabel>
         <RadioGroup
           aria-label="demo-radio-buttons-group-label"
           name={name}
@@ -65,16 +67,7 @@ export const CustomRadioButton = ({
             return (
               <FormControlLabel
                 value={option[accessor] || option?.id || option?.name}
-                control={
-                  <Radio
-                    sx={{
-                      "&.Mui-checked": {
-                        color: theme.palette?.commonColor?.blue,
-                      },
-                    }}
-                    onChange={(e) => e.target.blur()}
-                  />
-                }
+                control={<StyledRadio onChange={(e) => e.target.blur()} />}
                 label={option?.name || option?.label}
                 key={key + option?.name}
                 name={name}

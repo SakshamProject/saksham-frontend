@@ -57,7 +57,7 @@ export const CustomReactTable = ({
         pathName: `${pathName}`,
         search: `?${createSearchParams({ ...data })}`,
       },
-      { state: location.state || null }
+      { state: location.state || null },
     );
   };
 
@@ -97,7 +97,6 @@ export const CustomReactTable = ({
       display: "flex",
       alignItems: "center",
       height: "auto",
-      boxShadow: "6px 0 4px -4px #999, -6px 0 4px -4px #999",
       ".primaryRow": {
         display: "flex",
         alignItems: "center",
