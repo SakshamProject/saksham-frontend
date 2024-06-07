@@ -12,6 +12,7 @@ export const CustomCheckBox = ({
   style,
   indeterminate,
   labelStyle,
+  checkboxColor,
 }) => {
   return (
     <Box
@@ -29,10 +30,10 @@ export const CustomCheckBox = ({
           margin: 0,
           marginRight: 1,
           "&.Mui-checked": {
-            color: theme.palette?.commonColor?.blue,
+            color: checkboxColor || theme.palette?.commonColor?.blue,
           },
           "&.MuiCheckbox-indeterminate": {
-            color: theme.palette?.commonColor?.blue,
+            color: checkboxColor || theme.palette?.commonColor?.blue,
           },
         }}
         checked={Boolean(checked)}

@@ -28,18 +28,24 @@ export const validationSchema = object({
     .test(
       "isPast",
       "Date of service is not less than today",
-      (value) => !!value && value > new Date()
+      (value) => !!value && value >= new Date().setHours(0, 0, 0, 0)
     ),
   dueDate: date()
     .typeError("Invalid Date")
     .required("Due date of service is required")
-    .test("isPast", "Due date is not less than today", (value) => {
-      return (
+    .test(
+      "isPast",
+      "Due date is not less than today",
+      (value) =>
         !!value &&
         formatDate({ date: value, format: "iso" }) >
           formatDate({ date: new Date(), format: "iso" })
-      );
-    }),
+    )
+    .test(
+      "isLess",
+      "Due date is not less than Date of Service",
+      (value, context) => context?.parent?.dateOfService < value
+    ),
 
   stateId: string().test("isRequired", "State is required", (value, context) =>
     context?.parent?.isNonSevaKendraFollowUpRequired !== CODES?.NO
@@ -135,7 +141,8 @@ export const editValidationSchema = object({
     .trim()
     .test("isRequired", "This Field is required", (value, context) =>
       context?.parent?.isCompleted !== CODES?.YES ? true : !!value
-    ),
+    )
+    .nullable(),
   reasonForNonCompletion: string()
     .trim()
     .min(3, "Reason must be at least 3 characters long")

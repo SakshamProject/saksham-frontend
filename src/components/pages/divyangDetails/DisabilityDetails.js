@@ -79,7 +79,6 @@ const DisabilityDetails = () => {
         },
         ["UDIDCard"]
       );
-      // console.log(payload);
       onSubmit(payload);
     }
   };
@@ -195,6 +194,7 @@ const DisabilityDetails = () => {
         ...initialValues,
         ...remaining,
         UDIDCardNumber: remaining?.udidCardNumber,
+        UDIDEnrollmentNumber: remaining?.udidEnrollmentNumber,
         ...getFilesUrl(data?.files),
       });
     },
