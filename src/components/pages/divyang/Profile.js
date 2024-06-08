@@ -142,8 +142,17 @@ const Profile = () => {
     queryFn: () =>
       getByIdApiService(API_PATHS?.DIVYANG_DETAILS, userInfo?.userId),
     enabled: !!userInfo?.userId,
-    select: ({ data }) => data,
+    select: ({ data }) => {
+      return {
+        ...data,
+        data: {
+          ...data?.data,
+          state: data?.data?.district?.state,
+        },
+      };
+    },
   });
+
   const { data, files, disabilityCards } = divyangDetails || {};
   const divyangFilesUrl = getFilesUrl(files);
 
@@ -356,15 +365,14 @@ const Profile = () => {
 export default Profile;
 
 const getAddress = (data, addressKeys) => {
-  return (
-    data &&
-    Object.keys(data)
-      ?.filter((item) => {
-        if (addressKeys?.includes(item)) {
-          return data?.data?.[item];
-        }
-        return false;
-      })
-      ?.join(", ")
-  );
+  if (!data || !addressKeys) return "";
+
+  return addressKeys
+    .map(
+      (key) =>
+        data[key] &&
+        (typeof data[key] === "object" ? data[key]?.name : `${data[key]}`),
+    )
+    .filter(Boolean)
+    .join(", ");
 };
