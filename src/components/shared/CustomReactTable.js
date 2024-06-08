@@ -57,7 +57,7 @@ export const CustomReactTable = ({
         pathName: `${pathName}`,
         search: `?${createSearchParams({ ...data })}`,
       },
-      { state: location.state || null },
+      { state: location.state || null }
     );
   };
 

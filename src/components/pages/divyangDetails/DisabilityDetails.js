@@ -205,7 +205,8 @@ const DisabilityDetails = () => {
     multiSetValues({
       ...values?.disabilities?.[id],
       isDisabilitySinceBirth:
-        values?.disabilities?.[id]?.isDisabilitySinceBirth === "true"
+        values?.disabilities?.[id]?.isDisabilitySinceBirth === "true" ||
+        values?.disabilities?.[id]?.isDisabilitySinceBirth === true
           ? CODES?.YES
           : CODES?.NO,
     });
