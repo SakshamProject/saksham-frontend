@@ -21,7 +21,6 @@ import {
   formFields,
   initialValues,
 } from "../../../constants/serviceMapping/serviceMapping";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, theme } from "../../../styles";

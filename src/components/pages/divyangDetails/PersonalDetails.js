@@ -24,7 +24,6 @@ import {
   statusSeed,
   yesNoSeed,
 } from "../../../constants/seeds";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { StyledFormContainer } from "../../../styles";

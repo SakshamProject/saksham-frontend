@@ -19,7 +19,6 @@ import {
 import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { locationSeed } from "../../../constants/seeds";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
 import { dispatchResponseAction } from "../../../utils/dispatch";

@@ -16,7 +16,6 @@ import {
 import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { yesNoSeed } from "../../../constants/seeds";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { StyledFormContainer, theme } from "../../../styles";
 import { formatDate } from "../../../utils/common";
 import { dispatchResponseAction } from "../../../utils/dispatch";

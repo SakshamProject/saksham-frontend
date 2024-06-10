@@ -15,7 +15,6 @@ import {
   getFilesUrl,
 } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { StyledFormContainer } from "../../../styles";
 import {

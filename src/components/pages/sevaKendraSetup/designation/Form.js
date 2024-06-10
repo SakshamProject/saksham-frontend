@@ -14,7 +14,6 @@ import {
   fields,
   initialValues,
 } from "../../../../constants/sevaKendraSetup/designation";
-import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
 import { formatDate } from "../../../../utils/common";
