@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -17,10 +17,13 @@ import {
   initialValues,
   transformServices,
 } from "../../../../constants/sevaKendraSetup/master";
-import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { CustomTypography } from "../../../../styles";
-import { formatDate, getValidValues } from "../../../../utils/common";
+import {
+  formatDate,
+  getMinDate,
+  getValidValues,
+} from "../../../../utils/common";
 import { dispatchResponseAction } from "../../../../utils/dispatch";
 import { validationSchema } from "../../../../validations/sevaKendraSetup/master";
 import {
@@ -108,25 +111,31 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "get seva kendra by id",
-    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
-    enabled: !!editId,
-    onSuccess: (data) => {
+  const { mutate } = useMutation({
+    mutationKey: ["get seva kendra by id"],
+    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRAS, editId),
+    onSuccess: ({ data }) => {
       setValues({
-        ...data,
-        stateId: data?.district?.state?.id,
-        servicesBySevaKendra: data?.services?.map(({ service }) => service),
+        ...data?.data,
+        stateId: data?.data?.district?.state?.id,
+        servicesBySevaKendra: data?.data?.services?.map(
+          ({ service }) => service,
+        ),
         date:
-          data?.status === CODES?.DEACTIVE
-            ? data?.effectiveFromDate
+          data?.data?.status === CODES?.DEACTIVE
+            ? data?.data?.effectiveFromDate
             : new Date(),
-        description: data?.status === CODES?.DEACTIVE ? data?.description : "",
+        description:
+          data?.data?.status === CODES?.DEACTIVE ? data?.data?.description : "",
       });
     },
-    select: ({ data }) => data?.data,
   });
+
+  useEffect(() => {
+    if (editId) {
+      mutate();
+    }
+  }, []);
 
   return (
     <FormWrapper
@@ -231,6 +240,7 @@ const Form = () => {
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
           isViewMode={isViewMode}
+          minDate={getMinDate({ id: editId, date: values?.startDate })}
           value={values?.startDate}
           errors={errors?.startDate}
           touched={touched?.startDate}

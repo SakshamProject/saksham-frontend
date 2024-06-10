@@ -53,6 +53,7 @@ export const AppLogo = styled("div")(({ theme }) => ({
 export const StyledLogo = styled("img")(({ theme }) => ({
   height: "45px",
   width: "45px",
+  borderRadius: "8px",
   [theme.breakpoints.down("sm")]: {
     height: "35px",
     width: "35px",
@@ -81,7 +82,6 @@ export const AppProfile = styled("div")(({ theme }) => ({
   justifyContent: "center",
   width: "auto",
   height: "100%",
-  cursor: "pointer",
   marginRight: "24px",
   gap: "20px",
 }));
@@ -102,7 +102,6 @@ export const AppMainLayout = styled("div")(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     height: "calc(100% - 56px)",
     margin: "0 16px",
-    // position: "relative",
   },
 }));
 

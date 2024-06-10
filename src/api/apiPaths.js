@@ -43,5 +43,4 @@ export const API_PATHS = {
   TOWN_PANCHAYAT: "/town-panchayats",
   MLA_CONSTITUENCY: "/mla-constituencies",
   MP_CONSTITUENCY: "/mp-constituencies",
-  ACTIVE: (path) => `${path}?status=ACTIVE`,
 };

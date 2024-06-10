@@ -1,5 +1,6 @@
-import { Box, Drawer, ListItem, styled } from "@mui/material";
+import { Box, Drawer, ListItem, ListItemIcon, styled } from "@mui/material";
 import { scrollbarStyle } from "../styles/scrollbarStyle";
+import { StyledIconButton } from "./buttonStyle";
 
 export const StyledDrawer = styled(Drawer)(({ theme }) => ({
   position: "relative",
@@ -33,14 +34,15 @@ export const LogoutContainer = styled(Box)(({ theme }) => ({
 
 export const StyledListItem = styled(ListItem)(
   ({ page, currentpage, theme }) => ({
-    ...(currentpage === page && {
-      background: theme.palette?.primary?.light,
-    }),
     cursor: "pointer",
+    ...(currentpage === page && {
+      background: theme.palette?.primary?.main,
+      color: theme.palette?.primary?.contrastText,
+    }),
     ":hover": {
-      background: theme.palette?.primary?.light,
+      background: theme.palette?.primary?.main,
     },
-  })
+  }),
 );
 
 export const ListWrapper = styled(Box)(() => ({
@@ -52,3 +54,22 @@ export const ListWrapper = styled(Box)(() => ({
 export const UserDetailsWrapper = styled(Box)(() => ({
   textAlign: "center",
 }));
+
+export const LogoutButton = styled(StyledIconButton)(() => ({
+  padding: 0,
+  marginRight: "32px",
+}));
+
+export const LogoutTypo = styled("span")(({ theme }) => ({
+  cursor: "pointer",
+  color: theme?.palette?.commonColor?.lightBlack,
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+}));
+
+export const StyledListIcon = styled(ListItemIcon)(
+  ({ page, currentpage, theme }) => ({
+    ...(currentpage === page && {
+      color: theme.palette?.primary?.contrastText,
+    }),
+  }),
+);

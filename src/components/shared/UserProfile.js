@@ -23,13 +23,15 @@ export const UserProfile = ({ userInfo, style }) => {
     <CustomTooltip title={"My Profile"}>
       {userInfo?.profileUrl ? (
         <CommonAvatar
-          style={{ ...style, cursor: "pointer" }}
+          style={{ cursor: "pointer", ...style }}
           src={userInfo?.profileUrl || defaultAvatar}
           onError={(e) => (e.target.src = defaultAvatar)}
           alt="profile"
         />
       ) : (
-        <ProfileNameAvatar>{firstCharacter}</ProfileNameAvatar>
+        <ProfileNameAvatar style={{ ...style }}>
+          {firstCharacter}
+        </ProfileNameAvatar>
       )}
     </CustomTooltip>
   );

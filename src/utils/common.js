@@ -85,7 +85,7 @@ export const getLocalISOString = (date) => {
       (_, p1, p2, p3, p4, p5, p6) => {
         const hour = p4 === "24" ? "00" : p4;
         return `${p3}-${p1}-${p2}T${hour}:${p5}:${p6}Z`;
-      }
+      },
     );
 };
 
@@ -133,7 +133,7 @@ export const getMinimumAgeDate = (value) => {
   return new Date(
     now.getFullYear() - parseInt(value),
     now.getMonth(),
-    now.getDate()
+    now.getDate(),
   );
 };
 
@@ -159,4 +159,17 @@ export const minMaxAge = ({ maxYear = 100, minYear = 18 }) => {
   const maxDate = new Date().setFullYear(new Date().getFullYear() - maxYear);
 
   return { min: new Date(minDate), max: new Date(maxDate) };
+};
+
+export const getMinDate = ({ id, date }) => {
+  const today = new Date();
+  const editDate = new Date(date || new Date());
+
+  console.log();
+
+  if (id && editDate < today) {
+    return date;
+  }
+
+  return today;
 };

@@ -71,12 +71,12 @@ export const RoleContainer = styled("div")(({ theme }) => ({
   padding: "5px 10px",
   background: theme.palette?.primary?.main,
   color: theme?.palette?.primary?.contrastText,
-  cursor: "pointer",
+  cursor: "default",
   textTransform: "capitalize",
 }));
 
 export const UserName = styled(Typography)(() => ({
-  cursor: "pointer",
+  cursor: "default",
   fontSize: 20,
   textTransform: "uppercase",
 }));

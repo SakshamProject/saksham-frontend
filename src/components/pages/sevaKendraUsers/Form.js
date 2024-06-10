@@ -62,7 +62,7 @@ const Form = () => {
           description: value?.description,
         },
       },
-      ["profilePhoto"]
+      ["profilePhoto"],
     );
     onSubmit(payload);
   };
@@ -114,7 +114,8 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        API_PATHS?.ACTIVE(`${values?.districtId}${API_PATHS?.SEVAKENDRA}`)
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`,
+        { status: CODES?.ACTIVE },
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -125,7 +126,8 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.SEVAKENDRAS,
-        API_PATHS?.ACTIVE(`${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`)
+        `${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`,
+        { status: CODES?.ACTIVE },
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.sevaKendraId,

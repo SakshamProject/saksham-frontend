@@ -49,7 +49,7 @@ const Form = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Designation",
-        editId ? CODES?.UPDATED : CODES?.ADDED
+        editId ? CODES?.UPDATED : CODES?.ADDED,
       );
       handleOnReset();
     },
@@ -141,7 +141,8 @@ const Form = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.DISTRICTS,
-        API_PATHS?.ACTIVE(`${values?.districtId}${API_PATHS?.SEVAKENDRA}`)
+        `${values?.districtId}${API_PATHS?.SEVAKENDRA}`,
+        { status: CODES?.ACTIVE },
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -174,7 +175,7 @@ const Form = () => {
         fields?.featuresId?.name,
         accessMenu?.map((item) => {
           return editId ? { id: item?.id } : item?.id;
-        })
+        }),
       );
     } else {
       setFieldValue(fields?.featuresId?.name, []);
