@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Grid } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 

@@ -236,10 +236,7 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const {
-    mutate,
-    data: { data },
-  } = useMutation({
+  const { mutate, data } = useMutation({
     mutationKey: ["serviceMappingGetById"],
     mutationFn: () => postApiService(API_PATHS?.SERVICES_LIST),
     onSuccess: ({ data }) => {
@@ -269,7 +266,7 @@ const Form = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   const { data: allService } = useQuery({
@@ -404,7 +401,7 @@ const Form = () => {
 
       <WithCondition isValid={!!editId}>
         <Grid container item xs={12} gap={3} sx={{ marginBottom: "22px" }}>
-          <DivyangCard divyangDetail={data?.divyang} />
+          <DivyangCard divyangDetail={data?.data?.divyang} />
         </Grid>
       </WithCondition>
 
@@ -435,7 +432,7 @@ const Form = () => {
               fontWeight: "500 !important",
             }}
           >
-            Service Type: {data?.service?.serviceType?.name}
+            Service Type: {data?.data?.service?.serviceType?.name}
           </CustomTypography>
           <CustomTypography
             color={theme?.palette?.commonColor?.grey}
@@ -446,7 +443,7 @@ const Form = () => {
               fontWeight: "500 !important",
             }}
           >
-            Service Name: {data?.service?.name}
+            Service Name: {data?.data?.service?.name}
           </CustomTypography>
           <CustomTypography
             color={theme?.palette?.commonColor?.grey}
@@ -458,11 +455,14 @@ const Form = () => {
             }}
           >
             Date:{" "}
-            {formatDate({ date: data?.dateOfService, format: "DD-MM-YYYY" })}
+            {formatDate({
+              date: data?.data?.dateOfService,
+              format: "DD-MM-YYYY",
+            })}
           </CustomTypography>
         </Grid>
 
-        <WithCondition isValid={!!data?.user}>
+        <WithCondition isValid={!!data?.data?.user}>
           <Grid
             item
             xs={12}
@@ -490,9 +490,9 @@ const Form = () => {
               }}
             >
               Seva Kendra State & District:{" "}
-              {data?.user?.designation?.sevaKendra?.district?.state?.name}
+              {data?.data?.user?.designation?.sevaKendra?.district?.state?.name}
               {" - "}
-              {data?.user?.designation?.sevaKendra?.district?.name}
+              {data?.data?.user?.designation?.sevaKendra?.district?.name}
             </CustomTypography>
             <CustomTypography
               color={theme?.palette?.commonColor?.grey}
@@ -503,7 +503,8 @@ const Form = () => {
                 fontWeight: "500 !important",
               }}
             >
-              Seva Kendra Name: {data?.user?.designation?.sevaKendra?.name}
+              Seva Kendra Name:{" "}
+              {data?.data?.user?.designation?.sevaKendra?.name}
             </CustomTypography>
             <CustomTypography
               color={theme?.palette?.commonColor?.grey}
@@ -514,7 +515,8 @@ const Form = () => {
                 fontWeight: "500 !important",
               }}
             >
-              User Assigned: {data?.user?.firstName} {data?.user?.lastName}
+              User Assigned: {data?.data?.user?.firstName}{" "}
+              {data?.data?.user?.lastName}
             </CustomTypography>
           </Grid>
         </WithCondition>
