@@ -238,15 +238,17 @@ const Form = () => {
 
   const { mutate, data } = useMutation({
     mutationKey: ["serviceMappingGetById"],
-    mutationFn: () => postApiService(API_PATHS?.SERVICES_LIST),
+    mutationFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     onSuccess: ({ data }) => {
       setValues({
         ...editInitialValues,
-        isCompleted: data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
-        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired,
-        completedDate: data?.completedDate,
-        howTheyGotService: data?.howTheyGotService,
-        reasonForNonCompletion: data?.reasonForNonCompletion,
+        isCompleted:
+          data?.data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
+        isNonSevaKendraFollowUpRequired:
+          data?.data?.isNonSevaKendraFollowUpRequired,
+        completedDate: data?.data?.completedDate,
+        howTheyGotService: data?.data?.howTheyGotService,
+        reasonForNonCompletion: data?.data?.reasonForNonCompletion,
         donor: {
           ...data?.data?.donor,
         },
@@ -264,6 +266,8 @@ const Form = () => {
       });
     },
   });
+
+  console.log(errors);
 
   useEffect(() => {
     if (editId) mutate();

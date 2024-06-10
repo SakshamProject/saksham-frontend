@@ -136,7 +136,8 @@ export const editValidationSchema = object({
         ? formatDate({ date: value, format: "iso" }) <
           formatDate({ date: new Date(), format: "iso" })
         : true
-    ),
+    )
+    .nullable(),
   howTheyGotService: string()
     .trim()
     .test("isRequired", "This Field is required", (value, context) =>
@@ -149,8 +150,8 @@ export const editValidationSchema = object({
     .max(255, "Reason cannot have more than 255 characters")
     .test("isRequired", "Reason is required", (value, context) =>
       context?.parent?.isCompleted !== CODES?.NO ? true : !!value
-    ),
-
+    )
+    .nullable(),
   followUp: object({
     followUpdate: date()
       .typeError("Invalid Date")
