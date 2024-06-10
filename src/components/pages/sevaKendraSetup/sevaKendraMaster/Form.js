@@ -132,9 +132,7 @@ const Form = () => {
   });
 
   useEffect(() => {
-    if (editId) {
-      mutate();
-    }
+    if (editId) mutate();
   }, []);
 
   return (

@@ -156,7 +156,7 @@ const Address = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   const removePermanentTouched = () => {

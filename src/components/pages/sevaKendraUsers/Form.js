@@ -157,7 +157,7 @@ const Form = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   return (

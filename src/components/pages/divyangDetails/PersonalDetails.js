@@ -302,7 +302,7 @@ const PersonalDetails = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   const handleEditList = (index) => {

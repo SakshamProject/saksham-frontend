@@ -102,7 +102,7 @@ const IdProofUploads = () => {
   });
 
   useEffect(() => {
-    getById();
+    if (editId) getById();
   }, []);
 
   const {

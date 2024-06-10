@@ -200,7 +200,7 @@ const DisabilityDetails = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   const handleEditList = (id) => {

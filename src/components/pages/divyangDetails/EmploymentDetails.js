@@ -117,7 +117,7 @@ const EmploymentDetails = () => {
   });
 
   useEffect(() => {
-    mutate();
+    if (editId) mutate();
   }, []);
 
   return (

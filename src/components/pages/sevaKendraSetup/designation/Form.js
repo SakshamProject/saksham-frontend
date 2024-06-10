@@ -116,7 +116,7 @@ const Form = () => {
   });
 
   useEffect(() => {
-    getById();
+    if (editId) getById();
   }, []);
 
   const { data: accessMenu } = useQuery({
