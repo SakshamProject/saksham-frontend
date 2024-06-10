@@ -27,7 +27,7 @@ export const ChipTextField = ({
     const currentChips = chipValue?.filter(
       (chip) =>
         (chip?.[chipAccessor] || chip)?.toLowerCase() !==
-        (chipToDelete?.[chipAccessor] || chipToDelete)?.toLowerCase()
+        (chipToDelete?.[chipAccessor] || chipToDelete)?.toLowerCase(),
     );
     onKeyPress(currentChips);
   };
@@ -42,11 +42,11 @@ export const ChipTextField = ({
       const duplicate = chipValue?.some(
         (item) =>
           (item?.[chipAccessor] || item)?.toLowerCase() ===
-          currentValue?.toLowerCase()
+          currentValue?.toLowerCase(),
       );
 
       if (duplicate) {
-        dispatchSnackbarError("Duplicate value");
+        dispatchSnackbarError("Value already exists");
         return;
       }
 

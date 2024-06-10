@@ -5,18 +5,16 @@ const CustomTypography = styled(Typography)(({ theme, color, fontSize }) => ({
   color: color || theme.palette?.primary?.contrastText,
   fontSize: fontSize || 16,
   textTransform: "capitalize",
+  cursor: "pointer",
 }));
 
-export const UserDetails = ({ userInfo, color }) => (
+export const UserDetails = ({ userInfo, style, color }) => (
   <>
-    <CustomTypography color={color} style={{ cursor: "default" }}>
+    <CustomTypography style={{ ...style }} color={color}>
       {userInfo?.name || userInfo?.person?.name || "Anonymous"}
     </CustomTypography>
 
-    <CustomTypography
-      color={color}
-      style={{ cursor: "default", fontSize: "12px" }}
-    >
+    <CustomTypography color={color} style={{ ...style, fontSize: "12px" }}>
       {userInfo?.designation?.name || userInfo?.role || "Unknown"}
     </CustomTypography>
   </>
@@ -24,5 +22,6 @@ export const UserDetails = ({ userInfo, color }) => (
 
 UserDetails.propTypes = {
   userInfo: propTypes.object,
+  style: propTypes.object,
   color: propTypes.string,
 };

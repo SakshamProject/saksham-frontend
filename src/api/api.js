@@ -4,8 +4,8 @@ export const getApiService = async (path) => {
   return await appApi.get(path);
 };
 
-export const getByIdApiService = async (path, id) => {
-  return await appApi.get(`${path}/${id}`);
+export const getByIdApiService = async (path, id, params) => {
+  return await appApi.get(`${path}/${id}`, { params: { ...params } });
 };
 
 export const postApiService = async (path, value = {}, params = {}) => {

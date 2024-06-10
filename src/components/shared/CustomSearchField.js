@@ -45,6 +45,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
+const StyledSearchIcon = styled(SearchIcon)(({ theme }) => ({
+  color: theme.palette?.primary?.main,
+}));
+
 export const CustomSearchField = ({ placeholder }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -111,7 +115,7 @@ export const CustomSearchField = ({ placeholder }) => {
   return (
     <Search className="searchField">
       <SearchIconWrapper>
-        <SearchIcon />
+        <StyledSearchIcon />
       </SearchIconWrapper>
 
       <StyledInputBase

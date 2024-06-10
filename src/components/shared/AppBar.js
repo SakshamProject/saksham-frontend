@@ -92,7 +92,7 @@ export const AppBar = () => {
             <UserDetails userInfo={userInfo} />
           </AppProfileDetails>
 
-          <UserProfile userInfo={userInfo} placement={"left"} />
+          <UserProfile userInfo={userInfo} />
         </AppProfile>
 
         <RightMenu

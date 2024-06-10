@@ -1,11 +1,5 @@
 import { ExpandLess, ExpandMore, Logout } from "@mui/icons-material";
-import {
-  Collapse,
-  List,
-  ListItemIcon,
-  ListItemText,
-  styled,
-} from "@mui/material";
+import { Collapse, List, ListItemText } from "@mui/material";
 import propTypes from "prop-types";
 import { Fragment, useState } from "react";
 import { useSelector } from "react-redux";
@@ -13,12 +7,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getSideMenus } from "../../constants/menus";
 import useResponsive from "../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../routes/routePaths";
-import { StyledIconButton } from "../../styles";
 import {
   DrawerProfileContainer,
   ListWrapper,
+  LogoutButton,
   LogoutContainer,
+  LogoutTypo,
   StyledDrawer,
+  StyledListIcon,
   StyledListItem,
   UserDetailsWrapper,
 } from "../../styles/responsiveMenu";
@@ -27,14 +23,15 @@ import { UserDetails } from "./UserDetails";
 import { UserProfile } from "./UserProfile";
 import { WithCondition } from "./WithCondition";
 
-const LogoutButton = styled(StyledIconButton)(() => ({
-  padding: 0,
-  marginRight: "32px",
-}));
-
-const LogoutTypo = styled("span")(() => ({
-  cursor: "pointer",
-}));
+export const CommonIcon = ({ menu, page, currentpage }) => {
+  return (
+    <WithCondition isValid={!!menu?.icon}>
+      <StyledListIcon page={page} currentpage={currentpage}>
+        {menu?.icon}
+      </StyledListIcon>
+    </WithCondition>
+  );
+};
 
 export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
   const navigate = useNavigate();
@@ -64,12 +61,16 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
               page={menu?.value}
               currentpage={currentPage}
             >
-              <WithCondition isValid={!!menu?.icon}>
-                <ListItemIcon>{menu?.icon}</ListItemIcon>
-              </WithCondition>
+              <CommonIcon
+                menu={menu}
+                page={menu?.value}
+                currentpage={currentPage}
+              />
+
               <ListItemText primary={menu?.label || menu?.name} />
               {listOpen === position ? <ExpandLess /> : <ExpandMore />}
             </StyledListItem>
+
             <Collapse in={listOpen === position} timeout="auto" unmountOnExit>
               <List component="div" disablePadding>
                 {getListItem(menu?.options, true)}
@@ -85,9 +86,12 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
             page={menu?.value}
             currentpage={currentPage}
           >
-            <WithCondition isValid={!!menu?.icon}>
-              <ListItemIcon>{menu?.icon}</ListItemIcon>
-            </WithCondition>
+            <CommonIcon
+              menu={menu}
+              page={menu?.value}
+              currentpage={currentPage}
+            />
+
             <ListItemText inset={inset} primary={menu?.label || menu?.name} />
           </StyledListItem>
         );
@@ -97,12 +101,13 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
   return (
     <StyledDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
       <DrawerProfileContainer>
-        <UserProfile userInfo={userInfo} placement={"right"} />
+        <UserProfile userInfo={userInfo} style={{ cursor: "default" }} />
 
         <UserDetailsWrapper>
           <UserDetails
             userInfo={userInfo}
             color={theme.palette?.commonColor?.black}
+            style={{ cursor: "default" }}
           />
         </UserDetailsWrapper>
       </DrawerProfileContainer>
@@ -122,6 +127,7 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
           <LogoutButton onClick={() => redirect(ROUTE_PATHS?.LOGIN)}>
             <Logout />
           </LogoutButton>
+
           <LogoutTypo onClick={() => redirect(ROUTE_PATHS?.LOGIN)}>
             Logout
           </LogoutTypo>
@@ -135,4 +141,10 @@ ResponsiveMenu.propTypes = {
   redirect: propTypes.func,
   drawerOpen: propTypes.bool,
   setDrawerOpen: propTypes.func,
+};
+
+CommonIcon.propTypes = {
+  menu: propTypes.any,
+  page: propTypes.string,
+  currentpage: propTypes.string,
 };
