@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getByIdApiService, updateApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -29,11 +30,13 @@ import {
   DivyangDetail,
   FileUpload,
   FormActions,
+  WithCondition,
 } from "../../shared";
 
 const IdProofUploads = () => {
   const navigate = useNavigate();
   const { state, search } = useLocation();
+  const userInfo = useSelector((state) => state?.userInfo);
   const params = new URLSearchParams(search);
   const action = params.get("action");
   const isViewMode = state?.viewDetails || false;
@@ -121,12 +124,16 @@ const IdProofUploads = () => {
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
-      <Grid item xs={12}>
-        <DivyangDetail divyangDetail={values || ""} />
-      </Grid>
+      <WithCondition isValid={userInfo?.role !== CODES?.DIVYANG}>
+        <Grid item xs={12}>
+          <DivyangDetail divyangDetail={values || ""} />
+        </Grid>
+      </WithCondition>
 
       <Grid item xs={12}>
-        <StyledFormContainer sx={{ width: "100% !important" }}>
+        <StyledFormContainer
+          sx={{ width: "100% !important", marginTop: "8px" }}
+        >
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12} md={6}>
               <CustomTextField

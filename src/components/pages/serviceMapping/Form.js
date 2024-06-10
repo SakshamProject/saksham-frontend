@@ -206,7 +206,8 @@ const Form = () => {
         API_PATHS?.DISTRICTS,
         `${values?.districtId || values?.followUp?.districtId}${
           API_PATHS?.SEVAKENDRA
-        }?status=ACTIVE`
+        }`,
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId || !!values?.followUp?.districtId,
@@ -223,7 +224,8 @@ const Form = () => {
         API_PATHS?.SEVAKENDRAS,
         `${values?.sevaKendraId || values?.followUp?.sevaKendraId}${
           API_PATHS?.USERS
-        }?status=ACTIVE`
+        }`,
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data?.map((item) => item?.user),
     enabled: !!values?.sevaKendraId || !!values?.followUp?.sevaKendraId,
@@ -244,13 +246,11 @@ const Form = () => {
     onSuccess: ({ data }) => {
       setValues({
         ...editInitialValues,
-        isCompleted:
-          data?.data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
-        isNonSevaKendraFollowUpRequired:
-          data?.data?.isNonSevaKendraFollowUpRequired,
-        completedDate: data?.data?.completedDatem,
-        howTheyGotService: data?.data?.howTheyGotService,
-        reasonForNonCompletion: data?.data?.reasonForNonCompletion,
+        isCompleted: data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
+        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired,
+        completedDate: data?.completedDate,
+        howTheyGotService: data?.howTheyGotService,
+        reasonForNonCompletion: data?.reasonForNonCompletion,
         donor: {
           ...data?.data?.donor,
         },

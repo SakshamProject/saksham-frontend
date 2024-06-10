@@ -2,6 +2,7 @@ import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -15,11 +16,18 @@ import {
   initialValues,
   multiPartInitialState,
 } from "../../../constants/divyangDetails/disabilityDetails";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { authorities, yesNoSeed } from "../../../constants/seeds";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
-import { formatDate, getValidValues } from "../../../utils/common";
+import { formatDate } from "../../../utils/common";
+import {
+  dispatchResponseAction,
+  dispatchSnackbarError,
+} from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import {
   multiValidationSchema,
   validationSchema,
@@ -36,17 +44,11 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
-import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
-import {
-  dispatchResponseAction,
-  dispatchSnackbarError,
-} from "../../../utils/dispatch";
-import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const DisabilityDetails = () => {
   const navigate = useNavigate();
   const { state, search } = useLocation();
+  const userInfo = useSelector((state) => state?.userInfo);
   const params = new URLSearchParams(search);
   const action = params.get("action");
   const isViewMode = state?.viewDetails || false;
@@ -62,9 +64,8 @@ const DisabilityDetails = () => {
 
   const handleOnSubmit = (values) => {
     if (values?.disabilities?.length < 1) {
-      dispatchSnackbarError("Atleast one Disabilities must be specified");
+      dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
-      console.log(values);
       const payload = multiPartFormData(
         {
           disabilityDetails: {
@@ -223,12 +224,14 @@ const DisabilityDetails = () => {
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
-      <Grid item xs={12}>
-        <DivyangDetail divyangDetail={values || ""} />
-      </Grid>
+      <WithCondition isValid={userInfo?.role !== CODES?.DIVYANG}>
+        <Grid item xs={12}>
+          <DivyangDetail divyangDetail={values || ""} />
+        </Grid>
+      </WithCondition>
 
       <Grid item xs={12}>
-        <StyledFormContainer width="100%">
+        <StyledFormContainer style={{ width: "100%", marginTop: "8px" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <WithCondition isValid={!isViewMode}>
               <Grid item xs={12} md={6}>

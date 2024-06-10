@@ -1,13 +1,26 @@
 import React, { useEffect } from "react";
+import { Grid } from "@mui/material";
+import { useFormik } from "formik";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
-import { useFormik } from "formik";
-import { Grid } from "@mui/material";
 
+import { useMutation } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { getByIdApiService, updateApiService } from "../../../api/api";
+import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/employementDetails";
+import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
+import { CODES } from "../../../constants/globalConstants";
+import { yesNoSeed } from "../../../constants/seeds";
+import { useCustomQuery } from "../../../hooks/useCustomQuery";
+import { StyledFormContainer, theme } from "../../../styles";
+import { formatDate } from "../../../utils/common";
+import { dispatchResponseAction } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/divyangDetails/employementDetails";
 import {
   CustomDatePicker,
@@ -17,21 +30,11 @@ import {
   FormActions,
   WithCondition,
 } from "../../shared";
-import { StyledFormContainer, theme } from "../../../styles";
-import { formatDate, getValidValues } from "../../../utils/common";
-import { yesNoSeed } from "../../../constants/seeds";
-import { CODES } from "../../../constants/globalConstants";
-import { useCustomQuery } from "../../../hooks/useCustomQuery";
-import { getByIdApiService, updateApiService } from "../../../api/api";
-import { API_PATHS } from "../../../api/apiPaths";
-import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
-import { useMutation } from "@tanstack/react-query";
-import { dispatchResponseAction } from "../../../utils/dispatch";
-import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const EmploymentDetails = () => {
   const navigate = useNavigate();
   const { state, search } = useLocation();
+  const userInfo = useSelector((state) => state?.userInfo);
   const params = new URLSearchParams(search);
   const action = params.get("action");
   const isViewMode = state?.viewDetails || false;
@@ -122,11 +125,14 @@ const EmploymentDetails = () => {
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
+      <WithCondition isValid={userInfo?.role !== CODES?.DIVYANG}>
+        <Grid item xs={12}>
+          <DivyangDetail divyangDetail={values || ""} />
+        </Grid>
+      </WithCondition>
+
       <Grid item xs={12}>
-        <DivyangDetail divyangDetail={values || ""} />
-      </Grid>
-      <Grid item xs={12}>
-        <StyledFormContainer width="100%">
+        <StyledFormContainer style={{ width: "100%", marginTop: "8px" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12}>
               <CustomRadioButton

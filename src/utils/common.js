@@ -165,8 +165,6 @@ export const getMinDate = ({ id, date }) => {
   const today = new Date();
   const editDate = new Date(date || new Date());
 
-  console.log();
-
   if (id && editDate < today) {
     return date;
   }
