@@ -81,7 +81,13 @@ const IdProofUploads = () => {
         return acc;
       }, {});
       const payload = multiPartFormData(
-        { IdProofUploads: { ...values }, ...files, pageNumber: 2 },
+        {
+          IdProofUploads: { ...values },
+          ...files,
+          pageNumber: 2,
+          id: values?.id,
+          personId: values?.person?.id,
+        },
         fileKeys
       );
       mutate(payload);

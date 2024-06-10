@@ -78,7 +78,12 @@ export const columns = [
     accessor: "user.designation.sevaKendra.name",
     filterAccessor: "sevaKendraName",
     Cell: ({ row }) => (
-      <CustomCell value={row?.original?.user?.designation?.sevaKendra?.name} />
+      <CustomCell
+        value={
+          row?.original?.user?.designation?.sevaKendra?.name ||
+          row?.original?.sevaKendra?.name
+        }
+      />
     ),
     width: 300,
   },
@@ -94,7 +99,10 @@ export const columns = [
     filterAccessor: "district",
     Cell: ({ row }) => (
       <CustomCell
-        value={row?.original?.user?.designation?.sevaKendra?.district?.name}
+        value={
+          row?.original?.user?.designation?.sevaKendra?.district?.name ||
+          row?.original?.sevaKendra?.district?.name
+        }
       />
     ),
     width: 300,
@@ -106,7 +114,8 @@ export const columns = [
     Cell: ({ row }) => (
       <CustomCell
         value={
-          row?.original?.user?.designation?.sevaKendra?.district?.state?.name
+          row?.original?.user?.designation?.sevaKendra?.district?.state?.name ||
+          row?.original?.sevaKendra?.district?.state?.name
         }
       />
     ),

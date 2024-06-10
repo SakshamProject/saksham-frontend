@@ -67,6 +67,8 @@ const EmploymentDetails = () => {
             : "",
       },
       pageNumber: 5,
+      id: values?.id,
+      personId: values?.person?.id,
     });
     onSubmit(payload);
   };

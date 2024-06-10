@@ -104,6 +104,8 @@ const PersonalDetails = () => {
           date: formatDate({ date: values?.date, format: "iso" }),
           description: values?.description,
         },
+        id: values?.id,
+        personId: values?.person?.id,
       },
       ["picture", "profilePhoto"]
     );

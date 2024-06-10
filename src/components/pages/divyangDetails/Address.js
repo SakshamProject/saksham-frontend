@@ -61,6 +61,8 @@ const Address = () => {
           values?.isRuralCommunication === CODES?.RURAL ? "true" : "false",
       },
       pageNumber: 3,
+      id: values?.id,
+      personId: values?.person?.id,
     });
     onSubmit(payload);
   };

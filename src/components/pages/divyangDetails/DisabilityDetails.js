@@ -76,6 +76,8 @@ const DisabilityDetails = () => {
           },
           UDIDCard: values?.UDIDCardFile,
           pageNumber: 4,
+          id: values?.id,
+          personId: values?.person?.id,
         },
         ["UDIDCard"]
       );
