@@ -24,9 +24,11 @@ import {
 } from "../../shared";
 import useResponsive from "../../../hooks/useResponsive";
 import ResponsiveList from "../../shared/ResponsiveList";
+import { getTableSchemas } from "../../../utils/tableSchemas";
 
 const List = () => {
   const { isMobile } = useResponsive();
+  const { filterFields, filterInitialValues } = getTableSchemas(listColumns);
 
   const {
     onPageNumberChange,
@@ -102,6 +104,8 @@ const List = () => {
           marginLeft: "0",
           width: "100% !important",
         }}
+        filterFields={filterFields}
+        filterFieldInitial={filterInitialValues}
       />
 
       <CustomRadioButton
