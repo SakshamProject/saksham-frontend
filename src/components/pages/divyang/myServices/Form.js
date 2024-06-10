@@ -7,7 +7,6 @@ import {
   getApiService,
   getByIdApiService,
   postApiService,
-  updateApiService,
 } from "../../../../api/api";
 import { API_PATHS } from "../../../../api/apiPaths";
 import { CODES } from "../../../../constants/globalConstants";
@@ -15,20 +14,17 @@ import {
   formFields,
   initialValues,
 } from "../../../../constants/serviceMapping/serviceMapping";
-import { useCustomQuery } from "../../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../../routes/routePaths";
 import { formatDate, getValidValues } from "../../../../utils/common";
-import {
-  dispatchResponseAction,
-  dispatchSnackbarError,
-} from "../../../../utils/dispatch";
-import { validationSchema } from "../../../../validations/serviceMapping/serviceMapping";
+import { dispatchResponseAction } from "../../../../utils/dispatch";
+import { validationSchema } from "../../../../validations/divyang/myService";
 import {
   CustomDatePicker,
   FormActions,
   FormWrapper,
   SingleAutoComplete,
 } from "../../../shared";
+import { useEffect } from "react";
 
 const Form = () => {
   const userInfo = useSelector((state) => state?.userInfo);
@@ -38,94 +34,27 @@ const Form = () => {
   const navigate = useNavigate();
 
   const handleOnSubmit = (value) => {
-    if (!editId) {
-      const payload = getValidValues({
-        ...value,
-        divyangId: userInfo?.userId,
-        isNonSevaKendraFollowUpRequired:
-          value.isNonSevaKendraFollowUpRequired === CODES?.YES,
-        dateOfService: formatDate({
-          date: value?.dateOfService,
-          format: "iso",
-        }),
-        dueDate: formatDate({
-          date: value?.dueDate,
-          format: "iso",
-        }),
-        ...(value.isNonSevaKendraFollowUpRequired === CODES?.YES
-          ? {
-              nonSevaKendraFollowUp: getValidValues({
-                ...value.nonSevaKendraFollowUp,
-                sendMail:
-                  values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
-              }),
-            }
-          : { nonSevaKendraFollowUp: "" }),
-      });
-      onSubmit(payload);
-    } else {
-      if (
-        !(
-          Object.keys(getValidValues(value?.donor)).length === 0 ||
-          Object.keys(getValidValues(value?.donor)).length === 3
-        )
-      ) {
-        dispatchSnackbarError("Please Fill Donor Details Fully If Hav one");
-      } else if (
-        !(
-          Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length ===
-            1 ||
-          Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length === 4
-        )
-      ) {
-        dispatchSnackbarError("Please Fill Follow up Details Fully If Hav one");
-      } else if (
-        Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length < 4 &&
-        value?.isFollowUpRequired === CODES?.NO
-      ) {
-        dispatchSnackbarError("Please Fill any Follow up Details");
-      } else {
-        const payload = getValidValues({
-          ...value,
-          isCompleted:
-            value?.isCompleted === CODES?.YES ? "COMPLETED" : "PENDING",
-          completedDate: formatDate({
-            date: value.completedDate,
-            format: "iso",
-          }),
-          isNonSevaKendraFollowUpRequired:
-            Object.keys(getValidValues(value?.nonSevaKendraFollowUp)).length >
-            1,
-          followUp: {
-            followUpdate: formatDate({
-              date: value?.followUp?.followUpdate,
-              format: "iso",
-            }),
-            userId: value?.followUp?.userId,
-          },
-          ...(!!value?.nonSevaKendraFollowUp?.name
-            ? {
-                nonSevaKendraFollowUp: getValidValues({
-                  ...value.nonSevaKendraFollowUp,
-                  sendMail:
-                    values?.nonSevaKendraFollowUp?.sendMail === CODES?.YES,
-                }),
-              }
-            : { nonSevaKendraFollowUp: "" }),
-        });
-        onSubmit(payload);
-      }
-    }
+    const payload = getValidValues({
+      ...value,
+      dateOfService: formatDate({
+        date: value?.dateOfService,
+        format: "iso",
+      }),
+      dueDate: formatDate({
+        date: value?.dueDate,
+        format: "iso",
+      }),
+      isNonSevaKendraFollowUpRequired: false,
+      nonSevaKendraFollowUp: "",
+    });
+    onSubmit(payload);
   };
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["createAndUpdate"],
-    mutationFn: (data) =>
-      editId
-        ? updateApiService(API_PATHS?.SERVICE_MAPPING, editId, data)
-        : postApiService(API_PATHS?.SERVICE_MAPPING, data),
+    mutationFn: (data) => postApiService(API_PATHS?.SERVICE_MAPPING, data),
     onSuccess: () => {
-      dispatchResponseAction("Service", editId ? CODES?.UPDATED : CODES?.ADDED);
+      dispatchResponseAction("Service", CODES?.ADDED);
       navigate(ROUTE_PATHS?.DIVYANG_SERVICES_LIST);
     },
   });
@@ -167,7 +96,7 @@ const Form = () => {
       getByIdApiService(
         API_PATHS?.DISTRICTS,
         `${values?.districtId}${API_PATHS?.SEVAKENDRA}`,
-        { status: CODES?.ACTIVE },
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -179,16 +108,17 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "serviceMappingGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
-    enabled: !!editId,
+  const { mutate } = useMutation({
+    mutationKey: ["serviceMappingGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
     onSuccess: (data) => {
       setValues({});
     },
-    select: ({ data }) => data?.data,
   });
+
+  useEffect(() => {
+    if (editId) mutate();
+  }, []);
 
   const { data: allService } = useQuery({
     queryKey: ["getAllService", values?.serviceTypeId],

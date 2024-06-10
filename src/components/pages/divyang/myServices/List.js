@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { API_PATHS } from "../../../../api/apiPaths";
-import { columns } from "../../../../constants/divyang/services";
 import { CommonList } from "../../../shared";
+import { columns } from "../../../../constants/divyang/services";
 
 const List = () => {
   const userInfo = useSelector((state) => state?.userInfo);

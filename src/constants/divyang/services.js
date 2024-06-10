@@ -1,13 +1,16 @@
-import { EditPopover } from "../../components/shared";
+import { CustomCell, EditPopover } from "../../components/shared";
 import { ROUTE_PATHS } from "../../routes/routePaths";
 import { OptionsContainer } from "../../styles";
+import { formatDate } from "../../utils/common";
 
 export const initialValues = {
   stateId: "",
   districtId: "",
   sevaKendraId: "",
-  designation: "",
-  featuresId: [],
+  serviceTypeId: "",
+  serviceId: "",
+  dateOfService: "",
+  dueDate: "",
 };
 
 export const fields = {
@@ -36,10 +39,10 @@ export const fields = {
 
 export const columns = [
   {
-    Header: "Designations",
-    accessor: "name",
+    Header: "Service Name",
+    accessor: "service.name",
+    filterAccessor: "serviceName",
     width: 300,
-    filterAccessor: "designations",
     sticky: "left",
     Cell: ({ row, value }) => (
       <OptionsContainer>
@@ -49,13 +52,8 @@ export const columns = [
             {
               label: "View details",
               id: row?.original?.id,
-              path: ROUTE_PATHS?.DESIGNATIONS_FORM,
+              path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
               view: true,
-            },
-            {
-              label: "Edit",
-              id: row?.original?.id,
-              path: ROUTE_PATHS?.DESIGNATIONS_FORM,
             },
           ]}
         />
@@ -65,32 +63,77 @@ export const columns = [
       {
         label: "View details",
         id: row?.id,
-        path: ROUTE_PATHS?.DESIGNATIONS_FORM,
+        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
         view: true,
       },
       {
-        label: "Edit",
+        label: "Update Status",
         id: row?.id,
-        path: ROUTE_PATHS?.DESIGNATIONS_FORM,
+        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
       },
     ],
   },
   {
-    Header: "Seva Kendra Name",
-    accessor: "sevaKendra.name",
+    Header: "Seva Kendra",
+    accessor: "user.designation.sevaKendra.name",
     filterAccessor: "sevaKendraName",
+    Cell: ({ row }) => (
+      <CustomCell value={row?.original?.user?.designation?.sevaKendra?.name} />
+    ),
     width: 300,
   },
   {
-    Header: "Seva Kendra State",
-    accessor: "sevaKendra.district.state.name",
-    filterAccessor: "sevaKendraState",
+    Header: "Divyang",
+    accessor: "divyang.firstName",
+    filterAccessor: "divyangName",
     width: 300,
   },
   {
     Header: "District",
-    accessor: "sevaKendra.district.name",
+    accessor: "user.designation.sevaKendra.district.name",
+    filterAccessor: "district",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={row?.original?.user?.designation?.sevaKendra?.district?.name}
+      />
+    ),
     width: 300,
-    filterAccessor: "sevaKendraDistrict",
+  },
+  {
+    Header: "State",
+    accessor: "user.designation.sevaKendra.district.state.name",
+    filterAccessor: "state",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={
+          row?.original?.user?.designation?.sevaKendra?.district?.state?.name
+        }
+      />
+    ),
+    width: 300,
+  },
+  {
+    Header: "Service Date",
+    filterAccessor: "serviceDate",
+    Cell: ({ row }) => (
+      <CustomCell
+        value={formatDate({
+          date: row?.original?.dateOfService,
+          format: "DD-MM-YYYY",
+        })}
+      />
+    ),
+    responsiveCell: ({ row }) =>
+      formatDate({
+        date: row?.dateOfService,
+        format: "DD-MM-YYYY",
+      }),
+    width: 200,
+  },
+  {
+    Header: "Service Status",
+    accessor: "isCompleted",
+    filterAccessor: "serviceStatus",
+    width: 180,
   },
 ];

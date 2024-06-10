@@ -31,6 +31,7 @@ export const API_PATHS = {
   SERVICES: "/api/services",
   SERVICES_LIST: "/api/services/list",
   SERVICE_MAPPING: "/api/servicemapping",
+  MY_SERVICES: "/api/divyang",
   SERVICE_MAPPING_LIST: "/api/servicemapping/list",
   USERS: "/users",
   SERVICE: "/services",

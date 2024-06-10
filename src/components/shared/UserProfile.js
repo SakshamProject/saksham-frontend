@@ -25,8 +25,10 @@ export const UserProfile = ({ userInfo, style }) => {
         <CommonAvatar
           style={{ cursor: "pointer", ...style }}
           src={userInfo?.profileUrl || defaultAvatar}
-          onError={(e) => (e.target.src = defaultAvatar)}
-          alt="profile"
+          onError={(e) => {
+            e.target.src = defaultAvatar;
+          }}
+          alt={firstCharacter || "Profile"}
         />
       ) : (
         <ProfileNameAvatar style={{ ...style }}>
