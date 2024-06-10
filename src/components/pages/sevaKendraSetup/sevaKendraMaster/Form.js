@@ -119,7 +119,7 @@ const Form = () => {
         ...data?.data,
         stateId: data?.data?.district?.state?.id,
         servicesBySevaKendra: data?.data?.services?.map(
-          ({ service }) => service,
+          ({ service }) => service
         ),
         date:
           data?.data?.status === CODES?.DEACTIVE
