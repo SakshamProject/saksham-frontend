@@ -2,6 +2,7 @@ import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import React from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -22,6 +23,7 @@ import { useCustomQuery } from "../../../hooks/useCustomQuery";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { CustomTypography, StyledFormContainer, theme } from "../../../styles";
 import { dispatchResponseAction } from "../../../utils/dispatch";
+import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/divyangDetails/address";
 import {
   CustomCheckBox,
@@ -32,11 +34,11 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import { multiPartFormData } from "../../../utils/multipartFormData";
 
 const Address = () => {
   const navigate = useNavigate();
   const { state, search } = useLocation();
+  const userInfo = useSelector((state) => state?.userInfo);
   const params = new URLSearchParams(search);
   const action = params.get("action");
   const isViewMode = state?.viewDetails || false;
@@ -192,9 +194,11 @@ const Address = () => {
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
-      <Grid item xs={12}>
-        <DivyangDetail divyangDetail={values || ""} />
-      </Grid>
+      <WithCondition isValid={userInfo?.role !== CODES?.DIVYANG}>
+        <Grid item xs={12}>
+          <DivyangDetail divyangDetail={values || ""} />
+        </Grid>
+      </WithCondition>
 
       <Grid item xs={12}>
         <StyledFormContainer sx={{ width: "100% !important" }}>

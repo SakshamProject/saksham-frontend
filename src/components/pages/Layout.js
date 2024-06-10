@@ -24,15 +24,17 @@ export const Layout = () => {
   useEffect(() => {
     if (pathname === ROUTE_PATHS?.LAYOUT) {
       if (userInfo?.role === CODES?.SEVA_KENDRA) {
-        const userPage = ADMIN_ROUTES?.find(
-          (item) => item?.key === userInfo?.designation?.designations[0]
-        );
+        const userPage = ADMIN_ROUTES?.find((item) => {
+          return item?.key === userInfo?.designation?.designations[0];
+        });
         navigate(userPage?.path);
       } else if (userInfo?.role === CODES?.DIVYANG) {
         navigate(ROUTE_PATHS?.PROFILE);
-      } else navigate(ROUTE_PATHS?.DASHBOARD);
+      } else if (userInfo?.role === CODES?.ADMIN) {
+        navigate(ROUTE_PATHS?.DASHBOARD);
+      }
     }
-  }, [pathname]); //eslint-disable-line
+  }, [pathname, userInfo]);
 
   return (
     <AppContainerLayout>

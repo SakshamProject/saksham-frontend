@@ -206,7 +206,8 @@ const Form = () => {
         API_PATHS?.DISTRICTS,
         `${values?.districtId || values?.followUp?.districtId}${
           API_PATHS?.SEVAKENDRA
-        }?status=ACTIVE`
+        }`,
+        { status: CODES?.ACTIVE },
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId || !!values?.followUp?.districtId,
@@ -223,7 +224,8 @@ const Form = () => {
         API_PATHS?.SEVAKENDRAS,
         `${values?.sevaKendraId || values?.followUp?.sevaKendraId}${
           API_PATHS?.USERS
-        }?status=ACTIVE`
+        }`,
+        { status: CODES?.ACTIVE },
       ),
     select: ({ data }) => data?.data?.map((item) => item?.user),
     enabled: !!values?.sevaKendraId || !!values?.followUp?.sevaKendraId,
@@ -245,7 +247,7 @@ const Form = () => {
         ...editInitialValues,
         isCompleted: data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
         isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired,
-        completedDate: data?.completedDatem,
+        completedDate: data?.completedDate,
         howTheyGotService: data?.howTheyGotService,
         reasonForNonCompletion: data?.reasonForNonCompletion,
         donor: {
@@ -285,8 +287,6 @@ const Form = () => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
       getDivyang({ column, value: e?.target?.value });
   };
-
-  console.log(errors);
 
   return (
     <FormWrapper
@@ -1199,7 +1199,7 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
           onChange={() =>
             setDivayangId &&
             setDivayangId(
-              divyangId !== divyangDetail?.id ? divyangDetail?.id : ""
+              divyangId !== divyangDetail?.id ? divyangDetail?.id : "",
             )
           }
           checkboxColor={"green"}

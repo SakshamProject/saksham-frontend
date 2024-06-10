@@ -1,9 +1,13 @@
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import { Box, styled } from "@mui/material";
 import React, { Suspense } from "react";
+import { useSelector } from "react-redux";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { DIVYANG_STEPS } from "../../../constants/divyangDetails/divyangDetails";
+import { CODES } from "../../../constants/globalConstants";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
+import { CustomHeader, StyledIconButton } from "../../../styles";
 import { scrollbarStyle } from "../../../styles/scrollbarStyle";
 import {
   BackNavigator,
@@ -11,8 +15,6 @@ import {
   CustomStepper,
   WithCondition,
 } from "../../shared";
-import { CustomHeader, StyledIconButton } from "../../../styles";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const FormLayout = styled("div")(({ matches }) => ({
   display: "flex",
@@ -47,6 +49,7 @@ const Form = () => {
   const allSteps = DIVYANG_STEPS.map((item) => item.value);
   const activeStep = allSteps?.indexOf(pathname.split("/")[3]);
   const { isMobile } = useResponsive(state, search);
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const onChange = (step) =>
     editId
@@ -64,7 +67,11 @@ const Form = () => {
   return (
     <>
       <BackNavigator
-        navigateTo={ROUTE_PATHS?.DIVYANG_DETAILS_LIST}
+        navigateTo={
+          userInfo?.role === CODES?.DIVYANG
+            ? ROUTE_PATHS?.PROFILE
+            : ROUTE_PATHS?.DIVYANG_DETAILS_LIST
+        }
         customTitle={getTitle()}
       />
 

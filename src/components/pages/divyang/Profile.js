@@ -3,7 +3,7 @@ import { Box, Grid, IconButton, styled, useMediaQuery } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 import { getByIdApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import fileNotFound from "../../../assets/fileNotFound.png";
@@ -183,14 +183,30 @@ const Profile = () => {
           <>
             <SubmitButton
               onClick={() =>
-                navigate(ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL)
+                navigate(
+                  {
+                    pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
+                    search: `?${createSearchParams({ action: "edit" })}`,
+                  },
+                  {
+                    state: {
+                      viewDetails: false,
+                      editId: userInfo?.userId,
+                    },
+                  },
+                )
               }
+              style={{ margin: 0 }}
             >
               Edit Profile
             </SubmitButton>
 
             <SubmitButton
               onClick={() => navigate(ROUTE_PATHS?.CHANGE_PASSWORD)}
+              style={{
+                margin: 0,
+                marginLeft: "16px",
+              }}
             >
               Change Password
             </SubmitButton>
@@ -202,7 +218,12 @@ const Profile = () => {
         <Grid container direction={"column"} width={"100%"}>
           <StyledFormContainer width="100% !important">
             <Grid item xs={12}>
-              <DivyangDetail divyangDetail={{ ...data, ...divyangFilesUrl }} />
+              <DivyangDetail
+                divyangDetail={{
+                  ...data,
+                  ...divyangFilesUrl,
+                }}
+              />
             </Grid>
 
             <Grid item xs={12}>
@@ -216,7 +237,7 @@ const Profile = () => {
                   title={item?.label}
                   value={
                     item?.cell
-                      ? item.cell({ value: data?.[item?.accessor] })
+                      ? item.cell({ value: data?.[item?.accessor] }) || "--"
                       : data?.[item?.accessor] || "--"
                   }
                   matches={`${matches}`}
@@ -270,7 +291,7 @@ const Profile = () => {
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <CustomTypography
                 capitalize={"capitalize"}
                 variant="h6"
@@ -310,7 +331,7 @@ const Profile = () => {
 
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
-            </Grid>
+            </Grid> */}
 
             <CustomBox matches={`${matches}`} width={"66%"}>
               <CustomDataShower
