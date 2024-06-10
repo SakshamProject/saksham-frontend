@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { useFormik } from "formik";
@@ -102,14 +102,11 @@ const EmploymentDetails = () => {
     setTouched,
   } = formik;
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "divyangGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-    enabled: !!editId,
+  const { mutate } = useMutation({
+    mutationKey: ["divyangGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data;
-
       setValues({
         ...initialValues,
         ...remaining,
@@ -118,6 +115,10 @@ const EmploymentDetails = () => {
       });
     },
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>

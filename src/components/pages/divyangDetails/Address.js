@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -130,20 +130,19 @@ const Address = () => {
     enabled: !!values?.districtIdCommunication,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "divyangGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-    enabled: !!editId,
+  const { mutate } = useMutation({
+    mutationKey: ["divyangGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data;
       setValues({
         ...initialValues,
         ...remaining,
         isRural: remaining?.isRural ? CODES?.RURAL : CODES?.URBAN,
-        isRuralCommunication: remaining?.isRuralCommunication
-          ? CODES?.RURAL
-          : CODES?.URBAN,
+        isRuralCommunication:
+          remaining?.isRuralCommunication === true
+            ? CODES?.RURAL
+            : CODES?.URBAN,
         ...getFilesUrl(data?.files),
         stateId: remaining?.district?.stateId,
         districtId: remaining?.district?.id,
@@ -155,6 +154,10 @@ const Address = () => {
       });
     },
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   const removePermanentTouched = () => {
     setTouched({

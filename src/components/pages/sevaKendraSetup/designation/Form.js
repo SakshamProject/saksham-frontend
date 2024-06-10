@@ -32,6 +32,7 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
+import { useEffect } from "react";
 
 const Form = () => {
   const { state } = useLocation();
@@ -49,7 +50,7 @@ const Form = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Designation",
-        editId ? CODES?.UPDATED : CODES?.ADDED,
+        editId ? CODES?.UPDATED : CODES?.ADDED
       );
       handleOnReset();
     },
@@ -94,28 +95,29 @@ const Form = () => {
     onSubmit: handleOnSubmit,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "get designation by id",
-    queryFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
-    enabled: !!editId,
-    onSuccess: (data) => {
+  const { mutate: getById } = useMutation({
+    mutationKey: ["get designation by id"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DESIGNATION, editId),
+    onSuccess: ({ data }) => {
       setValues({
-        ...data,
-        stateId: data?.sevaKendra?.district?.state?.id,
-        districtId: data?.sevaKendra?.district?.id,
-        sevaKendraId: data?.sevaKendra?.id,
-        designation: data?.name,
-        featuresId: data?.features?.map(({ feature }) => feature),
+        ...data?.data,
+        stateId: data?.data?.sevaKendra?.district?.state?.id,
+        districtId: data?.data?.sevaKendra?.district?.id,
+        sevaKendraId: data?.data?.sevaKendra?.id,
+        designation: data?.data?.name,
+        featuresId: data?.data?.features?.map(({ feature }) => feature),
         auditLog: {
-          status: data?.status,
-          description: data?.description,
-          date: data?.effectiveFromDate,
+          status: data?.data?.status,
+          description: data?.data?.description,
+          date: data?.data?.effectiveFromDate,
         },
       });
     },
-    select: ({ data }) => data?.data,
   });
+
+  useEffect(() => {
+    getById();
+  }, []);
 
   const { data: accessMenu } = useQuery({
     queryKey: ["get all access list"],
@@ -142,7 +144,7 @@ const Form = () => {
       getByIdApiService(
         API_PATHS?.DISTRICTS,
         `${values?.districtId}${API_PATHS?.SEVAKENDRA}`,
-        { status: CODES?.ACTIVE },
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -175,7 +177,7 @@ const Form = () => {
         fields?.featuresId?.name,
         accessMenu?.map((item) => {
           return editId ? { id: item?.id } : item?.id;
-        }),
+        })
       );
     } else {
       setFieldValue(fields?.featuresId?.name, []);

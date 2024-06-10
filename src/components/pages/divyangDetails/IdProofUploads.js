@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getByIdApiService, updateApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -44,7 +44,7 @@ const IdProofUploads = () => {
   const handleSkip = () =>
     navigate(
       { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL, search },
-      { state },
+      { state }
     );
 
   const { mutate } = useMutation({
@@ -54,11 +54,11 @@ const IdProofUploads = () => {
     onSuccess: () => {
       dispatchResponseAction(
         "Id Proof",
-        action ? CODES?.UPDATED : CODES?.SAVED,
+        action ? CODES?.UPDATED : CODES?.SAVED
       );
       navigate(
         { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_ADDRESS, search },
-        { state },
+        { state }
       );
     },
   });
@@ -80,17 +80,15 @@ const IdProofUploads = () => {
       }, {});
       const payload = multiPartFormData(
         { IdProofUploads: { ...values }, ...files, pageNumber: 2 },
-        fileKeys,
+        fileKeys
       );
       mutate(payload);
     }
   };
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "divyangGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-    enabled: !!editId,
+  const { mutate: getById } = useMutation({
+    mutationKey: ["divyangGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data || {};
       setValues({
@@ -102,6 +100,10 @@ const IdProofUploads = () => {
       });
     },
   });
+
+  useEffect(() => {
+    getById();
+  }, []);
 
   const {
     values,
@@ -134,7 +136,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.voterIdNumber?.name,
-                    e?.target?.value?.toUpperCase(),
+                    e?.target?.value?.toUpperCase()
                   );
                 }}
                 onBlur={handleBlur}
@@ -161,7 +163,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.voterId?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -179,7 +181,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.panCardNumber?.name,
-                    e?.target?.value?.toUpperCase(),
+                    e?.target?.value?.toUpperCase()
                   );
                 }}
                 onBlur={handleBlur}
@@ -206,7 +208,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.panCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -224,7 +226,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.drivingLicenseNumber?.name,
-                    e?.target?.value?.toUpperCase(),
+                    e?.target?.value?.toUpperCase()
                   );
                 }}
                 onBlur={handleBlur}
@@ -251,7 +253,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.drivingLicense?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -269,7 +271,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.rationCardNumber?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -296,7 +298,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.rationCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -313,7 +315,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.aadharCardNumber?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -340,7 +342,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.aadharCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -358,7 +360,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.pensionCardNumber?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -384,7 +386,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.pensionCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -402,7 +404,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.medicalInsuranceNumber?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -428,7 +430,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.medicalInsuranceCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -446,7 +448,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.disabilitySchemeNumber?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -472,7 +474,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.disabilitySchemeCard?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />
@@ -490,7 +492,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.BPL_OR_APL_Number?.name,
-                    e?.target?.value,
+                    e?.target?.value
                   );
                 }}
                 onBlur={handleBlur}
@@ -516,7 +518,7 @@ const IdProofUploads = () => {
                 onChange={(e) => {
                   setFieldValue(
                     fields?.BPL_OR_APL_Card?.name,
-                    e?.target?.files[0] || null,
+                    e?.target?.files[0] || null
                   );
                 }}
               />

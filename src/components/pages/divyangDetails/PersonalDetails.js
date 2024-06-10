@@ -94,7 +94,7 @@ const PersonalDetails = () => {
               ...(value?.educationQualificationId && {
                 educationQualificationId: value?.educationQualificationId?.id,
               }),
-            }),
+            })
           ),
         },
         picture: values?.picture,
@@ -106,7 +106,7 @@ const PersonalDetails = () => {
           description: values?.description,
         },
       },
-      ["picture", "profilePhoto"],
+      ["picture", "profilePhoto"]
     );
     onSubmit(payload);
   };
@@ -120,11 +120,11 @@ const PersonalDetails = () => {
     onSuccess: ({ data }) => {
       dispatchResponseAction(
         "Personal Details",
-        action ? CODES?.UPDATED : CODES?.SAVED,
+        action ? CODES?.UPDATED : CODES?.SAVED
       );
       navigate(
         { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
-        { state: { editId: data?.data?.id, isViewMode } },
+        { state: { editId: data?.data?.id, isViewMode } }
       );
     },
   });
@@ -142,20 +142,20 @@ const PersonalDetails = () => {
     ) {
       eqSetFieldError(
         fields?.educationQualificationId?.name,
-        "Education Qualification Sub Type is required",
+        "Education Qualification Sub Type is required"
       );
       return;
     } else if (
       (values?.educationQualifications.some(
         (obj) =>
           obj.educationQualificationId?.id ===
-          eqValues?.educationQualificationId,
+          eqValues?.educationQualificationId
       ) &&
         !!eqValues?.educationQualificationId) ||
       (values?.educationQualifications.some(
         (obj) =>
           obj.educationQualificationTypeId?.id ===
-          eqValues?.educationQualificationTypeId,
+          eqValues?.educationQualificationTypeId
       ) &&
         !eqValues?.educationQualificationId)
     ) {
@@ -170,7 +170,7 @@ const PersonalDetails = () => {
             id: eqValues.educationQualificationTypeId,
             name: getSeedNameById(
               educationQualification,
-              eqValues.educationQualificationTypeId,
+              eqValues.educationQualificationTypeId
             ),
           },
           ...(eqValues.educationQualificationId && {
@@ -178,14 +178,14 @@ const PersonalDetails = () => {
               id: eqValues.educationQualificationId,
               name: getSeedNameById(
                 educationQualificationSubType,
-                eqValues.educationQualificationId,
+                eqValues.educationQualificationId
               ),
             },
           }),
         };
         setFieldValue(
           fields.educationQualifications.name,
-          updatedEducationQualifications,
+          updatedEducationQualifications
         );
       } else {
         setFieldValue(fields?.educationQualifications?.name, [
@@ -195,7 +195,7 @@ const PersonalDetails = () => {
               id: eqValues?.educationQualificationTypeId,
               name: getSeedNameById(
                 educationQualification,
-                eqValues?.educationQualificationTypeId,
+                eqValues?.educationQualificationTypeId
               ),
             },
             ...(eqValues?.educationQualificationId && {
@@ -203,7 +203,7 @@ const PersonalDetails = () => {
                 id: eqValues?.educationQualificationId,
                 name: getSeedNameById(
                   educationQualificationSubType,
-                  eqValues?.educationQualificationId,
+                  eqValues?.educationQualificationId
                 ),
               },
             }),
@@ -270,17 +270,15 @@ const PersonalDetails = () => {
     queryFn: () =>
       getByIdApiService(
         API_PATHS?.EDUCATION_QUALIFICATION,
-        eqValues?.educationQualificationTypeId,
+        eqValues?.educationQualificationTypeId
       ),
     select: ({ data }) => data?.data?.educationQualification,
     enabled: !!eqValues?.educationQualificationTypeId,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "divyangGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-    enabled: !!editId,
+  const { mutate } = useMutation({
+    mutationKey: ["divyangGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       setValues({
         ...initialValues,
@@ -296,12 +294,16 @@ const PersonalDetails = () => {
               id: value?.educationQualification?.id,
               name: value?.educationQualification?.name,
             },
-          }),
+          })
         ),
         ...getFilesUrl(data?.files),
       });
     },
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   const handleEditList = (index) => {
     setTableEditId(index);
@@ -317,7 +319,7 @@ const PersonalDetails = () => {
   const handleDeleteList = (index) => {
     setFieldValue(
       fields?.educationQualifications?.name,
-      values?.educationQualifications?.filter((_, pos) => pos !== index),
+      values?.educationQualifications?.filter((_, pos) => pos !== index)
     );
   };
 
@@ -389,7 +391,7 @@ const PersonalDetails = () => {
               onChange={(e) =>
                 setFieldValue(
                   editId ? "profilePhoto" : fields?.picture?.name,
-                  e?.target?.files[0],
+                  e?.target?.files[0]
                 )
               }
               disabled={isViewMode}
@@ -582,16 +584,16 @@ const PersonalDetails = () => {
               onChange={(_, value) => {
                 eqSetFieldValue(
                   fields?.educationQualificationTypeId?.name,
-                  value,
+                  value
                 );
                 eqSetFieldValue(fields?.educationQualificationId?.name, "");
                 eqSetFieldTouched(
                   fields?.educationQualificationTypeId?.name,
-                  false,
+                  false
                 );
                 eqSetFieldTouched(
                   fields?.educationQualificationId?.name,
-                  false,
+                  false
                 );
               }}
               errors={eqErrors?.educationQualificationTypeId}
@@ -615,11 +617,11 @@ const PersonalDetails = () => {
                 onChange={(_, value) => {
                   eqSetFieldValue(
                     fields?.educationQualificationId?.name,
-                    value,
+                    value
                   );
                   eqSetFieldTouched(
                     fields?.educationQualificationId?.name,
-                    false,
+                    false
                   );
                 }}
                 errors={eqErrors?.educationQualificationId}

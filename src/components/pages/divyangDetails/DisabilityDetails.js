@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -183,11 +183,10 @@ const DisabilityDetails = () => {
     select: ({ data }) => data?.data,
     enabled: !!multiValues.disabilityTypeId,
   });
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "divyangGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
-    enabled: !!editId,
+
+  const { mutate } = useMutation({
+    mutationKey: ["divyangGetById"],
+    mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data;
       setValues({
@@ -199,6 +198,10 @@ const DisabilityDetails = () => {
       });
     },
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   const handleEditList = (id) => {
     setTableEditId(id);

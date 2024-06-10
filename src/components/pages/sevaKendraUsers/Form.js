@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -62,7 +62,7 @@ const Form = () => {
           description: value?.description,
         },
       },
-      ["profilePhoto"],
+      ["profilePhoto"]
     );
     onSubmit(payload);
   };
@@ -115,7 +115,7 @@ const Form = () => {
       getByIdApiService(
         API_PATHS?.DISTRICTS,
         `${values?.districtId}${API_PATHS?.SEVAKENDRA}`,
-        { status: CODES?.ACTIVE },
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.districtId,
@@ -127,17 +127,15 @@ const Form = () => {
       getByIdApiService(
         API_PATHS?.SEVAKENDRAS,
         `${values?.sevaKendraId}${API_PATHS?.DESIGNATIONS}`,
-        { status: CODES?.ACTIVE },
+        { status: CODES?.ACTIVE }
       ),
     select: ({ data }) => data?.data,
     enabled: !!values?.sevaKendraId,
   });
 
-  useCustomQuery({
-    dependency: editId,
-    queryKey: "seva kendra users by id",
-    queryFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
-    enabled: !!editId,
+  const { mutate } = useMutation({
+    mutationKey: ["seva kendra users by id"],
+    mutationFn: () => getByIdApiService(API_PATHS?.SEVAKENDRA_USERS, editId),
     onSuccess: ({ data }) => {
       setValues({
         ...data?.data,
@@ -157,6 +155,10 @@ const Form = () => {
       });
     },
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   return (
     <FormWrapper

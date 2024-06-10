@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -235,37 +235,43 @@ const Form = () => {
     select: ({ data }) => data?.data,
   });
 
-  const { data } = useCustomQuery({
-    dependency: editId,
-    queryKey: "serviceMappingGetById",
-    queryFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
-    enabled: !!editId,
-    onSuccess: (data) => {
+  const {
+    mutate,
+    data: { data },
+  } = useMutation({
+    mutationKey: ["serviceMappingGetById"],
+    mutationFn: () => postApiService(API_PATHS?.SERVICES_LIST),
+    onSuccess: ({ data }) => {
       setValues({
         ...editInitialValues,
-        isCompleted: data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
-        isNonSevaKendraFollowUpRequired: data?.isNonSevaKendraFollowUpRequired,
-        completedDate: data?.completedDatem,
-        howTheyGotService: data?.howTheyGotService,
-        reasonForNonCompletion: data?.reasonForNonCompletion,
+        isCompleted:
+          data?.data?.isCompleted === "PENDING" ? CODES?.NO : CODES?.YES,
+        isNonSevaKendraFollowUpRequired:
+          data?.data?.isNonSevaKendraFollowUpRequired,
+        completedDate: data?.data?.completedDatem,
+        howTheyGotService: data?.data?.howTheyGotService,
+        reasonForNonCompletion: data?.data?.reasonForNonCompletion,
         donor: {
-          ...data?.donor,
+          ...data?.data?.donor,
         },
-        isFollowUpRequired: !!data?.nonSevaKendraFollowUp?.length
+        isFollowUpRequired: !!data?.data?.nonSevaKendraFollowUp?.length
           ? CODES?.YES
           : CODES?.NO,
         nonSevaKendraFollowUp: {
-          email: data?.nonSevaKendraFollowUp?.[0]?.email,
-          mobileNumber: data?.nonSevaKendraFollowUp?.[0]?.mobileNumber,
-          name: data?.nonSevaKendraFollowUp?.[0]?.name,
-          sendMail: data?.nonSevaKendraFollowUp?.[0]?.sendMail
+          email: data?.data?.nonSevaKendraFollowUp?.[0]?.email,
+          mobileNumber: data?.data?.nonSevaKendraFollowUp?.[0]?.mobileNumber,
+          name: data?.data?.nonSevaKendraFollowUp?.[0]?.name,
+          sendMail: data?.data?.nonSevaKendraFollowUp?.[0]?.sendMail
             ? CODES?.YES
             : CODES?.NO,
         },
       });
     },
-    select: ({ data }) => data?.data,
   });
+
+  useEffect(() => {
+    mutate();
+  }, []);
 
   const { data: allService } = useQuery({
     queryKey: ["getAllService", values?.serviceTypeId],
@@ -285,8 +291,6 @@ const Form = () => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
       getDivyang({ column, value: e?.target?.value });
   };
-
-  console.log(errors);
 
   return (
     <FormWrapper
