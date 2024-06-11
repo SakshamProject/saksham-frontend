@@ -24,9 +24,9 @@ export const Layout = () => {
   useEffect(() => {
     if (pathname === ROUTE_PATHS?.LAYOUT) {
       if (userInfo?.role === CODES?.SEVA_KENDRA) {
-        const userPage = ADMIN_ROUTES?.find((item) => {
-          return item?.key === userInfo?.designation?.designations[0];
-        });
+        const userPage = ADMIN_ROUTES?.find(
+          (item) => item?.key === userInfo?.designation?.designations[0]?.name
+        );
         navigate(userPage?.path);
       } else if (userInfo?.role === CODES?.DIVYANG) {
         navigate(ROUTE_PATHS?.PROFILE);

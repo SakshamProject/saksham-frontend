@@ -1,3 +1,4 @@
+import { ADMIN_ROUTES } from "../../routes";
 import { CODES } from "../globalConstants";
 
 export const initialValues = {
@@ -25,13 +26,22 @@ export const getUserInfo = (data) => {
   if (data?.user) {
     let serviceMapping = false;
 
-    const designations = data?.user?.designation?.features?.map((item) => {
-      const { feature = {} } = item;
-      if (feature?.name === CODES?.SERVICE_MAPPING) {
-        serviceMapping = true;
-      }
-      return feature;
-    });
+    const designations = (data?.user?.designation?.features || [])
+      ?.slice()
+      ?.sort(
+        (a, b) =>
+          ADMIN_ROUTES.findIndex(
+            (item) => item.key === (a?.feature?.name || "")
+          ) -
+          ADMIN_ROUTES.findIndex(
+            (item) => item.key === (b?.feature?.name || "")
+          )
+      )
+      ?.map((item) => {
+        if (item?.feature?.name === CODES?.SERVICE_MAPPING)
+          serviceMapping = true;
+        return item?.feature;
+      });
 
     return {
       serviceMapping,

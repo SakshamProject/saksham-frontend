@@ -25,10 +25,12 @@ import {
 import useResponsive from "../../../hooks/useResponsive";
 import ResponsiveList from "../../shared/ResponsiveList";
 import { getTableSchemas } from "../../../utils/tableSchemas";
+import { useSelector } from "react-redux";
 
 const List = () => {
   const { isMobile } = useResponsive();
   const { filterFields, filterInitialValues } = getTableSchemas(listColumns);
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const {
     onPageNumberChange,
@@ -106,6 +108,7 @@ const List = () => {
         }}
         filterFields={filterFields}
         filterFieldInitial={filterInitialValues}
+        disableNewForm={!userInfo?.serviceMapping}
       />
 
       <CustomRadioButton
