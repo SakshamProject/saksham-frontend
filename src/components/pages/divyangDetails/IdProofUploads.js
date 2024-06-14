@@ -9,6 +9,7 @@ import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
+  fileNameKeys,
 } from "../../../constants/divyangDetails/idProofUploads";
 import {
   fileKeys,
@@ -74,15 +75,27 @@ const IdProofUploads = () => {
     if (fileCount < 4) {
       dispatchSnackbarError("At least Upload any 2 Id Proofs");
     } else {
+      const fileNames = fileNameKeys;
+
       const files = fileKeys.reduce((acc, key) => {
         if (values[key]) {
+          fileNames[key + "FileName"] = values?.[key]?.name;
+          fileNames[key + "File"] = values?.[key]?.name;
           return { ...acc, [key]: values[key] };
         }
         return acc;
       }, {});
+      console.log({
+        values,
+        IdProofUploads: { ...values, fileNames },
+        ...files,
+        pageNumber: 2,
+        id: values?.id,
+        personId: values?.person?.id,
+      });
       const payload = multiPartFormData(
         {
-          IdProofUploads: { ...values },
+          IdProofUploads: { ...values, fileNames },
           ...files,
           pageNumber: 2,
           id: values?.id,
@@ -106,6 +119,7 @@ const IdProofUploads = () => {
         drivingLicenseNumber: remaining?.drivingLicense,
         ...getFilesUrl(data?.files),
       });
+      console.log(values);
     },
   });
 
@@ -126,6 +140,8 @@ const IdProofUploads = () => {
     validationSchema,
     onSubmit: handleOnSubmit,
   });
+
+  console.log(errors);
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
