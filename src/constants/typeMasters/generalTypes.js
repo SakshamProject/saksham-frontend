@@ -79,7 +79,7 @@ export const getGeneralTypePayload = (value, isPayload = true) => {
 
 export const generalTypeColumns = [
   {
-    Header: "Type Master",
+    Header: "General Type",
     accessor: "name",
     width: 300,
     sticky: "left",
@@ -143,7 +143,7 @@ export const generalColumns = ({
       width: 250,
     },
     {
-      Header: " ",
+      Header: "Action",
       Cell: ({ row }) => {
         return (
           <EditDelete

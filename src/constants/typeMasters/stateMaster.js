@@ -139,7 +139,7 @@ export const stateMasterColumns = ({
     width: 180,
   },
   {
-    Header: " ",
+    Header: "Action",
     Cell: ({ row }) => {
       return (
         <EditDelete

@@ -159,7 +159,7 @@ export const eqColumns = ({
     width: 240,
   },
   {
-    Header: " ",
+    Header: "Action",
     Cell: ({ row }) => {
       return (
         <EditDelete

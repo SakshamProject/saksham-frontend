@@ -88,7 +88,7 @@ export const serviceNameColumns = ({
     sticky: "left",
   },
   {
-    Header: " ",
+    Header: "Action",
     Cell: ({ row }) => {
       return (
         <EditDelete

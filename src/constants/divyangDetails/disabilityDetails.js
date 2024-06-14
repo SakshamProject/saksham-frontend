@@ -105,7 +105,7 @@ export const columnData = ({
   handleEditList,
 }) => [
   {
-    Header: "Disbilty Type",
+    Header: "Disability Type",
     accessor: "disabilityTypeId",
     width: 220,
     sticky: "left",
@@ -114,7 +114,7 @@ export const columnData = ({
         ?.name || "-",
   },
   {
-    Header: "Disbilty Type",
+    Header: "Disability Type",
     accessor: "disabilitySubTypeId",
     width: 220,
     Cell: ({ row }) =>
@@ -125,7 +125,7 @@ export const columnData = ({
         )?.name || "-",
   },
   {
-    Header: " ",
+    Header: "Action",
     Cell: ({ row }) => {
       return (
         <EditDelete
