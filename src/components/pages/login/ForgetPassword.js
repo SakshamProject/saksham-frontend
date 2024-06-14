@@ -22,6 +22,7 @@ import { BackIcon } from "../../../styles/signup";
 import { getValidValues } from "../../../utils/common";
 import { dispatchSnackbarSuccess } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/login/forgetPassword";
+import CustomTooltip from "../../shared/CustomTooltip";
 import { CustomTextField, WithCondition } from "../../shared/index";
 
 const ForgetPassword = () => {
@@ -67,13 +68,15 @@ const ForgetPassword = () => {
       <LoginContainer>
         <Grid container gap={2}>
           <Grid item xs={12} sx={{ display: "flex", marginBottom: "24px" }}>
-            <BackIcon
-              disableFocusRipple
-              disableRipple
-              onClick={() => navigate(ROUTE_PATHS?.LOGIN, { replace: true })}
-            >
-              <ArrowBack />
-            </BackIcon>
+            <CustomTooltip title={"Back"}>
+              <BackIcon
+                disableFocusRipple
+                disableRipple
+                onClick={() => navigate(ROUTE_PATHS?.LOGIN, { replace: true })}
+              >
+                <ArrowBack />
+              </BackIcon>
+            </CustomTooltip>
             <LoginHeading>Forget Password</LoginHeading>
           </Grid>
 

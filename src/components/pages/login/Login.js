@@ -1,5 +1,5 @@
 import { ArrowBack } from "@mui/icons-material";
-import { Box, Grid, styled } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
@@ -19,15 +19,16 @@ import {
 } from "../../../constants/login/login";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
-  CancelButton,
-  StyledButtonContainer,
-  SubmitButton,
-} from "../../../styles/buttonStyle";
-import {
   ForgetPassword,
+  LoginButton,
+  LoginButtonContainer,
   LoginContainer,
   LoginHeading,
   LoginWrapper,
+  RememberMeContainer,
+  RoleButton,
+  RoleButtonContainer,
+  TitleContainer,
 } from "../../../styles/login";
 import { BackIcon } from "../../../styles/signup";
 import { getValidValues } from "../../../utils/common";
@@ -47,54 +48,13 @@ import {
   setLocalStorageItem,
 } from "../../../utils/localStorage";
 import { validationSchema } from "../../../validations/login/login";
+import CustomTooltip from "../../shared/CustomTooltip";
 import {
   CustomCheckBox,
   CustomPasswordField,
   CustomTextField,
   WithCondition,
 } from "../../shared/index";
-
-const TitleContainer = styled(Grid)(({ role }) => ({
-  display: "flex",
-  marginBottom: role === CODES?.ADMIN ? "24px" : 0,
-}));
-
-const RoleButtonContainer = styled(StyledButtonContainer)(() => ({
-  margin: "16px 0",
-  justifyContent: "space-between",
-}));
-
-const RememberMeContainer = styled(StyledButtonContainer)(() => ({
-  marginTop: "-14px",
-  justifyContent: "space-between",
-  flexWrap: "wrap",
-  rowGap: 1,
-}));
-
-const LoginButtonContainer = styled(Grid)(() => ({
-  margin: "16px 0",
-  textAlign: "center",
-}));
-
-const LoginButton = styled(SubmitButton)(() => ({
-  borderRadius: "18px",
-  width: "50%",
-}));
-
-const RoleButton = styled(CancelButton)(({ theme, roletype, role }) => ({
-  width: "100%",
-  marginRight: "0 !important",
-  margin: roletype === CODES?.DIVYANG ? "0 8px 0 0" : "0 0 0 16px",
-  ...(((role === CODES?.DIVYANG && roletype === CODES?.DIVYANG) ||
-    (role === CODES?.SEVA_KENDRA && roletype === CODES?.SEVA_KENDRA)) && {
-    backgroundColor: theme.palette?.primary?.main,
-    color: theme.palette?.primary?.contrastText,
-    ":hover": {
-      backgroundColor: theme.palette?.primary?.main,
-      color: theme.palette?.primary?.contrastText,
-    },
-  }),
-}));
 
 const Login = () => {
   const navigate = useNavigate();
@@ -205,10 +165,9 @@ const Login = () => {
   });
 
   useEffect(() => {
-    if (remember?.rememberMe) {
+    if (remember?.rememberMe && remember?.role === role) {
       const { role, ...remaining } = remember;
       setValues({ ...remaining });
-      setRole(role);
     }
   }, []); //eslint-disable-line
 
@@ -218,13 +177,15 @@ const Login = () => {
         <Grid container gap={2}>
           <TitleContainer item xs={12} role={role}>
             <WithCondition isValid={role === CODES?.ADMIN}>
-              <BackIcon
-                disableFocusRipple
-                disableRipple
-                onClick={() => handleRole(CODES?.DIVYANG)}
-              >
-                <ArrowBack />
-              </BackIcon>
+              <CustomTooltip title={"Back"}>
+                <BackIcon
+                  disableFocusRipple
+                  disableRipple
+                  onClick={() => handleRole(CODES?.DIVYANG)}
+                >
+                  <ArrowBack />
+                </BackIcon>
+              </CustomTooltip>
             </WithCondition>
 
             <LoginHeading>{getTitle()}</LoginHeading>
@@ -303,8 +264,8 @@ const Login = () => {
             <Grid item xs={12} sx={{ textAlign: "center" }}>
               <ForgetPassword onClick={handleLink}>
                 {role === CODES?.SEVA_KENDRA
-                  ? "Admin login"
-                  : "Click here to register"}
+                  ? "Admin Login"
+                  : "Click Here to Register"}
               </ForgetPassword>
             </Grid>
           </WithCondition>

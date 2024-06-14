@@ -1,4 +1,10 @@
 import { Box, Grid, Typography, styled } from "@mui/material";
+import { CODES } from "../constants/globalConstants";
+import {
+  CancelButton,
+  StyledButtonContainer,
+  SubmitButton,
+} from "./buttonStyle";
 
 export const LoginWrapper = styled(Grid)(({ theme }) => ({
   height: "100vh",
@@ -49,4 +55,46 @@ export const LoginHeading = styled(Typography)(({ theme }) => ({
   [theme.breakpoints.down("md")]: {
     fontSize: "26px",
   },
+}));
+
+export const TitleContainer = styled(Grid)(({ role }) => ({
+  display: "flex",
+  marginBottom: role === CODES?.ADMIN ? "24px" : 0,
+}));
+
+export const RoleButtonContainer = styled(StyledButtonContainer)(() => ({
+  margin: "16px 0",
+  justifyContent: "space-between",
+}));
+
+export const RememberMeContainer = styled(StyledButtonContainer)(() => ({
+  marginTop: "-14px",
+  justifyContent: "space-between",
+  flexWrap: "wrap",
+  rowGap: 1,
+}));
+
+export const LoginButtonContainer = styled(Grid)(() => ({
+  margin: "16px 0",
+  textAlign: "center",
+}));
+
+export const LoginButton = styled(SubmitButton)(() => ({
+  borderRadius: "18px",
+  width: "50%",
+}));
+
+export const RoleButton = styled(CancelButton)(({ theme, roletype, role }) => ({
+  width: "100%",
+  marginRight: "0 !important",
+  margin: roletype === CODES?.DIVYANG ? "0 8px 0 0" : "0 0 0 16px",
+  ...(((role === CODES?.DIVYANG && roletype === CODES?.DIVYANG) ||
+    (role === CODES?.SEVA_KENDRA && roletype === CODES?.SEVA_KENDRA)) && {
+    backgroundColor: theme.palette?.primary?.main,
+    color: theme.palette?.primary?.contrastText,
+    ":hover": {
+      backgroundColor: theme.palette?.primary?.main,
+      color: theme.palette?.primary?.contrastText,
+    },
+  }),
 }));

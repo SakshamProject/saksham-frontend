@@ -19,6 +19,7 @@ import { getValidValues } from "../../../utils/common";
 import { dispatchSnackbarSuccess } from "../../../utils/dispatch";
 import { validationSchema } from "../../../validations/login/resetPassword";
 import { CustomPasswordField } from "../../shared";
+import CustomTooltip from "../../shared/CustomTooltip";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -51,13 +52,15 @@ const ResetPassword = () => {
       <LoginContainer>
         <Grid container gap={2}>
           <Grid item xs={12} sx={{ display: "flex", marginBottom: "24px" }}>
-            <BackIcon
-              disableFocusRipple
-              disableRipple
-              onClick={() => navigate(ROUTE_PATHS?.LOGIN, { replace: true })}
-            >
-              <ArrowBack />
-            </BackIcon>
+            <CustomTooltip title={"Back"}>
+              <BackIcon
+                disableFocusRipple
+                disableRipple
+                onClick={() => navigate(ROUTE_PATHS?.LOGIN, { replace: true })}
+              >
+                <ArrowBack />
+              </BackIcon>
+            </CustomTooltip>
             <LoginHeading>Reset Password</LoginHeading>
           </Grid>
 
