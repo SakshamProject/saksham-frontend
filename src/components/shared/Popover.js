@@ -1,6 +1,7 @@
 import { Popover as MuiPopover, Typography } from "@mui/material";
 import propTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
+import useResponsive from "../../hooks/useResponsive";
 
 export const Popover = ({
   menuItems,
@@ -14,6 +15,7 @@ export const Popover = ({
   popoverItemStyle,
 }) => {
   const navigate = useNavigate();
+  const { theme } = useResponsive();
 
   const handleMenuClick = (menu) => () => {
     menu?.navigateTo && navigate(menu?.navigateTo);
@@ -33,10 +35,16 @@ export const Popover = ({
         transformOrigin || { vertical: "top", horizontal: "left" }
       }
     >
-      {menuItems?.map((item) => (
+      {menuItems?.map((item, index) => (
         <Typography
           key={item?.name}
-          style={popoverItemStyle}
+          style={{
+            ...popoverItemStyle,
+            borderBottom:
+              index === menuItems?.length - 1
+                ? "none"
+                : `1px solid ${theme.palette?.commonColor?.grey}`,
+          }}
           onClick={handleMenuClick(item)}
         >
           {item?.name}

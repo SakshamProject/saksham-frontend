@@ -1,6 +1,7 @@
 import { Popover as MuiPopper, styled } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import propTypes from "prop-types";
+import useResponsive from "../../hooks/useResponsive";
 
 const PopoverComponent = styled(MuiPopper)({
   ".MuiPaper-root": {
@@ -14,7 +15,6 @@ const Titles = styled(Typography)(({ theme }) => ({
   cursor: "pointer !important",
   font: "normal normal normal 16px/19px sans-serif !important",
   color: `${theme.palette?.commonColor?.black} !important`,
-  borderBottom: `1px solid ${theme.palette?.commonColor?.black}`,
 }));
 
 export const RightMenu = ({
@@ -24,6 +24,8 @@ export const RightMenu = ({
   redirect,
   menuList,
 }) => {
+  const { theme } = useResponsive();
+
   return (
     <PopoverComponent
       open={open}
@@ -33,7 +35,16 @@ export const RightMenu = ({
       transformOrigin={{ vertical: "top", horizontal: "right" }}
     >
       {menuList?.map(({ label, routePath }, key) => (
-        <Titles key={key + label} onClick={() => redirect(routePath)}>
+        <Titles
+          key={key + label}
+          style={{
+            borderBottom:
+              key === menuList?.length - 1
+                ? "none"
+                : `1px solid ${theme.palette?.commonColor?.grey}`,
+          }}
+          onClick={() => redirect(routePath)}
+        >
           {label}
         </Titles>
       ))}
