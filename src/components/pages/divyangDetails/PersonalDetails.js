@@ -95,9 +95,12 @@ const PersonalDetails = () => {
               }),
             })
           ),
+          fileNames : {
+            profilePhotoFileName : values?.picture?.name
+          }
         },
-        picture: values?.picture,
-        profilePhoto: values?.profilePhoto,
+        // picture: values?.picture,
+        profilePhoto: values?.picture,
         pageNumber: 1,
         auditLog: {
           status: values?.status,
@@ -281,6 +284,7 @@ const PersonalDetails = () => {
     mutationKey: ["divyangGetById"],
     mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
+      console.log(getFilesUrl(data?.files));
       setValues({
         ...initialValues,
         ...data?.data,
@@ -299,7 +303,10 @@ const PersonalDetails = () => {
         ),
         ...getFilesUrl(data?.files),
       });
+
+      console.log({values});
     },
+
   });
 
   useEffect(() => {

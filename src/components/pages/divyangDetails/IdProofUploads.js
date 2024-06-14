@@ -86,6 +86,7 @@ const IdProofUploads = () => {
         return acc;
       }, {});
       console.log({
+        values,
         IdProofUploads: { ...values, fileNames },
         ...files,
         pageNumber: 2,
@@ -118,6 +119,7 @@ const IdProofUploads = () => {
         drivingLicenseNumber: remaining?.drivingLicense,
         ...getFilesUrl(data?.files),
       });
+      console.log(values);
     },
   });
 
