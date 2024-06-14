@@ -7,17 +7,28 @@ import store from "./redux/store";
 import { dispatchSnackbarError } from "./utils/dispatch.js";
 
 const handleError = (res) => {
-  const { data = {} } = res || {};
+  const data = res?.data || {};
+  const error = data?.error;
 
-  if (typeof data?.error?.message === "string") {
-    dispatchSnackbarError(data?.error?.message);
+  if (typeof error?.message === "string") {
+    if (error?.name === "Unique constraint violation") {
+      const errorMessageParts = error.message.split("->");
+      const errorMessage =
+        errorMessageParts.length > 1
+          ? `${errorMessageParts[1].trim()} is unique`
+          : SERVER_ERROR;
+      dispatchSnackbarError(errorMessage);
+    } else {
+      dispatchSnackbarError(error.message);
+    }
   } else if (
     data?.name === "ZodError" &&
     Array.isArray(data?.issues) &&
     data?.issues.length > 0
   ) {
-    const issues = data?.issues[0];
-    dispatchSnackbarError(`${issues?.path[0]} ${issues?.message}`);
+    const issue = data.issues[0];
+    const zodErrorMessage = `${issue.path[0]} ${issue.message}`;
+    dispatchSnackbarError(zodErrorMessage);
   } else {
     dispatchSnackbarError(SERVER_ERROR);
   }

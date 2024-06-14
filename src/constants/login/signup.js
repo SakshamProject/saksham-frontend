@@ -1,4 +1,3 @@
-import { theme } from "../../styles";
 import { CODES } from "../globalConstants";
 import { genderSeed } from "../seeds";
 
@@ -44,10 +43,6 @@ export const fields = {
     name: "gender",
     isHelperText: false,
     inputValues: genderSeed(),
-    labelStyle: {
-      color: theme.palette?.commonColor?.blue,
-      fontSize: "16px",
-    },
   },
   dateOfBirth: {
     label: "Date of Birth *",

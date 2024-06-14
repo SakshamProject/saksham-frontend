@@ -8,6 +8,7 @@ import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import { CODES } from "../../../constants/globalConstants";
 import { fields, initialValues } from "../../../constants/login/signup";
+import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
   BackIcon,
@@ -23,18 +24,21 @@ import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/login/signup";
 import {
   CustomDatePicker,
-  CustomPasswordField,
   CustomRadioButton,
   CustomTextField,
   DividerLine,
   FileUpload,
   FormActions,
 } from "../../shared";
+import CustomTooltip from "../../shared/CustomTooltip";
 
 const Signup = () => {
   const navigate = useNavigate();
+  const { theme } = useResponsive();
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.LOGIN);
+  const handleOnReset = () => {
+    navigate(ROUTE_PATHS?.LOGIN);
+  };
 
   const handleOnSubmit = (values) => {
     const payload = multiPartFormData(
@@ -75,9 +79,11 @@ const Signup = () => {
     <SignupContainer>
       <SignupWrapper>
         <TitleContainer>
-          <BackIcon onClick={() => handleOnReset()}>
-            <ArrowBack />
-          </BackIcon>
+          <CustomTooltip title={"Back"}>
+            <BackIcon onClick={() => handleOnReset()}>
+              <ArrowBack />
+            </BackIcon>
+          </CustomTooltip>
           <Title>Sign Up</Title>
         </TitleContainer>
 
@@ -130,9 +136,9 @@ const Signup = () => {
               value={values?.profilePhoto}
               error={errors?.profilePhoto}
               touched={touched?.profilePhoto}
-              onChange={(e) =>
-                setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0])
-              }
+              onChange={(e) => {
+                setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0]);
+              }}
             />
           </Grid>
 
@@ -143,7 +149,10 @@ const Signup = () => {
               label={fields?.gender?.label}
               isHelperText={fields?.gender?.isHelperText}
               inputValues={fields?.gender?.inputValues}
-              labelStyle={fields?.gender?.labelStyle}
+              labelStyle={{
+                color: theme.palette?.commonColor?.blue,
+                fontSize: "16px",
+              }}
               value={values?.gender}
               touched={touched?.gender}
               errors={errors?.gender}
@@ -235,8 +244,7 @@ const Signup = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <CustomPasswordField
-              showEyeIcon
+            <CustomTextField
               label={fields?.password?.label}
               name={fields?.password?.name}
               value={values?.password}
@@ -248,8 +256,7 @@ const Signup = () => {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <CustomPasswordField
-              showEyeIcon
+            <CustomTextField
               label={fields?.confirmPassword?.label}
               name={fields?.confirmPassword?.name}
               value={values?.confirmPassword}
