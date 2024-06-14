@@ -107,3 +107,15 @@ export const fields = {
     name: "BPL_OR_APL_Card",
   },
 };
+
+export const fileNameKeys = {
+  voterIdFileName: null,
+  panCardFileName: null,
+  drivingLicenseFileName: null,
+  rationCardFileName: null,
+  aadharCardFileName: null,
+  pensionCardFileName: null,
+  medicalInsuranceCardFileName: null,
+  disabilitySchemeCardFileName: null,
+  BPL_OR_APL_CardFileName: null,
+};
