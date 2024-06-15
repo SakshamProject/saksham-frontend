@@ -3,6 +3,7 @@ import propTypes from "prop-types";
 import { useEffect } from "react";
 import { CODES, statusColumns } from "../../constants/globalConstants";
 import useResponsive from "../../hooks/useResponsive";
+import { getMinDate } from "../../utils/common";
 import { CustomReactTable } from "./CustomReactTable";
 import { DividerLine } from "./DividerLine";
 import { WithCondition } from "./WithCondition";
@@ -25,6 +26,7 @@ const StatusFields = ({
   disableListLayout,
   hide,
   gap,
+  editId,
 }) => {
   const { isMobile } = useResponsive();
 
@@ -74,6 +76,7 @@ const StatusFields = ({
             onBlur={handleBlur}
             setTouched={setFieldTouched}
             touched={touched?.date}
+            minDate={getMinDate({ id: editId, date: values?.date })}
           />
         </Grid>
 

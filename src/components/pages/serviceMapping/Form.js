@@ -267,8 +267,6 @@ const Form = () => {
     },
   });
 
-  console.log(errors);
-
   useEffect(() => {
     if (editId) mutate();
   }, []);

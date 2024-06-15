@@ -2,17 +2,21 @@ import { Refresh } from "@mui/icons-material";
 import { Grid } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useSelector } from "react-redux";
 import { getApiService, postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
+import { CODES } from "../../../constants/globalConstants";
 import {
   listInitialValues as initialValues,
   listColumns,
   listFields,
 } from "../../../constants/serviceMapping/serviceMapping";
+import useResponsive from "../../../hooks/useResponsive";
 import useTableCustomHooks from "../../../hooks/useTableCustomHooks";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { ListingContainer, SubmitButton } from "../../../styles";
 import { formatDate } from "../../../utils/common";
+import { getTableSchemas } from "../../../utils/tableSchemas";
 import { listValidationSchema } from "../../../validations/serviceMapping/serviceMapping";
 import {
   CustomDatePicker,
@@ -22,10 +26,7 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
-import useResponsive from "../../../hooks/useResponsive";
 import ResponsiveList from "../../shared/ResponsiveList";
-import { getTableSchemas } from "../../../utils/tableSchemas";
-import { useSelector } from "react-redux";
 
 const List = () => {
   const { isMobile } = useResponsive();
@@ -38,6 +39,7 @@ const List = () => {
     handleTableData,
     tableReRenderActions,
   } = useTableCustomHooks(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
+
   const {
     values,
     errors,
@@ -51,6 +53,7 @@ const List = () => {
     initialValues,
     validationSchema: listValidationSchema,
   });
+
   const listParams = handleTableData();
   const { pageSize, currentPage } = tableReRenderActions();
 
@@ -75,10 +78,7 @@ const List = () => {
 
       return postApiService(
         API_PATHS?.SERVICE_MAPPING_LIST,
-        {
-          ...values,
-          ...listParams,
-        },
+        { ...values, ...listParams },
         {
           ...(values?.startDate && {
             startDate: formatDate({ date: values?.startDate, format: "iso" }),
@@ -108,7 +108,9 @@ const List = () => {
         }}
         filterFields={filterFields}
         filterFieldInitial={filterInitialValues}
-        disableNewForm={!userInfo?.serviceMapping}
+        disableNewForm={
+          !userInfo?.serviceMapping && userInfo?.role === CODES?.SEVA_KENDRA
+        }
       />
 
       <CustomRadioButton

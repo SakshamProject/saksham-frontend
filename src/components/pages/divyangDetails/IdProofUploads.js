@@ -9,7 +9,6 @@ import { API_PATHS } from "../../../api/apiPaths";
 import {
   fields,
   initialValues,
-  fileNameKeys,
 } from "../../../constants/divyangDetails/idProofUploads";
 import {
   fileKeys,
@@ -68,43 +67,44 @@ const IdProofUploads = () => {
 
   const handleOnSubmit = (values) => {
     const { date, status, description, ...remaining } = initialValues;
+
     let fileCount = 0;
     Object.keys(remaining).forEach((key) => {
       if (values[key]) fileCount++;
     });
+
+    console.log(fileCount);
+
     if (fileCount < 4) {
       dispatchSnackbarError("At least Upload any 2 Id Proofs");
-    } else {
-      const fileNames = fileNameKeys;
+      return;
+    }
 
-      const files = fileKeys.reduce((acc, key) => {
-        if (values[key]) {
-          fileNames[key + "FileName"] = values?.[key]?.name;
-          fileNames[key + "File"] = values?.[key]?.name;
-          return { ...acc, [key]: values[key] };
+    const fileNames = {};
+    const files = fileKeys.reduce((acc, key) => {
+      if (values[key]) {
+        fileNames[`${key}FileName`] = values[key].name;
+        fileNames[`${key}File`] = values[key].name;
+        acc[key] = values[key];
+        if (key === "BPL_OR_APL_Card") {
+          acc["bplOrAplCard"] = values[key];
         }
-        return acc;
-      }, {});
-      console.log({
-        values,
+      }
+      return acc;
+    }, {});
+
+    const payload = multiPartFormData(
+      {
         IdProofUploads: { ...values, fileNames },
         ...files,
         pageNumber: 2,
-        id: values?.id,
-        personId: values?.person?.id,
-      });
-      const payload = multiPartFormData(
-        {
-          IdProofUploads: { ...values, fileNames },
-          ...files,
-          pageNumber: 2,
-          id: values?.id,
-          personId: values?.person?.id,
-        },
-        fileKeys
-      );
-      mutate(payload);
-    }
+        id: values.id || editId || "",
+        personId: values.personId || values.person?.id || "",
+      },
+      [...fileKeys, "bplOrAplCard"]
+    );
+
+    mutate(payload);
   };
 
   const { mutate: getById } = useMutation({
@@ -119,7 +119,6 @@ const IdProofUploads = () => {
         drivingLicenseNumber: remaining?.drivingLicense,
         ...getFilesUrl(data?.files),
       });
-      console.log(values);
     },
   });
 
@@ -140,8 +139,6 @@ const IdProofUploads = () => {
     validationSchema,
     onSubmit: handleOnSubmit,
   });
-
-  console.log(errors);
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>

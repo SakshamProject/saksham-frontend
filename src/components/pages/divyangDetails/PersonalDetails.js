@@ -95,22 +95,21 @@ const PersonalDetails = () => {
               }),
             })
           ),
-          fileNames : {
-            profilePhotoFileName : values?.picture?.name
-          }
+          fileNames: {
+            profilePhotoFileName: values?.profilePhoto?.name || "null",
+          },
         },
-        // picture: values?.picture,
-        profilePhoto: values?.picture,
+        profilePhoto: values?.profilePhoto,
         pageNumber: 1,
+        id: values?.id || editId || "",
+        personId: values?.personId || values?.person?.id || "",
         auditLog: {
           status: values?.status,
           date: formatDate({ date: values?.date, format: "iso" }),
           description: values?.description,
         },
-        id: values?.id,
-        personId: values?.person?.id,
       },
-      ["picture", "profilePhoto"]
+      ["profilePhoto"]
     );
     onSubmit(payload);
   };
@@ -284,7 +283,6 @@ const PersonalDetails = () => {
     mutationKey: ["divyangGetById"],
     mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
-      console.log(getFilesUrl(data?.files));
       setValues({
         ...initialValues,
         ...data?.data,
@@ -303,10 +301,7 @@ const PersonalDetails = () => {
         ),
         ...getFilesUrl(data?.files),
       });
-
-      console.log({values});
     },
-
   });
 
   useEffect(() => {
@@ -388,20 +383,15 @@ const PersonalDetails = () => {
               type={"image"}
               accept={"image/*"}
               setFieldValue={setFieldValue}
-              name={editId ? "profilePhoto" : fields?.picture?.name}
-              defaultLabel={fields?.picture?.label}
-              label={
-                values?.pictureFileName || values?.profilePhotoFileName || ""
-              }
-              value={values?.picture || values?.profilePhoto || ""}
-              error={errors?.picture || errors?.profilePhoto}
-              touched={touched?.picture || touched?.profilePhoto}
-              onChange={(e) =>
-                setFieldValue(
-                  editId ? "profilePhoto" : fields?.picture?.name,
-                  e?.target?.files[0]
-                )
-              }
+              name={fields?.profilePhoto?.name}
+              defaultLabel={fields?.profilePhoto?.label}
+              label={values?.profilePhotoFileName || ""}
+              value={values?.profilePhoto || ""}
+              error={errors?.profilePhoto}
+              touched={touched?.profilePhoto}
+              onChange={(e) => {
+                setFieldValue(fields?.profilePhoto?.name, e?.target?.files[0]);
+              }}
               disabled={isViewMode}
             />
           </Grid>
@@ -793,6 +783,7 @@ const PersonalDetails = () => {
               isViewMode={isViewMode}
               statusHistory={values?.auditLog}
               disableListLayout
+              editId={editId}
             />
           </WithCondition>
 

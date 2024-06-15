@@ -36,13 +36,9 @@ export const validationSchema = object({
     )
     .nullable(),
   panCard: string()
-    .test(
-      "panCardPicture",
-      "Pan is required",
-      (value, context) => {
-        console.log(value);
-        return!(context.parent?.panCardNumber && !value)}
-    )
+    .test("panCardPicture", "Pan is required", (value, context) => {
+      return !(context.parent?.panCardNumber && !value);
+    })
     .nullable(),
   drivingLicenseNumber: string()
     .trim()

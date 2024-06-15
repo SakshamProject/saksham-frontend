@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -31,7 +32,6 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../../shared";
-import { useEffect } from "react";
 
 const Form = () => {
   const { state } = useLocation();
@@ -194,7 +194,12 @@ const Form = () => {
           name={fields?.stateId?.name}
           value={values?.stateId}
           onChange={(_, value) => {
-            setFieldValue(fields?.stateId?.name, value);
+            setValues({
+              ...values,
+              [fields?.stateId?.name]: value,
+              [fields?.districtId?.name]: "",
+              [fields?.sevaKendraId?.name]: "",
+            });
           }}
           onBlur={handleBlur}
           errors={errors?.stateId}
@@ -210,7 +215,11 @@ const Form = () => {
           name={fields?.districtId?.name}
           value={values?.districtId}
           onChange={(_, value) => {
-            setFieldValue(fields?.districtId?.name, value);
+            setValues({
+              ...values,
+              [fields?.districtId?.name]: value,
+              [fields?.sevaKendraId?.name]: "",
+            });
           }}
           onBlur={handleBlur}
           errors={errors?.districtId}

@@ -5,7 +5,7 @@ export const initialValues = {
   firstName: "",
   lastName: "",
   divyangId: "",
-  picture: "",
+  profilePhoto: "",
   gender: CODES?.MALE,
   bloodGroup: "",
   dateOfBirth: "",
@@ -48,9 +48,9 @@ export const fields = {
     label: "Divyang ID *",
     name: "divyangId",
   },
-  picture: {
-    label: "Upload picture",
-    name: "picture",
+  profilePhoto: {
+    label: "Upload Profile",
+    name: "profilePhoto",
   },
   gender: {
     label: "Gender",
@@ -187,14 +187,19 @@ export const fileKeys = [
   "profilePhoto",
 ];
 
-export const getFilesUrl = (files) =>
-  files?.reduce((acc, file) => {
-    const key = Object.keys(file)[0];
-    if (key === "profilePhoto") {
-      return { ...acc, [key]: file?.[key]?.url, picture: file?.[key]?.url };
-    }
-    if (fileKeys.includes(key)) {
-      return { ...acc, [key]: file?.[key]?.url };
-    }
-    return acc;
-  }, {});
+export const getFilesUrl = (files) => {
+  console.log({ files });
+
+  return {};
+
+  // return files?.reduce((acc, file) => {
+  //   const key = Object.keys(file)[0];
+  //   if (key === "profilePhoto") {
+  //     return { ...acc, [key]: file?.[key]?.url, picture: file?.[key]?.url };
+  //   }
+  //   if (fileKeys.includes(key)) {
+  //     return { ...acc, [key]: file?.[key]?.url };
+  //   }
+  //   return acc;
+  // }, {});
+};

@@ -46,11 +46,11 @@ const Form = () => {
     const payload = multiPartFormData(
       {
         ...value,
+        currentStatus: value?.status,
         dateOfBirth: formatDate({
           date: value?.dateOfBirth,
           format: "iso",
         }),
-        currentStatus: value?.status,
         effectiveDate: formatDate({
           date: value?.date,
           format: "iso",
@@ -59,6 +59,9 @@ const Form = () => {
           status: value?.status,
           date: formatDate({ date: value?.date, format: "iso" }),
           description: value?.description,
+        },
+        fileNames: {
+          profilePhotoFileName: value?.profilePhoto?.name || "null",
         },
       },
       ["profilePhoto"]
@@ -456,6 +459,7 @@ const Form = () => {
           isViewMode={isViewMode}
           statusHistory={values?.auditLog}
           disableListLayout
+          editId={editId}
         />
       </WithCondition>
 
