@@ -5,7 +5,6 @@ export const multiPartFormData = (workData, stringify = []) => {
     Object.keys(data).forEach((key) => {
       const value = data[key];
       const newKey = parentKey ? `${parentKey}[${key}]` : key;
-
       if (
         typeof value === "object" &&
         !!value &&
@@ -13,6 +12,7 @@ export const multiPartFormData = (workData, stringify = []) => {
       ) {
         appendFormData(value, newKey);
       } else if (!!value) {
+        console.log({ newKey, value });
         form.append(
           newKey,
           typeof value === "string"

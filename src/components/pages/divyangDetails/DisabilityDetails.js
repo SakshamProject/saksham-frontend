@@ -82,7 +82,7 @@ const DisabilityDetails = () => {
           id: values?.id,
           personId: values?.person?.id,
         },
-        ["UDIDCard"]
+        ["UDIDCard", "disabilityCard"]
       );
       onSubmit(payload);
     }
