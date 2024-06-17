@@ -51,8 +51,10 @@ const IdProofUploads = () => {
 
   const { mutate } = useMutation({
     mutationKey: ["divyangUpdate", editId],
-    mutationFn: (payload) =>
-      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload),
+    mutationFn: (payload) => {
+      console.log(editId);
+      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload);
+    },
     onSuccess: () => {
       dispatchResponseAction(
         "Id Proof",
@@ -63,6 +65,7 @@ const IdProofUploads = () => {
         { state }
       );
     },
+
   });
 
   const handleOnSubmit = (values) => {
@@ -72,8 +75,6 @@ const IdProofUploads = () => {
     Object.keys(remaining).forEach((key) => {
       if (values[key]) fileCount++;
     });
-
-    console.log(fileCount);
 
     if (fileCount < 4) {
       dispatchSnackbarError("At least Upload any 2 Id Proofs");

@@ -188,18 +188,13 @@ export const fileKeys = [
 ];
 
 export const getFilesUrl = (files) => {
-  console.log({ files });
-
-  return {};
-
-  // return files?.reduce((acc, file) => {
-  //   const key = Object.keys(file)[0];
-  //   if (key === "profilePhoto") {
-  //     return { ...acc, [key]: file?.[key]?.url, picture: file?.[key]?.url };
-  //   }
-  //   if (fileKeys.includes(key)) {
-  //     return { ...acc, [key]: file?.[key]?.url };
-  //   }
-  //   return acc;
-  // }, {});
+  return Object.keys(files)?.reduce((acc, key) => {
+    if (key === "profilePhoto") {
+      return { ...acc, [key]: files?.[key]?.url, picture: files?.[key]?.url };
+    }
+    if (fileKeys.includes(key)) {
+      return { ...acc, [key]: files?.[key]?.url };
+    }
+    return acc;
+  }, {});
 };

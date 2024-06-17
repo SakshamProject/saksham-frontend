@@ -43,29 +43,36 @@ const Form = () => {
   const editId = state?.editId;
 
   const handleOnSubmit = (value) => {
-    const payload = multiPartFormData(
-      {
-        ...value,
-        currentStatus: value?.status,
-        dateOfBirth: formatDate({
-          date: value?.dateOfBirth,
-          format: "iso",
-        }),
-        effectiveDate: formatDate({
-          date: value?.date,
-          format: "iso",
-        }),
-        auditlog: {
-          status: value?.status,
-          date: formatDate({ date: value?.date, format: "iso" }),
-          description: value?.description,
-        },
-        fileNames: {
-          profilePhotoFileName: value?.profilePhoto?.name || "null",
-        },
+    const { profilePhoto = "", ...remains } = value;
+    const sendData = {
+      ...remains,
+      currentStatus: value?.status,
+      dateOfBirth: formatDate({
+        date: value?.dateOfBirth,
+        format: "iso",
+      }),
+      effectiveDate: formatDate({
+        date: value?.date,
+        format: "iso",
+      }),
+      auditlog: {
+        status: value?.status,
+        date: formatDate({ date: value?.date, format: "iso" }),
+        description: value?.description,
       },
-      ["profilePhoto"]
-    );
+      fileNames: {
+        ...(typeof profilePhoto !== "string"
+          ? {
+              profilePhotoFileName: value?.profilePhoto?.name,
+            }
+          : !profilePhoto && { profilePhotoFileName: "null" }),
+      },
+      ...(typeof profilePhoto !== "string" && { profilePhoto }),
+    };
+    console.log(sendData);
+    if (typeof profilePhoto === "string" && profilePhoto)
+      sendData.fileNames = undefined;
+    const payload = multiPartFormData(sendData, ["profilePhoto"]);
     onSubmit(payload);
   };
 
