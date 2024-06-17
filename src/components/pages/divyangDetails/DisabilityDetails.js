@@ -62,11 +62,14 @@ const DisabilityDetails = () => {
     );
 
   const handleOnSubmit = (values) => {
-    console.log(values);
     if (values?.disabilities?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
-      console.log(values);
+      const disabilities = values?.disabilities?.map((disability) => {
+        console.log(multiPartFormData(disability, ["disabilityCard"]));
+        return multiPartFormData(disability, ["disabilityCard"]);
+      });
+      console.log(disabilities);
       const payload = multiPartFormData(
         {
           disabilityDetails: {
@@ -82,8 +85,9 @@ const DisabilityDetails = () => {
           id: values?.id,
           personId: values?.person?.id,
         },
-        ["UDIDCard", "disabilityCard"]
+        ["UDIDCard"]
       );
+      payload.set("disabilityDetails.disabilityCard", disabilities);
       onSubmit(payload);
     }
   };

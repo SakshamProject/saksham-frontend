@@ -12,7 +12,6 @@ export const multiPartFormData = (workData, stringify = []) => {
       ) {
         appendFormData(value, newKey);
       } else if (!!value) {
-        console.log({ newKey, value });
         form.append(
           newKey,
           typeof value === "string"
