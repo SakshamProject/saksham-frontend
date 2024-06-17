@@ -63,13 +63,12 @@ const Form = () => {
       fileNames: {
         ...(typeof profilePhoto !== "string"
           ? {
-              profilePhotoFileName: value?.profilePhoto?.name,
+              profilePhotoFileName: profilePhoto?.name,
             }
           : !profilePhoto && { profilePhotoFileName: "null" }),
       },
       ...(typeof profilePhoto !== "string" && { profilePhoto }),
     };
-    console.log(sendData);
     if (typeof profilePhoto === "string" && profilePhoto)
       sendData.fileNames = undefined;
     const payload = multiPartFormData(sendData, ["profilePhoto"]);

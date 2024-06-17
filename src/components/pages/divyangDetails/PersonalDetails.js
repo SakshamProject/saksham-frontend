@@ -75,42 +75,47 @@ const PersonalDetails = () => {
       dispatchSnackbarError("At least Add One Education Qualification");
       return;
     }
-    const payload = multiPartFormData(
-      {
-        personalDetails: {
-          ...values,
-          isMarried: values?.isMarried === CODES?.YES,
-          date: formatDate({ date: values?.date, format: "iso" }),
-          dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-          effectiveDate: editId
-            ? values?.effectiveDate || ""
-            : formatDate({ date: new Date(), format: "iso" }),
-          currentStatus: values?.status,
-          educationQualifications: values?.educationQualifications?.map(
-            (value) => ({
-              educationQualificationTypeId:
-                value?.educationQualificationTypeId?.id,
-              ...(value?.educationQualificationId && {
-                educationQualificationId: value?.educationQualificationId?.id,
-              }),
-            })
-          ),
-          fileNames: {
-            profilePhotoFileName: values?.profilePhoto?.name || "null",
-          },
-        },
-        profilePhoto: values?.profilePhoto,
-        pageNumber: 1,
-        id: values?.id || editId || "",
-        personId: values?.personId || values?.person?.id || "",
-        auditLog: {
-          status: values?.status,
-          date: formatDate({ date: values?.date, format: "iso" }),
-          description: values?.description,
+    const { profilePhoto = "" } = values;
+    const sendData = {
+      personalDetails: {
+        ...values,
+        isMarried: values?.isMarried === CODES?.YES,
+        date: formatDate({ date: values?.date, format: "iso" }),
+        dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
+        effectiveDate: editId
+          ? values?.effectiveDate || ""
+          : formatDate({ date: new Date(), format: "iso" }),
+        currentStatus: values?.status,
+        educationQualifications: values?.educationQualifications?.map(
+          (value) => ({
+            educationQualificationTypeId:
+              value?.educationQualificationTypeId?.id,
+            ...(value?.educationQualificationId && {
+              educationQualificationId: value?.educationQualificationId?.id,
+            }),
+          })
+        ),
+        fileNames: {
+          ...(typeof profilePhoto !== "string"
+            ? {
+                profilePhotoFileName: profilePhoto?.name,
+              }
+            : !profilePhoto && { profilePhotoFileName: "null" }),
         },
       },
-      ["profilePhoto"]
-    );
+      ...(typeof profilePhoto !== "string" && { profilePhoto }),
+      pageNumber: 1,
+      id: values?.id || editId || "",
+      personId: values?.personId || values?.person?.id || "",
+      auditLog: {
+        status: values?.status,
+        date: formatDate({ date: values?.date, format: "iso" }),
+        description: values?.description,
+      },
+    };
+    if (typeof profilePhoto === "string" && profilePhoto)
+      sendData.fileNames = undefined;
+    const payload = multiPartFormData(sendData, ["profilePhoto"]);
     onSubmit(payload);
   };
 
@@ -127,7 +132,7 @@ const PersonalDetails = () => {
       );
       navigate(
         { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
-        { state: { editId: data?.data?.id, isViewMode } }
+        { state: { editId: data?.id, isViewMode } }
       );
     },
   });

@@ -66,6 +66,7 @@ const DisabilityDetails = () => {
     if (values?.disabilities?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
+      console.log(values);
       const payload = multiPartFormData(
         {
           disabilityDetails: {
@@ -76,6 +77,7 @@ const DisabilityDetails = () => {
                 : values.UDIDCardFile,
           },
           UDIDCard: values?.UDIDCardFile,
+          fileNames: { UDIDCardFileName: values?.UDIDCardFile?.name },
           pageNumber: 4,
           id: values?.id,
           personId: values?.person?.id,
