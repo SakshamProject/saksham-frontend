@@ -62,6 +62,7 @@ const DisabilityDetails = () => {
     );
 
   const handleOnSubmit = (values) => {
+    console.log(values);
     if (values?.disabilities?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
@@ -148,7 +149,9 @@ const DisabilityDetails = () => {
           date: multiValues?.dateOfIssue,
           format: "iso",
         }),
-        disabilityCardFileName: multiValues?.disabilityCard?.name,
+        fileNames: {
+          disabilityCardFileName: multiValues?.disabilityCard?.name,
+        },
       };
       setValues({
         ...values,
@@ -168,6 +171,8 @@ const DisabilityDetails = () => {
       setTableEditId("");
     },
   });
+
+  console.log(multiErrors);
 
   const { data: disabilityTypes } = useQuery({
     queryKey: ["disabilityTypes"],

@@ -52,7 +52,8 @@ export const multiValidationSchema = object({
       "Disability Since is required",
       (value, context) =>
         !(context.parent?.isDisabilitySinceBirth !== CODES?.YES && !value)
-    ),
+    )
+    .nullable(),
   disabilityArea: string()
     .trim()
     .min(3, "Disability Area must be at least 3 characters long")

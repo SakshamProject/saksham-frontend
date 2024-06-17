@@ -85,7 +85,7 @@ const IdProofUploads = () => {
     const files = fileKeys.reduce((acc, key) => {
       if (values[key]) {
         fileNames[`${key}FileName`] = values[key].name;
-        fileNames[`${key}File`] = values[key].name;
+        // fileNames[`${key}File`] = values[key].name;
         acc[key] = values[key];
         if (key === "BPL_OR_APL_Card") {
           acc["bplOrAplCard"] = values[key];
