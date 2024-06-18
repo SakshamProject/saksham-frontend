@@ -45,12 +45,14 @@ const Signup = () => {
       {
         ...values,
         dateOfBirth: formatDate({ date: values?.dateOfBirth, format: "iso" }),
-        fileNames: {
-          ...(typeof profilePhoto !== "string"
-            ? {
-                profilePhotoFileName: values?.profilePhoto?.name,
-              }
-            : !values?.profilePhoto && { profilePhotoFileName: "null" }),
+        personalDetails: {
+          fileNames: {
+            ...(typeof profilePhoto !== "string"
+              ? {
+                  profilePhotoFileName: values?.profilePhoto?.name,
+                }
+              : !values?.profilePhoto && { profilePhotoFileName: "null" }),
+          },
         },
         ...(typeof values?.profilePhoto !== "string" && {
           profilePhoto: values?.profilePhoto,

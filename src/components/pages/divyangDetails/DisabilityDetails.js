@@ -154,9 +154,7 @@ const DisabilityDetails = () => {
           date: multiValues?.dateOfIssue,
           format: "iso",
         }),
-        fileNames: {
-          disabilityCardFileName: multiValues?.disabilityCard?.name,
-        },
+        disabilityCardFileName: multiValues?.disabilityCard?.name,
       };
       setValues({
         ...values,
