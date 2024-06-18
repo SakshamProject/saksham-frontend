@@ -65,29 +65,28 @@ const DisabilityDetails = () => {
     if (values?.disabilities?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
-      const disabilities = values?.disabilities?.map((disability) => {
-        console.log(multiPartFormData(disability, ["disabilityCard"]));
-        return multiPartFormData(disability, ["disabilityCard"]);
-      });
-      console.log(disabilities);
-      const payload = multiPartFormData(
-        {
-          disabilityDetails: {
-            ...values,
-            UDIDCardFile:
-              typeof values?.UDIDCardFile === "object"
-                ? "null"
-                : values.UDIDCardFile,
-          },
-          UDIDCard: values?.UDIDCardFile,
-          fileNames: { UDIDCardFileName: values?.UDIDCardFile?.name },
-          pageNumber: 4,
-          id: values?.id,
-          personId: values?.person?.id,
+      const sendData = {
+        disabilityDetails: {
+          ...values,
+          UDIDCardFile:
+            typeof values?.UDIDCardFile === "object"
+              ? "null"
+              : values.UDIDCardFile,
         },
-        ["UDIDCard"]
-      );
-      payload.set("disabilityDetails.disabilityCard", disabilities);
+        UDIDCard: values?.UDIDCardFile,
+        fileNames: { UDIDCardFileName: values?.UDIDCardFile?.name },
+        pageNumber: 4,
+        id: values?.id,
+        personId: values?.person?.id,
+      };
+
+      const payload = multiPartFormData(sendData, [
+        "UDIDCard",
+        ...sendData?.disabilityDetails?.disabilities?.map(
+          (disability, index) =>
+            `disabilityDetails[disabilities][${index}][disabilityCard]`
+        ),
+      ]);
       onSubmit(payload);
     }
   };
