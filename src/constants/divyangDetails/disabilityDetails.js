@@ -23,7 +23,7 @@ export const multiPartInitialState = {
   disabilityPercentage: "",
   disabilityDueTo: "",
   certificateIssueAuthority: "",
-  disabilityCard: "",
+  disabilityCards: "",
   dateOfIssue: "",
 };
 
@@ -62,9 +62,9 @@ export const fields = {
     label: "Certificate Issuing Authority *",
     name: "certificateIssueAuthority",
   },
-  disabilityCard: {
+  disabilityCards: {
     label: "Upload Disability Card",
-    name: "disabilityCard",
+    name: "disabilityCards",
   },
   dateOfIssue: {
     label: "Date of Issue *",
@@ -129,8 +129,13 @@ export const columnData = ({
     Cell: ({ row }) => {
       return (
         <EditDelete
-          onEdit={() => handleEditList(row?.index)}
-          onDelete={() => handleDeleteList(row?.index)}
+          onEdit={() => {
+            handleEditList(row?.original?.id);
+          }}
+          onDelete={() => {
+            handleDeleteList(row?.original?.id);
+            console.log(row?.original);
+          }}
           isViewMode={!!tableEditId || tableEditId === 0}
         />
       );

@@ -28,6 +28,8 @@ export const API_PATHS = {
   DISTRICTS: "/api/typemaster/generalmaster/districts",
   DIVYANG_DETAILS: "/api/divyangDetails",
   DIVYANG_DETAILS_LIST: "/api/divyangDetails/list",
+  DISABLITY_CARDS_LIST: "/api/divyangDetails/disabilityCards/list",
+  DISABLITY_CARD: "/api/divyangDetails/disabilityCards",
   SERVICES: "/api/services",
   SERVICES_LIST: "/api/services/list",
   SERVICE_MAPPING: "/api/servicemapping",

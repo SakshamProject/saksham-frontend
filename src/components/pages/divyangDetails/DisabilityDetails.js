@@ -5,8 +5,11 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  deleteApiService,
   getApiService,
   getByIdApiService,
+  postApiService,
+  putApiService,
   updateApiService,
 } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
@@ -107,6 +110,26 @@ const DisabilityDetails = () => {
     },
   });
 
+  const { mutate: handleCardSubmit } = useMutation({
+    mutationKey: ["addDisablityCards"],
+    mutationFn: (data) => {
+      console.log(tableEditId);
+      return tableEditId
+        ? putApiService(API_PATHS?.DISABLITY_CARD + "/" + tableEditId, data)
+        : postApiService(API_PATHS?.DISABLITY_CARD, data);
+    },
+    onSuccess: () => {
+      dispatchResponseAction(
+        "Disablity Card Added",
+        tableEditId ? CODES?.UPDATED : CODES?.ADDED
+      );
+      getDisablityCards();
+      setTableEditId("");
+      multiResetForm();
+      mutate();
+    },
+  });
+
   const {
     values,
     handleChange,
@@ -115,7 +138,6 @@ const DisabilityDetails = () => {
     errors,
     handleSubmit,
     setFieldValue,
-    setFieldTouched,
     setValues,
   } = useFormik({
     initialValues,
@@ -138,44 +160,49 @@ const DisabilityDetails = () => {
     initialValues: multiPartInitialState,
     validationSchema: multiValidationSchema,
     onSubmit: () => {
-      const dataValue = {
-        ...multiValues,
-        isDisabilitySinceBirth:
-          multiValues?.isDisabilitySinceBirth === CODES?.YES ? "true" : "false",
-        disabilitySince:
-          multiValues?.isDisabilitySinceBirth === CODES?.NO
-            ? formatDate({
-                date: multiValues?.disabilitySince,
-                format: "iso",
-              })
-            : "",
-        disabilityPercentage: Number(multiValues?.disabilityPercentage),
-        dateOfIssue: formatDate({
-          date: multiValues?.dateOfIssue,
-          format: "iso",
-        }),
-        disabilityCardFileName: multiValues?.disabilityCard?.name,
-      };
-      setValues({
-        ...values,
-        ...(!!tableEditId || tableEditId === 0
-          ? {
-              disabilities: [
-                ...values?.disabilities?.slice(0, tableEditId),
-                dataValue,
-                ...values?.disabilities?.slice(tableEditId + 1),
-              ],
-            }
-          : {
-              disabilities: [...values?.disabilities, dataValue],
-            }),
-      });
-      multiResetForm();
-      setTableEditId("");
+      const dataValue = multiPartFormData(
+        {
+          ...multiValues,
+          isDisabilitySinceBirth:
+            multiValues?.isDisabilitySinceBirth === CODES?.YES
+              ? "true"
+              : "false",
+          disabilitySince:
+            multiValues?.isDisabilitySinceBirth === CODES?.NO
+              ? formatDate({
+                  date: multiValues?.disabilitySince,
+                  format: "iso",
+                })
+              : "",
+          disabilityPercentage: Number(multiValues?.disabilityPercentage),
+          dateOfIssue: formatDate({
+            date: multiValues?.dateOfIssue,
+            format: "iso",
+          }),
+          disabilityCardFileName: multiValues?.disabilityCard?.name,
+          personId: values?.personId,
+          divyangId: values?.id || editId,
+        },
+        ["disabilityCards"]
+      );
+      handleCardSubmit(dataValue);
+      // setValues({
+      //   ...values,
+      //   ...(!!tableEditId || tableEditId === 0
+      //     ? {
+      //         disabilities: [
+      //           ...values?.disabilities?.slice(0, tableEditId),
+      //           dataValue,
+      //           ...values?.disabilities?.slice(tableEditId + 1),
+      //         ],
+      //       }
+      //     : {
+      //         disabilities: [...values?.disabilities, dataValue],
+      //       }),
+      // });
+      // multiResetForm();
     },
   });
-
-  console.log(multiErrors);
 
   const { data: disabilityTypes } = useQuery({
     queryKey: ["disabilityTypes"],
@@ -194,6 +221,13 @@ const DisabilityDetails = () => {
     enabled: !!multiValues.disabilityTypeId,
   });
 
+  const { data: diablityCards, refetch: getDisablityCards } = useQuery({
+    queryKey: ["diablityCards"],
+    queryFn: () =>
+      getByIdApiService(API_PATHS?.DISABLITY_CARDS_LIST, values?.divyangId),
+    enabled: !!values?.personId,
+  });
+
   const { mutate } = useMutation({
     mutationKey: ["divyangGetById"],
     mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
@@ -204,6 +238,7 @@ const DisabilityDetails = () => {
         ...remaining,
         UDIDCardNumber: remaining?.udidCardNumber,
         UDIDEnrollmentNumber: remaining?.udidEnrollmentNumber,
+        UDIDCardFile: remaining?.UDIDCardFile || "",
         ...getFilesUrl(data?.files),
       });
     },
@@ -213,23 +248,57 @@ const DisabilityDetails = () => {
     if (editId) mutate();
   }, []);
 
-  const handleEditList = (id) => {
-    setTableEditId(id);
-    multiSetValues({
-      ...values?.disabilities?.[id],
-      isDisabilitySinceBirth:
-        values?.disabilities?.[id]?.isDisabilitySinceBirth === "true" ||
-        values?.disabilities?.[id]?.isDisabilitySinceBirth === true
-          ? CODES?.YES
-          : CODES?.NO,
-    });
-  };
+  // const handleEditList = (id) => {
+  //   setTableEditId(id);
+  //   multiSetValues({
+  //     ...values?.disabilities?.[id],
+  //     isDisabilitySinceBirth:
+  //       values?.disabilities?.[id]?.isDisabilitySinceBirth === "true" ||
+  //       values?.disabilities?.[id]?.isDisabilitySinceBirth === true
+  //         ? CODES?.YES
+  //         : CODES?.NO,
+  //   });
+  // };
 
-  const handleDeleteList = (id) =>
-    setFieldValue(
-      "disabilities",
-      values?.disabilities?.filter((_, index) => id !== index)
-    );
+  const { mutate: handleEditList } = useMutation({
+    mutationKey: ["getDisablityCard"],
+    mutationFn: (id) => {
+      setTableEditId(id);
+      return getByIdApiService(API_PATHS?.DISABLITY_CARD, id);
+    },
+    onSuccess: ({ data }) => {
+      multiSetValues({
+        ...data?.data,
+        isDisabilitySinceBirth:
+          data?.isDisabilitySinceBirth === "true" ||
+          data?.isDisabilitySinceBirth === true
+            ? CODES?.YES
+            : CODES?.NO,
+        disabilityCards: data?.data?.disabilityCards || "",
+      });
+      console.log(data?.data);
+    },
+  });
+
+  // const handleDeleteList = (id) =>
+  //   setFieldValue(
+  //     "disabilities",
+  //     values?.disabilities?.filter((_, index) => id !== index)
+  //   );
+
+  const { mutate: handleDeleteList } = useMutation({
+    mutationKey: ["deleteDisablityCard"],
+    mutationFn: (id) => {
+      return deleteApiService(API_PATHS.DISABLITY_CARD, id);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  console.log(multiErrors?.disabilityCards, multiTouched?.disabilityCards, {
+    value: multiValues?.disabilityCards,
+  });
 
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
@@ -400,15 +469,15 @@ const DisabilityDetails = () => {
                   type={"image"}
                   accept={"image/*"}
                   setFieldValue={multiSetFieldValue}
-                  name={fields?.disabilityCard?.name}
-                  label={fields?.disabilityCard?.label}
-                  defaultLabel={fields?.disabilityCard?.label}
-                  value={multiValues?.disabilityCard}
-                  error={multiErrors?.disabilityCard}
-                  touched={multiTouched?.disabilityCard}
+                  name={fields?.disabilityCards?.name}
+                  label={fields?.disabilityCards?.label}
+                  defaultLabel={fields?.disabilityCards?.label}
+                  value={multiValues?.disabilityCards}
+                  error={multiErrors?.disabilityCards}
+                  touched={multiTouched?.disabilityCards}
                   onChange={(e) =>
                     multiSetFieldValue(
-                      fields?.disabilityCard?.name,
+                      fields?.disabilityCards?.name,
                       e?.target?.files[0]
                     )
                   }
