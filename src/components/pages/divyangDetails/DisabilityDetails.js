@@ -85,10 +85,10 @@ const DisabilityDetails = () => {
 
       const payload = multiPartFormData(sendData, [
         "UDIDCard",
-        ...sendData?.disabilityDetails?.disabilities?.map(
-          (disability, index) =>
-            `disabilityDetails[disabilities][${index}][disabilityCard]`
-        ),
+        // ...sendData?.disabilityDetails?.disabilities?.map(
+        //   (disability, index) =>
+        //     `disabilityDetails[disabilities][${index}][disabilityCard]`
+        // ),
       ]);
       onSubmit(payload);
     }
@@ -113,7 +113,6 @@ const DisabilityDetails = () => {
   const { mutate: handleCardSubmit } = useMutation({
     mutationKey: ["addDisablityCards"],
     mutationFn: (data) => {
-      console.log(tableEditId);
       return tableEditId
         ? putApiService(API_PATHS?.DISABLITY_CARD + "/" + tableEditId, data)
         : postApiService(API_PATHS?.DISABLITY_CARD, data);
@@ -160,31 +159,35 @@ const DisabilityDetails = () => {
     initialValues: multiPartInitialState,
     validationSchema: multiValidationSchema,
     onSubmit: () => {
-      const dataValue = multiPartFormData(
-        {
-          ...multiValues,
-          isDisabilitySinceBirth:
-            multiValues?.isDisabilitySinceBirth === CODES?.YES
-              ? "true"
-              : "false",
-          disabilitySince:
-            multiValues?.isDisabilitySinceBirth === CODES?.NO
-              ? formatDate({
-                  date: multiValues?.disabilitySince,
-                  format: "iso",
-                })
-              : "",
-          disabilityPercentage: Number(multiValues?.disabilityPercentage),
-          dateOfIssue: formatDate({
-            date: multiValues?.dateOfIssue,
-            format: "iso",
-          }),
-          disabilityCardFileName: multiValues?.disabilityCard?.name,
-          personId: values?.personId,
-          divyangId: values?.id || editId,
-        },
-        ["disabilityCards"]
-      );
+      const {
+        disabilityCards = "",
+        disabilityCardFileName,
+        ...remaining
+      } = multiValues;
+      const sendData = {
+        ...remaining,
+        isDisabilitySinceBirth:
+          multiValues?.isDisabilitySinceBirth === CODES?.YES ? "true" : "false",
+        disabilitySince:
+          multiValues?.isDisabilitySinceBirth === CODES?.NO
+            ? formatDate({
+                date: multiValues?.disabilitySince,
+                format: "iso",
+              })
+            : "",
+        disabilityPercentage: Number(multiValues?.disabilityPercentage),
+        dateOfIssue: formatDate({
+          date: multiValues?.dateOfIssue,
+          format: "iso",
+        }),
+        personId: values?.personId,
+        divyangId: values?.id || editId,
+        ...(typeof disabilityCards !== "string" && {
+          disabilityCards,
+          disabilityCardFileName: disabilityCards?.name,
+        }),
+      };
+      const dataValue = multiPartFormData(sendData, ["disabilityCards"]);
       handleCardSubmit(dataValue);
       // setValues({
       //   ...values,
@@ -221,12 +224,13 @@ const DisabilityDetails = () => {
     enabled: !!multiValues.disabilityTypeId,
   });
 
-  const { data: diablityCards, refetch: getDisablityCards } = useQuery({
+  const { data: disablityCards, refetch: getDisablityCards } = useQuery({
     queryKey: ["diablityCards"],
-    queryFn: () =>
-      getByIdApiService(API_PATHS?.DISABLITY_CARDS_LIST, values?.divyangId),
-    enabled: !!values?.personId,
+    queryFn: () => getByIdApiService(API_PATHS?.DISABLITY_CARDS_LIST, editId),
+    enabled: !!editId,
   });
+
+  console.log(disablityCards?.data?.data);
 
   const { mutate } = useMutation({
     mutationKey: ["divyangGetById"],
@@ -246,7 +250,7 @@ const DisabilityDetails = () => {
 
   useEffect(() => {
     if (editId) mutate();
-  }, []);
+  }, [editId, mutate]);
 
   // const handleEditList = (id) => {
   //   setTableEditId(id);
@@ -274,9 +278,8 @@ const DisabilityDetails = () => {
           data?.isDisabilitySinceBirth === true
             ? CODES?.YES
             : CODES?.NO,
-        disabilityCards: data?.data?.disabilityCards || "",
+        disabilityCards: data?.data?.disabilityCards || data?.file?.url || "",
       });
-      console.log(data?.data);
     },
   });
 
@@ -291,13 +294,7 @@ const DisabilityDetails = () => {
     mutationFn: (id) => {
       return deleteApiService(API_PATHS.DISABLITY_CARD, id);
     },
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
-
-  console.log(multiErrors?.disabilityCards, multiTouched?.disabilityCards, {
-    value: multiValues?.disabilityCards,
+    onSuccess: (data) => {},
   });
 
   return (
@@ -475,12 +472,12 @@ const DisabilityDetails = () => {
                   value={multiValues?.disabilityCards}
                   error={multiErrors?.disabilityCards}
                   touched={multiTouched?.disabilityCards}
-                  onChange={(e) =>
+                  onChange={(e) => {
                     multiSetFieldValue(
                       fields?.disabilityCards?.name,
-                      e?.target?.files[0]
-                    )
-                  }
+                      e?.target?.files[0] || ""
+                    );
+                  }}
                 />
               </Grid>
 
@@ -521,7 +518,7 @@ const DisabilityDetails = () => {
                     handleEditList,
                   }) || []
                 }
-                rawData={values?.disabilities || []}
+                rawData={disablityCards?.data?.data || []}
                 manualSort
                 disablePagination
                 disableLayout

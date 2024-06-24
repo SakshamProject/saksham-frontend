@@ -106,23 +106,22 @@ export const columnData = ({
 }) => [
   {
     Header: "Disability Type",
-    accessor: "disabilityTypeId",
+    accessor: "disabilityType",
     width: 220,
     sticky: "left",
-    Cell: ({ row }) =>
-      data?.find((item) => row?.original?.disabilityTypeId === item?.id)
-        ?.name || "-",
+    Cell: (props) => props?.value?.name || "",
   },
   {
-    Header: "Disability Type",
-    accessor: "disabilitySubTypeId",
+    Header: "Disability Sub Type",
+    accessor: "disabilitySubType",
     width: 220,
-    Cell: ({ row }) =>
-      data
-        ?.find((item) => row?.original?.disabilityTypeId === item?.id)
-        ?.disability?.find(
-          (item) => row?.original?.disabilitySubTypeId === item?.id
-        )?.name || "-",
+    // Cell: ({ row }) =>
+    //   data
+    //     ?.find((item) => row?.original?.disabilityTypeId === item?.id)
+    //     ?.disability?.find(
+    //       (item) => row?.original?.disabilitySubTypeId === item?.id
+    //     )?.name || "-",
+    Cell: (props) => props?.value?.name || "",
   },
   {
     Header: "Action",

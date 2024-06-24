@@ -80,7 +80,9 @@ export const multiValidationSchema = object({
   certificateIssueAuthority: string().required(
     "Certificate Issuing Authority is required"
   ),
-  disabilityCards: string().required("Disability Card Authority is required"),
+  disabilityCards: string()
+    .required("Disability Card Authority is required")
+    .nullable(),
   dateOfIssue: date()
     .typeError("Invalid date")
     .min(minMaxAge({})?.max, "Date Of Issue should be less than 100 years old")
