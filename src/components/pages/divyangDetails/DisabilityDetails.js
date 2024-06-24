@@ -75,16 +75,16 @@ const DisabilityDetails = () => {
             typeof values?.UDIDCardFile === "object"
               ? "null"
               : values.UDIDCardFile,
+          fileNames: { UDIDCardFileName: values?.UDIDCardFile?.name },
         },
-        UDIDCard: values?.UDIDCardFile,
-        fileNames: { UDIDCardFileName: values?.UDIDCardFile?.name },
+        udidCard: values?.UDIDCardFile,
         pageNumber: 4,
         id: values?.id,
         personId: values?.person?.id,
       };
 
       const payload = multiPartFormData(sendData, [
-        "UDIDCard",
+        "udidCard",
         // ...sendData?.disabilityDetails?.disabilities?.map(
         //   (disability, index) =>
         //     `disabilityDetails[disabilities][${index}][disabilityCard]`
@@ -162,8 +162,21 @@ const DisabilityDetails = () => {
       const {
         disabilityCards = "",
         disabilityCardFileName,
+        disabilityTypeId = null,
+        disabilitySubTypeId = null,
         ...remaining
       } = multiValues;
+      const isExist = disablityCardsList?.data?.data?.some((disablity) => {
+        return (
+          disablity?.disabilityTypeId === disabilityTypeId &&
+          (disablity?.disabilitySubTypeId || "") === disabilitySubTypeId &&
+          tableEditId !== disablity?.id
+        );
+      });
+      if (isExist) {
+        dispatchSnackbarError("Disablity is already exist");
+        return;
+      }
       const sendData = {
         ...remaining,
         isDisabilitySinceBirth:
@@ -186,6 +199,8 @@ const DisabilityDetails = () => {
           disabilityCards,
           disabilityCardFileName: disabilityCards?.name,
         }),
+        disabilityTypeId,
+        disabilitySubTypeId: disabilitySubTypeId,
       };
       const dataValue = multiPartFormData(sendData, ["disabilityCards"]);
       handleCardSubmit(dataValue);
@@ -224,13 +239,11 @@ const DisabilityDetails = () => {
     enabled: !!multiValues.disabilityTypeId,
   });
 
-  const { data: disablityCards, refetch: getDisablityCards } = useQuery({
+  const { data: disablityCardsList, refetch: getDisablityCards } = useQuery({
     queryKey: ["diablityCards"],
     queryFn: () => getByIdApiService(API_PATHS?.DISABLITY_CARDS_LIST, editId),
     enabled: !!editId,
   });
-
-  console.log(disablityCards?.data?.data);
 
   const { mutate } = useMutation({
     mutationKey: ["divyangGetById"],
@@ -274,8 +287,8 @@ const DisabilityDetails = () => {
       multiSetValues({
         ...data?.data,
         isDisabilitySinceBirth:
-          data?.isDisabilitySinceBirth === "true" ||
-          data?.isDisabilitySinceBirth === true
+          data?.data?.isDisabilitySinceBirth === "true" ||
+          data?.data?.isDisabilitySinceBirth === true
             ? CODES?.YES
             : CODES?.NO,
         disabilityCards: data?.data?.disabilityCards || data?.file?.url || "",
@@ -520,7 +533,7 @@ const DisabilityDetails = () => {
                     handleEditList,
                   }) || []
                 }
-                rawData={disablityCards?.data?.data || []}
+                rawData={disablityCardsList?.data?.data || []}
                 manualSort
                 disablePagination
                 disableLayout
