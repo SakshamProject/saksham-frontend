@@ -294,7 +294,9 @@ const DisabilityDetails = () => {
     mutationFn: (id) => {
       return deleteApiService(API_PATHS.DISABLITY_CARD, id);
     },
-    onSuccess: (data) => {},
+    onSuccess: () => {
+      getDisablityCards();
+    },
   });
 
   return (
