@@ -285,6 +285,8 @@ const Form = () => {
       appApi.get(API_PATHS?.DIVYANG_DETAILS, { params: payload }),
   });
 
+  console.log(searchedDivyang);
+
   const onKeyPress = (e, column) => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
       getDivyang({ column, value: e?.target?.value });
@@ -403,7 +405,7 @@ const Form = () => {
 
       <WithCondition isValid={!!editId}>
         <Grid container item xs={12} gap={3} sx={{ marginBottom: "22px" }}>
-          <DivyangCard divyangDetail={data?.data?.divyang} />
+          <DivyangCard divyangDetail={data?.data?.data?.divyang} />
         </Grid>
       </WithCondition>
 
@@ -1171,7 +1173,7 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
       onError={(e) => (e.target.src = user)}
       alt="divyang profile"
     />
-
+    {console.log({ divyangDetail })}
     <Box>
       {divyangDetailsColumn?.map((item, key) => (
         <WithCondition

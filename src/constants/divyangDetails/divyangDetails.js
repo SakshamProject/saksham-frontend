@@ -66,11 +66,13 @@ export const divyangDetailsColumn = [
         id: row?.id,
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
         view: true,
+        search: { action: "view" },
       },
       {
         label: "Edit",
         id: row?.id,
         path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
+        search: { action: "edit" },
       },
     ],
   },

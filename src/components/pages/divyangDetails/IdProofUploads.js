@@ -84,10 +84,10 @@ const IdProofUploads = () => {
       if (values[key]) {
         fileNames[`${key}FileName`] = values[key].name;
         // fileNames[`${key}File`] = values[key].name;
-        acc[key] = values[key];
-        if (key === "BPL_OR_APL_Card") {
-          acc["bplOrAplCard"] = values[key];
-        }
+        // acc[key] = values[key];
+        // if (key === "BPL_OR_APL_Card") {
+        //   acc["bplOrAplCard"] = values[key];
+        // }
       }
       return acc;
     }, {});
@@ -99,6 +99,7 @@ const IdProofUploads = () => {
         pageNumber: 2,
         id: values.id || editId || "",
         personId: values.personId || values.person?.id || "",
+        bplOrAplCard: values?.BPL_OR_APL_Card,
       },
       [...fileKeys, "bplOrAplCard"]
     );
@@ -111,12 +112,14 @@ const IdProofUploads = () => {
     mutationFn: () => getByIdApiService(API_PATHS?.DIVYANG_DETAILS, editId),
     onSuccess: ({ data }) => {
       const { auditLog, ...remaining } = data?.data || {};
+      const files = getFilesUrl(data?.files);
       setValues({
         ...initialValues,
         ...remaining,
         voterIdNumber: remaining?.voterId,
         drivingLicenseNumber: remaining?.drivingLicense,
-        ...getFilesUrl(data?.files),
+        ...files,
+        BPL_OR_APL_Card: files?.bplOrAplCard,
       });
     },
   });

@@ -132,7 +132,7 @@ const PersonalDetails = () => {
       );
       navigate(
         { pathname: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_IDPROOF, search },
-        { state: { editId: data?.id, isViewMode } }
+        { state: { editId: data?.data?.id || data?.id, isViewMode } }
       );
     },
   });

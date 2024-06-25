@@ -77,13 +77,13 @@ const Form = () => {
   });
 
   const handleOnSubmit = (value) => {
-    if (
-      value?.chips?.length < 1 &&
-      !GENERALTYPE_INCLUDE.includes(values?.typeMaster)
-    ) {
-      dispatchSnackbarError("Minimum one Sub type name is required");
-      return;
-    }
+    // if (
+    //   value?.chips?.length < 1 &&
+    //   !GENERALTYPE_INCLUDE.includes(values?.typeMaster)
+    // ) {
+    //   dispatchSnackbarError("Minimum one Sub type name is required");
+    //   return;
+    // }
     const payload = getGeneralTypePayload(value);
     const apiPath = generalTypeApiPath?.[values?.typeMaster];
 

@@ -60,8 +60,8 @@ export const FileUpload = ({
   const handleClick = () => myRefname.current.click();
 
   const onImageChange = (event) => {
-    if (event?.target?.files[0]?.size > 50000000) {
-      return dispatchSnackbarError("Size should be less than 10MB");
+    if (event?.target?.files[0]?.size > 1024 * 1024 * 5) {
+      return dispatchSnackbarError("Size should be less than 5MB");
     } else if (event?.target?.files[0]) {
       let reader = new FileReader();
       reader.onload = () => {

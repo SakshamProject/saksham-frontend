@@ -185,6 +185,7 @@ export const fileKeys = [
   "disabilityCard",
   "UDIDCard",
   "profilePhoto",
+  "bplOrAplCard",
 ];
 
 export const getFilesUrl = (files) => {
