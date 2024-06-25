@@ -162,14 +162,15 @@ const DisabilityDetails = () => {
       const {
         disabilityCards = "",
         disabilityCardFileName,
-        disabilityTypeId = null,
-        disabilitySubTypeId = null,
+        disabilityTypeId,
+        disabilitySubTypeId,
         ...remaining
       } = multiValues;
       const isExist = disablityCardsList?.data?.data?.some((disablity) => {
         return (
           disablity?.disabilityTypeId === disabilityTypeId &&
-          (disablity?.disabilitySubTypeId || "") === disabilitySubTypeId &&
+          (disablity?.disabilitySubTypeId === disabilitySubTypeId ||
+            (!disabilitySubTypeId && !disablity?.disabilitySubTypeId)) &&
           tableEditId !== disablity?.id
         );
       });
@@ -200,7 +201,7 @@ const DisabilityDetails = () => {
           disabilityCardFileName: disabilityCards?.name,
         }),
         disabilityTypeId,
-        disabilitySubTypeId: disabilitySubTypeId,
+        disabilitySubTypeId: disabilitySubTypeId || "null",
       };
       const dataValue = multiPartFormData(sendData, ["disabilityCards"]);
       handleCardSubmit(dataValue);
@@ -255,8 +256,7 @@ const DisabilityDetails = () => {
         ...remaining,
         UDIDCardNumber: remaining?.udidCardNumber,
         UDIDEnrollmentNumber: remaining?.udidEnrollmentNumber,
-        UDIDCardFile: remaining?.UDIDCardFile || "",
-        ...getFilesUrl(data?.files),
+        UDIDCardFile: data?.files?.udidCard?.url || "",
       });
     },
   });
@@ -631,7 +631,10 @@ const DisabilityDetails = () => {
                 error={errors?.UDIDCardFile}
                 touched={touched?.UDIDCardFile}
                 onChange={(e) =>
-                  setFieldValue(fields?.udidCardUrl?.name, e?.target?.files[0])
+                  setFieldValue(
+                    fields?.udidCardUrl?.name,
+                    e?.target?.files[0] || ""
+                  )
                 }
               />
             </Grid>
