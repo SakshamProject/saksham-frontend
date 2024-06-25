@@ -311,7 +311,7 @@ const PersonalDetails = () => {
 
   useEffect(() => {
     if (editId) mutate();
-  }, []);
+  }, [editId, mutate]);
 
   const handleEditList = (index) => {
     setTableEditId(index);

@@ -64,7 +64,6 @@ const IdProofUploads = () => {
         { state }
       );
     },
-
   });
 
   const handleOnSubmit = (values) => {
@@ -124,7 +123,7 @@ const IdProofUploads = () => {
 
   useEffect(() => {
     if (editId) getById();
-  }, []);
+  }, [editId, getById]);
 
   const {
     values,
