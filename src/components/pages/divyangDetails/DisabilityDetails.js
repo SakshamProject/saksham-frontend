@@ -68,9 +68,10 @@ const DisabilityDetails = () => {
     if (values?.disabilities?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
+      const { disabilities, ...remaining } = values;
       const sendData = {
         disabilityDetails: {
-          ...values,
+          ...remaining,
           UDIDCardFile:
             typeof values?.UDIDCardFile === "object"
               ? "null"
