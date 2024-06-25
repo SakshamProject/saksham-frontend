@@ -118,7 +118,7 @@ const DIVYANG_SIDE_MENU = [
   },
 ];
 
-export const getSideMenus = ({ role, designations = [], isMobile }) => {
+export const getSideMenus = ({ role, designations , isMobile }) => {
   if (role === CODES?.ADMIN) {
     return isMobile
       ? [...RIGHT_SIDE_MENU(role, isMobile), ...ADMIN_SIDE_MENUS]
@@ -130,7 +130,7 @@ export const getSideMenus = ({ role, designations = [], isMobile }) => {
   }
 
   if (role === CODES?.SEVA_KENDRA && designations?.length) {
-    return [isMobile && { name: "profile" }, ...designations]?.reduce(
+    const menu = [isMobile && { name: "profile" }, ...designations]?.reduce(
       (acc, designation) => {
         if (designation) {
           const validMenu = [
@@ -143,6 +143,7 @@ export const getSideMenus = ({ role, designations = [], isMobile }) => {
       },
       []
     );
+    return menu;
   }
 
   return [];

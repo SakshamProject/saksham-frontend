@@ -285,7 +285,6 @@ const Form = () => {
       appApi.get(API_PATHS?.DIVYANG_DETAILS, { params: payload }),
   });
 
-  console.log(searchedDivyang);
 
   const onKeyPress = (e, column) => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
@@ -436,7 +435,7 @@ const Form = () => {
               fontWeight: "500 !important",
             }}
           >
-            Service Type: {data?.data?.service?.serviceType?.name}
+            Service Type: {data?.data?.data?.service?.serviceType?.name}
           </CustomTypography>
           <CustomTypography
             color={theme?.palette?.commonColor?.grey}
@@ -447,7 +446,7 @@ const Form = () => {
               fontWeight: "500 !important",
             }}
           >
-            Service Name: {data?.data?.service?.name}
+            Service Name: {data?.data?.data?.service?.name}
           </CustomTypography>
           <CustomTypography
             color={theme?.palette?.commonColor?.grey}
@@ -460,7 +459,7 @@ const Form = () => {
           >
             Date:{" "}
             {formatDate({
-              date: data?.data?.dateOfService,
+              date: data?.data?.data?.dateOfService,
               format: "DD-MM-YYYY",
             })}
           </CustomTypography>
@@ -570,13 +569,13 @@ const Form = () => {
             <CustomDatePicker
               name={formFields?.completedDate?.name}
               label={formFields?.completedDate?.label}
-              minDate={formFields?.completedDate?.minDate}
+              // minDate={formFields?.completedDate?.minDate}
               value={values?.completedDate}
               errors={errors?.completedDate}
               touched={touched?.completedDate}
               onChange={setFieldValue}
               setTouched={setFieldTouched}
-              maxDate={formFields?.completedDate?.maxDate}
+              // maxDate={formFields?.completedDate?.maxDate}
             />
           </Grid>
 
@@ -1173,7 +1172,6 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
       onError={(e) => (e.target.src = user)}
       alt="divyang profile"
     />
-    {console.log({ divyangDetail })}
     <Box>
       {divyangDetailsColumn?.map((item, key) => (
         <WithCondition

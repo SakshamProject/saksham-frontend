@@ -154,7 +154,7 @@ const Profile = () => {
   });
 
   const { data, files, disabilityCards } = divyangDetails || {};
-  const divyangFilesUrl = getFilesUrl(files);
+  const divyangFilesUrl = {};
 
   const FileImage = styled("img")(() => ({
     width: matches ? "32%" : matchesMd ? "40%" : matchesSm ? "56%" : "74%",

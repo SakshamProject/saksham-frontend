@@ -188,7 +188,7 @@ export const fileKeys = [
   "bplOrAplCard",
 ];
 
-export const getFilesUrl = (files) => {
+export const getFilesUrl = (files = {}) => {
   return Object.keys(files)?.reduce((acc, key) => {
     if (key === "profilePhoto") {
       return { ...acc, [key]: files?.[key]?.url, picture: files?.[key]?.url };

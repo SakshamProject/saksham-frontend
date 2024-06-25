@@ -98,6 +98,8 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
       }
     });
 
+ 
+
   return (
     <StyledDrawer open={drawerOpen} onClose={() => setDrawerOpen(false)}>
       <DrawerProfileContainer>
@@ -120,7 +122,13 @@ export const ResponsiveMenu = ({ redirect, drawerOpen, setDrawerOpen }) => {
 
       <ListWrapper>
         <List component="nav">
-          {getListItem(getSideMenus({ role: userInfo?.role, isMobile: true }))}
+          {getListItem(
+            getSideMenus({
+              role: userInfo?.role,
+              isMobile: true,
+              designations: userInfo?.designation?.designations,
+            })
+          )}
         </List>
 
         <LogoutContainer>
