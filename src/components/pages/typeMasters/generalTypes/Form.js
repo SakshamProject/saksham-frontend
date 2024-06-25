@@ -79,8 +79,7 @@ const Form = () => {
   const handleOnSubmit = (value) => {
     if (
       value?.chips?.length < 1 &&
-      GENERALTYPE_INCLUDE.includes(values?.typeMaster) &&
-      !GENERAL_TYPES?.EDUCATIONAL_QUALIFICATION
+      !GENERALTYPE_INCLUDE.includes(values?.typeMaster)
     ) {
       dispatchSnackbarError("Minimum one Sub type name is required");
       return;

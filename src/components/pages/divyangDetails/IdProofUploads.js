@@ -52,7 +52,6 @@ const IdProofUploads = () => {
   const { mutate } = useMutation({
     mutationKey: ["divyangUpdate", editId],
     mutationFn: (payload) => {
-      console.log(editId);
       updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload);
     },
     onSuccess: () => {

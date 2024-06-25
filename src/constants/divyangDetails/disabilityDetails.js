@@ -133,7 +133,6 @@ export const columnData = ({
           }}
           onDelete={() => {
             handleDeleteList(row?.original?.id);
-            console.log(row?.original);
           }}
           isViewMode={!!tableEditId || tableEditId === 0}
         />

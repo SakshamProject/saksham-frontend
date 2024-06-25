@@ -19,7 +19,7 @@ import {
   initialValues,
   multiPartInitialState,
 } from "../../../constants/divyangDetails/disabilityDetails";
-import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
+// import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import { CODES } from "../../../constants/globalConstants";
 import { authorities, yesNoSeed } from "../../../constants/seeds";
 import { ROUTE_PATHS } from "../../../routes/routePaths";

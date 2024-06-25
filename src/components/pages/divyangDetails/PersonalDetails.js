@@ -307,9 +307,6 @@ const PersonalDetails = () => {
         ...getFilesUrl(data?.files),
       });
     },
-    onError: (e) => {
-      console.log(e);
-    },
   });
 
   useEffect(() => {
