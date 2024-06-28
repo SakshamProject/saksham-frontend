@@ -5,6 +5,7 @@ import Root from "./components/Root";
 import { SERVER_ERROR } from "./constants/globalConstants.js";
 import store from "./redux/store";
 import { dispatchSnackbarError } from "./utils/dispatch.js";
+import ErrorBoundary from "./components/shared/ErrorBoundary.js";
 
 const handleError = (res) => {
   const data = res?.data || {};
@@ -51,13 +52,15 @@ const queryClient = new ReactQuery.QueryClient({
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Provider store={store}>
-        <ReactQuery.QueryClientProvider client={queryClient}>
-          <Root />
-        </ReactQuery.QueryClientProvider>
-      </Provider>
-    </BrowserRouter>
+    <ErrorBoundary>
+      <BrowserRouter>
+        <Provider store={store}>
+          <ReactQuery.QueryClientProvider client={queryClient}>
+            <Root />
+          </ReactQuery.QueryClientProvider>
+        </Provider>
+      </BrowserRouter>
+    </ErrorBoundary>
   );
 };
 
