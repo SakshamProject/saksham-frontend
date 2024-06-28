@@ -145,10 +145,10 @@ export const validationSchema = object({
     .test(
       "BPL_OR_APL_Number",
       "BPL or APL is required",
-      (value, context) => !(context.parent?.BPL_OR_APL_Card && !value)
+      (value, context) => !(context.parent?.bplOrAplCard && !value)
     )
     .nullable(),
-  BPL_OR_APL_Card: string()
+  bplOrAplCard: string()
     .test(
       "BPL_OR_APL_Picture",
       "BPL or APL is required",

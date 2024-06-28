@@ -18,7 +18,7 @@ export const initialValues = {
   disabilitySchemeNumber: "",
   disabilitySchemeCard: "",
   BPL_OR_APL_Number: "",
-  BPL_OR_APL_Card: "",
+  bplOrAplCardFileName: "",
   status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
@@ -102,9 +102,9 @@ export const fields = {
     name: "BPL_OR_APL_Number",
     fieldType: "alphaNumeric",
   },
-  BPL_OR_APL_Card: {
+  bplOrAplCard: {
     label: "Upload BPL/APL Card",
-    name: "BPL_OR_APL_Card",
+    name: "bplOrAplCard",
   },
 };
 
@@ -117,5 +117,5 @@ export const fileNameKeys = {
   pensionCardFileName: null,
   medicalInsuranceCardFileName: null,
   disabilitySchemeCardFileName: null,
-  BPL_OR_APL_CardFileName: null,
+  bplOrAplCardFileName: null,
 };

@@ -81,13 +81,17 @@ const IdProofUploads = () => {
 
     const fileNames = {};
     const files = fileKeys.reduce((acc, key) => {
-      if (values[key]) {
-        fileNames[`${key}FileName`] = values[key].name;
-        // fileNames[`${key}File`] = values[key].name;
-        // acc[key] = values[key];
+      if (typeof values[key] === "object") {
+        fileNames[`${key}FileName`] = values[key]?.name;
+        acc[key] = values[key];
+        // // fileNames[`${key}File`] = values[key].name;
         // if (key === "BPL_OR_APL_Card") {
         //   acc["bplOrAplCard"] = values[key];
+        //   fileNames["bplOrAplCardFileName"] = values[key]?.name;
         // }
+      }
+      if (values[key] === null) {
+        fileNames[`${key}FileName`] = "null";
       }
       return acc;
     }, {});
@@ -99,9 +103,8 @@ const IdProofUploads = () => {
         pageNumber: 2,
         id: values.id || editId || "",
         personId: values.personId || values.person?.id || "",
-        bplOrAplCard: values?.BPL_OR_APL_Card,
       },
-      [...fileKeys, "bplOrAplCard"]
+      fileKeys
     );
 
     mutate(payload);
@@ -119,7 +122,7 @@ const IdProofUploads = () => {
         voterIdNumber: remaining?.voterId,
         drivingLicenseNumber: remaining?.drivingLicense,
         ...files,
-        BPL_OR_APL_Card: files?.bplOrAplCard,
+        // BPL_OR_APL_Card: files?.bplOrAplCard,
       });
     },
   });
@@ -536,15 +539,15 @@ const IdProofUploads = () => {
                 accept={"image/*"}
                 setFieldValue={setFieldValue}
                 disabled={isViewMode}
-                name={fields?.BPL_OR_APL_Card?.name}
-                defaultLabel={fields?.BPL_OR_APL_Card?.label}
-                label={values?.BPL_OR_APL_CardFileName}
-                value={values?.BPL_OR_APL_Card}
-                error={errors?.BPL_OR_APL_Card}
-                touched={touched?.BPL_OR_APL_Card}
+                name={fields?.bplOrAplCard?.name}
+                defaultLabel={fields?.bplOrAplCard?.label}
+                label={values?.bplOrAplCardFileName}
+                value={values?.bplOrAplCard}
+                error={errors?.bplOrAplCard}
+                touched={touched?.bplOrAplCard}
                 onChange={(e) => {
                   setFieldValue(
-                    fields?.BPL_OR_APL_Card?.name,
+                    fields?.bplOrAplCard?.name,
                     e?.target?.files[0] || null
                   );
                 }}

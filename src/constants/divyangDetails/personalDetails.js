@@ -181,7 +181,6 @@ export const fileKeys = [
   "pensionCard",
   "medicalInsuranceCard",
   "disabilitySchemeCard",
-  "BPL_OR_APL_Card",
   "disabilityCard",
   "UDIDCard",
   "profilePhoto",
