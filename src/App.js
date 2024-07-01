@@ -52,7 +52,24 @@ const queryClient = new ReactQuery.QueryClient({
 
 const App = () => {
   return (
-    <ErrorBoundary>
+    <ErrorBoundary
+      fallback={
+        <div
+          style={{
+            height: "100vh",
+            width: "100vw",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: "#fff",
+            flexDirection: "column",
+          }}
+        >
+          <h1>OOPS !</h1>
+          <h3>Something went Wrong</h3>
+        </div>
+      }
+    >
       <BrowserRouter>
         <Provider store={store}>
           <ReactQuery.QueryClientProvider client={queryClient}>

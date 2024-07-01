@@ -1,9 +1,6 @@
-import { useEffect } from "react";
+import React from "react";
 
 const Dashboard = () => {
-  useEffect(() => {
-    throw Error("Bug");
-  }, []);
   return <div>Dashboard will be available soon...</div>;
 };
 
