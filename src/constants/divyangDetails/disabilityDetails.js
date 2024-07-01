@@ -103,6 +103,7 @@ export const columnData = ({
   tableEditId,
   handleDeleteList,
   handleEditList,
+  isViewMode,
 }) => [
   {
     Header: "Disability Type",
@@ -110,6 +111,7 @@ export const columnData = ({
     width: 220,
     sticky: "left",
     Cell: (props) => props?.value?.name || "",
+    responsiveCell: ({ value }) => value?.name || "",
   },
   {
     Header: "Disability Sub Type",
@@ -122,9 +124,10 @@ export const columnData = ({
     //       (item) => row?.original?.disabilitySubTypeId === item?.id
     //     )?.name || "-",
     Cell: (props) => props?.value?.name || "",
+    responsiveCell: ({ value }) => value?.name || "",
   },
   {
-    Header: "Action",
+    Header: " ",
     Cell: ({ row }) => {
       return (
         <EditDelete
@@ -138,16 +141,18 @@ export const columnData = ({
         />
       );
     },
-    inputValues: ({ index }) => [
-      {
-        label: "Edit",
-        onClick: () => handleEditList(index),
-      },
-      {
-        label: "Delete",
-        onClick: () => handleDeleteList(index),
-      },
-    ],
-    disable: !!tableEditId || tableEditId === 0,
+    inputValues: ({ row }) => {
+      return [
+        {
+          label: "Edit",
+          onClick: () => handleEditList(row?.original?.id),
+        },
+        {
+          label: "Delete",
+          onClick: () => handleDeleteList(row?.original?.id),
+        },
+      ];
+    },
+    disable: !!tableEditId || tableEditId === 0 || isViewMode,
   },
 ];

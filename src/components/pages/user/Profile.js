@@ -20,7 +20,6 @@ import {
 const Profile = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
-  console.log(userInfo);
   return (
     <FormContainer>
       <Title>PROFILE</Title>

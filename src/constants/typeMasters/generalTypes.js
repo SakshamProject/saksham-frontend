@@ -143,7 +143,7 @@ export const generalColumns = ({
       width: 250,
     },
     {
-      Header: "Action",
+      Header: " ",
       Cell: ({ row }) => {
         return (
           <EditDelete

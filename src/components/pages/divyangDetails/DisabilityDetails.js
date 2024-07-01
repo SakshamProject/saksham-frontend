@@ -46,6 +46,8 @@ import {
   SingleAutoComplete,
   WithCondition,
 } from "../../shared";
+import useResponsive from "../../../hooks/useResponsive";
+import ResponsiveList from "../../shared/ResponsiveList";
 
 const DisabilityDetails = () => {
   const navigate = useNavigate();
@@ -57,6 +59,7 @@ const DisabilityDetails = () => {
   const editId = state?.editId;
   const [tableEditId, setTableEditId] = useState("");
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
+  const { isMobile } = useResponsive();
 
   const handleSkip = () =>
     navigate(
@@ -126,7 +129,6 @@ const DisabilityDetails = () => {
       getDisablityCards();
       setTableEditId("");
       multiResetForm();
-      mutate();
     },
   });
 
@@ -525,21 +527,45 @@ const DisabilityDetails = () => {
               />
             </WithCondition>
 
-            <Grid item xs={12} mb={6}>
-              <CustomReactTable
-                columnData={
-                  columnData({
-                    data: disabilityTypes,
-                    tableEditId,
-                    handleDeleteList,
-                    handleEditList,
-                  }) || []
-                }
-                rawData={disablityCardsList?.data?.data || []}
-                manualSort
-                disablePagination
-                disableLayout
-              />
+            <WithCondition isValid={!isMobile}>
+              <Grid item xs={12} mb={6}>
+                <CustomReactTable
+                  columnData={
+                    columnData({
+                      data: disabilityTypes,
+                      tableEditId,
+                      handleDeleteList,
+                      handleEditList,
+                    }) || []
+                  }
+                  rawData={disablityCardsList?.data?.data || []}
+                  manualSort
+                  disablePagination
+                  disableLayout
+                />
+              </Grid>
+            </WithCondition>
+
+            <Grid item xs={12} sx={{ width: "100%" }}>
+              <WithCondition isValid={isMobile}>
+                <ResponsiveList
+                  columnData={
+                    columnData({
+                      data: disabilityTypes,
+                      tableEditId,
+                      handleDeleteList,
+                      handleEditList,
+                      isViewMode,
+                    }) || []
+                  }
+                  rawData={disablityCardsList?.data?.data || []}
+                  disablePagination
+                  // onPageNumberChange={onPageNumberChange}
+                  // currentPage={currentPage}
+                  // count={data?.total}
+                  // disableFlex={disableFlex}
+                />
+              </WithCondition>
             </Grid>
 
             <Grid item xs={12}>

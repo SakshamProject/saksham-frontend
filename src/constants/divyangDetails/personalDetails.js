@@ -159,7 +159,7 @@ export const eqColumns = ({
     width: 240,
   },
   {
-    Header: "Action",
+    Header: " ",
     Cell: ({ row }) => {
       return (
         <EditDelete
@@ -169,6 +169,17 @@ export const eqColumns = ({
         />
       );
     },
+    inputValues: ({ index }) => [
+      {
+        label: "Edit",
+        onClick: () => handleEditList(index),
+      },
+      {
+        label: "Delete",
+        onClick: () => handleDeleteList(index),
+      },
+    ],
+    disable: isViewMode,
   },
 ];
 

@@ -50,6 +50,7 @@ import {
   WithCondition,
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
+import ResponsiveList from "../../shared/ResponsiveList";
 
 const PersonalDetailsContainer = styled(StyledFormContainer)(({ theme }) => ({
   width: "100% !important",
@@ -66,7 +67,7 @@ const PersonalDetails = () => {
   const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
   const [tableEditId, setTableEditId] = useState("");
-  const { theme } = useResponsive();
+  const { theme, isMobile } = useResponsive();
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
@@ -155,15 +156,15 @@ const PersonalDetails = () => {
       return;
     } else if (
       (values?.educationQualifications.some(
-        (obj) =>
+        (obj, index) =>
           obj.educationQualificationId?.id ===
-          eqValues?.educationQualificationId
+            eqValues?.educationQualificationId && tableEditId !== index
       ) &&
         !!eqValues?.educationQualificationId) ||
       (values?.educationQualifications.some(
-        (obj) =>
+        (obj, index) =>
           obj.educationQualificationTypeId?.id ===
-          eqValues?.educationQualificationTypeId
+            eqValues?.educationQualificationTypeId && tableEditId !== index
       ) &&
         !eqValues?.educationQualificationId)
     ) {
@@ -641,9 +642,12 @@ const PersonalDetails = () => {
             resetLabel={"Clear"}
             isUpdate={tableEditId === 0 || !!tableEditId}
             submitLabel="Add"
+            isViewMode={isViewMode}
           />
 
-          <WithCondition isValid={values?.educationQualifications?.length > 0}>
+          <WithCondition
+            isValid={values?.educationQualifications?.length > 0 && !isMobile}
+          >
             <Grid item xs={12} my={4}>
               <CustomReactTable
                 columnData={
@@ -661,6 +665,27 @@ const PersonalDetails = () => {
               />
             </Grid>
           </WithCondition>
+
+          <Grid item xs={12} sx={{ width: "100%" }}>
+            <WithCondition isValid={isMobile}>
+              <ResponsiveList
+                columnData={
+                  eqColumns({
+                    tableEditId,
+                    handleDeleteList,
+                    handleEditList,
+                    isViewMode,
+                  }) || []
+                }
+                rawData={values?.educationQualifications || []}
+                disablePagination
+                // onPageNumberChange={onPageNumberChange}
+                // currentPage={currentPage}
+                // count={data?.total}
+                // disableFlex={disableFlex}
+              />
+            </WithCondition>
+          </Grid>
 
           <Grid item xs={12}>
             <DividerLine gap={"10px 0 24px"} />
