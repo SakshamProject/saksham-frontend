@@ -239,15 +239,16 @@ export const getRoutes = ({ role, designations = [] }) => {
   }
 
   if (role === CODES?.SEVA_KENDRA && designations?.length > 0) {
-    return [...designations, { name: "profile" }]?.reduce(
-      (acc, designation) => {
-        const validRoutes = ADMIN_ROUTES?.filter(
-          (route) => designation?.name === route?.key
-        );
-        return [...acc, ...validRoutes];
-      },
-      []
-    );
+    return [
+      ...designations,
+      { name: "profile" },
+      { name: CODES?.SEVAKENDRA_USERS },
+    ]?.reduce((acc, designation) => {
+      const validRoutes = ADMIN_ROUTES?.filter(
+        (route) => designation?.name === route?.key
+      );
+      return [...acc, ...validRoutes];
+    }, []);
   }
 
   return [];

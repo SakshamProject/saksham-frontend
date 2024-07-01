@@ -171,7 +171,7 @@ const Form = () => {
   return (
     <FormWrapper
       title="Seva Kendra User"
-      navigateTo={ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST}
+      navigateTo={state?.backPath || ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST}
     >
       <Grid item xs={12} sm={6}>
         <SingleAutoComplete
@@ -197,7 +197,7 @@ const Form = () => {
           errors={errors?.stateId}
           touched={touched?.stateId}
           inputValues={stateList || []}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || state?.backPath}
         />
       </Grid>
 
@@ -223,7 +223,7 @@ const Form = () => {
           errors={errors?.districtId}
           touched={touched?.districtId}
           inputValues={districtList?.districts || []}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || state?.backPath}
         />
       </Grid>
 
@@ -244,7 +244,7 @@ const Form = () => {
           errors={errors?.sevaKendraId}
           touched={touched?.sevaKendraId}
           inputValues={sevaKendraList || []}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || state?.backPath}
         />
       </Grid>
 
@@ -355,7 +355,7 @@ const Form = () => {
           errors={errors?.designationId}
           touched={touched?.designationId}
           inputValues={designationsList || []}
-          isViewMode={isViewMode}
+          isViewMode={isViewMode || state?.backPath}
         />
       </Grid>
 
@@ -452,7 +452,7 @@ const Form = () => {
         </Grid>
       </WithCondition>
 
-      <WithCondition isValid={!!editId}>
+      <WithCondition isValid={!state?.backPath && !!editId}>
         <StatusFields
           setFieldTouched={setFieldTouched}
           handleBlur={handleBlur}

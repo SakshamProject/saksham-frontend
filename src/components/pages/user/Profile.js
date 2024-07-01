@@ -20,7 +20,7 @@ import {
 const Profile = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
-
+  console.log(userInfo);
   return (
     <FormContainer>
       <Title>PROFILE</Title>
@@ -51,7 +51,14 @@ const Profile = () => {
 
           <GeneralContainer>
             <IconContainer
-              onClick={() => navigate(ROUTE_PATHS?.PROFILE)}
+              onClick={() => {
+                navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_FORM, {
+                  state: {
+                    editId: userInfo?.userId,
+                    backPath: ROUTE_PATHS.PROFILE,
+                  },
+                });
+              }}
               disabled={userInfo?.role !== CODES?.SEVA_KENDRA}
             >
               <Edit />
