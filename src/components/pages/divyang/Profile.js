@@ -1,7 +1,7 @@
 import CloseIcon from "@mui/icons-material/Close";
 import { Box, Grid, IconButton, styled, useMediaQuery } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { getByIdApiService } from "../../../api/api";
@@ -13,7 +13,6 @@ import {
   divyangFilesDetail,
   permanentAddress,
 } from "../../../constants/divyang/profile";
-import { getFilesUrl } from "../../../constants/divyangDetails/personalDetails";
 import useResponsive from "../../../hooks/useResponsive";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import {
@@ -29,6 +28,7 @@ import {
   ListTopbar,
   WithCondition,
 } from "../../shared";
+import { formatDate } from "../../../utils/common";
 
 const Close = styled(IconButton)(({ theme }) => ({
   color: theme?.palette?.commonColor?.white,
@@ -153,14 +153,36 @@ const Profile = () => {
     },
   });
 
-  const { data, files, disabilityCards } = divyangDetails || {};
+  const { data, files } = divyangDetails || {};
   const divyangFilesUrl = {};
+
+  const disablityDetails = useMemo(
+    () =>
+      data?.disabilities?.map((detail) => [
+        {
+          name: "Disablity Type",
+          value: detail?.disabilityType?.name,
+        },
+        {
+          name: "Disblity Since",
+          value: formatDate({
+            date: detail?.disabilitySince,
+            format: "DD-MM-YYYY",
+          }),
+        },
+        {
+          name: "Disability Area",
+          value: detail?.disabilityArea,
+        },
+      ]),
+    [data]
+  );
 
   const FileImage = styled("img")(() => ({
     width: matches ? "32%" : matchesMd ? "40%" : matchesSm ? "56%" : "74%",
     aspectRatio: 1 / 1.41,
     objectPosition: "center",
-    objectFit: open?.image ? "cover" : "contain",
+    objectFit: open?.image ? "fill" : "contain",
     borderRadius: "4px",
     boxShadow: `0px 0px 10px 0px ${theme.palette?.shadowColor?.main} `,
     cursor: "pointer",
@@ -193,7 +215,7 @@ const Profile = () => {
                       viewDetails: false,
                       editId: userInfo?.userId,
                     },
-                  },
+                  }
                 )
               }
               style={{ margin: 0 }}
@@ -279,7 +301,7 @@ const Profile = () => {
                   onClick={() =>
                     setOpen({
                       title: item?.title,
-                      image: divyangFilesUrl?.[item?.image] || fileNotFound,
+                      image: files?.[item?.image]?.url || fileNotFound,
                     })
                   }
                   matches={`${matches}`}
@@ -291,47 +313,38 @@ const Profile = () => {
               <DividerLine gap={"8px 0 24px"} />
             </Grid>
 
-            {/* <Grid item xs={12}>
-              <CustomTypography
-                capitalize={"capitalize"}
-                variant="h6"
-                style={{
-                  fontSize: "18px",
-                  display: "flex",
-                  justifyContent: matches ? "start" : "center",
-                }}
-                color={theme.palette.commonColor.black}
-              >
-                Disability Details(1)
-              </CustomTypography>
-            </Grid>
-
-            <CustomBox matches={`${matches}`}>
-              <CustomDataShower
-                title={"Name"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Type"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Disability Since"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-              <CustomDataShower
-                title={"Disability Area"}
-                value={"Lorem Ipsum"}
-                matches={`${matches}`}
-              />
-            </CustomBox>
+            {disablityDetails?.map((item, index) => (
+              <div key={index}>
+                <Grid item xs={12}>
+                  <CustomTypography
+                    capitalize={"capitalize"}
+                    variant="h6"
+                    style={{
+                      fontSize: "18px",
+                      display: "flex",
+                      justifyContent: matches ? "start" : "center",
+                    }}
+                    color={theme.palette.commonColor.black}
+                  >
+                    Disability Details({index + 1})
+                  </CustomTypography>
+                </Grid>
+                <CustomBox matches={`${matches}`}>
+                  {item?.map((detail, index) => (
+                    <CustomDataShower
+                      title={detail?.name}
+                      value={detail?.value || "--"}
+                      matches={`${matches}`}
+                      key={index}
+                    />
+                  ))}
+                </CustomBox>
+              </div>
+            ))}
 
             <Grid item xs={12}>
               <DividerLine gap={"8px 0 24px"} />
-            </Grid> */}
+            </Grid>
 
             <CustomBox matches={`${matches}`} width={"66%"}>
               <CustomDataShower
@@ -358,7 +371,7 @@ const Profile = () => {
               <CustomTypography
                 capitalize={"capitalize"}
                 variant="h6"
-                style={{ fontSize: "24px" }}
+                style={{ fontSize: "24px", paddingTop: "20px" }}
                 color={theme.palette.commonColor.white}
               >
                 {open?.title}
@@ -392,7 +405,7 @@ const getAddress = (data, addressKeys) => {
     .map(
       (key) =>
         data[key] &&
-        (typeof data[key] === "object" ? data[key]?.name : `${data[key]}`),
+        (typeof data[key] === "object" ? data[key]?.name : `${data[key]}`)
     )
     .filter(Boolean)
     .join(", ");

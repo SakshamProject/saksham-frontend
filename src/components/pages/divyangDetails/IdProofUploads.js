@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getByIdApiService, updateApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
 import {
+  IdNumberKeys,
   fields,
   initialValues,
 } from "../../../constants/divyangDetails/idProofUploads";
@@ -96,9 +97,14 @@ const IdProofUploads = () => {
       return acc;
     }, {});
 
+    const IdNumbers = IdNumberKeys.reduce((acc, key) => {
+      if (!values[key]) acc[key]= "null";
+      return acc;
+    }, {});
+
     const payload = multiPartFormData(
       {
-        IdProofUploads: { ...values, fileNames },
+        IdProofUploads: { ...values, fileNames, ...IdNumbers },
         ...files,
         pageNumber: 2,
         id: values.id || editId || "",

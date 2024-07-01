@@ -22,7 +22,20 @@ export const initialValues = {
   status: CODES?.ACTIVE,
   date: new Date(),
   description: "",
+  bplOrAplCard: "",
 };
+
+export const IdNumberKeys = [
+  "voterIdNumber",
+  "panCardNumber",
+  "drivingLicenseNumber",
+  "rationCardNumber",
+  "aadharCardNumber",
+  "pensionCardNumber",
+  "medicalInsuranceNumber",
+  "disabilitySchemeNumber",
+  "BPL_OR_APL_Number",
+];
 
 export const fields = {
   voterIdNumber: {

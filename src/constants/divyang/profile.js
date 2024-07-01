@@ -57,6 +57,21 @@ export const divyangBasicDetails = [
   },
 ];
 
+export const disablityDetails = [
+  {
+    label: "Disablity Type",
+    accessor: "disabilityType.name",
+  },
+  {
+    label: "Disablity Since",
+    accessor: "disabilitySince",
+  },
+  {
+    label: "Disablity Area",
+    accessor: "disabilityArea",
+  },
+];
+
 export const divyangFilesDetail = [
   {
     title: "Voter ID",
