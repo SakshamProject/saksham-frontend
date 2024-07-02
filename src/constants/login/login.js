@@ -27,7 +27,6 @@ export const getUserInfo = (data) => {
     let serviceMapping = false;
 
     const designations = (data?.user?.designation?.features || [])
-      ?.slice()
       ?.sort(
         (a, b) =>
           ADMIN_ROUTES.findIndex(
@@ -38,10 +37,18 @@ export const getUserInfo = (data) => {
           )
       )
       ?.map((item) => {
-        if (item?.feature?.name === CODES?.SERVICE_MAPPING)
-          serviceMapping = true;
+        // if (item?.feature?.name === CODES?.SERVICE_MAPPING)
+        //   serviceMapping = true;
         return item?.feature;
       });
+
+    serviceMapping = designations?.some(
+      (designation) => designation?.name === CODES.SERVICE_MAPPING
+    );
+
+    if (!serviceMapping) {
+      designations?.push({ id: "12345", name: CODES.SERVICE_MAPPING });
+    }
 
     return {
       serviceMapping,
