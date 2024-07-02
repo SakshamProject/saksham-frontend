@@ -285,7 +285,6 @@ const Form = () => {
       appApi.get(API_PATHS?.DIVYANG_DETAILS, { params: payload }),
   });
 
-
   const onKeyPress = (e, column) => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
       getDivyang({ column, value: e?.target?.value });
@@ -1146,6 +1145,7 @@ export default Form;
 const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
   <Box
     sx={{
+      width: "100%",
       display: "flex",
       borderRadius: "16px",
       boxShadow: `2px 2px 4px ${theme?.palette?.shadowColor?.main}`,
@@ -1154,6 +1154,7 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
       columnGap: 2,
       position: "relative",
       cursor: "pointer",
+      overflow: "hidden",
     }}
     key={key || " "}
     onClick={() =>
@@ -1172,15 +1173,19 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
       onError={(e) => (e.target.src = user)}
       alt="divyang profile"
     />
-    <Box>
+    <Box sx={{ width: "50%" }}>
       {divyangDetailsColumn?.map((item, key) => (
         <WithCondition
           isValid={!!item?.Cell || !!divyangDetail?.[item?.accessor]}
           key={key + item?.accessor}
         >
-          <Box sx={{ display: "flex" }}>
-            <Typography>{`${item?.Header} : `}</Typography>
-            <Typography>
+          <Box sx={{ display: "flex", width: "100%" }}>
+            <Typography
+              noWrap
+              width="55%"
+              fontSize="16px"
+            >{`${item?.Header} : `}</Typography>
+            <Typography noWrap width="45%" fontSize="14px">
               {!!item?.Cell
                 ? item?.Cell(divyangDetail)
                 : divyangDetail?.[item?.accessor]}
