@@ -204,7 +204,7 @@ const Address = () => {
         </Grid>
       </WithCondition>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{ maxWidth: "100%" }}>
         <StyledFormContainer sx={{ width: "100% !important" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12}>

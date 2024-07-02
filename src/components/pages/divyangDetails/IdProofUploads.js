@@ -98,7 +98,7 @@ const IdProofUploads = () => {
     }, {});
 
     const IdNumbers = IdNumberKeys.reduce((acc, key) => {
-      if (!values[key]) acc[key]= "null";
+      if (!values[key]) acc[key] = "null";
       return acc;
     }, {});
 
@@ -159,10 +159,8 @@ const IdProofUploads = () => {
         </Grid>
       </WithCondition>
 
-      <Grid item xs={12}>
-        <StyledFormContainer
-          sx={{ width: "100% !important", marginTop: "8px" }}
-        >
+      <Grid item xs={12} style={{ maxWidth: "100%" }}>
+        <StyledFormContainer sx={{ marginTop: "8px" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12} md={6}>
               <CustomTextField

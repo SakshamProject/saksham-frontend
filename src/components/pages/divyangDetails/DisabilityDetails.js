@@ -324,7 +324,7 @@ const DisabilityDetails = () => {
         </Grid>
       </WithCondition>
 
-      <Grid item xs={12}>
+      <Grid item xs={12} style={{ maxWidth: "100%" }}>
         <StyledFormContainer style={{ width: "100%", marginTop: "8px" }}>
           <Grid container columnSpacing={3} rowSpacing={1}>
             <WithCondition isValid={!isViewMode}>

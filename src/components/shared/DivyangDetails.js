@@ -6,7 +6,7 @@ import useResponsive from "../../hooks/useResponsive";
 import { WithCondition } from "./WithCondition";
 
 export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
-  const { theme } = useResponsive();
+  const { theme, isMobile } = useResponsive();
 
   return (
     <Box
@@ -16,14 +16,14 @@ export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
         border: `1px solid ${theme?.palette?.shadowColor?.main}`,
         flexWrap: "wrap",
         flex: 1,
-        columnGap: 2,
+        columnGap: isMobile ? 1 : 1.5,
         padding: "8px",
       }}
     >
       <WithCondition isValid={!disableProfile}>
         <img
           style={{
-            width: 120,
+            width: isMobile ? 100 : 120,
             aspectRatio: 1,
             objectFit: "cover",
             borderRadius: "16px",
@@ -46,7 +46,7 @@ export const DivyangDetail = ({ divyangDetail, disableProfile }) => {
           >
             <Box sx={{ display: "flex" }}>
               <Typography>{`${item?.Header} :`}</Typography>
-              <Typography>
+              <Typography fontSize={isMobile ? "14px" : "16px"}>
                 &nbsp;
                 {!!item?.Cell
                   ? item?.Cell(divyangDetail)
