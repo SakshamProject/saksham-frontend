@@ -52,7 +52,7 @@ export const columns = [
             {
               label: "View details",
               id: row?.original?.id,
-              path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
+              path: ROUTE_PATHS?.DIVYANG_SERVICES_FORM,
               view: true,
             },
           ]}
@@ -63,14 +63,14 @@ export const columns = [
       {
         label: "View details",
         id: row?.id,
-        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
+        path: ROUTE_PATHS?.DIVYANG_SERVICES_FORM,
         view: true,
       },
-      {
-        label: "Update Status",
-        id: row?.id,
-        path: ROUTE_PATHS?.SERVICE_MAPPING_FORM,
-      },
+      // {
+      //   label: "Update Status",
+      //   id: row?.id,
+      //   path: ROUTE_PATHS?.DIVYANG_SERVICES_FORM,
+      // },
     ],
   },
   {

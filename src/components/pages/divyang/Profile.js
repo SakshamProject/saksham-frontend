@@ -154,7 +154,6 @@ const Profile = () => {
   });
 
   const { data, files } = divyangDetails || {};
-  const divyangFilesUrl = {};
 
   const disablityDetails = useMemo(
     () =>
@@ -243,7 +242,7 @@ const Profile = () => {
               <DivyangDetail
                 divyangDetail={{
                   ...data,
-                  ...divyangFilesUrl,
+                  profileImageUrl: files?.profilePhoto?.url,
                 }}
               />
             </Grid>
@@ -279,7 +278,6 @@ const Profile = () => {
                 matches={`${matches}`}
               />
             </CustomBox>
-
             <CustomBox matches={`${matches}`}>
               <CustomDataShower
                 title={"Communication Address"}
@@ -401,12 +399,9 @@ export default Profile;
 const getAddress = (data, addressKeys) => {
   if (!data || !addressKeys) return "";
 
-  return addressKeys
-    .map(
-      (key) =>
-        data[key] &&
-        (typeof data[key] === "object" ? data[key]?.name : `${data[key]}`)
-    )
-    .filter(Boolean)
-    .join(", ");
+  return addressKeys.reduce((acc, key) => {
+    if (data[key])
+      acc += (typeof data[key] === "object" ? data[key]?.name : `${data[key]}`) + ", ";
+    return acc;
+  }, "");
 };
