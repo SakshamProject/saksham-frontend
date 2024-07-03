@@ -4,7 +4,7 @@ export const getTableSchemas = (columns = []) => {
 
   if (columns?.length) {
     columns?.forEach((column, index) => {
-      if (column?.filterAccessor) {
+      if (column?.filterAccessor && !column?.skipFilter) {
         filterFields.push({
           id: index,
           label: column?.Header,

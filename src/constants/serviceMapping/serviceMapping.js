@@ -147,12 +147,14 @@ export const listColumns = [
         format: "DD-MM-YYYY",
       }),
     width: 200,
+    skipFilter: true,
   },
   {
     Header: "Service Status",
     accessor: "isCompleted",
     filterAccessor: "serviceStatus",
     width: 180,
+    skipFilter: true,
   },
 ];
 

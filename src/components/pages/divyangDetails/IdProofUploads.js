@@ -97,20 +97,16 @@ const IdProofUploads = () => {
       return acc;
     }, {});
 
-    const IdNumbers = IdNumberKeys.reduce((acc, key) => {
-      if (!values[key]) acc[key] = "null";
-      return acc;
-    }, {});
-
     const payload = multiPartFormData(
       {
-        IdProofUploads: { ...values, fileNames, ...IdNumbers },
+        IdProofUploads: { ...values, fileNames },
         ...files,
         pageNumber: 2,
         id: values.id || editId || "",
         personId: values.personId || values.person?.id || "",
       },
-      fileKeys
+      fileKeys,
+      IdNumberKeys
     );
 
     mutate(payload);
@@ -160,7 +156,7 @@ const IdProofUploads = () => {
       </WithCondition>
 
       <Grid item xs={12} style={{ maxWidth: "100%" }}>
-        <StyledFormContainer sx={{ marginTop: "8px" }}>
+        <StyledFormContainer sx={{ marginTop: "8px" }} width="100%">
           <Grid container columnSpacing={3} rowSpacing={1}>
             <Grid item xs={12} md={6}>
               <CustomTextField
