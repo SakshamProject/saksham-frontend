@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { postApiService } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { CODES } from "../../../constants/globalConstants";
+import { CODES, LOCAL_STORAGE_KEYS } from "../../../constants/globalConstants";
 import { initialValues, labels } from "../../../constants/login/changePassword";
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { getValidValues } from "../../../utils/common";
@@ -14,12 +14,20 @@ import { validationSchema } from "../../../validations/login/changePassword";
 import { FormActions } from "../../shared/FormActions";
 import { FormWrapper } from "../../shared/FormWrapper";
 import { CustomPasswordField } from "../../shared/formFields/CustomPasswordField";
+import {
+  getLocalStorageItem,
+  removeLocalStorage,
+} from "../../../utils/localStorage";
+import { objectDecryption } from "../../../utils/encryptionAndDecryption";
+import { removeAllCookie } from "../../../utils/cookie";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
   const userInfo = useSelector((state) => state?.userInfo);
 
-  const handleOnReset = () => navigate(ROUTE_PATHS?.PROFILE);
+  const handleOnReset = () => {
+    navigate(ROUTE_PATHS?.PROFILE);
+  };
 
   const { mutate: onSubmit } = useMutation({
     mutationKey: ["changePassword"],
@@ -34,7 +42,15 @@ const ChangePassword = () => {
     },
     onSuccess: () => {
       dispatchResponseAction("Password", CODES?.UPDATED);
-      handleOnReset();
+      const localRemember = getLocalStorageItem(LOCAL_STORAGE_KEYS?.REMEMBER);
+      const remember = localRemember ? objectDecryption(localRemember) : null;
+
+      if (remember?.role === userInfo?.role) {
+        removeLocalStorage();
+      }
+
+      removeAllCookie();
+      navigate(ROUTE_PATHS?.LOGIN);
     },
   });
 
