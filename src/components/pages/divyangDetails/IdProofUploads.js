@@ -53,7 +53,7 @@ const IdProofUploads = () => {
   const { mutate } = useMutation({
     mutationKey: ["divyangUpdate", editId],
     mutationFn: (payload) => {
-      updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload);
+      return updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, payload);
     },
     onSuccess: () => {
       dispatchResponseAction(
@@ -85,11 +85,9 @@ const IdProofUploads = () => {
       if (typeof values[key] === "object") {
         fileNames[`${key}FileName`] = values[key]?.name;
         acc[key] = values[key];
-        // // fileNames[`${key}File`] = values[key].name;
-        // if (key === "BPL_OR_APL_Card") {
-        //   acc["bplOrAplCard"] = values[key];
-        //   fileNames["bplOrAplCardFileName"] = values[key]?.name;
-        // }
+      }
+      if (values[key] === null) {
+        fileNames[`${key}FileName`] = "null";
       }
       return acc;
     }, {});

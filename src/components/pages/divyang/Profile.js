@@ -77,7 +77,14 @@ const FileWrapper = styled(Box)(() => ({
   padding: "24px",
 }));
 
-const CustomDataShower = ({ title, value, matches, width, onClick }) => {
+const CustomDataShower = ({
+  title,
+  value,
+  matches,
+  width,
+  onClick,
+  fileUrl,
+}) => {
   return (
     <Box
       sx={{
@@ -97,7 +104,7 @@ const CustomDataShower = ({ title, value, matches, width, onClick }) => {
       >
         {title}
       </Box>
-      {onClick ? (
+      {onClick && fileUrl ? (
         <Box
           sx={{
             fontStyle: "italic",
@@ -159,11 +166,11 @@ const Profile = () => {
     () =>
       data?.disabilities?.map((detail) => [
         {
-          name: "Disablity Type",
+          name: "Disability Type",
           value: detail?.disabilityType?.name,
         },
         {
-          name: "Disblity Since",
+          name: "Disability Since",
           value: formatDate({
             date: detail?.disabilitySince,
             format: "DD-MM-YYYY",
@@ -299,10 +306,12 @@ const Profile = () => {
                   onClick={() =>
                     setOpen({
                       title: item?.title,
-                      image: files?.[item?.image]?.url || fileNotFound,
+                      image: files?.[item?.image]?.url,
                     })
                   }
                   matches={`${matches}`}
+                  fileUrl={files?.[item?.image]?.url}
+                  value={"File Unavailable"}
                 />
               ))}
             </CustomBox>
