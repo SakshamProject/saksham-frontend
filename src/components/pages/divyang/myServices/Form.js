@@ -111,8 +111,29 @@ const Form = () => {
   const { mutate } = useMutation({
     mutationKey: ["serviceMappingGetById"],
     mutationFn: () => getByIdApiService(API_PATHS?.SERVICE_MAPPING, editId),
-    onSuccess: (data) => {
-      setValues({});
+    onSuccess: ({ data }) => {
+      const responseData = data?.data;
+
+      if (!data?.data?.user) {
+        setValues({
+          ...responseData,
+          sevaKendraId: responseData?.sevaKendra?.id,
+          districtId: responseData?.sevaKendra?.district?.id,
+          stateId: responseData?.sevaKendra?.district?.state?.id,
+          serviceTypeId: responseData?.service?.serviceTypeId,
+          serviceId: responseData?.service?.id,
+        });
+      } else {
+        setValues({
+          ...responseData,
+          sevaKendraId: responseData?.user?.designation?.sevaKendraId,
+          districtId: responseData?.user?.designation?.sevaKendra?.districtId,
+          stateId:
+            responseData?.user?.designation?.sevaKendra?.district?.stateId,
+          serviceTypeId: responseData?.service?.serviceTypeId,
+          serviceId: responseData?.service?.id,
+        });
+      }
     },
   });
 

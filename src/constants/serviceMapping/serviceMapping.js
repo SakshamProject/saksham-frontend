@@ -6,7 +6,7 @@ import { CODES } from "../globalConstants";
 import { serviceStatus, services, yesNoSeed } from "../seeds";
 
 export const listInitialValues = {
-  serviceStatus: "",
+  serviceStatus: "PENDING",
   districtId: "",
   startDate: "",
   endDate: "",
