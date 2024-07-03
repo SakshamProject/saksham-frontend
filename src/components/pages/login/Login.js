@@ -198,14 +198,14 @@ const Login = () => {
                 roletype={CODES?.DIVYANG}
                 role={role}
               >
-                Divyang
+                {"Divyang User"}
               </RoleButton>
               <RoleButton
                 onClick={() => handleRole(CODES?.SEVA_KENDRA)}
                 roletype={CODES?.SEVA_KENDRA}
                 role={role}
               >
-                {"Seva\xa0Kendra"}
+                {"Seva Kendra User"}
               </RoleButton>
             </RoleButtonContainer>
           </WithCondition>

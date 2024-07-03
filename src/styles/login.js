@@ -17,6 +17,7 @@ export const LoginWrapper = styled(Grid)(({ theme }) => ({
   overflow: "auto",
   [theme.breakpoints.down("sm")]: {
     height: "calc(100vh - 56px)",
+    padding: "0px 10px",
   },
 }));
 
@@ -36,6 +37,7 @@ export const LoginContainer = styled(Box)(({ theme }) => ({
     border: "none",
     padding: "3%",
   },
+  maxWidth: "620px",
 }));
 
 export const ForgetPassword = styled("span")(({ theme }) => ({
@@ -86,6 +88,7 @@ export const LoginButton = styled(SubmitButton)(() => ({
 
 export const RoleButton = styled(CancelButton)(({ theme, roletype, role }) => ({
   width: "100%",
+  minWidth: "fit-content",
   marginRight: "0 !important",
   margin: roletype === CODES?.DIVYANG ? "0 8px 0 0" : "0 0 0 16px",
   ...(((role === CODES?.DIVYANG && roletype === CODES?.DIVYANG) ||
@@ -97,4 +100,7 @@ export const RoleButton = styled(CancelButton)(({ theme, roletype, role }) => ({
       color: theme.palette?.primary?.contrastText,
     },
   }),
+  [theme.breakpoints.down(375)]: {
+    fontSize: "12px",
+  },
 }));
