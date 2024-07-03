@@ -16,7 +16,7 @@ const handleError = (res) => {
       const errorMessageParts = error.message.split("->");
       const errorMessage =
         errorMessageParts.length > 1
-          ? `${errorMessageParts[1].trim()} is unique`
+          ? `${errorMessageParts[1].trim()}`
           : SERVER_ERROR;
       dispatchSnackbarError(errorMessage);
     } else {
