@@ -238,7 +238,7 @@ const Form = () => {
           label={fields?.startDate?.label}
           name={fields?.startDate?.name}
           isViewMode={isViewMode}
-          minDate={getMinDate({ id: editId, date: values?.startDate })}
+          // minDate={getMinDate({ id: editId, date: values?.startDate })}
           value={values?.startDate}
           errors={errors?.startDate}
           touched={touched?.startDate}

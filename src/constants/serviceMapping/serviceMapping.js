@@ -132,7 +132,6 @@ export const listColumns = [
   },
   {
     Header: "Service Date",
-    // filterAccessor: "serviceDate",
     Cell: ({ row }) => (
       <CustomCell
         value={formatDate({
@@ -151,7 +150,6 @@ export const listColumns = [
   {
     Header: "Service Status",
     accessor: "isCompleted",
-    // filterAccessor: "serviceStatus",
     width: 180,
   },
 ];

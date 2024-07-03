@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -68,7 +68,7 @@ const DisabilityDetails = () => {
     );
 
   const handleOnSubmit = (values) => {
-    if (values?.disabilities?.length < 1) {
+    if (disablityCardsList?.data?.data?.length < 1) {
       dispatchSnackbarError("At least one Disabilities must be specified");
     } else {
       const { disabilities, ...remaining } = values;
@@ -244,7 +244,7 @@ const DisabilityDetails = () => {
   });
 
   const { data: disablityCardsList, refetch: getDisablityCards } = useQuery({
-    queryKey: ["diablityCards"],
+    queryKey: ["disablityCards"],
     queryFn: () => getByIdApiService(API_PATHS?.DISABLITY_CARDS_LIST, editId),
     enabled: !!editId,
   });

@@ -139,7 +139,7 @@ const Login = () => {
       navigate(ROUTE_PATHS?.LAYOUT);
     },
     onError: ({ response }) => {
-      if (role !== CODES?.ADMIN) {
+      if (role !== CODES?.ADMIN && !(response?.data?.name === "ZodError")) {
         const errorMessage =
           (role === CODES?.SEVA_KENDRA ? "Seva Kendra " : "Divyang ") +
           response?.data?.error?.message;

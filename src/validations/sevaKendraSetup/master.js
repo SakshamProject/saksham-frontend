@@ -4,7 +4,6 @@ import { CODES, EMAIL_REGEX } from "../../constants/globalConstants";
 export const validationSchema = object({
   name: string()
     .trim()
-    .min(3, "Seva Kendra Name must be at least 3 characters long")
     .required("Seva Kendra Name is required")
     .max(255, "Seva Kendra Name cannot have more than 255 characters"),
   stateId: string().required("State is required"),
@@ -47,7 +46,6 @@ export const validationSchema = object({
   contactPerson: object({
     name: string()
       .trim()
-      .min(3, "Contact Person Name must be at least 3 characters long")
       .required("Contact Person Name is required")
       .max(255, "Contact Person Name cannot have more than 255 characters"),
     email: string()

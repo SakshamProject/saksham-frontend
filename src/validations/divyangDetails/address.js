@@ -12,12 +12,10 @@ export const validationSchema = object({
     .nullable(),
   streetName: string()
     .trim()
-    .min(3, "Street Name must be at least 3 characters long")
     .max(255, "Street Name cannot have more than 255 characters")
     .required("Street Name is required"),
   nagarName: string()
     .trim()
-    .min(3, "Nagar Name must be at least 3 characters long")
     .max(255, "Nagar Name cannot have more than 255 characters")
     .nullable(),
   stateId: string().required("State is required"),
@@ -31,7 +29,6 @@ export const validationSchema = object({
       "Village Name is required",
       (value, context) => !(context.parent?.isRural !== CODES?.URBAN && !value)
     )
-    .min(3, "Village Name must be at least 3 characters long")
     .max(255, "Village Name cannot have more than 255 characters"),
   panchayatUnionId: string()
     .trim()
@@ -90,12 +87,10 @@ export const validationSchema = object({
     .nullable(),
   streetNameCommunication: string()
     .trim()
-    .min(3, "Street Name must be at least 3 characters long")
     .max(255, "Street Name cannot have more than 255 characters")
     .required("Street Name is required"),
   nagarNameCommunication: string()
     .trim()
-    .min(3, "Nagar Name must be at least 3 characters long")
     .max(255, "Nagar Name cannot have more than 255 characters")
     .nullable(),
   stateIdCommunication: string().required("State is required"),
@@ -110,7 +105,6 @@ export const validationSchema = object({
       (value, context) =>
         !(context.parent?.isRuralCommunication !== CODES?.URBAN && !value)
     )
-    .min(3, "Village Name must be at least 3 characters long")
     .max(255, "Village Name cannot have more than 255 characters"),
   panchayatUnionIdCommunication: string()
     .trim()

@@ -8,7 +8,6 @@ export const validationSchema = object({
   name: string()
     .trim()
     .required("Type name is required")
-    .min(3, "Type name must be at least 3 characters long")
     .max(255, "Type name cannot have more than 255 characters"),
   stateId: string().test(
     "isState",

@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getByIdApiService, updateApiService } from "../../../api/api";
@@ -90,9 +90,6 @@ const IdProofUploads = () => {
         //   acc["bplOrAplCard"] = values[key];
         //   fileNames["bplOrAplCardFileName"] = values[key]?.name;
         // }
-      }
-      if (values[key] === null) {
-        fileNames[`${key}FileName`] = "null";
       }
       return acc;
     }, {});

@@ -11,17 +11,14 @@ import { minMaxAge } from "../../utils/common";
 export const validationSchema = object({
   firstName: string()
     .trim()
-    .min(3, "Divyang First Name must be at least 3 characters long")
     .max(255, "Divyang First Name cannot have more than 255 characters")
     .required("Divyang First Name is required"),
   lastName: string()
     .trim()
-    .min(3, "Divyang Last Name must be at least 3 characters long")
     .max(255, "Divyang Last Name cannot have more than 255 characters")
     .required("Divyang Last Name is required"),
   divyangId: string()
     .trim()
-    .min(3, "Divyang ID must be at least 3 characters long")
     .max(255, "Divyang ID cannot have more than 255 characters")
     .required("Divyang ID is required"),
   dateOfBirth: date()
@@ -66,7 +63,6 @@ export const validationSchema = object({
   UDIDCardNumber: string().trim().required("UDID Number is required"),
   userName: string()
     .trim()
-    .min(3, "Login User Name must be at least 3 characters long")
     .max(255, "Login User Name cannot have more than 255 characters")
     .required("Login User Name is required"),
   password: string()

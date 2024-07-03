@@ -80,7 +80,6 @@ export const validationSchema = object({
   nonSevaKendraFollowUp: object({
     name: string()
       .trim()
-      .min(3, "Name must be at least 3 characters long")
       .max(255, "Name cannot have more than 255 characters")
       .test("isRequired", "Contact person name is required", (value, context) =>
         context?.from?.[1]?.value.isNonSevaKendraFollowUpRequired !== CODES?.YES
@@ -146,7 +145,6 @@ export const editValidationSchema = object({
     .nullable(),
   reasonForNonCompletion: string()
     .trim()
-    .min(3, "Reason must be at least 3 characters long")
     .max(255, "Reason cannot have more than 255 characters")
     .test("isRequired", "Reason is required", (value, context) =>
       context?.parent?.isCompleted !== CODES?.NO ? true : !!value

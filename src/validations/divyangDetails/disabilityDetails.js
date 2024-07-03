@@ -5,17 +5,14 @@ import { minMaxAge } from "../../utils/common";
 export const validationSchema = object({
   stateCode: string()
     .trim()
-    .min(3, "State Code must be at least 3 characters long")
     .max(255, "State Code cannot have more than 255 characters")
     .required("State Code is required"),
   districtCode: string()
     .trim()
-    .min(3, "District Code must be at least 3 characters long")
     .max(255, "District Code cannot have more than 255 characters")
     .required("District Code is required"),
   identityCardNumber: string()
     .trim()
-    .min(3, "Identity Card Number must be at least 3 characters long")
     .max(255, "Identity Card Number cannot have more than 255 characters")
     .required("Identity Card Number is required"),
   UDIDCardNumber: string()
@@ -56,7 +53,6 @@ export const multiValidationSchema = object({
     .nullable(),
   disabilityArea: string()
     .trim()
-    .min(3, "Disability Area must be at least 3 characters long")
     .max(255, "Disability Area cannot have more than 255 characters")
     .required("Disability Area is required"),
   disabilityPercentage: string()
@@ -74,7 +70,6 @@ export const multiValidationSchema = object({
     }),
   disabilityDueTo: string()
     .trim()
-    .min(3, "Disability Reason must be at least 3 characters long")
     .max(255, "Disability Reason cannot have more than 255 characters")
     .required("Disability Reason is required"),
   certificateIssueAuthority: string().required(

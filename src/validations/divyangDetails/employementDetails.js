@@ -17,20 +17,12 @@ export const validationSchema = object({
       (value, context) => !(context.parent?.isEmployed !== CODES?.YES && !value)
     )
     .nullable(),
-  occupation: string()
-    .min(3, "Applicant Occupation  must be at least 3 characters long")
-    .nullable(),
+  occupation: string().nullable(),
   income: string().nullable(),
-  fatherOccupation: string()
-    .min(3, "Father Occupation must be at least 3 characters long")
-    .nullable(),
+  fatherOccupation: string().nullable(),
   fatherIncome: string().nullable(),
-  motherOccupation: string()
-    .min(3, "Mother Occupation must be at least 3 characters long")
-    .nullable(),
+  motherOccupation: string().nullable(),
   motherIncome: string().nullable(),
-  spouseOccupation: string()
-    .min(3, "Spouse Occupation must be at least 3 characters long")
-    .nullable(),
+  spouseOccupation: string().nullable(),
   spouseIncome: string().nullable(),
 });

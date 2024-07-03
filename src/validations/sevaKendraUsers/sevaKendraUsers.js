@@ -15,17 +15,14 @@ export const validationSchema = (editId) =>
     sevaKendraId: string().trim().required("Seva Kendra Name is required"),
     userId: string()
       .trim()
-      .min(3, "User Id must be at least 3 characters long")
       .max(255, "User Id cannot have more than 255 characters")
       .required("User Id is required"),
     firstName: string()
       .trim()
-      .min(3, "First Name must be at least 3 characters long")
       .max(255, "First Name cannot have more than 255 characters")
       .required("First Name is required"),
     lastName: string()
       .trim()
-      .min(3, "Last Name must be at least 3 characters long")
       .max(255, "Last Name cannot have more than 255 characters")
       .required("Last Name is required"),
     designationId: string().trim().required("Designation is required"),
@@ -71,7 +68,6 @@ export const validationSchema = (editId) =>
       .nullable(),
     userName: string()
       .trim()
-      .min(3, "Login Id must be at least 3 characters long")
       .max(255, "Login Id cannot have more than 255 characters")
       .required("Login Id is required"),
     password: string()
