@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -83,7 +83,7 @@ const Form = () => {
         : postApiService(API_PATHS?.SEVAKENDRA_USERS, data),
     onSuccess: () => {
       dispatchResponseAction("User", editId ? CODES?.UPDATED : CODES?.ADDED);
-      navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
+      navigate(state?.backPath || ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
     },
   });
 
@@ -420,7 +420,7 @@ const Form = () => {
           onBlur={handleBlur}
           errors={errors?.userName}
           touched={touched?.userName}
-          isViewMode={isViewMode || !!editId}
+          isViewMode={isViewMode}
         />
       </Grid>
 
@@ -471,7 +471,9 @@ const Form = () => {
 
       <FormActions
         handleSubmit={handleSubmit}
-        handleOnReset={() => navigate(ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST)}
+        handleOnReset={() =>
+          navigate(state?.backPath || ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST)
+        }
         isUpdate={!!editId}
         isViewMode={isViewMode}
       />

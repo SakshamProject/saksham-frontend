@@ -1,7 +1,7 @@
 import { Grid, styled } from "@mui/material";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   getApiService,
@@ -764,7 +764,7 @@ const PersonalDetails = () => {
               value={values?.userName}
               onChange={handleChange}
               onBlur={handleBlur}
-              isViewMode={isViewMode || !!editId}
+              isViewMode={isViewMode}
               errors={errors?.userName}
               touched={touched?.userName}
             />
