@@ -11,7 +11,9 @@ const List = () => {
       listPath={"DIVYANG_DETAILS_LIST"}
       formPath={"DIVYANG_DETAILS_FORM_PERSONAL"}
       apiPath={"DIVYANG_DETAILS_LIST"}
-      columns={divyangDetailsColumn}
+      columns={divyangDetailsColumn(
+        !userInfo?.diviyangDetails && userInfo?.role === CODES?.SEVA_KENDRA
+      )}
       disableNewForm={
         !userInfo?.diviyangDetails && userInfo?.role === CODES?.SEVA_KENDRA
       }

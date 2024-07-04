@@ -43,8 +43,8 @@ export const validationSchema = object({
     .nullable(),
   drivingLicenseNumber: string()
     .trim()
-    .matches(NUMBER_ALPHABET_REGEX, "Enter Valid Driving License Number")
-    // .min(15, "Driving License Number should be 15 characters")
+    // .matches(NUMBER_ALPHABET_REGEX, "Enter Valid Driving License Number")
+    .min(15, "Driving License Number should be 15 characters")
     .test(
       "drivingLicense",
       "Driving License is required",

@@ -142,6 +142,7 @@ const IdProofUploads = () => {
     onSubmit: handleOnSubmit,
   });
 
+
   return (
     <Grid container direction={"column"} width={"100%"} rowSpacing={2}>
       <WithCondition isValid={userInfo?.role !== CODES?.DIVYANG}>
@@ -258,7 +259,7 @@ const IdProofUploads = () => {
                 errors={errors?.drivingLicenseNumber}
                 touched={touched?.drivingLicenseNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.drivingLicenseNumber?.fieldType}
+                // fieldType={fields?.drivingLicenseNumber?.fieldType}
                 maxLength={15}
               />
             </Grid>
@@ -436,7 +437,7 @@ const IdProofUploads = () => {
                 errors={errors?.medicalInsuranceNumber}
                 touched={touched?.medicalInsuranceNumber}
                 isViewMode={isViewMode}
-                fieldType={fields?.medicalInsuranceNumber?.fieldType}
+                // fieldType={fields?.medicalInsuranceNumber?.fieldType}
               />
             </Grid>
 

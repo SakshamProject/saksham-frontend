@@ -31,7 +31,7 @@ export const DIVYANG_STEPS = [
   },
 ];
 
-export const divyangDetailsColumn = [
+export const divyangDetailsColumn = (disbaleEdit = false) => [
   {
     Header: "First Name",
     accessor: "firstName",
@@ -50,12 +50,16 @@ export const divyangDetailsColumn = [
               view: true,
               search: { action: "view" },
             },
-            {
-              label: "Edit",
-              id: row?.original?.id,
-              path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
-              search: { action: "edit" },
-            },
+            ...(!disbaleEdit
+              ? [
+                  {
+                    label: "Edit",
+                    id: row?.original?.id,
+                    path: ROUTE_PATHS?.DIVYANG_DETAILS_FORM_PERSONAL,
+                    search: { action: "edit" },
+                  },
+                ]
+              : []),
           ]}
         />
       </OptionsContainer>

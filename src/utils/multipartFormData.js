@@ -11,7 +11,10 @@ export const multiPartFormData = (workData, stringify = [], nullable = []) => {
         !stringify?.includes(newKey)
       ) {
         appendFormData(value, newKey);
-      } else if (!!value || nullable.includes(key)) {
+      } else if (
+        !!value ||
+        (nullable.includes(key) && typeof value === "string")
+      ) {
         form.append(
           newKey,
           typeof value === "string"
