@@ -1,7 +1,8 @@
 import { object, string } from "yup";
 import {
   AADHAR_CARD_REGEX,
-  DRIVING_LICENSE_REGEX,
+  // DRIVING_LICENSE_REGEX,
+  NUMBER_ALPHABET_REGEX,
   PAN_REGEX,
   RATION_CARD_REGEX,
   VOTERID_REGEX,
@@ -42,8 +43,8 @@ export const validationSchema = object({
     .nullable(),
   drivingLicenseNumber: string()
     .trim()
-    .matches(DRIVING_LICENSE_REGEX, "Enter Valid Driving License Number")
-    .min(15, "Driving License Number should be 15 characters")
+    .matches(NUMBER_ALPHABET_REGEX, "Enter Valid Driving License Number")
+    // .min(15, "Driving License Number should be 15 characters")
     .test(
       "drivingLicense",
       "Driving License is required",

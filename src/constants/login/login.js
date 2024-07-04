@@ -25,6 +25,7 @@ export const fields = {
 export const getUserInfo = (data) => {
   if (data?.user) {
     let serviceMapping = false;
+    let diviyangDetails = false;
 
     const designations = (data?.user?.designation?.features || [])
       ?.sort(
@@ -46,12 +47,22 @@ export const getUserInfo = (data) => {
       (designation) => designation?.name === CODES.SERVICE_MAPPING
     );
 
+    diviyangDetails = designations.some(
+      (designation) => designation?.name === CODES.DIVYANG_DETAILS
+    );
+
+
+    if (!diviyangDetails) {
+      designations?.push({ id: "6789", name: CODES.DIVYANG_DETAILS });
+    }
+
     if (!serviceMapping) {
       designations?.push({ id: "12345", name: CODES.SERVICE_MAPPING });
     }
 
     return {
       serviceMapping,
+      diviyangDetails,
       userId: data?.user?.id,
       role: CODES?.SEVA_KENDRA,
       name: data?.user?.person?.userName,

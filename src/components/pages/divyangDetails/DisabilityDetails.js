@@ -631,6 +631,7 @@ const DisabilityDetails = () => {
                 errors={errors?.UDIDCardNumber}
                 touched={touched?.UDIDCardNumber}
                 isViewMode={isViewMode}
+                fieldType={fields?.udidCardNumber?.type}
               />
             </Grid>
 
@@ -644,6 +645,7 @@ const DisabilityDetails = () => {
                 errors={errors?.UDIDEnrollmentNumber}
                 touched={touched?.UDIDEnrollmentNumber}
                 isViewMode={isViewMode}
+                fieldType={fields?.udidEnrollmentNumber?.type}
               />
             </Grid>
 

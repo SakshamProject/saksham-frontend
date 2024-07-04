@@ -95,6 +95,7 @@ export const fields = {
   udidCardUrl: {
     label: "Upload UDID Card",
     name: "UDIDCardFile",
+    type: "alphaNumeric"
   },
 };
 

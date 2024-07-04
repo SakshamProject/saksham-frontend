@@ -17,7 +17,7 @@ import {
   getFilesUrl,
   initialValues,
 } from "../../../constants/divyangDetails/personalDetails";
-import { CODES } from "../../../constants/globalConstants";
+import { CODES, COOKIE_KEYS } from "../../../constants/globalConstants";
 import {
   bloodGroup,
   genderSeed,
@@ -31,6 +31,7 @@ import { formatDate, getSeedNameById } from "../../../utils/common";
 import {
   dispatchResponseAction,
   dispatchSnackbarError,
+  dispatchUserInfo,
 } from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import {
@@ -51,6 +52,9 @@ import {
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
 import ResponsiveList from "../../shared/ResponsiveList";
+import { useSelector } from "react-redux";
+import { setCookie } from "../../../utils/cookie";
+import { objectEncryption } from "../../../utils/encryptionAndDecryption";
 
 const PersonalDetailsContainer = styled(StyledFormContainer)(({ theme }) => ({
   width: "100% !important",
@@ -68,6 +72,7 @@ const PersonalDetails = () => {
   const editId = state?.editId;
   const [tableEditId, setTableEditId] = useState("");
   const { theme, isMobile } = useResponsive();
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.DIVYANG_DETAILS_LIST);
 
@@ -127,6 +132,18 @@ const PersonalDetails = () => {
         ? updateApiService(API_PATHS?.DIVYANG_DETAILS, editId, data)
         : postApiService(API_PATHS?.DIVYANG_DETAILS, data),
     onSuccess: ({ data }) => {
+      if (userInfo?.role === CODES.DIVYANG) {
+        const newInfo = {
+          ...userInfo,
+          person: {
+            ...userInfo?.person,
+            name: `${data?.firstName} ${data?.lastName}`,
+          },
+          name: `${data?.firstName} ${data?.lastName}`,
+        };
+        dispatchUserInfo(newInfo);
+        setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(newInfo));
+      }
       dispatchResponseAction(
         "Personal Details",
         action ? CODES?.UPDATED : CODES?.SAVED

@@ -10,7 +10,7 @@ import {
   updateApiService,
 } from "../../../api/api";
 import { API_PATHS } from "../../../api/apiPaths";
-import { CODES } from "../../../constants/globalConstants";
+import { CODES, COOKIE_KEYS } from "../../../constants/globalConstants";
 import { genderSeed, statusSeed } from "../../../constants/seeds";
 import {
   fields,
@@ -19,7 +19,10 @@ import {
 import { ROUTE_PATHS } from "../../../routes/routePaths";
 import { theme } from "../../../styles";
 import { formatDate } from "../../../utils/common";
-import { dispatchResponseAction } from "../../../utils/dispatch";
+import {
+  dispatchResponseAction,
+  dispatchUserInfo,
+} from "../../../utils/dispatch";
 import { multiPartFormData } from "../../../utils/multipartFormData";
 import { validationSchema } from "../../../validations/sevaKendraUsers/sevaKendraUsers";
 import {
@@ -35,12 +38,16 @@ import {
   WithCondition,
 } from "../../shared";
 import StatusFields from "../../shared/StatusFields";
+import { useSelector } from "react-redux";
+import { setCookie } from "../../../utils/cookie";
+import { objectEncryption } from "../../../utils/encryptionAndDecryption";
 
 const Form = () => {
   const { state } = useLocation();
   const navigate = useNavigate();
   const isViewMode = state?.viewDetails || false;
   const editId = state?.editId;
+  const userInfo = useSelector((state) => state?.userInfo);
 
   const handleOnSubmit = (value) => {
     const { profilePhoto = "", ...remains } = value;
@@ -81,7 +88,16 @@ const Form = () => {
       editId
         ? updateApiService(API_PATHS?.SEVAKENDRA_USERS, editId, data)
         : postApiService(API_PATHS?.SEVAKENDRA_USERS, data),
-    onSuccess: () => {
+    onSuccess: ({ data }) => {
+      if (userInfo?.role === CODES.SEVA_KENDRA) {
+        const newInfo = {
+          ...userInfo,
+          person: { ...userInfo?.person, name: data?.data?.person?.userName },
+          name: data?.data?.person?.userName,
+        };
+        dispatchUserInfo(newInfo);
+        setCookie(COOKIE_KEYS?.USER_INFO, objectEncryption(newInfo));
+      }
       dispatchResponseAction("User", editId ? CODES?.UPDATED : CODES?.ADDED);
       navigate(state?.backPath || ROUTE_PATHS?.SEVA_KENDRA_USERS_LIST);
     },
