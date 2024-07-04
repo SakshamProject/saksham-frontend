@@ -303,6 +303,7 @@ const Form = () => {
     <FormWrapper
       title="Service Mapping"
       navigateTo={ROUTE_PATHS?.SERVICE_MAPPING_LIST}
+      formWidth="90%"
     >
       <WithCondition isValid={!editId}>
         <Grid item xs={12}>
@@ -583,7 +584,7 @@ const Form = () => {
               touched={touched?.completedDate}
               onChange={setFieldValue}
               setTouched={setFieldTouched}
-              // maxDate={formFields?.completedDate?.maxDate}
+              maxDate={new Date()}
             />
           </Grid>
 
@@ -1214,10 +1215,10 @@ const DivyangCard = ({ divyangDetail, key, divyangId, setDivayangId }) => (
           <Box sx={{ display: "flex", width: "100%" }}>
             <Typography
               noWrap
-              width="55%"
+              width="45%"
               fontSize="16px"
             >{`${item?.Header} : `}</Typography>
-            <Typography noWrap width="45%" fontSize="14px">
+            <Typography noWrap width="55%" fontSize="14px">
               {!!item?.Cell
                 ? item?.Cell(divyangDetail)
                 : divyangDetail?.[item?.accessor]}
