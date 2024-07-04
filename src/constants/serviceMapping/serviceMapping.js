@@ -186,6 +186,8 @@ export const formFields = {
   sevaKendra: {
     label: "Select seva kendra *",
     name: "sevaKendraId",
+    getOptionLabel: (option) =>
+      `${option?.name} - ${option?.district?.state?.name} - ${option?.district?.name}`,
   },
   assignUser: {
     label: "Assign user *",

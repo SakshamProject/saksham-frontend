@@ -173,44 +173,44 @@ const Form = () => {
 
   const handleOnReset = () => navigate(ROUTE_PATHS?.SERVICE_MAPPING_LIST);
 
-  const { data: allStates } = useQuery({
-    queryKey: ["getAllStates"],
-    queryFn: () => getApiService(API_PATHS?.STATES),
-    select: ({ data }) => data?.data,
-  });
+  // const { data: allStates } = useQuery({
+  //   queryKey: ["getAllStates"],
+  //   queryFn: () => getApiService(API_PATHS?.STATES),
+  //   select: ({ data }) => data?.data,
+  // });
 
-  const { data: allDistricts } = useQuery({
-    queryKey: [
-      "getAllDistrictByState",
-      values?.stateId,
-      values?.followUp?.stateId,
-    ],
-    queryFn: () =>
-      getByIdApiService(
-        API_PATHS?.STATES,
-        values?.stateId || values?.followUp?.stateId
-      ),
-    select: ({ data }) => data?.data?.districts,
-    enabled: !!values?.stateId || !!values?.followUp?.stateId,
-  });
+  // const { data: allDistricts } = useQuery({
+  //   queryKey: [
+  //     "getAllDistrictByState",
+  //     values?.stateId,
+  //     values?.followUp?.stateId,
+  //   ],
+  //   queryFn: () =>
+  //     getByIdApiService(
+  //       API_PATHS?.STATES,
+  //       values?.stateId || values?.followUp?.stateId
+  //     ),
+  //   select: ({ data }) => data?.data?.districts,
+  //   enabled: !!values?.stateId || !!values?.followUp?.stateId,
+  // });
 
-  const { data: allSevaKendras } = useQuery({
-    queryKey: [
-      "getSevaKendraNameByDistrict",
-      values?.districtId,
-      values?.followUp?.districtId,
-    ],
-    queryFn: () =>
-      getByIdApiService(
-        API_PATHS?.DISTRICTS,
-        `${values?.districtId || values?.followUp?.districtId}${
-          API_PATHS?.SEVAKENDRA
-        }`,
-        { status: CODES?.ACTIVE }
-      ),
-    select: ({ data }) => data?.data,
-    enabled: !!values?.districtId || !!values?.followUp?.districtId,
-  });
+  // const { data: allSevaKendras } = useQuery({
+  //   queryKey: [
+  //     "getSevaKendraNameByDistrict",
+  //     values?.districtId,
+  //     values?.followUp?.districtId,
+  //   ],
+  //   queryFn: () =>
+  //     getByIdApiService(
+  //       API_PATHS?.DISTRICTS,
+  //       `${values?.districtId || values?.followUp?.districtId}${
+  //         API_PATHS?.SEVAKENDRA
+  //       }`,
+  //       { status: CODES?.ACTIVE }
+  //     ),
+  //   select: ({ data }) => data?.data,
+  //   enabled: !!values?.districtId || !!values?.followUp?.districtId,
+  // });
 
   const { data: allSevaKendraUsers } = useQuery({
     queryKey: [
@@ -263,13 +263,14 @@ const Form = () => {
             ? CODES?.YES
             : CODES?.NO,
         },
+        serviceId: data?.data?.serviceId || "",
       });
     },
   });
 
   useEffect(() => {
     if (editId) mutate();
-  }, []);
+  }, [editId, mutate]);
 
   const { data: allService } = useQuery({
     queryKey: ["getAllService", values?.serviceTypeId],
@@ -289,6 +290,14 @@ const Form = () => {
     if (e?.target?.value?.trim() && (e?.key === "Enter" || e?.keyCode === 13))
       getDivyang({ column, value: e?.target?.value });
   };
+
+  const { data: sevaKendras } = useQuery({
+    queryKey: ["getSevaKendraByService", values?.serviceId],
+    queryFn: () =>
+      getByIdApiService(API_PATHS.SEVAKENDRA_BY_SERVICE, values?.serviceId),
+    enabled: !!values?.serviceId,
+    select: ({ data }) => data?.data,
+  });
 
   return (
     <FormWrapper
@@ -728,7 +737,7 @@ const Form = () => {
               sx={{ paddingTop: "0px !important" }}
             />
 
-            <Grid item xs={12} sm={12} md={6}>
+            {/* <Grid item xs={12} sm={12} md={6}>
               <SingleAutoComplete
                 label={formFields?.followUpState?.label}
                 name={formFields?.followUpState?.name}
@@ -761,9 +770,9 @@ const Form = () => {
                 inputValues={allStates || []}
                 isViewMode={isViewMode}
               />
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={12} sm={12} md={6}>
+            {/* <Grid item xs={12} sm={12} md={6}>
               <SingleAutoComplete
                 label={formFields?.followUpDistrict?.label}
                 name={formFields?.followUpDistrict?.name}
@@ -794,7 +803,7 @@ const Form = () => {
                 inputValues={allDistricts || []}
                 isViewMode={isViewMode}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={12}>
               <SingleAutoComplete
@@ -822,7 +831,7 @@ const Form = () => {
                   });
                 }}
                 onBlur={handleBlur}
-                inputValues={allSevaKendras || []}
+                inputValues={sevaKendras || []}
                 isViewMode={isViewMode}
               />
             </Grid>
@@ -854,7 +863,19 @@ const Form = () => {
             errors={errors?.serviceTypeId}
             touched={touched?.serviceTypeId}
             onChange={(_, value) => {
-              setFieldValue(formFields?.serviceType?.name, value);
+              setValues({
+                ...values,
+                [formFields?.serviceType?.name]: value,
+                [formFields?.serviceSubtype?.name]: "",
+                [formFields?.sevaKendra?.name]: "",
+                [formFields?.assignUser?.name]: "",
+              });
+              setTouched({
+                ...touched,
+                [formFields?.serviceSubtype?.name]: false,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+              });
             }}
             onBlur={handleBlur}
             inputValues={allServiceType || []}
@@ -870,7 +891,17 @@ const Form = () => {
             errors={errors?.serviceId}
             touched={touched?.serviceId}
             onChange={(_, value) => {
-              setFieldValue(formFields?.serviceSubtype?.name, value);
+              setValues({
+                ...values,
+                [formFields?.serviceSubtype?.name]: value,
+                [formFields?.sevaKendra?.name]: "",
+                [formFields?.assignUser?.name]: "",
+              });
+              setTouched({
+                ...touched,
+                [formFields?.sevaKendra?.name]: false,
+                [formFields?.assignUser?.name]: false,
+              });
             }}
             onBlur={handleBlur}
             inputValues={allService || []}
@@ -969,7 +1000,7 @@ const Form = () => {
           values?.isNonSevaKendraFollowUpRequired === CODES.NO && !editId
         }
       >
-        <Grid item xs={12} sm={12} md={6}>
+        {/* <Grid item xs={12} sm={12} md={6}>
           <SingleAutoComplete
             label={formFields?.state?.label}
             name={formFields?.state?.name}
@@ -1023,7 +1054,7 @@ const Form = () => {
             inputValues={allDistricts || []}
             isViewMode={isViewMode}
           />
-        </Grid>
+        </Grid> */}
 
         <Grid item xs={12}>
           <SingleAutoComplete
@@ -1045,8 +1076,9 @@ const Form = () => {
               });
             }}
             onBlur={handleBlur}
-            inputValues={allSevaKendras || []}
+            inputValues={sevaKendras || []}
             isViewMode={isViewMode}
+            getOptionLabel={formFields?.sevaKendra?.getOptionLabel}
           />
         </Grid>
 

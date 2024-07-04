@@ -47,19 +47,19 @@ export const validationSchema = object({
       (value, context) => context?.parent?.dateOfService < value
     ),
 
-  stateId: string().test("isRequired", "State is required", (value, context) =>
-    context?.parent?.isNonSevaKendraFollowUpRequired !== CODES?.NO
-      ? true
-      : !!value
-  ),
-  districtId: string().test(
-    "isRequired",
-    "District is required",
-    (value, context) =>
-      context?.parent?.isNonSevaKendraFollowUpRequired !== CODES?.NO
-        ? true
-        : !!value
-  ),
+  // stateId: string().test("isRequired", "State is required", (value, context) =>
+  //   context?.parent?.isNonSevaKendraFollowUpRequired !== CODES?.NO
+  //     ? true
+  //     : !!value
+  // ),
+  // districtId: string().test(
+  //   "isRequired",
+  //   "District is required",
+  //   (value, context) =>
+  //     context?.parent?.isNonSevaKendraFollowUpRequired !== CODES?.NO
+  //       ? true
+  //       : !!value
+  // ),
   sevaKendraId: string().test(
     "isRequired",
     "Seva Kendra is required",
@@ -158,22 +158,22 @@ export const editValidationSchema = object({
           ? true
           : !!value
       ),
-    stateId: string().test(
-      "isRequired",
-      "State is required",
-      (value, context) =>
-        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
-          ? true
-          : !!value
-    ),
-    districtId: string().test(
-      "isRequired",
-      "District is required",
-      (value, context) =>
-        context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
-          ? true
-          : !!value
-    ),
+    // stateId: string().test(
+    //   "isRequired",
+    //   "State is required",
+    //   (value, context) =>
+    //     context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+    //       ? true
+    //       : !!value
+    // ),
+    // districtId: string().test(
+    //   "isRequired",
+    //   "District is required",
+    //   (value, context) =>
+    //     context?.from?.[1]?.value?.isFollowUpRequired !== CODES?.YES
+    //       ? true
+    //       : !!value
+    // ),
     sevaKendraId: string().test(
       "isRequired",
       "Seva Kendra is required",

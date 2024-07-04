@@ -24,7 +24,7 @@ export const API_PATHS = {
   COMMUNITY_CATEGORY: "/api/typemaster/generalmaster/communitycategory",
   DISABILITY_TYPE: "/api/typemaster/generalmaster/disabilitytype",
   SERVICE_TYPES: "/api/typemaster/generalmaster/servicetype",
-  SEVAKENDRA_BY_SERVICE: "/api/typemaster/generalmaster/servicetype/services",
+  SEVAKENDRA_BY_SERVICE: "/api/services/sevakendras",
   STATES: "/api/typemaster/generalmaster/states",
   DISTRICTS: "/api/typemaster/generalmaster/districts",
   DIVYANG_DETAILS: "/api/divyangDetails",
