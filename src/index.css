@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Rubik", sans-serif;
+}
+
+/* Table column hiding popover style  */
+.notes {
+  max-width: 300px;
+  padding: 16px;
+  padding-bottom: 0;
+}
+.notes p {
+  font-style: italic;
+}
+.notes ~ div {
+  padding: 0px 16px;
+}
